@@ -1058,3 +1058,40 @@
 .whatsapp-float:hover{
   transform: scale(1.06);
 }
+
+/* Despre noi */
+.about-box {
+  text-align: left;
+}
+
+.about-list {
+  padding-left: 1.2rem;
+  margin: 0;
+}
+.about-list li {
+  margin-bottom: 6px;
+  line-height: 1.6;
+}
+
+.cert-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.06);
+}
+
+.cert-ico {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bs-primary);
+  color: #fff;
+  flex: 0 0 44px;
+}

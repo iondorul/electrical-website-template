@@ -31,14 +31,18 @@ const t = {
 
     about_h4: "Despre Noi",
     about_h1: "Performanță și calitate în fiecare detaliu",
-    about_feat1: "SOLUȚII DE URGENȚĂ PENTRU ALIMENTARE CU ENERGIE",
-    about_feat2: "Servicii Complete de Proiectare Electrică",
+    about_feat1: "INTERVENȚII ELECTRICE URGENTE PENTRU SIGURANȚA INSTALAȚIEI",
+    about_feat2:
+      "Servicii electrice autorizate pentru instalații de joasă tensiune",
     about_p:
       "Executăm lucrări electrice conforme și durabile, atât pentru locuințe, cât și pentru spații comerciale sau industriale",
     about_b1:
-      "Instalăm, întreținem și reparam sisteme de iluminat pentru clienți.",
-    about_b2: "Tehnologie avansată pentru generarea curentului electric.",
-    about_b3: "Metode inteligente de a produce energie cu costuri reduse.",
+      "Instalăm, reparăm și modernizăm sisteme de iluminat pentru siguranță și consum redus.",
+    about_b2:
+      "Proiectare și execuție instalații electrice, cu accent pe siguranță și durabilitate.",
+    about_b3: "Instalații electrice corect dimensionate, pentru consum optim.",
+
+    about_b4: "Verificare, modernizare și optimizare instalații electrice.",
 
     langLabel: "Română",
     footer_desc:
