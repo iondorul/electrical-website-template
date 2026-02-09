@@ -3,7 +3,7 @@ const t = {
     langLabel: "Română",
 
     nav_home: "Acasă",
-    nav_about: "Despre Noi",
+    nav_about: "Despre noi",
     nav_services: "Servicii",
     nav_blog: "Blog",
     nav_pages: "Pagini",
@@ -30,7 +30,7 @@ const t = {
 
     btn_about_contact: "Contactează-ne",
 
-    about_h4: "Despre Noi",
+    about_h4: "Despre noi",
     about_h1: "Performanță și calitate în fiecare detaliu",
     about_feat1: "INTERVENȚII ELECTRICE URGENTE PENTRU SIGURANȚA INSTALAȚIEI",
     about_feat2:
