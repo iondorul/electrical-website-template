@@ -14,14 +14,15 @@ const t = {
     nav_contact: "Contact",
 
     hero1_h4: "Servicii Electrice de Încredere",
-    hero1_h1: "Acolo unde profesionalismul prinde viață",
+    hero1_h1:
+      "Instalații electrice executate corect. Siguranță fără compromis.",
     hero1_p:
       "Fiecare lucrare este tratată cu seriozitate, pentru rezultate rapide și fără compromis.",
     btn_watch2: "Vezi Video",
     btn_learn2: "Află Mai Mult",
 
     hero2_h4: "Servicii Electrice de Încredere",
-    hero2_h1: "Acolo unde profesionalismul prinde viață",
+    hero2_h1: "De la proiect la realizare. Soluții electrice pentru casa ta.",
     hero2_p:
       "Fiecare lucrare este tratată cu seriozitate, pentru rezultate rapide și fără compromis.",
     btn_watch: "Vezi Video",
@@ -36,6 +37,9 @@ const t = {
       "Servicii electrice autorizate pentru instalații de joasă tensiune",
     about_p:
       "Executăm lucrări electrice conforme și durabile, atât pentru locuințe, cât și pentru spații comerciale sau industriale",
+
+    about_b0:
+      "Măsurare și verificare priză de pământ, cu aparatură certificată, conform normativelor în vigoare.",
     about_b1:
       "Instalăm, reparăm și modernizăm sisteme de iluminat pentru siguranță și consum redus.",
     about_b2:
@@ -77,14 +81,14 @@ const t = {
     nav_contact: "Contact",
 
     hero1_h4: "Trusted Electrical Services",
-    hero1_h1: "Where professionalism comes to life",
+    hero1_h1: "From design to completion. Electrical solutions for your home.",
     hero1_p:
       "Every job is handled seriously, for fast results and no compromises.",
     btn_watch2: "Watch Video",
     btn_learn2: "Learn More",
 
     hero2_h4: "Trusted Electrical Services",
-    hero2_h1: "Where professionalism comes to life",
+    hero2_h1: "Safety in every connection. Experience and precision.",
     hero2_p:
       "Every job is handled seriously, for fast results and no compromises.",
     btn_watch: "Watch Video",
@@ -98,9 +102,13 @@ const t = {
     about_feat2: "Complete Electrical Design Services",
     about_p:
       "We deliver compliant, durable electrical work for homes, commercial and industrial spaces",
+    about_b0:
+      "Grounding system measurement and verification using certified equipment, in compliance with current regulations.",
     about_b1: "We install, maintain and repair lighting systems.",
     about_b2: "Advanced technology for reliable power solutions.",
     about_b3: "Smart methods to reduce energy costs.",
+    about_b4:
+      "Electrical system upgrades: Inspection, modernization, and efficiency optimization.",
 
     footer_desc:
       "We provide professional electrical services in Sibiu and surrounding areas for residential, commercial, and industrial projects. We work according to safety standards, fast and reliable, with durable solutions and fair pricing.",
