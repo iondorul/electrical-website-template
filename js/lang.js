@@ -11,7 +11,7 @@ const t = {
     nav_team: "Echipa Noastră",
     nav_testimonials: "Păreri",
     nav_404: "404 Page",
-    nav_contact: "Contact",
+    nav_contact: "Contactează-ne",
 
     hero1_h4: "Servicii Electrice de Încredere",
     hero1_h1:
@@ -52,7 +52,7 @@ const t = {
     footer_desc:
       "Oferim servicii electrice profesionale în Sibiu și împrejurimi pentru locuințe, spații comerciale și industriale. Lucrăm conform normelor ANRE, rapid și sigur, cu soluții durabile și prețuri corecte.",
 
-    contact_h4: "Contact",
+    contact_h4: "Contactează-ne",
     contact_h1: "Contactează-ne acum",
     contact_p:
       "Suntem gata să-ți răspundem. Fie că ai nevoie de o ofertă, consultanță sau intervenție rapidă – contactează-ne acum.",
