@@ -59,8 +59,10 @@
                         <div class="col-lg-8 text-center text-lg-center mb-lg-0">
                             <div class="d-flex flex-wrap">
                                 <div class="border-end border-primary pe-3">
-                                    <a href="#" class="text-muted small"><i
-                                            class="fas fa-map-marker-alt text-primary me-2"></i>Locația</a>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Strada+Doamna+Stanca+1+Bloc+55+Sibiu"
+                                        target="_blank" class="text-muted small">
+                                        <i class="fas fa-map-marker-alt text-primary me-2"></i>Sibiu, Romania
+                                    </a>
                                 </div>
                                 <div class="ps-3">
                                     <a href="mailto:contact@electricalvpf.com" class="text-muted small"><i
@@ -68,28 +70,27 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-lg-4 text-center text-lg-end">
                             <div class="d-flex justify-content-end">
-                                <div class="d-flex border-end border-primary pe-3">
-                                    <a class="btn p-0 text-primary me-3" href="#"><i class="fab fa-facebook-f"></i></a>
-                                    <a class="btn p-0 text-primary me-3" href="#"><i class="fab fa-twitter"></i></a>
-                                    <a class="btn p-0 text-primary me-3" href="#"><i class="fab fa-instagram"></i></a>
-                                    <a class="btn p-0 text-primary me-0" href="#"><i class="fab fa-linkedin-in"></i></a>
-                                </div>
                                 <div class="dropdown ms-3">
-                                    <a href="#" class="dropdown-toggle text-white" data-bs-toggle="dropdown"><small
-                                            class="text-body"><i class="fas fa-globe-europe text-primary me-2"></i>
-                                            English</small></a>
-                                    <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item">English</a>
-                                        <a href="#" class="dropdown-item">Bangla</a>
-                                        <a href="#" class="dropdown-item">French</a>
-                                        <a href="#" class="dropdown-item">Spanish</a>
-                                        <a href="#" class="dropdown-item">Arabic</a>
+                                    <a href="#" class="dropdown-toggle text-white" data-bs-toggle="dropdown">
+                                        <small class="text-body">
+                                            <i class="fas fa-globe-europe text-primary me-2"></i>
+                                            <span id="langLabel">Română</span>
+                                        </small>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a href="#" class="dropdown-item"
+                                            onclick="setLang('ro');return false;">Română</a>
+                                        <a href="#" class="dropdown-item"
+                                            onclick="setLang('en');return false;">English</a>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-lg-end">
@@ -101,13 +102,16 @@
                         data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars"></span>
                     </button>
+
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav mx-0 mx-lg-auto bg-white">
-                            <a href="index.html" class="nav-item nav-link">Acasă</a>
-                            <a href="about.html" class="nav-item nav-link active">Despre noi</a>
-                            <a href="service.html" class="nav-item nav-link">Servicii</a>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <a href="index.html" class="nav-item nav-link" id="nav_home">Acasă</a>
+                            <a href="about.html" class="nav-item nav-link active" id="nav_about">Despre noi</a>
+                            <a href="service.html" class="nav-item nav-link" id="nav_services">Servicii</a>
+                            <a href="contact.html" class="nav-item nav-link" id="nav_contact">Contact</a>
                         </div>
+                    </div>
+
                 </nav>
             </div>
         </div>
@@ -143,8 +147,9 @@
             <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">Despre noi </h4>
             <ol class="breadcrumb d-flex justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
                 <li class="breadcrumb-item"><a href="index.html">Acasă</a></li>
-                <li class="breadcrumb-item"><a href="#">Pagini</a></li>
                 <li class="breadcrumb-item active text-primary">Despre noi</li>
+                <li class="breadcrumb-item"><a href="service.html">Servicii</a></li>
+                <li class="breadcrumb-item"><a href="contact.html">Contact</a></li>
             </ol>
         </div>
     </div>
@@ -358,13 +363,12 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="js/lang.js"></script>
 
     <!-- WhatsApp Floating Button -->
     <a href="https://wa.me/40735946077?text=Buna%2C%20as%20dori%20o%20consultanta%20pentru%20instalatia%20electrica."
         class="whatsapp-float" target="_blank" aria-label="WhatsApp Chat">
-
         <i class="fab fa-whatsapp"></i>
-
     </a>
 
 </body>
