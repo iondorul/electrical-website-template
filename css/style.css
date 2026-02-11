@@ -1100,8 +1100,41 @@
   flex: 0 0 44px;
 }
 
-.navbar-toggler { border: 1px solid rgba(0,0,0,.2); }
-.navbar-toggler .fa-bars { font-size: 22px; }
+/* MOBILE: language button + hamburger same height & aligned */
+@media (max-width: 991.98px){
+
+  /* language button */
+  .navbar .dropdown.d-lg-none .btn{
+    height: 40px;
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 16px; /* tu ai zis ca ai pus 16 - ok */
+    border-radius: 0; /* ca sa arate la fel cu toggler */
+  }
+
+  /* hamburger button */
+  .navbar .navbar-toggler{
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 0; /* ca sa fie identic cu limba */
+  }
+
+  .navbar .navbar-toggler .fa-bars{
+    font-size: 20px;
+    line-height: 1;
+    margin: 0;
+  }
+}
+
 
 .header-top .container {
     max-width: 100% !important;
@@ -1141,6 +1174,25 @@
 /* MOBILE ONLY brand fix */
 @media (max-width: 991.98px){
 
+    /* Buton limbă + hamburger exact aceeași înălțime */
+    .dropdown.d-lg-none .btn,
+    .navbar-toggler{
+        font-size: 12px !important;
+        padding: 3px 6px !important;
+        line-height: 1.2 !important;
+        height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* Icon hamburger */
+    .navbar-toggler .fa-bars{
+        font-size: 14px !important;
+    }
+
+
+
   .navbar {
     display: flex;
     align-items: center;
@@ -1154,7 +1206,7 @@
   }
 
   .navbar-brand-2 h1{
-    font-size: 20px;        /* mai mic pe mobil */
+    font-size: 16px;        /* mai mic pe mobil */
     margin: 0 !important;
     line-height: 1;
     white-space: nowrap;
