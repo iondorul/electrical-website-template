@@ -44,13 +44,19 @@
 
     <!-- Navbar & Hero Start -->
     <div class="container-fluid header-top">
-        <div class="container d-flex align-items-center">
-            <div class="d-flex align-items-center h-100">
+
+        <div class="container d-flex align-items-left justify-content-between" style="height: 125px;">
+
+            <!-- BRAND MARE (DOAR DESKTOP) -->
+            <div class="d-none d-lg-flex align-items-center h-100">
                 <a href="index.html" class="navbar-brand" style="height: 125px;">
                     <h1 class="text-primary mb-0"><i class="fas fa-bolt"></i> ElectricalVPF</h1>
                 </a>
             </div>
+
             <div class="w-100 h-100">
+
+                <!-- TOPBAR (DOAR DESKTOP) -->
                 <div class="topbar px-0 py-2 d-none d-lg-block" style="height: 45px;">
                     <div class="row gx-0 align-items-center">
                         <div class="col-lg-8 text-center text-lg-center mb-lg-0">
@@ -86,29 +92,51 @@
                                             onclick="setLang('en');return false;">English</a>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 
                     </div>
                 </div>
 
-                <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-lg-end">
-                    <a href="index.html" class="navbar-brand-2">
+                <!-- NAVBAR (MOBIL + DESKTOP) -->
+                <nav class="navbar navbar-expand-lg navbar-light w-100 px-0">
+
+                    <!-- BRAND MIC (MOBIL) -->
+                    <a href="index.html" class="navbar-brand-2 d-lg-none">
                         <h1 class="text-primary mb-0"><i class="fas fa-bolt"></i> ElectricalVPF</h1>
-                        <!-- <img src="img/logo.png" alt="Logo"> -->
                     </a>
+
+                    <!-- LANGUAGE (MOBIL) -->
+                    <div class="dropdown d-lg-none me-2">
+                        <a href="#" class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                            <span id="langLabelMobile">Română</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a href="#" class="dropdown-item" onclick="setLang('ro');return false;">Română</a>
+                            <a href="#" class="dropdown-item" onclick="setLang('en');return false;">English</a>
+                        </div>
+                    </div>
+
+                    <!-- TOGGLER -->
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarCollapse">
+                        data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                        aria-label="Toggle navigation">
                         <span class="fa fa-bars"></span>
                     </button>
 
+                    <!-- MENU -->
                     <div class="collapse navbar-collapse" id="navbarCollapse">
-                        <div class="navbar-nav mx-0 mx-lg-auto bg-white">
+                        <div class="navbar-nav mx-0 mx-lg-auto">
                             <a href="index.html" class="nav-item nav-link active" id="nav_home">Acasă</a>
                             <a href="about.html" class="nav-item nav-link" id="nav_about">Despre noi</a>
                             <a href="service.html" class="nav-item nav-link" id="nav_services">Servicii</a>
                             <a href="contact.html" class="nav-item nav-link" id="nav_contact">Contact</a>
+
+                            <a class="btn btn-success d-lg-none mt-3"
+                                href="https://wa.me/40735946077?text=Buna%2C%20doresc%20o%20oferta%20pentru%20lucrari%20electrice.">
+                                <i class="fab fa-whatsapp me-2"></i> Cere ofertă
+                            </a>
+
                         </div>
                     </div>
 
@@ -116,9 +144,10 @@
 
             </div>
         </div>
-    </div>
+
     </div>
     <!-- Navbar & Hero End -->
+
 
     <!-- Carousel Start -->
     <div class="header-carousel owl-carousel overflow-hidden">

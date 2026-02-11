@@ -300,9 +300,13 @@
 }
 
 @media (min-width: 992px) {
-    .navbar {
-        padding: 20px 0;
-    }
+    .header-top .navbar{
+        height: 80px;           /* 125 - 45 topbar */
+        padding: 0 !important;  /* scoate împingerea */
+        display: flex;
+        align-items: center;    /* centru vertical */
+        }
+
 
     .navbar .nav-btn {
         display: flex;
@@ -310,13 +314,13 @@
         justify-content: end;
     }
 
-    .navbar .navbar-nav {
+   .navbar .navbar-nav {
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        background: var(--bs-light);
-        border-radius: 10px;
+        background: transparent;
+        border-radius: 0;
     }
 
     .navbar .navbar-nav .nav-btn {
@@ -1095,3 +1099,77 @@
   color: #fff;
   flex: 0 0 44px;
 }
+
+.navbar-toggler { border: 1px solid rgba(0,0,0,.2); }
+.navbar-toggler .fa-bars { font-size: 22px; }
+
+.header-top .container {
+    max-width: 100% !important;
+}
+
+.navbar-collapse {
+    background: #fff;
+    padding: 15px;
+}
+
+.navbar-nav {
+    margin-left: 0 !important;
+}
+
+@media (max-width: 991px) {
+    .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        z-index: 999;
+    }
+}
+
+@media (max-width: 991px){
+  .navbar-collapse{
+    left:0;
+    right:0;
+    width:100%;
+  }
+
+  .navbar-nav .nav-link{
+    padding:10px 6px;
+  }
+}
+
+/* MOBILE ONLY brand fix */
+@media (max-width: 991.98px){
+
+  .navbar {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-brand-2{
+    display: flex;
+    align-items: center;
+    margin-right: auto;     /* impinge restul la dreapta */
+    padding: 0;
+  }
+
+  .navbar-brand-2 h1{
+    font-size: 20px;        /* mai mic pe mobil */
+    margin: 0 !important;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+}
+
+/* REMOVE grey oval behind desktop menu */
+@media (min-width: 992px){
+  .header-top .navbar .navbar-nav{
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}
+
+
