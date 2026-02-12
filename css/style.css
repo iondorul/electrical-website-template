@@ -1238,3 +1238,22 @@
     padding-right: var(--bs-navbar-nav-link-padding-x, 1rem) !important;
   }
 }
+
+.whatsapp-orange{
+  background:#ff7a00 !important;
+  border:2px solid rgba(255,255,255,0.85) !important;
+  color:white !important;
+  font-weight:500;
+  box-shadow:0 8px 25px rgba(255,122,0,0.45);
+  transition:0.2s;
+  letter-spacing:0.4px;
+  font-family: "Inter", sans-serif;
+}
+
+.whatsapp-orange:hover{
+  background:#e86f00 !important;
+  transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(255,122,0,0.6);
+}
+
+

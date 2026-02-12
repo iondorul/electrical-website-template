@@ -1,6 +1,7 @@
 const t = {
   ro: {
     langLabel: "Română",
+    btn_quote: "Solicită ofertă gratuită",
 
     nav_home: "Acasă",
     nav_about: "Despre noi",
@@ -68,6 +69,8 @@ const t = {
 
   en: {
     langLabel: "English",
+
+    btn_quote: "Get a free quote",
 
     nav_home: "Home",
     nav_about: "About Us",
