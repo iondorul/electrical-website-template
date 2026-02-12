@@ -1251,4 +1251,64 @@
   box-shadow:0 12px 30px rgba(255,122,0,0.6);
 }
 
+/* PROJECTS MENU — SINGLE CLEAN BLOCK (no duplicates) */
+.projects .nav{
+  max-width:400px;   /* schimbă dacă vrei */
+  margin:auto;
+  gap:10px;          /* spațiu între butoane */
+  display:flex;
+  flex-direction:column;
+}
 
+.projects .nav-item{
+  padding:0 !important;
+  border-radius:12px;
+  overflow:hidden;   /* taie colțuri albe */
+  box-shadow:0 0 30px rgba(0,0,0,.09);
+}
+
+.projects .nav-item a{
+  width:100%;
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:14px 18px 14px 6px !important; /* text mai la stânga */
+  font-size:18px;
+  font-weight:400;   /* fara bold */
+  border-radius:12px;
+  transition:.2s;
+}
+
+.projects .projects-icon{
+  width:42px !important;
+  height:42px !important;
+  min-width:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.projects .projects-icon span{
+  font-size:18px;
+}
+
+.projects .nav-item span{
+  line-height:1.2;
+}
+
+.projects .nav-item a.active{
+  background:var(--bs-primary);
+}
+
+.projects .nav-item a.active span{
+  color:var(--bs-white);
+}
+
+.projects .nav-item a.active .projects-icon{
+  background:var(--bs-dark) !important;
+}
+
+.projects .nav-item a.active .projects-icon span{
+  color:var(--bs-primary);
+}

@@ -1,5 +1,81 @@
 const t = {
   ro: {
+    projects_subcontract: "Subcontractare & proiecte mari",
+
+    projects_civil: "Construcții civile",
+
+    projects_upgrade_maintenance: "Modernizări și mentenanță",
+
+    projects_industrial: "Instalații electrice industriale",
+
+    projects_h1: "Tipuri de lucrări executate",
+
+    projects_p:
+      "Exemple de lucrări realizate în domeniul rezidențial, comercial și industrial.",
+
+    btn_quote_simplu: "Cere ofertă",
+
+    service_industrial_maintenance_title:
+      "Mentenanță instalații electrice industriale",
+
+    service_industrial_maintenance_desc:
+      "Verificări și intervenții pentru funcționare sigură și reducerea riscului de opriri neplanificate.",
+
+    service_industrial_panels_title:
+      "Tablouri electrice și circuite industriale",
+
+    service_industrial_panels_desc:
+      "Montaj și reconfigurare tablouri electrice și circuite pentru alimentarea echipamentelor industriale.",
+
+    service_industrial_title:
+      "Instalații electrice industriale de joasă tensiune",
+
+    service_industrial_desc:
+      "Execuție și modificări instalații electrice industriale, realizate individual sau prin subcontractare cu firme autorizate ANRE, în funcție de complexitatea lucrării.",
+
+    service_upgrade_title: "Modernizare instalații electrice existente",
+
+    service_upgrade_desc:
+      "Înlocuire circuite, prize și tablouri electrice vechi pentru siguranță și fiabilitate.",
+
+    service_home_repair_title:
+      "Reparații și intervenții electrice la domiciliu",
+
+    service_home_repair_desc:
+      "Remediere rapidă a defecțiunilor electrice pentru siguranța locuinței.",
+
+    service_residential_title: "Instalații electrice rezidențiale",
+
+    service_residential_desc:
+      "Realizare instalații electrice noi pentru apartamente și case, sigure și corect dimensionate.",
+
+    service_maintenance_title: "Mentenanță și intervenții electrice comerciale",
+
+    service_maintenance_desc:
+      "Intervenții rapide și mentenanță preventivă pentru continuitatea activității și evitarea pierderilor financiare.",
+
+    service_lighting_title: "Iluminat comercial interior și exterior",
+
+    service_lighting_desc:
+      "Montaj și modernizare sisteme de iluminat pentru spații comerciale, cu accent pe siguranță și consum eficient.",
+
+    service_commercial_title: "Instalații electrice pentru spații comerciale",
+
+    service_commercial_desc:
+      "Execuție și modernizare instalații electrice pentru magazine, birouri și spații comerciale, conform normelor ANRE.",
+
+    services_h4: "Servicii",
+
+    services_h1: "Calitate și profesionalism pentru dumneavoastră",
+
+    services_p:
+      "Executăm lucrări electrice autorizate de joasă tensiune, cu accent pe siguranță, calitate și respectarea normelor în vigoare. Oferim soluții corecte pentru locuințe și spații comerciale, de la intervenții rapide până la modernizarea instalațiilor existente.",
+
+    hero_services_title:
+      "Servicii electrice profesionale pentru clienți rezidențiali și comerciali",
+
+    contact_details: "Pentru detalii, vă rugăm să ne contactați",
+
     langLabel: "Română",
     btn_quote: "Solicită ofertă gratuită",
 
@@ -68,6 +144,80 @@ const t = {
   },
 
   en: {
+    projects_subcontract: "Subcontracting & large-scale projects",
+
+    projects_civil: "Civil construction",
+
+    projects_upgrade_maintenance: "Upgrades and maintenance",
+
+    projects_industrial: "Industrial electrical installations",
+
+    projects_h1: "Types of Projects",
+
+    projects_p:
+      "Examples of projects completed in residential, commercial, and industrial sectors.",
+
+    btn_quote_simplu: "Request a quote",
+
+    service_industrial_maintenance_title: "Industrial electrical maintenance",
+
+    service_industrial_maintenance_desc:
+      "Inspections and interventions to ensure safe operation and reduce the risk of unplanned downtime.",
+
+    service_industrial_panels_title:
+      "Industrial electrical panels and circuits",
+
+    service_industrial_panels_desc:
+      "Installation and reconfiguration of electrical panels and circuits for industrial equipment power supply.",
+
+    service_industrial_title: "Low-voltage industrial electrical installations",
+
+    service_industrial_desc:
+      "Execution and modification of industrial electrical installations, performed independently or through subcontracting with certified partners, depending on project complexity.",
+
+    service_upgrade_title: "Electrical system upgrades",
+
+    service_upgrade_desc:
+      "Replacement of old circuits, outlets, and electrical panels for improved safety and reliability.",
+
+    service_home_repair_title: "Home electrical repairs and emergency services",
+
+    service_home_repair_desc:
+      "Fast troubleshooting and repair of electrical faults to ensure home safety.",
+
+    service_residential_title: "Residential electrical installations",
+
+    service_residential_desc:
+      "Installation of new electrical systems for apartments and houses, safe and properly sized.",
+
+    service_maintenance_title:
+      "Commercial electrical maintenance and emergency services",
+
+    service_maintenance_desc:
+      "Fast interventions and preventive maintenance to ensure business continuity and prevent financial losses.",
+
+    service_lighting_title: "Commercial indoor and outdoor lighting",
+
+    service_lighting_desc:
+      "Installation and upgrade of lighting systems for commercial premises, focused on safety and energy efficiency.",
+
+    service_commercial_title: "Commercial electrical installations",
+
+    service_commercial_desc:
+      "Installation and modernization of electrical systems for shops, offices, and commercial buildings, compliant with safety standards.",
+
+    services_h4: "Services",
+
+    services_h1: "Electrical expertise you can rely on",
+
+    services_p:
+      "We perform authorized low-voltage electrical works with focus on safety, quality, and compliance with current regulations. We provide reliable solutions for homes and commercial spaces, from fast interventions to modernization of existing installations.",
+
+    hero_services_title:
+      "Professional electrical services for residential and commercial clients",
+
+    contact_details: "For details, please contact us",
+
     langLabel: "English",
 
     btn_quote: "Get a free quote",
@@ -81,7 +231,7 @@ const t = {
     nav_team: "Our Team",
     nav_testimonials: "Testimonials",
     nav_404: "404 Page",
-    nav_contact: "Contact",
+    nav_contact: "Contact Us",
 
     hero1_h4: "Trusted Electrical Services",
     hero1_h1: "From design to completion. Electrical solutions for your home.",
@@ -97,7 +247,7 @@ const t = {
     btn_watch: "Watch Video",
     btn_learn: "Learn More",
 
-    btn_about_contact: "Contact us",
+    btn_about_contact: "Contact Us",
 
     about_h4: "About Us",
     about_h1: "Performance and quality in every detail",
