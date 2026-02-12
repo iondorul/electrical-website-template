@@ -43,16 +43,21 @@
     <!-- Spinner End -->
 
 
-
     <!-- Navbar & Hero Start -->
     <div class="container-fluid header-top">
-        <div class="container d-flex align-items-center">
-            <div class="d-flex align-items-center h-100">
+
+        <div class="container d-flex align-items-left justify-content-between" style="height: 125px;">
+
+            <!-- BRAND MARE (DOAR DESKTOP) -->
+            <div class="d-none d-lg-flex align-items-center h-100">
                 <a href="index.html" class="navbar-brand" style="height: 125px;">
                     <h1 class="text-primary mb-0"><i class="fas fa-bolt"></i> ElectricalVPF</h1>
                 </a>
             </div>
+
             <div class="w-100 h-100">
+
+                <!-- TOPBAR (DOAR DESKTOP) -->
                 <div class="topbar px-0 py-2 d-none d-lg-block" style="height: 45px;">
                     <div class="row gx-0 align-items-center">
                         <div class="col-lg-8 text-center text-lg-center mb-lg-0">
@@ -64,8 +69,10 @@
                                     </a>
                                 </div>
                                 <div class="ps-3">
-                                    <a href="mailto:contact@electricalvpf.com" class="text-muted small"><i
-                                            class="fas fa-envelope text-primary me-2"></i>contact@electricalvpf.com</a>
+                                    <a href="https://compose.mail.yahoo.com/?to=office@electricalvpf.com"
+                                        class="text-muted small">
+                                        <i class="fas fa-envelope text-primary me-2"></i>office@electricalvpf.com
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -86,35 +93,63 @@
                                             onclick="setLang('en');return false;">English</a>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 
                     </div>
                 </div>
-                <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-lg-end">
-                    <a href="#" class="navbar-brand-2">
+
+                <!-- NAVBAR (MOBIL + DESKTOP) -->
+                <nav class="navbar navbar-expand-lg navbar-light w-100 px-0">
+
+                    <!-- BRAND MIC (MOBIL) -->
+                    <a href="index.html" class="navbar-brand-2 d-lg-none">
                         <h1 class="text-primary mb-0"><i class="fas fa-bolt"></i> ElectricalVPF</h1>
-                        <!-- <img src="img/logo.png" alt="Logo"> -->
                     </a>
+
+                    <!-- TOGGLER -->
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarCollapse">
+                        data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                        aria-label="Toggle navigation">
                         <span class="fa fa-bars"></span>
                     </button>
 
+                    <!-- MENU -->
                     <div class="collapse navbar-collapse" id="navbarCollapse">
-                        <div class="navbar-nav mx-0 mx-lg-auto bg-white">
-                            <a href="index.html" class="nav-item nav-link" id="nav_home">Acasă</a>
-                            <a href="about.html" class="nav-item nav-link active" id="nav_about">Despre noi</a>
+                        <div class="navbar-nav mx-0 mx-lg-auto">
+                            <a href="index.html" class="nav-item nav-link active" id="nav_home">Acasă</a>
+                            <a href="about.html" class="nav-item nav-link" id="nav_about">Despre noi</a>
                             <a href="service.html" class="nav-item nav-link" id="nav_services">Servicii</a>
                             <a href="contact.html" class="nav-item nav-link" id="nav_contact">Contact</a>
+
+                            <!-- LANGUAGE (MOBIL - IN MENU) -->
+                            <div class="nav-item dropdown d-lg-none mobile-lang">
+                                <a href="#"
+                                    class="nav-link dropdown-toggle d-flex align-items-center justify-content-between w-100"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span>Limba: <span id="langLabelMobile">Română</span></span>
+                                </a>
+
+                                <div class="dropdown-menu w-100">
+                                    <a href="#" class="dropdown-item" onclick="setLang('ro');return false;">Română</a>
+                                    <a href="#" class="dropdown-item" onclick="setLang('en');return false;">English</a>
+                                </div>
+                            </div>
+
+
+                            <a class="btn btn-success d-lg-none mt-3"
+                                href="https://wa.me/40735946077?text=Buna%2C%20doresc%20o%20oferta%20pentru%20lucrari%20electrice.">
+                                <i class="fab fa-whatsapp me-2"></i> Cere ofertă
+                            </a>
+
                         </div>
                     </div>
 
                 </nav>
+
             </div>
         </div>
-    </div>
+
     </div>
     <!-- Navbar & Hero End -->
 
