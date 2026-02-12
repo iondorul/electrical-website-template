@@ -1,5 +1,45 @@
 const t = {
   ro: {
+    footer_contact_title: "Informații contact",
+
+    footer_quick_nav: "Navigare rapidă",
+
+    cta_contact: "Contactează-ne",
+
+    cert_anre:
+      "<strong>Autorizație ANRE</strong> – instalații electrice de joasă tensiune (România)",
+
+    cert_experience:
+      "Experiență profesională pe șantiere din <strong>Olanda, Norvegia, România și Italia</strong>.",
+
+    cert_eu_standards:
+      "Lucru conform <strong>standardelor europene de siguranță și execuție</strong>.",
+
+    cert_nen:
+      "<strong>NEN 3140</strong> – siguranță electrică și lucrări în instalații electrice (Olanda)",
+
+    cert_dsb_lv:
+      "<strong>DSB Electrician Low Voltage</strong> – certificare norvegiană pentru execuția lucrărilor electrice de joasă tensiune, conform normelor stricte DSB privind siguranța și calitatea.",
+
+    cert_dsb_resp:
+      "<strong>DSB Professional Responsibility</strong> – certificare care atestă responsabilitatea profesională în execuția lucrărilor electrice, respectarea procedurilor, documentației și standardelor de siguranță din Norvegia.",
+
+    cert_osha:
+      "<strong>OSHA 30h Safety Training (SUA)</strong> – formare avansată în siguranța muncii pe șantiere, incluzând riscuri electrice, lucru la înălțime, echipamente industriale și proceduri de prevenție.",
+
+    certifications_title: "Certificări și calificări",
+
+    about_desc_1:
+      "<strong>ElectricalVPF</strong> este o structură flexibilă de lucru, coordonată de un electrician autorizat <strong>ANRE</strong>, cu experiență profesională în <strong>Olanda, Norvegia, România și Italia</strong>.",
+
+    about_desc_2:
+      "Executăm <strong>instalații electrice rezidențiale, comerciale și industriale</strong>, direct sau prin <strong>subcontractare cu firme autorizate</strong>, în funcție de complexitatea proiectului.",
+
+    about_desc_3:
+      "Asigurăm coordonare tehnică completă, respectarea normelor și responsabilitate totală pentru calitatea lucrării, indiferent de dimensiunea proiectului.",
+
+    hero_authorized: "Electrician autorizat ANRE\nexperiență internațională",
+
     projects_subcontract: "Subcontractare & proiecte mari",
 
     projects_civil: "Construcții civile",
@@ -144,6 +184,46 @@ const t = {
   },
 
   en: {
+    footer_contact_title: "Contact Info",
+
+    footer_quick_nav: "Quick Navigation",
+
+    cta_contact: "Contact Us",
+
+    cert_anre:
+      "<strong>ANRE Authorization</strong> – Low-voltage electrical installations (Romania)",
+
+    cert_experience:
+      "Professional experience on construction sites in <strong>the Netherlands, Norway, Romania and Italy</strong>.",
+
+    cert_eu_standards:
+      "Work performed in accordance with <strong>European safety and execution standards</strong>.",
+
+    cert_nen:
+      "<strong>NEN 3140</strong> – Electrical safety and work on electrical installations (Netherlands)",
+
+    cert_dsb_lv:
+      "<strong>DSB Electrician Low Voltage</strong> – Norwegian certification for low-voltage electrical installation work, in accordance with strict DSB safety and quality requirements.",
+
+    cert_dsb_resp:
+      "<strong>DSB Professional Responsibility</strong> – Certification confirming professional responsibility in electrical works execution, including procedures, documentation, and safety standards in Norway.",
+
+    cert_osha:
+      "<strong>OSHA 30h Safety Training (USA)</strong> – Advanced construction safety training covering electrical hazards, work at height, industrial equipment, and prevention procedures.",
+
+    certifications_title: "Certifications and qualifications",
+
+    about_desc_1:
+      "<strong>ElectricalVPF</strong> is a flexible work structure coordinated by an <strong>ANRE authorized electrician</strong> with professional experience in the <strong>Netherlands, Norway, Romania and Italy</strong>.",
+
+    about_desc_2:
+      "We deliver <strong>residential, commercial and industrial electrical installations</strong>, directly or through <strong>authorized subcontractors</strong>, depending on project complexity.",
+
+    about_desc_3:
+      "We ensure full technical coordination, compliance with standards and full responsibility for execution quality, regardless of project size.",
+
+    hero_authorized: "ANRE Authorized Electrician\nInternational Experience",
+
     projects_subcontract: "Subcontracting & large-scale projects",
 
     projects_civil: "Civil construction",
@@ -282,9 +362,13 @@ const t = {
 };
 
 function setText(id, val) {
-  document
-    .querySelectorAll(`[id="${id}"]`)
-    .forEach((e) => (e.textContent = val));
+  document.querySelectorAll(`[id="${id}"]`).forEach((e) => {
+    const hasHtml = typeof val === "string" && /<\/?[a-z][\s\S]*>/i.test(val);
+
+    if (hasHtml)
+      e.innerHTML = val; // păstrează <strong>, <br>, etc.
+    else e.textContent = val; // text simplu
+  });
 }
 
 function setLang(lang) {
