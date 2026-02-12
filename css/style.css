@@ -1225,3 +1225,16 @@
 }
 
 
+/* Fix: mobile language aligns left like other menu links */
+@media (max-width: 991.98px) {
+  #navbarCollapse .navbar-nav > .mobile-lang {
+    margin: 0 !important;
+    padding: 0 !important;          /* asta elimina indentul */
+    width: 100%;
+  }
+
+  #navbarCollapse .navbar-nav > .mobile-lang > a.nav-link {
+    padding-left: var(--bs-navbar-nav-link-padding-x, 1rem) !important;
+    padding-right: var(--bs-navbar-nav-link-padding-x, 1rem) !important;
+  }
+}
