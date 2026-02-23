@@ -1,5 +1,10 @@
 const t = {
   ro: {
+    hero_services_custom_h1: "Calitate și profesionalism pentru dumneavoastră",
+
+    hero_services_custom_p:
+      "Executăm lucrări electrice autorizate de joasă tensiune, cu accent pe siguranță, calitate și respectarea normelor în vigoare. Oferim soluții corecte pentru locuințe și spații comerciale, de la intervenții rapide până la modernizarea instalațiilor existente.",
+
     footer_contact_title: "Informații contact",
 
     footer_quick_nav: "Navigare rapidă",
@@ -184,6 +189,11 @@ const t = {
   },
 
   en: {
+    hero_services_custom_h1: "Commitment to Excellence",
+
+    hero_services_custom_p:
+      "We perform authorized low-voltage electrical works with a strong focus on safety, quality, and compliance with current regulations. We provide reliable solutions for residential and commercial spaces, from fast interventions to upgrading existing electrical installations.",
+
     footer_contact_title: "Contact Info",
 
     footer_quick_nav: "Quick Navigation",
