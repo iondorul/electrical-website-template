@@ -645,46 +645,67 @@
     <script>
         async function loadBNRRate() {
             const el = document.getElementById("bnrRate");
+
+            const urls = [
+                "https://api.allorigins.win/raw?url=https://www.bnr.ro/nbrfxrates.xml",
+                "https://cors.isomorphic-git.org/https://www.bnr.ro/nbrfxrates.xml"
+            ];
+
             try {
-                const res = await fetch("https://corsproxy.io/?https://www.bnr.ro/nbrfxrates.xml", { cache: "no-store" });
-                const text = await res.text();
+                let text = "";
 
-                const parser = new DOMParser();
-                const xml = parser.parseFromString(text, "text/xml");
+                for (const u of urls) {
+                    try {
+                        const res = await fetch(u, { cache: "no-store" });
+                        if (!res.ok) continue;
+                        const t = await res.text();
 
-                const eurNode = xml.querySelector('Rate[currency="EUR"]');
-                const dateNode = xml.querySelector("PublishingDate");
+                        // validare minimă (să conțină EUR)
+                        if (t.includes('currency="EUR"')) {
+                            text = t;
+                            break;
+                        }
+                    } catch (_) { }
+                }
 
-                if (!eurNode) throw new Error("EUR rate not found");
+                if (!text) throw new Error("BNR fetch failed");
 
-                const eurStr = (eurNode.textContent || "").trim().replace(",", ".");
+                // Extrage curs EUR direct din text (nu DOMParser)
+                const rateMatch = text.match(/<Rate[^>]*currency="EUR"[^>]*>([\d.,]+)<\/Rate>/i);
+                if (!rateMatch) throw new Error("EUR rate not found");
+
+                const eurStr = rateMatch[1].trim().replace(",", ".");
                 const rate = parseFloat(eurStr);
-
                 if (!Number.isFinite(rate) || rate <= 0) throw new Error("Invalid EUR rate");
+
+                // Extrage data (opțional)
+                const dateMatch = text.match(/<PublishingDate>([^<]+)<\/PublishingDate>/i);
+                const date = dateMatch ? dateMatch[1].trim() : "";
 
                 eurRate = rate;
 
-                const date = (dateNode?.textContent || "").trim();
-
-                // RO/EN text în funcție de limbă
                 const lang = (localStorage.getItem("lang") || "ro").toLowerCase();
                 if (lang === "en") {
-                    el.textContent = `EUR estimate, BNR rate: ${eurRate.toFixed(4)} RON (${date}). Invoicing in RON.`;
+                    el.innerHTML = `<strong>1 EUR = ${eurRate.toFixed(4)} RON</strong> • BNR ${date ? "(" + date + ")" : ""} • invoicing in RON`;
                 } else {
-                    el.textContent = `EUR estimativ, curs BNR: ${eurRate.toFixed(4)} RON (${date}). Facturare în RON.`;
+                    el.innerHTML = `<strong>1 EUR = ${eurRate.toFixed(4)} RON</strong> • BNR ${date ? "(" + date + ")" : ""} • facturare în RON`;
                 }
 
-                // dacă ești pe EUR, re-randează tabelul cu cursul real
                 if (showEur) renderRows();
+
             } catch (e) {
                 const lang = (localStorage.getItem("lang") || "ro").toLowerCase();
                 el.textContent = (lang === "en")
-                    ? "EUR estimate, BNR rate. Invoicing in RON."
-                    : "EUR estimativ, curs BNR. Facturare în RON.";
+                    ? "EUR estimate unavailable (BNR). Invoicing in RON."
+                    : "EUR indisponibil (BNR). Facturare în RON.";
             }
         }
 
-        document.addEventListener("DOMContentLoaded", loadBNRRate);
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", loadBNRRate);
+        } else {
+            loadBNRRate();
+        }
     </script>
 
 
