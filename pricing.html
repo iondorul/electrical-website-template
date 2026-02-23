@@ -353,7 +353,7 @@
                         <h2 class="mb-0" id="pricing_table_h">Tarife uzuale (manoperă)</h2>
 
                         <div>
-                            <button id="btnToggleCurrency" class="btn btn-outline-primary" type="button">
+                            <button id="btnToggleCurrency" class="btn btn-outline-primary" type="button" disabled>
                                 <i class="bi bi-currency-exchange me-2"></i><span id="pricing_currency_btn">Afișează
                                     EUR</span>
                             </button>
@@ -531,7 +531,7 @@
                 currencyBtnEur: "Afișează EUR",
                 currencyBtnRon: "Afișează RON",
                 rows: [
-                    { key: "quote", service: "Constatare (se poate deduce ulterior din lucrare)", um: "lucrare", ron: "50 lei" },
+                    { key: "quote", service: "Constatare (se deduce din lucrare peste 500 lei)", um: "lucrare", ron: "150 lei" },
                     { key: "outlet_add", service: "Suplimentare instalație (priză)", um: "buc", ron: "50 lei" },
                     { key: "panel_install", service: "Montat tablou electric (2–36 siguranțe)", um: "buc", ron: "150 – 700 lei" },
                     { key: "fixtures", service: "Montat corp iluminat (aplică / plafonieră / lustra)", um: "buc", ron: "35 – 100 lei" },
@@ -551,7 +551,7 @@
                 currencyBtnEur: "Show EUR",
                 currencyBtnRon: "Show RON",
                 rows: [
-                    { key: "quote", service: "Inspection / diagnosis (may be deducted from the final job)", um: "job", ron: "50 RON" },
+                    { key: "quote", service: "Inspection / diagnosis (deducted for jobs over 500 RON)", um: "job", ron: "150 RON" },
                     { key: "outlet_add", service: "Add one outlet (labor)", um: "pcs", ron: "50 RON" },
                     { key: "panel_install", service: "Electrical panel installation (2–36 breakers)", um: "pcs", ron: "150 – 700 RON" },
                     { key: "fixtures", service: "Light fixture installation (ceiling / chandelier)", um: "pcs", ron: "35 – 100 RON" },
@@ -645,59 +645,38 @@
     <script>
         async function loadBNRRate() {
             const el = document.getElementById("bnrRate");
-
-            const urls = [
-                "https://api.allorigins.win/raw?url=https://www.bnr.ro/nbrfxrates.xml",
-                "https://cors.isomorphic-git.org/https://www.bnr.ro/nbrfxrates.xml"
-            ];
+            const endpoint = "https://api.electricalvpf.com/bnr"; // Worker-ul tău
 
             try {
-                let text = "";
+                const res = await fetch(endpoint, { cache: "no-store" });
+                if (!res.ok) throw new Error("BNR worker not ok");
 
-                for (const u of urls) {
-                    try {
-                        const res = await fetch(u, { cache: "no-store" });
-                        if (!res.ok) continue;
-                        const t = await res.text();
+                const data = await res.json(); // { rate: 5.0968, date: "2026-02-23" }
+                const rate = Number(data.rate);
+                const date = (data.date || "").toString();
 
-                        // validare minimă (să conțină EUR)
-                        if (t.includes('currency="EUR"')) {
-                            text = t;
-                            break;
-                        }
-                    } catch (_) { }
-                }
-
-                if (!text) throw new Error("BNR fetch failed");
-
-                // Extrage curs EUR direct din text (nu DOMParser)
-                const rateMatch = text.match(/<Rate[^>]*currency="EUR"[^>]*>([\d.,]+)<\/Rate>/i);
-                if (!rateMatch) throw new Error("EUR rate not found");
-
-                const eurStr = rateMatch[1].trim().replace(",", ".");
-                const rate = parseFloat(eurStr);
-                if (!Number.isFinite(rate) || rate <= 0) throw new Error("Invalid EUR rate");
-
-                // Extrage data (opțional)
-                const dateMatch = text.match(/<PublishingDate>([^<]+)<\/PublishingDate>/i);
-                const date = dateMatch ? dateMatch[1].trim() : "";
+                if (!Number.isFinite(rate) || rate <= 0) throw new Error("Invalid rate");
 
                 eurRate = rate;
 
+                document.getElementById("btnToggleCurrency").disabled = false;
+
                 const lang = (localStorage.getItem("lang") || "ro").toLowerCase();
+
                 if (lang === "en") {
-                    el.innerHTML = `<strong>1 EUR = ${eurRate.toFixed(4)} RON</strong> • BNR ${date ? "(" + date + ")" : ""} • invoicing in RON`;
+                    el.innerHTML = `<strong>1 EUR = ${eurRate.toFixed(4)} RON</strong> • BNR ${date ? "(" + date + ")" : ""} • EUR is an estimate • invoicing in RON`;
                 } else {
-                    el.innerHTML = `<strong>1 EUR = ${eurRate.toFixed(4)} RON</strong> • BNR ${date ? "(" + date + ")" : ""} • facturare în RON`;
+                    el.innerHTML = `<strong>1 EUR = ${eurRate.toFixed(4)} RON</strong> • BNR ${date ? "(" + date + ")" : ""} • EUR este estimativ • facturare în RON`;
                 }
 
                 if (showEur) renderRows();
-
             } catch (e) {
                 const lang = (localStorage.getItem("lang") || "ro").toLowerCase();
                 el.textContent = (lang === "en")
                     ? "EUR estimate unavailable (BNR). Invoicing in RON."
                     : "EUR indisponibil (BNR). Facturare în RON.";
+
+                document.getElementById("btnToggleCurrency").disabled = true;
             }
         }
 
@@ -707,8 +686,6 @@
             loadBNRRate();
         }
     </script>
-
-
 
 </body>
 
