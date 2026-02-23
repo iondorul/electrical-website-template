@@ -1,5 +1,9 @@
 const t = {
   ro: {
+    pricing_row_cta: "WhatsApp",
+
+    nav_pricing: "Prețuri",
+
     hero_services_custom_h1: "Calitate și profesionalism pentru dumneavoastră",
 
     hero_services_custom_p:
@@ -121,7 +125,6 @@ const t = {
 
     contact_details: "Pentru detalii, vă rugăm să ne contactați",
 
-    langLabel: "Română",
     btn_quote: "Solicită ofertă gratuită",
 
     nav_home: "Acasă",
@@ -189,6 +192,10 @@ const t = {
   },
 
   en: {
+    pricing_row_cta: "WhatsApp",
+
+    nav_pricing: "Pricing",
+
     hero_services_custom_h1: "Commitment to Excellence",
 
     hero_services_custom_p:
@@ -308,8 +315,6 @@ const t = {
 
     contact_details: "For details, please contact us",
 
-    langLabel: "English",
-
     btn_quote: "Get a free quote",
 
     nav_home: "Home",
@@ -384,7 +389,10 @@ function setText(id, val) {
 function setLang(lang) {
   localStorage.setItem("lang", lang);
   const d = t[lang] || t.ro;
+
   setText("langLabel", d.langLabel);
+  setText("langLabelMobile", d.langLabel);
+
   Object.keys(d).forEach((k) => {
     if (k !== "langLabel") setText(k, d[k]);
   });

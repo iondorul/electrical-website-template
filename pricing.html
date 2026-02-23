@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>ElectricalVPF - Prețuri</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="description"
+        content="Prețuri orientative manoperă instalații electrice în Sibiu. Deviz rapid pe WhatsApp." />
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <!-- Libraries Stylesheet -->
+    <link rel="stylesheet" href="lib/animate/animate.min.css" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet" />
+
+    <style>
+        /* tiny modern touch - no heavy changes */
+        .pricing-hero {
+            background: linear-gradient(135deg, rgba(13, 110, 253, .12), rgba(25, 135, 84, .10));
+            border-radius: 20px;
+        }
+
+        .price-card {
+            border-radius: 18px;
+            border: 1px solid rgba(0, 0, 0, .08);
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+
+        .price-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, .08);
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            padding: 8px 14px;
+            border: 1px solid rgba(0, 0, 0, .10);
+            background: rgba(255, 255, 255, .7);
+        }
+
+        .table thead th {
+            white-space: nowrap;
+        }
+
+        .sticky-cta {
+            position: fixed;
+            left: 16px;
+            right: 16px;
+            bottom: 16px;
+            z-index: 999;
+        }
+
+        @media (min-width: 992px) {
+            .sticky-cta {
+                left: auto;
+                right: 24px;
+                bottom: 24px;
+                width: 360px;
+            }
+        }
+
+        .pricing-note {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        #pricing_table_whatsapp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- Navbar & Hero Start -->
+    <div class="container-fluid header-top">
+        <div class="container d-flex align-items-left justify-content-between" style="height: 125px;">
+
+            <!-- BRAND MARE (DOAR DESKTOP) -->
+            <div class="d-none d-lg-flex align-items-center h-100">
+                <a href="index.html" class="navbar-brand" style="height: 125px;">
+                    <h1 class="text-primary mb-0"><i class="fas fa-bolt"></i> ElectricalVPF</h1>
+                </a>
+            </div>
+
+            <div class="w-100 h-100">
+                <!-- TOPBAR (DOAR DESKTOP) -->
+                <div class="topbar px-0 py-2 d-none d-lg-block" style="height: 45px;">
+                    <div class="row gx-0 align-items-center">
+                        <div class="col-lg-8 text-center text-lg-center mb-lg-0">
+                            <div class="d-flex flex-wrap">
+                                <div class="border-end border-primary pe-3">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Strada+Doamna+Stanca+1+Bloc+55+Sibiu"
+                                        target="_blank" class="text-muted small">
+                                        <i class="fas fa-map-marker-alt text-primary me-2"></i>Sibiu, Romania
+                                    </a>
+                                </div>
+                                <div class="ps-3">
+                                    <a href="https://compose.mail.yahoo.com/?to=office@electricalvpf.com"
+                                        class="text-muted small">
+                                        <i class="fas fa-envelope text-primary me-2"></i>office@electricalvpf.com
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 text-center text-lg-end">
+                            <div class="d-flex justify-content-end">
+                                <div class="dropdown ms-3">
+                                    <a href="#" class="dropdown-toggle text-white" data-bs-toggle="dropdown">
+                                        <small class="text-body">
+                                            <i class="fas fa-globe-europe text-primary me-2"></i>
+                                            <span id="langLabel">Română</span>
+                                        </small>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a href="#" class="dropdown-item"
+                                            onclick="setLang('ro');return false;">Română</a>
+                                        <a href="#" class="dropdown-item"
+                                            onclick="setLang('en');return false;">English</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- NAVBAR -->
+                <nav class="navbar navbar-expand-lg navbar-light w-100 px-0">
+                    <a href="index.html" class="navbar-brand-2 d-lg-none">
+                        <h1 class="text-primary mb-0"><i class="fas fa-bolt"></i> ElectricalVPF</h1>
+                    </a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="fa fa-bars"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <div class="navbar-nav mx-0 mx-lg-auto">
+                            <a href="index.html" class="nav-item nav-link" id="nav_home">Acasă</a>
+                            <a href="about.html" class="nav-item nav-link" id="nav_about">Despre noi</a>
+                            <a href="service.html" class="nav-item nav-link" id="nav_services">Servicii</a>
+                            <a href="pricing.html" class="nav-item nav-link active" id="nav_pricing">Prețuri</a>
+                            <a href="contact.html" class="nav-item nav-link" id="nav_contact">Contactează-ne</a>
+
+                            <!-- LANGUAGE (MOBIL - IN MENU) -->
+                            <div class="nav-item dropdown d-lg-none mobile-lang">
+                                <a href="#"
+                                    class="nav-link dropdown-toggle d-flex align-items-center justify-content-between w-100"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span>Limba: <span id="langLabelMobile">Română</span></span>
+                                </a>
+
+                                <div class="dropdown-menu w-100">
+                                    <a href="#" class="dropdown-item" onclick="setLang('ro');return false;">Română</a>
+                                    <a href="#" class="dropdown-item" onclick="setLang('en');return false;">English</a>
+                                </div>
+                            </div>
+
+                            <a class="btn btn-success d-lg-none mt-3"
+                                href="https://wa.me/40735946077?text=Buna%2C%20doresc%20o%20oferta%20pentru%20lucrari%20electrice."
+                                target="_blank" rel="noopener">
+                                <i class="fab fa-whatsapp me-2"></i> <span id="btn_quote_simplu">Cere ofertă</span>
+                            </a>
+
+                        </div>
+                    </div>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+    <!-- Navbar & Hero End -->
+
+    <!-- Pricing Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-4">
+
+            <!-- HERO -->
+            <div class="pricing-hero p-4 p-lg-5 mb-5 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="row g-4 align-items-center">
+                    <div class="col-lg-8">
+                        <div class="pill mb-3">
+                            <i class="bi bi-shield-check text-success"></i>
+                            <span id="pricing_pill">Prețuri orientative • manoperă • deviz rapid</span>
+                        </div>
+                        <h1 class="display-5 mb-3" id="pricing_h1">Prețuri (orientative) – manoperă instalații electrice
+                        </h1>
+                        <p class="mb-0" id="pricing_p">
+                            Vezi tarife orientative pentru cele mai frecvente lucrări. Pentru preț exact, trimite pe
+                            WhatsApp:
+                            locație + 2 poze + ce dorești (tablou / prize / iluminat / trasee).
+                        </p>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="d-grid gap-2">
+                            <a id="pricing_cta_whatsapp" class="btn btn-success btn-lg"
+                                href="https://wa.me/40735946077?text=Buna%2C%20doresc%20un%20deviz%20rapid.%20Locatia%3A%20____%20.%20Descriere%3A%20____%20.%20Trimit%20poze."
+                                target="_blank" rel="noopener">
+                                <i class="fab fa-whatsapp me-2"></i> <span id="pricing_cta_text">Cere deviz rapid pe
+                                    WhatsApp</span>
+                            </a>
+                            <a class="btn btn-outline-primary btn-lg" href="tel:+40735946077">
+                                <i class="fas fa-phone me-2"></i> 0735 946 077
+                            </a>
+                            <small class="text-muted" id="pricing_cta_note">
+                                Răspuns rapid. Devizul final depinde de complexitate, acces, materiale și starea
+                                instalației.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 CARDS: cum lucrăm -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-4 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="price-card p-4 h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-camera2 text-primary fs-3 me-3"></i>
+                            <h4 class="mb-0" id="pricing_step1_h">1) Trimiți poze + descriere</h4>
+                        </div>
+                        <p class="mb-0" id="pricing_step1_p">Primești estimare rapidă. Economisești timp și bani.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 wow fadeInUp" data-wow-delay="0.2s">
+                    <div class="price-card p-4 h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-clipboard-check text-primary fs-3 me-3"></i>
+                            <h4 class="mb-0" id="pricing_step2_h">2) Confirmăm la fața locului</h4>
+                        </div>
+                        <p class="mb-0" id="pricing_step2_p">Constatarea se poate deduce din lucrare (cazuri uzuale).
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="price-card p-4 h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-lightning-charge text-primary fs-3 me-3"></i>
+                            <h4 class="mb-0" id="pricing_step3_h">3) Execuție curată, sigură</h4>
+                        </div>
+                        <p class="mb-0" id="pricing_step3_p">Calitate + norme. Fără improvizații. Fără riscuri.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PACKAGES -->
+            <div class="row g-4 mb-5">
+                <div class="col-12">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <h2 class="mb-0" id="pricing_packages_h">Pachete orientative (locuințe)</h2>
+                        <a id="pricing_packages_whatsapp" class="btn btn-success"
+                            href="https://wa.me/40735946077?text=Buna%2C%20doresc%20o%20oferta%20pentru%20instalatie%20electrica%20completa.%20Suprafata%3A%20____%20mp%20.%20Locatie%3A%20____"
+                            target="_blank" rel="noopener">
+                            <i class="fab fa-whatsapp me-2"></i><span id="pricing_packages_cta">Cere ofertă pe
+                                pachet</span>
+                        </a>
+                    </div>
+                    <p class="text-muted mt-2 mb-0" id="pricing_packages_note">
+                        Pachetele sunt orientative și includ doar manopera (în funcție de trasee/doze existente).
+                        Materialele se
+                        ofertează separat.
+                    </p>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="price-card p-4 h-100">
+                        <h4 class="mb-2" id="pkg1_title">Studio (până la 40 mp)</h4>
+                        <div class="d-flex align-items-baseline gap-2">
+                            <div class="display-6 mb-0" id="pkg1_price">1.500 – 2.500 lei</div>
+                        </div>
+                        <div class="text-muted" id="pkg1_time">3–4 zile lucrătoare</div>
+                        <hr />
+                        <ul class="mb-0">
+                            <li id="pkg1_b1">Schimbare instalație existentă (orientativ)</li>
+                            <li id="pkg1_b2">Tablou + conexiuni + probă</li>
+                            <li id="pkg1_b3">Deviz final după constatare</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="price-card p-4 h-100">
+                        <h4 class="mb-2" id="pkg2_title">Apartament 2 camere (până la 65 mp)</h4>
+                        <div class="d-flex align-items-baseline gap-2">
+                            <div class="display-6 mb-0" id="pkg2_price">2.000 – 3.000 lei</div>
+                        </div>
+                        <div class="text-muted" id="pkg2_time">4–5 zile lucrătoare</div>
+                        <hr />
+                        <ul class="mb-0">
+                            <li id="pkg2_b1">Înlocuire circuite + tablou</li>
+                            <li id="pkg2_b2">Organizare trasee & doze</li>
+                            <li id="pkg2_b3">Testare & punere în funcțiune</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="price-card p-4 h-100">
+                        <h4 class="mb-2" id="pkg3_title">Apartament 3 camere (până la 80 mp)</h4>
+                        <div class="d-flex align-items-baseline gap-2">
+                            <div class="display-6 mb-0" id="pkg3_price">2.200 – 3.200 lei</div>
+                        </div>
+                        <div class="text-muted" id="pkg3_time">5–6 zile lucrătoare</div>
+                        <hr />
+                        <ul class="mb-0">
+                            <li id="pkg3_b1">Schimbare instalație + conexiuni</li>
+                            <li id="pkg3_b2">Tablou (în funcție de siguranțe)</li>
+                            <li id="pkg3_b3">Estimare exactă la fața locului</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLE -->
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+
+                        <h2 class="mb-0" id="pricing_table_h">Tarife uzuale (manoperă)</h2>
+
+                        <div>
+                            <button id="btnToggleCurrency" class="btn btn-outline-primary" type="button">
+                                <i class="bi bi-currency-exchange me-2"></i><span id="pricing_currency_btn">Afișează
+                                    EUR</span>
+                            </button>
+
+                            <div class="pricing-note" id="bnrRate">
+                                EUR estimativ, curs BNR. Facturare în RON.
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a id="pricing_table_whatsapp" class="btn btn-success"
+                                href="https://wa.me/40735946077?text=Buna%2C%20doresc%20o%20oferta%20pentru%20lucrarea%3A%20____%20.%20Locatie%3A%20____"
+                                target="_blank" rel="noopener">
+                                <i class="fab fa-whatsapp me-2"></i><span id="pricing_table_cta">Cere ofertă
+                                    rapidă</span>
+                            </a>
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th id="th_service">Serviciu</th>
+                                    <th class="text-center" id="th_um">UM</th>
+                                    <th class="text-center" id="th_price">
+                                        Preț orientativ (<span id="price_unit">RON</span>)
+                                    </th>
+                                    <th class="text-end" id="th_cta">Acțiune</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pricingRows"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="price-card p-4">
+                        <h4 class="mb-2" id="pricing_disclaimer_h">Note importante</h4>
+                        <ul class="mb-0">
+                            <li id="pricing_note1">Prețurile includ doar manopera, dacă nu se extinde instalația și se
+                                pot folosi trasee/doze existente.</li>
+                            <li id="pricing_note2">Prețul poate crește/scădea în funcție de cerințele beneficiarului și
+                                starea instalației.</li>
+                            <li id="pricing_note3">Devizul final se confirmă după constatare (siguranță +
+                                corectitudine).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Pricing End -->
+
+    <!-- Sticky WhatsApp CTA -->
+    <div class="sticky-cta">
+        <div class="price-card p-3 bg-white">
+            <div class="d-flex align-items-center justify-content-between gap-3">
+                <div>
+                    <div class="fw-bold" id="sticky_cta_title">Deviz rapid</div>
+                    <div class="text-muted small" id="sticky_cta_sub">Trimite 2 poze + locație</div>
+                </div>
+                <a id="sticky_cta_btn" class="btn btn-success"
+                    href="https://wa.me/40735946077?text=Buna%2C%20doresc%20un%20deviz%20rapid.%20Locatia%3A%20____%20.%20Trimit%20poze."
+                    target="_blank" rel="noopener">
+                    <i class="fab fa-whatsapp me-2"></i> WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Start (copie din site-ul tău) -->
+    <div class="container-fluid footer bg-dark py-5 wow fadeIn" data-wow-delay="0.2s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <div class="footer-item">
+                            <h3 class="text-white mb-4"><i class="fas fa-bolt text-primary me-3"></i>ElectricalVPF</h3>
+                            <p class="mb-3" id="footer_desc">
+                                Oferim servicii electrice profesionale în Sibiu și împrejurimi pentru locuințe, spații
+                                comerciale și
+                                industriale. Lucrăm conform normelor ANRE, rapid și sigur, cu soluții durabile și
+                                prețuri corecte.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 id="footer_quick_nav" class="text-white mb-4">Navigare rapidă</h4>
+                        <a href="index.html" id="nav_home"> Acasă</a>
+                        <a href="about.html" id="nav_about"> Despre noi</a>
+                        <a href="service.html" id="nav_services"> Servicii</a>
+                        <a href="pricing.html" id="nav_pricing"> Prețuri</a>
+                        <a href="contact.html" id="nav_contact"> Contactează-ne</a>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 id="footer_services_title" class="text-white mb-4">Expertiză Tehnică & Mentenanță</h4>
+
+                        <!-- poți păstra varianta ta WhatsApp din components.js, aici las # -->
+                        <a href="#" id="footer_service_residential">Sisteme Electrice Rezidențiale & Smart Home</a>
+                        <a href="#" id="footer_service_panels">Tablouri Electrice & Modernizări Infrastructură</a>
+                        <a href="#" id="footer_service_lighting">Soluții Iluminat Arhitectural, DALI & Urgență</a>
+                        <a href="#" id="footer_service_security">Sisteme Integrate de Securitate & Alarmare</a>
+                        <a href="#" id="footer_service_industrial">Echipamente Industriale & Automatizări (Y-Δ)</a>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="text-white mb-4" id="footer_contact_title">Informații contact</h4>
+
+                        <a href="https://www.google.com/maps/search/?api=1&query=Strada+Doamna+Stanca+1+Bloc+55+Sibiu"
+                            target="_blank" class="text-white d-flex align-items-center mb-2" rel="noopener">
+                            <i class="fas fa-map-marker-alt text-primary me-3"></i>
+                            <span>Sibiu, Romania</span>
+                        </a>
+
+                        <a href="https://compose.mail.yahoo.com/?to=office@electricalvpf.com"
+                            class="text-white d-flex align-items-center mb-2">
+                            <i class="fas fa-envelope text-primary me-3"></i>
+                            <span>office@electricalvpf.com</span>
+                        </a>
+
+                        <a href="tel:+40735946077" class="text-white d-flex align-items-center mb-2">
+                            <i class="fas fa-phone text-primary me-3"></i>
+                            <span>0735 946 077</span>
+                        </a>
+
+                        <a href="https://wa.me/40735946077" target="_blank" rel="noopener"
+                            class="text-white d-flex align-items-center">
+                            <i class="fab fa-whatsapp fa-lg text-success me-3"></i>
+                            <span>WhatsApp: 0735 946 077</span>
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary btn-lg-square back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+    <script src="js/lang.js"></script>
+    <script src="js/components.js"></script>
+
+    <script>
+        // ====== PRICING DATA: editezi aici, o singură dată ======
+        const pricing = {
+            ro: {
+                currencyBtnEur: "Afișează EUR",
+                currencyBtnRon: "Afișează RON",
+                rows: [
+                    { key: "quote", service: "Constatare (se poate deduce ulterior din lucrare)", um: "lucrare", ron: "50 lei" },
+                    { key: "outlet_add", service: "Suplimentare instalație (priză)", um: "buc", ron: "50 lei" },
+                    { key: "panel_install", service: "Montat tablou electric (2–36 siguranțe)", um: "buc", ron: "150 – 700 lei" },
+                    { key: "fixtures", service: "Montat corp iluminat (aplică / plafonieră / lustra)", um: "buc", ron: "35 – 100 lei" },
+                    { key: "spots", service: "Montat spoturi", um: "buc", ron: "10 – 20 lei" },
+                    { key: "switches", service: "Montat aparataj (întrerupătoare, prize)", um: "buc", ron: "40 – 80 lei" },
+                    { key: "tube_wall", service: "Pozat tub pe perete", um: "ml", ron: "5 lei" },
+                    { key: "wire_pull", service: "Introdus conductor 1–10mm prin tub", um: "ml", ron: "3 lei" },
+                    { key: "chase_brick", service: "Spart traseu cărămidă", um: "ml", ron: "15 lei" },
+                    { key: "chase_concrete", service: "Spart traseu beton", um: "ml", ron: "50 lei" },
+                    { key: "junction", service: "Legături doze derivație", um: "buc", ron: "150 – 350 lei" },
+                    { key: "light_sensor", service: "Montat lampă cu senzor", um: "buc", ron: "300 – 350 lei" },
+                    { key: "maintenance", service: "Mentenanță / întreținere instalații electrice", um: "lună", ron: "3.000 lei" },
+                ],
+                wa: (service) => `Buna, doresc o oferta pentru: ${service}. Locatia: ____.`,
+            },
+            en: {
+                currencyBtnEur: "Show EUR",
+                currencyBtnRon: "Show RON",
+                rows: [
+                    { key: "quote", service: "Inspection / diagnosis (may be deducted from the final job)", um: "job", ron: "50 RON" },
+                    { key: "outlet_add", service: "Add one outlet (labor)", um: "pcs", ron: "50 RON" },
+                    { key: "panel_install", service: "Electrical panel installation (2–36 breakers)", um: "pcs", ron: "150 – 700 RON" },
+                    { key: "fixtures", service: "Light fixture installation (ceiling / chandelier)", um: "pcs", ron: "35 – 100 RON" },
+                    { key: "spots", service: "Spotlight installation", um: "pcs", ron: "10 – 20 RON" },
+                    { key: "switches", service: "Switches / outlets installation", um: "pcs", ron: "40 – 80 RON" },
+                    { key: "tube_wall", service: "Conduit on wall (labor)", um: "m", ron: "5 RON" },
+                    { key: "wire_pull", service: "Wire pulling through conduit (1–10mm)", um: "m", ron: "3 RON" },
+                    { key: "chase_brick", service: "Wall chasing (brick)", um: "m", ron: "15 RON" },
+                    { key: "chase_concrete", service: "Wall chasing (concrete)", um: "m", ron: "50 RON" },
+                    { key: "junction", service: "Junction box connections", um: "pcs", ron: "150 – 350 RON" },
+                    { key: "light_sensor", service: "Motion sensor lamp installation", um: "pcs", ron: "300 – 350 RON" },
+                    { key: "maintenance", service: "Electrical maintenance (contract)", um: "month", ron: "3000 RON" },
+                ],
+                wa: (service) => `Hello, I would like a quote for: ${service}. Location: ____.`,
+            }
+        };
+
+        // ====== RENDER ======
+        const phone = "40735946077";
+        let showEur = false;
+        let eurRate = 5.0; // orientativ; dacă vrei fix, îl faci manual sau îl scoți
+
+        function getLang() {
+            return (localStorage.getItem("lang") || "ro").toLowerCase();
+        }
+
+        function toEur(ronText) {
+            const nums = ronText.match(/[\d.]+/g);
+            if (!nums) return "≈ EUR";
+
+            if (nums.length >= 2) {
+                const a = (parseFloat(nums[0]) / eurRate).toFixed(2);
+                const b = (parseFloat(nums[1]) / eurRate).toFixed(2);
+                return `≈ ${a} – ${b} EUR`;
+            }
+
+            const v = (parseFloat(nums[0]) / eurRate).toFixed(2);
+            return `≈ ${v} EUR`;
+        }
+
+        function renderRows() {
+            const lang = getLang();
+            const d = pricing[lang] || pricing.ro;
+            const tbody = document.getElementById("pricingRows");
+            tbody.innerHTML = "";
+
+            d.rows.forEach(r => {
+                const price = showEur ? toEur(r.ron) : r.ron;
+                const text = d.wa(r.service);
+                const wa = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+          <td class="fw-semibold">${r.service}</td>
+          <td class="text-center">${r.um}</td>
+          <td class="text-center"><span class="badge bg-light text-dark border">${price}</span></td>
+        
+          <td class="text-end">
+            <a class="btn btn-sm btn-success" href="${wa}" target="_blank" rel="noopener">
+                    <i class="fab fa-whatsapp me-1"></i>
+                    ${(t[getLang()] || t.ro).pricing_row_cta}
+            </a>
+          </td>
+        `;
+                tbody.appendChild(tr);
+            });
+
+            const btn = document.getElementById("btnToggleCurrency");
+            const label = document.getElementById("pricing_currency_btn");
+            if (label) label.textContent = showEur ? d.currencyBtnRon : d.currencyBtnEur;
+
+            const unit = document.getElementById("price_unit");
+            if (unit) unit.textContent = showEur ? "EUR" : "RON";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            renderRows();
+            document.getElementById("btnToggleCurrency").addEventListener("click", () => {
+                showEur = !showEur;
+                renderRows();
+            });
+        });
+    </script>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/40735946077?text=Buna%2C%20am%20nevoie%20de%20un%20electrician." class="whatsapp-float"
+        target="_blank" aria-label="WhatsApp Chat" rel="noopener">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        async function loadBNRRate() {
+            const el = document.getElementById("bnrRate");
+            try {
+                const res = await fetch("https://corsproxy.io/?https://www.bnr.ro/nbrfxrates.xml", { cache: "no-store" });
+                const text = await res.text();
+
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(text, "text/xml");
+
+                const eurNode = xml.querySelector('Rate[currency="EUR"]');
+                const dateNode = xml.querySelector("PublishingDate");
+
+                if (!eurNode) throw new Error("EUR rate not found");
+
+                const eurStr = (eurNode.textContent || "").trim().replace(",", ".");
+                const rate = parseFloat(eurStr);
+
+                if (!Number.isFinite(rate) || rate <= 0) throw new Error("Invalid EUR rate");
+
+                eurRate = rate;
+
+                const date = (dateNode?.textContent || "").trim();
+
+                // RO/EN text în funcție de limbă
+                const lang = (localStorage.getItem("lang") || "ro").toLowerCase();
+                if (lang === "en") {
+                    el.textContent = `EUR estimate, BNR rate: ${eurRate.toFixed(4)} RON (${date}). Invoicing in RON.`;
+                } else {
+                    el.textContent = `EUR estimativ, curs BNR: ${eurRate.toFixed(4)} RON (${date}). Facturare în RON.`;
+                }
+
+                // dacă ești pe EUR, re-randează tabelul cu cursul real
+                if (showEur) renderRows();
+            } catch (e) {
+                const lang = (localStorage.getItem("lang") || "ro").toLowerCase();
+                el.textContent = (lang === "en")
+                    ? "EUR estimate, BNR rate. Invoicing in RON."
+                    : "EUR estimativ, curs BNR. Facturare în RON.";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadBNRRate);
+    </script>
+
+
+
+</body>
+
+</html>
