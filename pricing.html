@@ -579,7 +579,12 @@
         }
 
         function toEur(ronText) {
-            const nums = ronText.match(/[\d.]+/g);
+            // 3.000 -> 3000, 1.500 -> 1500, 5,25 -> 5.25
+            const normalized = ronText
+                .replace(/\./g, "")   // mii
+                .replace(/,/g, ".");  // zecimale
+
+            const nums = normalized.match(/[\d.]+/g);
             if (!nums) return "≈ EUR";
 
             if (nums.length >= 2) {
@@ -612,7 +617,7 @@
           <td class="text-end">
             <a class="btn btn-sm btn-success" href="${wa}" target="_blank" rel="noopener">
                     <i class="fab fa-whatsapp me-1"></i>
-                    ${(t[getLang()] || t.ro).pricing_row_cta}
+                    ${(window.t && (t[getLang()] || t.ro) && (t[getLang()] || t.ro).pricing_row_cta) || "WhatsApp"}
             </a>
           </td>
         `;
