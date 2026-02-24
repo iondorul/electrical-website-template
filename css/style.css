@@ -1312,3 +1312,8 @@
 .projects .nav-item a.active .projects-icon span{
   color:var(--bs-primary);
 }
+
+/* === MENIU TOP – CENTRU JOS, IDENTIC CU WHATSAPP === */
+.menu-float-center{
+ left: calc(50% - 30px);
+}

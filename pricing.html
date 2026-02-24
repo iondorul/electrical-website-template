@@ -93,6 +93,7 @@
 </head>
 
 <body>
+    <div id="top"></div>
     <!-- Spinner Start -->
     <div id="spinner"
         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -205,41 +206,74 @@
     </div>
     <!-- Navbar & Hero End -->
 
+    <!-- Header Start -->
+    <div class="container-fluid bg-breadcrumb">
+        <div class="container text-center py-3" style="max-width: 900px;">
+
+            <h4 class="text-white display-4 mb-2 wow fadeInDown" data-wow-delay="0.1s" id="pricing_title">
+                Prețuri
+            </h4>
+
+            <a href="#pricing" class="btn btn-warning btn-sm mt-2 wow fadeInDown" data-wow-delay="0.15s"
+                id="pricing_cta">
+                Vezi prețurile ↓
+            </a>
+
+            <ol class="breadcrumb d-flex justify-content-center mt-2 mb-0 wow fadeInDown" data-wow-delay="0.3s">
+                <li class="breadcrumb-item"><a href="index.html" id="nav_home">Acasă</a></li>
+                <li class="breadcrumb-item"><a href="about.html" id="nav_about">Despre noi</a></li>
+                <li class="breadcrumb-item"><a href="service.html" id="nav_services">Servicii</a></li>
+                <li class="breadcrumb-item active text-primary" id="nav_pricing">Prețuri</li>
+                <li class="breadcrumb-item"><a href="contact.html" id="nav_contact">Contactează-ne</a></li>
+            </ol>
+        </div>
+    </div>
+    <!-- Header End -->
+
     <!-- Pricing Start -->
-    <div class="container-fluid py-5">
+    <section class="container-fluid py-5">
         <div class="container py-4">
 
             <!-- HERO -->
             <div class="pricing-hero p-4 p-lg-5 mb-5 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="row g-4 align-items-center">
                     <div class="col-lg-8">
+
                         <div class="pill mb-3">
                             <i class="bi bi-shield-check text-success"></i>
                             <span id="pricing_pill">Prețuri orientative • manoperă • deviz rapid</span>
                         </div>
-                        <h1 class="display-5 mb-3" id="pricing_h1">Prețuri (orientative) – manoperă instalații electrice
+
+                        <h1 class="display-5 mb-3" id="pricing_h1">
+                            Prețuri (orientative) – manoperă instalații electrice
                         </h1>
+
                         <p class="mb-0" id="pricing_p">
                             Vezi tarife orientative pentru cele mai frecvente lucrări. Pentru preț exact, trimite pe
-                            WhatsApp:
-                            locație + 2 poze + ce dorești (tablou / prize / iluminat / trasee).
+                            WhatsApp: locație + 2 poze + ce dorești (tablou / prize / iluminat / trasee).
                         </p>
+
                     </div>
                     <div class="col-lg-4">
                         <div class="d-grid gap-2">
                             <a id="pricing_cta_whatsapp" class="btn btn-success btn-lg"
                                 href="https://wa.me/40735946077?text=Buna%2C%20doresc%20un%20deviz%20rapid.%20Locatia%3A%20____%20.%20Descriere%3A%20____%20.%20Trimit%20poze."
                                 target="_blank" rel="noopener">
-                                <i class="fab fa-whatsapp me-2"></i> <span id="pricing_cta_text">Cere deviz rapid pe
-                                    WhatsApp</span>
+
+                                <i class="fab fa-whatsapp me-2"></i>
+
+                                <span id="pricing_cta_text">Cere deviz rapid pe WhatsApp</span>
+
                             </a>
                             <a class="btn btn-outline-primary btn-lg" href="tel:+40735946077">
                                 <i class="fas fa-phone me-2"></i> 0735 946 077
                             </a>
+
                             <small class="text-muted" id="pricing_cta_note">
                                 Răspuns rapid. Devizul final depinde de complexitate, acces, materiale și starea
                                 instalației.
                             </small>
+
                         </div>
                     </div>
                 </div>
@@ -289,11 +323,13 @@
                                 pachet</span>
                         </a>
                     </div>
+
                     <p class="text-muted mt-2 mb-0" id="pricing_packages_note">
                         Pachetele sunt orientative și includ doar manopera (în funcție de trasee/doze existente).
                         Materialele se
                         ofertează separat.
                     </p>
+
                 </div>
 
                 <div class="col-lg-4">
@@ -343,10 +379,11 @@
                         </ul>
                     </div>
                 </div>
+
             </div>
 
             <!-- TABLE -->
-            <div class="row g-4">
+            <div id="pricing" class="row g-4">
                 <div class="col-12">
                     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
 
@@ -371,8 +408,6 @@
                                 <i class="fab fa-whatsapp me-2"></i><span id="pricing_table_cta">Cere ofertă
                                     rapidă</span>
                             </a>
-
-
 
                         </div>
 
@@ -414,7 +449,7 @@
             </div>
 
         </div>
-    </div>
+    </section>
     <!-- Pricing End -->
 
     <!-- Sticky WhatsApp CTA -->
@@ -441,9 +476,11 @@
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="footer-item d-flex flex-column">
                         <div class="footer-item">
-                            <h3 class="text-white mb-4"><i class="fas fa-bolt text-primary me-3"></i>ElectricalVPF</h3>
+                            <h3 class="text-white mb-4"><i class="fas fa-bolt text-primary me-3"></i>ElectricalVPF
+                            </h3>
                             <p class="mb-3" id="footer_desc">
-                                Oferim servicii electrice profesionale în Sibiu și împrejurimi pentru locuințe, spații
+                                Oferim servicii electrice profesionale în Sibiu și împrejurimi pentru locuințe,
+                                spații
                                 comerciale și
                                 industriale. Lucrăm conform normelor ANRE, rapid și sigur, cu soluții durabile și
                                 prețuri corecte.
@@ -647,6 +684,10 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
+    <a href="#top" class="whatsapp-float menu-float-center" aria-label="Meniu sus">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
     <script>
         async function loadBNRRate() {
             const el = document.getElementById("bnrRate");
@@ -691,6 +732,7 @@
             loadBNRRate();
         }
     </script>
+
 
 </body>
 

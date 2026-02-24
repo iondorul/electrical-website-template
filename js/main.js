@@ -105,8 +105,9 @@
       $(".back-to-top").fadeOut("slow");
     }
   });
-  $(".back-to-top").click(function () {
-    $("html, body").animate({ scrollTop: 0 }, 1500, "easeInOutExpo");
-    return false;
+
+  $(".back-to-top").on("click", function (e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" }); // smooth browser (de obicei 200-400ms)
   });
 })(jQuery);

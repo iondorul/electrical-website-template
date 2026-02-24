@@ -1,5 +1,84 @@
 const t = {
   ro: {
+    sticky_cta_title: "Deviz rapid",
+    sticky_cta_sub: "Trimite 2 poze + locație",
+
+    pricing_table_h: "Tarife uzuale (manoperă)",
+
+    pricing_currency_btn: "Afișează EUR",
+    bnrRate: "EUR estimativ, curs BNR. Facturare în RON.",
+
+    pricing_table_cta: "Cere ofertă rapidă",
+
+    th_service: "Serviciu",
+    th_um: "UM",
+    th_price: "Preț orientativ",
+    th_cta: "Acțiune",
+
+    pricing_disclaimer_h: "Note importante",
+    pricing_note1:
+      "Prețurile includ doar manopera, dacă nu se extinde instalația și se pot folosi trasee/doze existente.",
+    pricing_note2:
+      "Prețul poate crește/scădea în funcție de cerințele beneficiarului și starea instalației.",
+    pricing_note3:
+      "Devizul final se confirmă după constatare (siguranță + corectitudine).",
+
+    pkg3_title: "Apartament 3 camere (până la 80 mp)",
+    pkg3_price: "2.200 – 3.200 lei",
+    pkg3_time: "5–6 zile lucrătoare",
+    pkg3_b1: "Schimbare instalație + conexiuni",
+    pkg3_b2: "Tablou (în funcție de siguranțe)",
+    pkg3_b3: "Estimare exactă la fața locului",
+
+    pkg2_title: "Apartament 2 camere (până la 65 mp)",
+    pkg2_price: "2.000 – 3.000 lei",
+    pkg2_time: "4–5 zile lucrătoare",
+    pkg2_b1: "Înlocuire circuite + tablou",
+    pkg2_b2: "Organizare trasee & doze",
+    pkg2_b3: "Testare & punere în funcțiune",
+
+    pkg1_title: "Studio (până la 40 mp)",
+    pkg1_price: "1.500 – 2.500 lei",
+    pkg1_time: "3–4 zile lucrătoare",
+    pkg1_b1: "Schimbare instalație existentă (orientativ)",
+    pkg1_b2: "Tablou + conexiuni + probă",
+    pkg1_b3: "Deviz final după constatare",
+
+    pricing_packages_note:
+      "Pachetele sunt orientative și includ doar manopera (în funcție de trasee/doze existente). Materialele se ofertează separat.",
+
+    pricing_packages_cta: "Cere ofertă pe pachet",
+
+    pricing_packages_h: "Pachete orientative (locuințe)",
+
+    pricing_step3_h: "3) Execuție curată, sigură",
+
+    pricing_step3_p: "Calitate + norme. Fără improvizații. Fără riscuri.",
+
+    pricing_step2_p: "Constatarea se poate deduce din lucrare (cazuri uzuale).",
+
+    pricing_step1_p: "Primești estimare rapidă. Economisești timp și bani.",
+
+    pricing_step2_h: "2) Confirmăm la fața locului",
+
+    pricing_step1_h: "1) Trimiți poze + descriere",
+
+    pricing_cta_note:
+      "Răspuns rapid. Devizul final depinde de complexitate, acces, materiale și starea instalației.",
+
+    pricing_cta_text: "Cere deviz rapid pe WhatsApp",
+
+    pricing_p:
+      "Vezi tarife orientative pentru cele mai frecvente lucrări. Pentru preț exact, trimite pe WhatsApp: locație + 2 poze + ce dorești (tablou / prize / iluminat / trasee).",
+
+    pricing_h1: "Prețuri (orientative) – manoperă instalații electrice",
+
+    pricing_pill: "Prețuri orientative • manoperă • deviz rapid",
+
+    pricing_cta: "Vezi prețurile ↓",
+
+    pricing_title: "Prețuri",
+
     pricing_row_cta: "WhatsApp",
 
     nav_pricing: "Prețuri",
@@ -192,6 +271,86 @@ const t = {
   },
 
   en: {
+    sticky_cta_title: "Fast quote",
+    sticky_cta_sub: "Send 2 photos + location",
+
+    pricing_table_h: "Standard rates (labor)",
+
+    pricing_currency_btn: "Show EUR",
+    bnrRate: "EUR indicative, BNR exchange rate. Invoicing in RON.",
+
+    pricing_table_cta: "Request a quick quote",
+
+    th_service: "Service",
+    th_um: "Unit",
+    th_price: "Indicative price",
+    th_cta: "Action",
+
+    pricing_disclaimer_h: "Important notes",
+    pricing_note1:
+      "Prices include labor only, provided the installation is not extended and existing routes/boxes can be used.",
+    pricing_note2:
+      "The price may increase or decrease depending on client requirements and the condition of the installation.",
+    pricing_note3:
+      "The final quote is confirmed after on-site inspection (safety + fairness).",
+
+    pkg3_title: "3-room apartment (up to 80 sqm)",
+    pkg3_price: "2,200 – 3,200 RON",
+    pkg3_time: "5–6 working days",
+    pkg3_b1: "Wiring replacement + connections",
+    pkg3_b2: "Electrical panel (depending on breakers)",
+    pkg3_b3: "Accurate estimate on site",
+
+    pkg2_title: "2-room apartment (up to 65 sqm)",
+    pkg2_price: "2,000 – 3,000 RON",
+    pkg2_time: "4–5 working days",
+    pkg2_b1: "Circuit replacement + electrical panel",
+    pkg2_b2: "Cable routes & junction boxes setup",
+    pkg2_b3: "Testing & commissioning",
+
+    pkg1_title: "Studio (up to 40 sqm)",
+    pkg1_price: "1,500 – 2,500 RON",
+    pkg1_time: "3–4 working days",
+    pkg1_b1: "Replacement of existing wiring (indicative)",
+    pkg1_b2: "Electrical panel + connections + testing",
+    pkg1_b3: "Final quote after on-site inspection",
+
+    pricing_packages_note:
+      "Packages are indicative and include labor only (based on existing wiring and boxes). Materials are quoted separately.",
+
+    pricing_packages_cta: "Request a package quote",
+
+    pricing_packages_h: "Indicative packages (residential)",
+
+    pricing_step3_h: "3) Clean, safe execution",
+
+    pricing_step3_p: "Quality + standards. No shortcuts. No risks.",
+
+    pricing_step2_p:
+      "On-site inspection can be deducted from the job (standard cases).",
+
+    pricing_step1_p: "You get a fast estimate. Save time and money.",
+
+    pricing_step2_h: "2) On-site confirmation",
+
+    pricing_step1_h: "1) Send photos + description",
+
+    pricing_cta_note:
+      "Fast reply. Final price depends on complexity, access, materials, and the condition of the installation.",
+
+    pricing_cta_text: "Get a quick quote on WhatsApp",
+
+    pricing_p:
+      "See indicative prices for the most common services. For an exact quote, send on WhatsApp: location + 2 photos + what you need (panel / sockets / lighting / wiring).",
+
+    pricing_h1: "Indicative prices – electrical installation labor",
+
+    pricing_pill: "Indicative prices • labor • fast estimate",
+
+    pricing_cta: "View prices ↓",
+
+    pricing_title: "Pricing",
+
     pricing_row_cta: "WhatsApp",
 
     nav_pricing: "Pricing",
@@ -377,12 +536,12 @@ const t = {
 };
 
 function setText(id, val) {
+  if (val === undefined || val === null || val === "") return; // ✅ nu suprascrie fallback-ul
+
   document.querySelectorAll(`[id="${id}"]`).forEach((e) => {
     const hasHtml = typeof val === "string" && /<\/?[a-z][\s\S]*>/i.test(val);
-
-    if (hasHtml)
-      e.innerHTML = val; // păstrează <strong>, <br>, etc.
-    else e.textContent = val; // text simplu
+    if (hasHtml) e.innerHTML = val;
+    else e.textContent = val;
   });
 }
 
@@ -396,6 +555,11 @@ function setLang(lang) {
   Object.keys(d).forEach((k) => {
     if (k !== "langLabel") setText(k, d[k]);
   });
+
+  // 🔴 IMPORTANT: re-render pricing table + currency labels
+  if (typeof renderRows === "function") {
+    renderRows();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
