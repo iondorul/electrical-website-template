@@ -1,0 +1,20 @@
+# Node.js
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build folders
+dist/
+build/
+
+# Operating System
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/settings.json
