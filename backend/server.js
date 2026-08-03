@@ -5,6 +5,8 @@ const pool = require("./config/db");
 
 const authRoutes = require("./routes/authRoutes");
 
+const clientRoutes = require("./routes/clientRoutes");
+
 console.log("SERVER LOADED");
 
 const app = express();
@@ -28,6 +30,7 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/clients", clientRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);
