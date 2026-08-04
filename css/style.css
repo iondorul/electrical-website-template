@@ -1,4 +1,13 @@
 
+
+
+.custom-erp-btn:hover {
+    background: linear-gradient(135deg, #e55f00, #cc5200);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 0, 0.5);
+    color: #fff !important;
+}
+
 /*** Spinner Start ***/
 #spinner {
     opacity: 0;
