@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  // 1. SIMPLE AUTH GUARD (Verificare existență token)
+  // 1. SIMPLE AUTH GUARD
   const token = localStorage.getItem("token");
   if (!token) {
     redirectToLogin();
@@ -30,11 +30,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     pageTitleEl.textContent = customTitle;
   }
 
-  // 5. SETUP LOGOUT & MOBILE TOGGLE EVENTS
+  // 5. SET USER INFO IN TOPBAR (Fallback temporar până la modulul de Auth)
+  const userNameEl = document.getElementById("shellUserName");
+  const userRoleEl = document.getElementById("shellUserRole");
+
+  // Încercăm din localStorage sau punem fallback
+  const savedUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+  if (userNameEl) {
+    userNameEl.textContent =
+      savedUser.name || savedUser.email || "Valentin Ion";
+  }
+  if (userRoleEl) {
+    userRoleEl.textContent = savedUser.role || "Administrator";
+  }
+
+  // 6. SETUP LOGOUT & MOBILE TOGGLE EVENTS
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       redirectToLogin();
     });
   }

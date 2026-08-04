@@ -34,20 +34,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- INITIAL FETCH ---
   fetchClients();
 
-  // --- SEARCH DEBOUNCE ---
-  let searchTimeout;
+  // --- SEARCH CU DEBOUNCE REUTILIZABIL DIN UTILS ---
   if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
+    searchInput.addEventListener(
+      "input",
+      Utils.debounce((e) => {
         currentSearch = e.target.value.trim();
         currentPage = 1;
         fetchClients();
-      }, 300);
-    });
+      }, 300),
+    );
   }
 
-  // --- FETCH CLIENTS ---
+  // --- FETCH CLIENTS (GET) ---
   async function fetchClients() {
     showLoading(true);
     try {
@@ -82,17 +81,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     clients.forEach((client) => {
       const tr = document.createElement("tr");
+      // MENTIUNE: client.company_name din schema PostgreSQL
+      const companyDisplayName = client.company_name || client.company || "-";
+
       tr.innerHTML = `
                 <td>
-                    <div class="fw-bold text-dark">${escapeHtml(client.name)}</div>
-                    <small class="text-muted">${escapeHtml(client.company || "-")}</small>
+                    <div class="fw-bold text-dark">${Utils.escapeHtml(Utils.capitalize(client.name))}</div>
+                    <small class="text-muted">${Utils.escapeHtml(companyDisplayName)}</small>
                 </td>
                 <td>
-                    <div><i class="fas fa-envelope me-1 text-muted small"></i> ${escapeHtml(client.email)}</div>
-                    <small class="text-muted"><i class="fas fa-phone me-1 small"></i> ${escapeHtml(client.phone || "-")}</small>
+                    <div><i class="fas fa-envelope me-1 text-muted small"></i> ${Utils.escapeHtml(client.email)}</div>
+                    <small class="text-muted"><i class="fas fa-phone me-1 small"></i> ${Utils.escapeHtml(Utils.formatPhone(client.phone))}</small>
                 </td>
                 <td>
-                    <span class="text-secondary">${escapeHtml(client.city || "-")}</span>
+                    <span class="text-secondary">${Utils.escapeHtml(client.city || "-")}</span>
                 </td>
                 <td>
                     <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
@@ -120,20 +122,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- SAVE CLIENT (POST / PUT) + VALIDARE FORMULAR ---
+  // --- SAVE CLIENT (POST / PUT) + VALIDARE ---
   if (clientForm) {
     clientForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const payload = {
         name: inputName.value.trim(),
-        company: inputCompany.value.trim(),
+        company_name: inputCompany.value.trim() || inputName.value.trim(), // Rezolvă NOT NULL constraint
         email: inputEmail.value.trim(),
         phone: inputPhone.value.trim(),
-        city: inputCity.value.trim(),
+        city: inputCity.value.trim() || "-",
       };
 
-      // VALIDARE CLIENT-SIDE
       if (!validateClientForm(payload)) return;
 
       const isEdit = Boolean(inputId.value);
@@ -158,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- DELETE CLIENT ---
+  // --- DELETE CLIENT (DELETE) ---
   if (btnConfirmDelete) {
     btnConfirmDelete.addEventListener("click", async () => {
       if (!selectedClientId) return;
@@ -174,22 +175,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- VALIDARE CLIENT-SIDE ---
+  // --- VALIDARE FORMULAR ---
   function validateClientForm(data) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9+\s\-()]{7,15}$/;
-
     if (!data.name || data.name.length < 3) {
       Toast.show("Numele trebuie să conțină cel puțin 3 caractere!", "danger");
       return false;
     }
 
-    if (!data.email || !emailRegex.test(data.email)) {
+    if (!data.email || !Utils.isEmail(data.email)) {
       Toast.show("Introduceți o adresă de email validă!", "danger");
       return false;
     }
 
-    if (!data.phone || !phoneRegex.test(data.phone)) {
+    if (!data.phone || data.phone.length < 7) {
       Toast.show("Introduceți un număr de telefon valid!", "danger");
       return false;
     }
@@ -210,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function openEditModal(client) {
     inputId.value = client._id || client.id;
     inputName.value = client.name || "";
-    inputCompany.value = client.company || "";
+    inputCompany.value = client.company_name || client.company || ""; // Fix pentru populare câmp companie
     inputEmail.value = client.email || "";
     inputPhone.value = client.phone || "";
     inputCity.value = client.city || "";
@@ -294,19 +292,5 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       tableSpinner.classList.add("d-none");
     }
-  }
-
-  function escapeHtml(str) {
-    return (str || "").replace(
-      /[&<>"']/g,
-      (m) =>
-        ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;",
-        })[m],
-    );
   }
 });
