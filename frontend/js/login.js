@@ -27,8 +27,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 2. Curățare erori la tastare
-  emailInput.addEventListener("input", () => clearInputError(emailInput));
-  passwordInput.addEventListener("input", () => clearInputError(passwordInput));
+  if (emailInput) {
+    emailInput.addEventListener("input", () => clearInputError(emailInput));
+  }
+  if (passwordInput) {
+    passwordInput.addEventListener("input", () =>
+      clearInputError(passwordInput),
+    );
+  }
 
   // 3. Form Submit cu Validări
   if (loginForm) {
@@ -85,7 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
           showAlert("Autentificare reușită! Redirecționare...", "success");
 
           setTimeout(() => {
-            window.location.href = "clients.html";
+            // REDIRECȚIONARE CĂTRE DASHBOARD (ERP SHELL)
+            window.location.href = "dashboard.html";
           }, 600);
         } else {
           throw new Error("Răspuns invalid de la server (Lipsește Token-ul).");
@@ -105,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Funcții Helper ---
 
   function showInputError(inputElement, message) {
+    if (!inputElement) return;
     inputElement.classList.add("is-invalid");
     const feedbackEl =
       inputElement.parentNode.querySelector(".invalid-feedback");
@@ -114,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function clearInputError(inputElement) {
+    if (!inputElement) return;
     inputElement.classList.remove("is-invalid");
   }
 
