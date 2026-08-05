@@ -3,8 +3,20 @@ const pool = require("../config/db");
 exports.createClient = async (req, res) => {
   try {
     const { company_name, contact_person, email, phone, address } = req.body;
-
     const user_id = req.user.id;
+
+    // Check prealabil pentru email duplicat
+    const existingClient = await pool.query(
+      `SELECT id FROM clients WHERE user_id = $1 AND email = $2`,
+      [user_id, email],
+    );
+
+    if (existingClient.rows.length > 0) {
+      return res.status(400).json({
+        message:
+          "Această adresă de email este deja utilizată de un alt client. Vă rugăm să introduceți o altă adresă de email.",
+      });
+    }
 
     const result = await pool.query(
       `INSERT INTO clients
@@ -17,9 +29,69 @@ exports.createClient = async (req, res) => {
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error(err);
-
+    // Prindem și eroarea de constrângere UNIQUE din PostgreSQL (cod 23505)
+    if (err.code === "23505") {
+      return res.status(400).json({
+        message:
+          "Această adresă de email este deja înregistrată. Vă rugăm să folosiți un email unic.",
+      });
+    }
     res.status(500).json({
-      error: err.message,
+      message: err.message || "A apărut o eroare la salvarea clientului.",
+    });
+  }
+};
+
+exports.updateClient = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { company_name, contact_person, email, phone, address } = req.body;
+    const user_id = req.user.id;
+
+    // Check dacă email-ul aparține ALTUI client
+    const existingClient = await pool.query(
+      `SELECT id FROM clients WHERE user_id = $1 AND email = $2 AND id != $3`,
+      [user_id, email, id],
+    );
+
+    if (existingClient.rows.length > 0) {
+      return res.status(400).json({
+        message:
+          "Această adresă de email este deja utilizată de un alt client. Vă rugăm să introduceți o altă adresă de email.",
+      });
+    }
+
+    const result = await pool.query(
+      `UPDATE clients
+       SET
+         company_name = $1,
+         contact_person = $2,
+         email = $3,
+         phone = $4,
+         address = $5
+       WHERE id = $6
+       AND user_id = $7
+       RETURNING *`,
+      [company_name, contact_person, email, phone, address, id, user_id],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Clientul nu a fost găsit.",
+      });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    if (err.code === "23505") {
+      return res.status(400).json({
+        message:
+          "Această adresă de email este deja înregistrată. Vă rugăm să folosiți un email unic.",
+      });
+    }
+    res.status(500).json({
+      message: err.message || "A apărut o eroare la actualizarea clientului.",
     });
   }
 };
