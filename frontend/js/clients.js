@@ -69,53 +69,77 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- RENDER TABLE ---
+  // --- RENDER TABLE (CU FILTRARE PE FRONTEND) ---
   function renderTable(clients) {
     tableBody.innerHTML = "";
 
-    if (!clients || clients.length === 0) {
+    // Filtrare locală după termenul din searchInput
+    const term = currentSearch.toLowerCase();
+    const filteredClients = clients.filter((client) => {
+      if (!term) return true;
+      const name = (client.contact_person || "").toLowerCase();
+      const company = (client.company_name || "").toLowerCase();
+      const email = (client.email || "").toLowerCase();
+      const phone = (client.phone || "").toLowerCase();
+      const city = (client.city || client.address || "").toLowerCase();
+
+      return (
+        name.includes(term) ||
+        company.includes(term) ||
+        email.includes(term) ||
+        phone.includes(term) ||
+        city.includes(term)
+      );
+    });
+
+    if (!filteredClients || filteredClients.length === 0) {
       tableEmptyState.classList.remove("d-none");
       return;
     }
 
     tableEmptyState.classList.add("d-none");
 
-    clients.forEach((client) => {
+    filteredClients.forEach((client) => {
       const tr = document.createElement("tr");
-      // MENTIUNE: client.company_name din schema PostgreSQL
-      const companyDisplayName = client.company_name || client.company || "-";
+
+      const displayName =
+        client.contact_person || client.company_name || "Fără Nume";
+      const displayCompany = client.company_name || "-";
+      const displayLocation = client.city || client.address || "-";
+      const clientId = client.id;
 
       tr.innerHTML = `
-                <td>
-                    <div class="fw-bold text-dark">${Utils.escapeHtml(Utils.capitalize(client.name))}</div>
-                    <small class="text-muted">${Utils.escapeHtml(companyDisplayName)}</small>
-                </td>
-                <td>
-                    <div><i class="fas fa-envelope me-1 text-muted small"></i> ${Utils.escapeHtml(client.email)}</div>
-                    <small class="text-muted"><i class="fas fa-phone me-1 small"></i> ${Utils.escapeHtml(Utils.formatPhone(client.phone))}</small>
-                </td>
-                <td>
-                    <span class="text-secondary">${Utils.escapeHtml(client.city || "-")}</span>
-                </td>
-                <td>
-                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
-                        Activ
-                    </span>
-                </td>
-                <td class="text-end pe-4">
-                    <button class="btn btn-sm btn-outline-primary me-1 btn-edit" data-id="${client._id || client.id}">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${client._id || client.id}">
-                        <i class="fas fa-trash-can"></i>
-                    </button>
-                </td>
-            `;
+            <td>
+                <div class="fw-bold text-dark">${Utils.escapeHtml(Utils.capitalize(displayName))}</div>
+                <small class="text-muted">${Utils.escapeHtml(displayCompany)}</small>
+            </td>
+            <td>
+                <div><i class="fas fa-envelope me-1 text-muted small"></i> ${Utils.escapeHtml(client.email)}</div>
+                <small class="text-muted"><i class="fas fa-phone me-1 small"></i> ${Utils.escapeHtml(Utils.formatPhone(client.phone))}</small>
+            </td>
+            <td>
+                <span class="text-secondary">${Utils.escapeHtml(displayLocation)}</span>
+            </td>
+            <td>
+                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
+                    Activ
+                </span>
+            </td>
+            <td class="text-end pe-4">
+                <button class="btn btn-sm btn-outline-primary me-1 btn-edit">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger btn-delete">
+                    <i class="fas fa-trash-can"></i>
+                </button>
+            </td>
+        `;
 
       tr.querySelector(".btn-edit").addEventListener("click", () =>
         openEditModal(client),
       );
       tr.querySelector(".btn-delete").addEventListener("click", () =>
-        openDeleteModal(client._id || client.id),
+        openDeleteModal(clientId),
       );
 
       tableBody.appendChild(tr);
@@ -128,11 +152,12 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
 
       const payload = {
-        name: inputName.value.trim(),
-        company_name: inputCompany.value.trim() || inputName.value.trim(), // Rezolvă NOT NULL constraint
+        contact_person: inputName.value.trim(),
+        company_name: inputCompany.value.trim() || inputName.value.trim(),
         email: inputEmail.value.trim(),
         phone: inputPhone.value.trim(),
-        city: inputCity.value.trim() || "-",
+        city: inputCity.value.trim() || null,
+        address: inputCity.value.trim() || null,
       };
 
       if (!validateClientForm(payload)) return;
@@ -177,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- VALIDARE FORMULAR ---
   function validateClientForm(data) {
-    if (!data.name || data.name.length < 3) {
+    if (!data.contact_person || data.contact_person.length < 3) {
       Toast.show("Numele trebuie să conțină cel puțin 3 caractere!", "danger");
       return false;
     }
@@ -206,12 +231,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function openEditModal(client) {
-    inputId.value = client._id || client.id;
-    inputName.value = client.name || "";
-    inputCompany.value = client.company_name || client.company || ""; // Fix pentru populare câmp companie
+    inputId.value = client.id;
+    inputName.value = client.contact_person || "";
+    inputCompany.value = client.company_name || "";
     inputEmail.value = client.email || "";
     inputPhone.value = client.phone || "";
-    inputCity.value = client.city || "";
+    inputCity.value = client.city || client.address || "";
 
     document.getElementById("clientModalLabel").textContent = "Editează Client";
     clientModal.show();

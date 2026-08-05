@@ -30,11 +30,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     pageTitleEl.textContent = customTitle;
   }
 
-  // 5. SET USER INFO IN TOPBAR (Fallback temporar până la modulul de Auth)
+  // 5. SET USER INFO IN TOPBAR
   const userNameEl = document.getElementById("shellUserName");
   const userRoleEl = document.getElementById("shellUserRole");
 
-  // Încercăm din localStorage sau punem fallback
   const savedUser = JSON.parse(localStorage.getItem("user") || "{}");
 
   if (userNameEl) {

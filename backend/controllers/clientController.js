@@ -27,19 +27,58 @@ exports.createClient = async (req, res) => {
 exports.getClients = async (req, res) => {
   try {
     const user_id = req.user.id;
+    const { search, page, limit } = req.query;
 
-    const result = await pool.query(
-      `SELECT *
-       FROM clients
-       WHERE user_id = $1
-       ORDER BY id`,
-      [user_id],
-    );
+    // Daca nu avem parametri de cautare/paginare, returnam tot ca pana acum
+    if (!search && !page && !limit) {
+      const result = await pool.query(
+        `SELECT * FROM clients WHERE user_id = $1 ORDER BY id DESC`,
+        [user_id],
+      );
+      return res.json(result.rows);
+    }
 
-    res.json(result.rows);
+    // Paginare & Cautare SQL
+    const pageNum = parseInt(page) || 1;
+    const limitNum = parseInt(limit) || 10;
+    const offset = (pageNum - 1) * limitNum;
+    const searchPattern = `%${search || ""}%`;
+
+    const dataQuery = `
+      SELECT * FROM clients 
+      WHERE user_id = $1 
+        AND (
+          company_name ILIKE $2 
+          OR contact_person ILIKE $2 
+          OR email ILIKE $2 
+          OR phone ILIKE $2 
+          OR address ILIKE $2
+        )
+      ORDER BY id DESC
+      LIMIT $3 OFFSET $4`;
+
+    const countQuery = `
+      SELECT COUNT(*) FROM clients 
+      WHERE user_id = $1 
+        AND (
+          company_name ILIKE $2 
+          OR contact_person ILIKE $2 
+          OR email ILIKE $2 
+          OR phone ILIKE $2 
+          OR address ILIKE $2
+        )`;
+
+    const [dataResult, countResult] = await Promise.all([
+      pool.query(dataQuery, [user_id, searchPattern, limitNum, offset]),
+      pool.query(countQuery, [user_id, searchPattern]),
+    ]);
+
+    res.json({
+      data: dataResult.rows,
+      total: parseInt(countResult.rows[0].count),
+    });
   } catch (err) {
     console.error(err);
-
     res.status(500).json({
       error: err.message,
     });
