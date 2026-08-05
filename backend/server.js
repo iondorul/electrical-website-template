@@ -30,6 +30,7 @@ app.get("/", async (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/clients", clientRoutes);
+app.use("/api/projects", require("./routes/projectRoutes"));
 
 app.listen(process.env.PORT, () => {
   console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);
