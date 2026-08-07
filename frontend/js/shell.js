@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     userRoleEl.textContent = savedUser.role || "Administrator";
   }
 
-  // 6. SETUP LOGOUT & MOBILE TOGGLE EVENTS
+  // 6. SETUP LOGOUT EVENT
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
@@ -54,12 +54,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  // 7. SETUP SIDEBAR TOGGLE & CLOSE EVENTS
   const sidebarToggle = document.getElementById("sidebarToggle");
+  const closeSidebarBtn = document.getElementById("closeSidebarBtn");
+  const erpWrapper = document.querySelector(".erp-wrapper");
   const erpSidebar = document.getElementById("erpSidebar");
-  if (sidebarToggle && erpSidebar) {
-    sidebarToggle.addEventListener("click", () => {
+
+  // A. Restabilește starea salvată la reîncărcare
+  if (localStorage.getItem("sidebarCollapsed") === "true" && erpWrapper) {
+    erpWrapper.classList.add("sidebar-collapsed");
+  }
+
+  // B. Funcție universală de toggle pentru sidebar
+  const toggleSidebar = () => {
+    if (erpSidebar) {
       erpSidebar.classList.toggle("show");
-    });
+    }
+    if (erpWrapper) {
+      erpWrapper.classList.toggle("sidebar-collapsed");
+      const isCollapsed = erpWrapper.classList.contains("sidebar-collapsed");
+      localStorage.setItem("sidebarCollapsed", isCollapsed.toString());
+    }
+  };
+
+  // C. Înregistrare evenimente pe butoanele disponibile
+  if (closeSidebarBtn) {
+    closeSidebarBtn.addEventListener("click", toggleSidebar);
+  }
+
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener("click", toggleSidebar);
   }
 });
 

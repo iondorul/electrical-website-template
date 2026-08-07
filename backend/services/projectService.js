@@ -134,9 +134,9 @@ exports.updateProject = async (userId, id, data) => {
     data.notes || null,
     data.status,
     data.priority,
-    data.estimated_value,
-    data.actual_value,
-    data.currency,
+    data.estimated_value || 0,
+    data.actual_value || 0,
+    data.currency || "EUR", // <--- Fallback adăugat aici
     data.start_date || null,
     data.end_date || null,
     data.completion_date || null,

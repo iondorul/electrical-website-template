@@ -202,15 +202,137 @@ body {
     .col-xl-2-4 { width: 50%; }
 }
 
+/* ===========================================================
+   RESPONSIVE MOBILE / SMALL WINDOW (Icon-Only + Expandable)
+=========================================================== */
 @media (max-width: 992px) {
+    /* 1. Stare implicită restrânsă (70px) */
     .erp-sidebar {
-        transform: translateX(-100%);
+        width: 70px !important;
+        min-width: 70px !important;
+        z-index: 1050;
+        transition: width 0.3s ease-in-out !important;
     }
-    .erp-sidebar.show {
-        transform: translateX(0);
-    }
+
     .erp-main {
-        margin-left: 0;
+        margin-left: 70px !important;
+        width: calc(100% - 70px) !important;
     }
-    .col-xl-2-4 { width: 100%; }
+
+    .brand-logo span,
+    .nav-link span,
+    .btn-logout span {
+        display: none !important;
+    }
+
+    .sidebar-header { justify-content: center !important; padding: 0 !important; }
+    .brand-logo i { margin-right: 0 !important; font-size: 1.4rem; }
+    .nav-link { justify-content: center !important; padding: 12px 0 !important; }
+    .nav-icon { margin-right: 0 !important; font-size: 1.2rem; }
+    .sidebar-footer { padding: 10px 5px !important; }
+    .btn-logout { justify-content: center !important; padding: 10px 0 !important; }
+    .btn-logout i { margin-right: 0 !important; }
+
+    /* 2. CÂND APEȘI PE MENIU (.show): Se extinde complet la 250px peste pagină */
+    .erp-sidebar.show {
+        width: 250px !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .erp-sidebar.show .brand-logo span,
+    .erp-sidebar.show .nav-link span,
+    .erp-sidebar.show .btn-logout span {
+        display: inline-block !important;
+    }
+
+    .erp-sidebar.show .sidebar-header {
+        justify-content: flex-start !important;
+        padding: 0 20px !important;
+    }
+
+    .erp-sidebar.show .nav-link {
+        justify-content: flex-start !important;
+        padding: 12px 20px !important;
+    }
+
+    .erp-sidebar.show .nav-icon {
+        margin-right: 12px !important;
+    }
+
+    .erp-sidebar.show .btn-logout {
+        justify-content: flex-start !important;
+        padding: 10px 15px !important;
+    }
+
+    .erp-sidebar.show .btn-logout i {
+        margin-right: 8px !important;
+    }
+}
+
+/* ===========================================================
+   Sidebar Collapsed State (Desktop Collapse)
+=========================================================== */
+
+/* Tranzitii line la restrangere */
+.erp-sidebar, 
+.erp-main {
+    transition: all 0.3s ease-in-out;
+}
+
+@media (min-width: 993px) {
+    /* 1. Latime restransa la 80px */
+    .erp-wrapper.sidebar-collapsed .erp-sidebar {
+        width: 80px !important;
+    }
+
+    /* 2. Repozitionare continut principal */
+    .erp-wrapper.sidebar-collapsed .erp-main {
+        margin-left: 80px !important;
+    }
+
+    /* 3. Ascundere text din Logo, Meniu si Logout */
+    .erp-wrapper.sidebar-collapsed .brand-logo span,
+    .erp-wrapper.sidebar-collapsed .nav-link span,
+    .erp-wrapper.sidebar-collapsed .btn-logout span {
+        display: none !important;
+    }
+
+    /* 4. Centrare iconite */
+    .erp-wrapper.sidebar-collapsed .sidebar-header {
+        justify-content: center;
+        padding: 0;
+    }
+
+    .erp-wrapper.sidebar-collapsed .brand-logo i {
+        margin-right: 0 !important;
+        font-size: 1.5rem;
+    }
+
+    .erp-wrapper.sidebar-collapsed .nav-link {
+        justify-content: center;
+        padding: 12px 0;
+    }
+
+    .erp-wrapper.sidebar-collapsed .nav-icon {
+        margin-right: 0 !important;
+    }
+
+    .erp-wrapper.sidebar-collapsed .sidebar-footer {
+        padding: 10px;
+    }
+
+    .erp-wrapper.sidebar-collapsed .btn-logout {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .erp-wrapper.sidebar-collapsed .btn-logout i {
+        margin-right: 0 !important;
+    }
 }

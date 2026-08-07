@@ -55,8 +55,7 @@
                             <!-- Add Project Button -->
                             <div class="col-12 col-md-auto text-end">
                                 <button class="btn btn-primary fw-semibold px-4" id="btnOpenAddModal"
-                                    data-bs-toggle="modal" data-bs-target="#projectModal"
-                                    onclick="openAddProjectModal()">
+                                    data-bs-toggle="modal" data-bs-target="#projectModal">
                                     <i class="fas fa-plus-circle me-2"></i> Adaugă Proiect
                                 </button>
                             </div>
@@ -175,6 +174,22 @@
                                 <label for="projectDescription" class="form-label fw-semibold">Descriere Proiect</label>
                                 <textarea class="form-control" id="projectDescription" rows="3"
                                     placeholder="Detalii tehnice despre lucrare..."></textarea>
+                            </div>
+                            <!-- Adaugă după div-ul cu Description -->
+                            <div class="row g-3 mt-1">
+                                <div class="col-md-4">
+                                    <label for="projectStartDate" class="form-label fw-semibold">Data Început</label>
+                                    <input type="date" class="form-control" id="projectStartDate">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="projectEndDate" class="form-label fw-semibold">Termen Estimat</label>
+                                    <input type="date" class="form-control" id="projectEndDate">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="projectCompletionDate" class="form-label fw-semibold">Data
+                                        Predare</label>
+                                    <input type="date" class="form-control" id="projectCompletionDate">
+                                </div>
                             </div>
                         </div>
                     </div>

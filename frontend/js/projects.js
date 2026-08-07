@@ -4,6 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentSearch = "";
   let selectedProjectId = null;
 
+  // A. La începutul fișierului, adaugă referințele inputs:
+  const inputStartDate = document.getElementById("projectStartDate");
+  const inputEndDate = document.getElementById("projectEndDate");
+  const inputCompletionDate = document.getElementById("projectCompletionDate");
+
   // --- DOM ELEMENTS ---
   const tableBody = document.getElementById("projectsTableBody");
   const tableSpinner = document.getElementById("tableSpinner");
@@ -166,7 +171,11 @@ document.addEventListener("DOMContentLoaded", () => {
         status: inputStatus.value,
         priority: inputPriority.value,
         estimated_value: parseFloat(inputEstimatedValue.value) || 0,
+        currency: "EUR",
         description: inputDescription.value.trim() || null,
+        start_date: inputStartDate.value || null, // <--- Adăugat
+        end_date: inputEndDate.value || null, // <--- Adăugat
+        completion_date: inputCompletionDate.value || null, // <--- Adăugat
       };
 
       if (!validateProjectForm(payload)) return;
@@ -234,6 +243,10 @@ document.addEventListener("DOMContentLoaded", () => {
       inputId.value = "";
       document.getElementById("projectModalLabel").textContent =
         "Adaugă Proiect Nou";
+
+      inputStartDate.value = "";
+      inputEndDate.value = "";
+      inputCompletionDate.value = "";
     });
   }
 
@@ -245,6 +258,15 @@ document.addEventListener("DOMContentLoaded", () => {
     inputPriority.value = project.priority || "medium";
     inputEstimatedValue.value = project.estimated_value || "";
     inputDescription.value = project.description || "";
+
+    // Formatează datele pentru input-ul de tip 'date' (care așteaptă YYYY-MM-DD):
+    inputStartDate.value = project.start_date
+      ? project.start_date.split("T")[0]
+      : "";
+    inputEndDate.value = project.end_date ? project.end_date.split("T")[0] : "";
+    inputCompletionDate.value = project.completion_date
+      ? project.completion_date.split("T")[0]
+      : "";
 
     document.getElementById("projectModalLabel").textContent =
       "Editează Proiect";
