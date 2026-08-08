@@ -302,7 +302,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("statusQuoteId").value = id;
     const selectEl = document.getElementById("selectNextStatus");
 
-    // State Machine Transitions
+    // Matrice strictă aliniată la Backend (FREEZE)
     const allowedTransitions = {
       draft: [
         { value: "sent", label: "Trimisă (Sent)" },
@@ -315,8 +315,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         { value: "canceled", label: "Anulată (Canceled)" },
       ],
       approved: [{ value: "canceled", label: "Anulată (Canceled)" }],
-      rejected: [{ value: "draft", label: "Ciornă (Draft)" }],
-      expired: [{ value: "draft", label: "Ciornă (Draft)" }],
+      rejected: [{ value: "draft", label: "Ciornă / Modifică (Draft)" }],
+      expired: [{ value: "draft", label: "Ciornă / Modifică (Draft)" }],
       canceled: [],
     };
 
@@ -324,7 +324,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     selectEl.innerHTML = "";
 
     if (options.length === 0) {
-      showOrangeToast("Această ofertă nu mai poate schimba statusul.");
+      showOrangeToast(
+        "Această ofertă este într-un status final și nu mai poate fi modificată.",
+      );
       return;
     }
 

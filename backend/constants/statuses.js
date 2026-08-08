@@ -7,9 +7,19 @@ module.exports = {
     EXPIRED: "expired",
     CANCELED: "canceled",
   },
+
   ESTIMATE: {
     DRAFT: "draft",
     APPROVED: "approved",
     REJECTED: "rejected",
+  },
+
+  INVOICE: {
+    DRAFT: "draft",
+    ISSUED: "issued",
+    PARTIALLY_PAID: "partially_paid",
+    PAID: "paid",
+    OVERDUE: "overdue",
+    CANCELED: "canceled",
   },
 };
