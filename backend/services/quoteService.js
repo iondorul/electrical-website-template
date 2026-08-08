@@ -2,6 +2,22 @@ const db = require("../config/db");
 const { Errors, Statuses } = require("../constants");
 
 class QuoteService {
+  // Helper preluat din estimateService.js
+  static async _getDbClient() {
+    if (typeof db.getClient === "function") {
+      return await db.getClient();
+    }
+    if (typeof db.connect === "function") {
+      return await db.connect();
+    }
+    if (db.pool && typeof db.pool.connect === "function") {
+      return await db.pool.connect();
+    }
+    throw new Error(
+      "Nu s-a putut obține un client de conectare din modulul db.",
+    );
+  }
+
   static async generateQuoteNumber(client, userId) {
     const year = new Date().getFullYear();
     const lockKey = `${userId}-${year}`;
@@ -28,7 +44,7 @@ class QuoteService {
   }
 
   static async createFromEstimate(estimateId, userId, quotePayload) {
-    const client = await db.getClient();
+    const client = await this._getDbClient();
     try {
       await client.query("BEGIN");
 
@@ -44,8 +60,13 @@ class QuoteService {
 
       const est = estimateRes.rows[0];
 
-      if (est.status !== Statuses.ESTIMATE.APPROVED) {
-        throw new Error(Errors.ESTIMATE_NOT_APPROVED);
+      if (
+        est.status !== "completed" &&
+        est.status !== Statuses.ESTIMATE.COMPLETED
+      ) {
+        throw new Error(
+          "Devizul trebuie să fie în starea Finalizat (completed).",
+        );
       }
 
       const existingQuoteRes = await client.query(
@@ -58,6 +79,17 @@ class QuoteService {
       }
 
       const quoteNumber = await this.generateQuoteNumber(client, userId);
+
+      // Calculare și mapare sume de pe coloanele reale din estimates
+      const subtotalMaterials = parseFloat(est.total_materials_cost) || 0.0;
+      const subtotalLabor = parseFloat(est.total_labor_cost) || 0.0;
+      const subtotalEquipment = 0.0;
+      const subtotal = subtotalMaterials + subtotalLabor + subtotalEquipment;
+      const discountAmount = 0.0;
+      const totalNet = subtotal - discountAmount;
+      const vatRate = 19.0;
+      const vatAmount = totalNet * (vatRate / 100);
+      const totalGross = totalNet + vatAmount;
 
       const quoteQuery = `
                 INSERT INTO quotes (
@@ -78,16 +110,16 @@ class QuoteService {
         Statuses.QUOTE.DRAFT,
         quotePayload.issue_date || new Date(),
         quotePayload.valid_until,
-        est.subtotal_materials,
-        est.subtotal_labor,
-        est.subtotal_equipment,
-        est.subtotal,
-        est.discount_amount || 0.0,
-        est.total_net,
-        est.vat_rate,
-        est.vat_amount,
-        est.total_gross,
-        est.currency_code || "EUR",
+        subtotalMaterials,
+        subtotalLabor,
+        subtotalEquipment,
+        subtotal,
+        discountAmount,
+        totalNet,
+        vatRate,
+        vatAmount,
+        totalGross,
+        "EUR",
         quotePayload.show_material_breakdown || false,
         quotePayload.terms_and_conditions || null,
         quotePayload.notes || null,
@@ -128,13 +160,14 @@ class QuoteService {
           );
         });
 
+        // Corectat denumirea coloanei conform DDL real PostgreSQL (category în loc de item_type)
         const bulkInsertQuery = `
-                    INSERT INTO quote_items (
-                        quote_id, item_type, description, quantity, 
-                        unit_of_measure, unit_price, margin_percent, total_price, 
-                        notes, sort_order
-                    ) VALUES ${valueClauses.join(", ")}
-                `;
+              INSERT INTO quote_items (
+                  quote_id, category, description, quantity, 
+                  unit_of_measure, unit_price, margin_percent, total_price, 
+                  notes, sort_order
+              ) VALUES ${valueClauses.join(", ")}
+          `;
 
         await client.query(bulkInsertQuery, values);
       }
@@ -145,7 +178,9 @@ class QuoteService {
       await client.query("ROLLBACK");
       throw error;
     } finally {
-      client.release();
+      if (typeof client.release === "function") {
+        client.release();
+      }
     }
   }
 
@@ -165,7 +200,7 @@ class QuoteService {
 
     if (search) {
       params.push(`%${search}%`);
-      whereClause += ` AND (q.quote_number ILIKE $${params.length} OR c.name ILIKE $${params.length} OR p.name ILIKE $${params.length})`;
+      whereClause += ` AND (q.quote_number ILIKE $${params.length} OR c.company_name ILIKE $${params.length} OR p.project_name ILIKE $${params.length})`;
     }
 
     const countQuery = `
@@ -179,7 +214,7 @@ class QuoteService {
     const totalItems = parseInt(countRes.rows[0].total, 10);
 
     let dataQuery = `
-            SELECT q.*, c.name as client_name, p.name as project_name
+            SELECT q.*, c.company_name as client_name, p.project_name as project_name
             FROM quotes q
             LEFT JOIN clients c ON q.client_id = c.id
             LEFT JOIN projects p ON q.project_id = p.id
@@ -204,7 +239,7 @@ class QuoteService {
 
   static async getById(id, userId) {
     const quoteRes = await db.query(
-      `SELECT q.*, c.name as client_name, p.name as project_name 
+      `SELECT q.*, c.company_name as client_name, p.project_name as project_name 
              FROM quotes q
              LEFT JOIN clients c ON q.client_id = c.id
              LEFT JOIN projects p ON q.project_id = p.id
