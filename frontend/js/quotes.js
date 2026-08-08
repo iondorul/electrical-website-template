@@ -90,6 +90,23 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
+  // --- HELPER LOCAL PENTRU AFIȘARE TOAST PORTOCALIU ---
+  function showOrangeToast(message) {
+    Toast.show(message, "warning");
+    const toastEl = document.getElementById("erpToast");
+    if (toastEl) {
+      toastEl.classList.remove(
+        "bg-warning",
+        "bg-danger",
+        "bg-success",
+        "bg-primary",
+        "bg-secondary",
+      );
+      toastEl.style.setProperty("background-color", "#f97316", "important");
+      toastEl.style.setProperty("color", "#ffffff", "important");
+    }
+  }
+
   // --- FUNCȚII CRUD & UI ---
 
   async function loadQuotes() {
@@ -173,9 +190,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const selectEl = document.getElementById("selectEstimateId");
     try {
       selectEl.innerHTML = `<option value="">Se încarcă devizele aprobate...</option>`;
-      // [AFTER]
-      // <-- MODIFICAT:
-      // Interogare devize finalizate ("completed")
       const response = await API.get("/estimates?status=completed");
 
       if (response && response.success) {
@@ -223,10 +237,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (!isValid) {
-      Toast.show(
-        "Completează câmpurile obligatorii marcate cu roșu.",
-        "warning",
-      );
+      showOrangeToast("Completează câmpurile obligatorii marcate cu roșu.");
       return;
     }
 
@@ -248,14 +259,42 @@ document.addEventListener("DOMContentLoaded", async () => {
         convertModalInstance.hide();
         await loadQuotes();
       } else {
-        Toast.show(
-          response.message || "Eroare la generarea ofertei.",
-          "danger",
-        );
+        let errorMessage = response.message || "Eroare la generarea ofertei.";
+
+        if (
+          errorMessage.includes("already been created") ||
+          errorMessage.includes("QUOTE_ALREADY_EXISTS")
+        ) {
+          errorMessage =
+            "⚠️ Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz.";
+        }
+
+        showOrangeToast(errorMessage);
       }
     } catch (err) {
       console.error("Eroare generare ofertă:", err);
-      Toast.show("Eroare de rețea la generarea ofertei.", "danger");
+
+      let errorMessage = "Eroare de rețea la generarea ofertei.";
+      const rawError = err.message || "";
+
+      if (
+        rawError.includes("already been created") ||
+        rawError.includes("QUOTE_ALREADY_EXISTS")
+      ) {
+        errorMessage =
+          "⚠️ Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz.";
+      } else if (rawError.includes("ESTIMATE_NOT_FOUND")) {
+        errorMessage =
+          "⚠️ Devizul selectat nu mai există sau a fost dezactivat.";
+      } else if (
+        rawError.includes("Finalizat") ||
+        rawError.includes("completed")
+      ) {
+        errorMessage =
+          "⚠️ Devizul trebuie să fie în starea Finalizat înainte de a putea genera oferta comercială.";
+      }
+
+      showOrangeToast(errorMessage);
     }
   }
 
@@ -285,7 +324,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     selectEl.innerHTML = "";
 
     if (options.length === 0) {
-      Toast.show("Această ofertă nu mai poate schimba statusul.", "warning");
+      showOrangeToast("Această ofertă nu mai poate schimba statusul.");
       return;
     }
 
@@ -306,7 +345,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!status) return;
 
     try {
-      // Respectarea endpoint-ului existent definit în backend
       const response = await API.put(`/quotes/${id}/status`, { status });
 
       if (response && response.success) {
@@ -422,7 +460,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await API.delete(`/quotes/${id}`);
       if (response && response.success) {
-        Toast.show("Ofertă arhivată cu succes!", "warning");
+        showOrangeToast("Ofertă arhivată cu succes!");
         deleteModalInstance.hide();
         await loadQuotes();
       } else {
