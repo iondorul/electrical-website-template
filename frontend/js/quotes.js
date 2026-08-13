@@ -92,19 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // --- HELPER LOCAL PENTRU AFIȘARE TOAST PORTOCALIU ---
   function showOrangeToast(message) {
-    Toast.show(message, "warning");
-    const toastEl = document.getElementById("erpToast");
-    if (toastEl) {
-      toastEl.classList.remove(
-        "bg-warning",
-        "bg-danger",
-        "bg-success",
-        "bg-primary",
-        "bg-secondary",
-      );
-      toastEl.style.setProperty("background-color", "#f97316", "important");
-      toastEl.style.setProperty("color", "#ffffff", "important");
-    }
+    Toast.show(message, "orange");
   }
 
   // --- FUNCȚII CRUD & UI ---
@@ -158,6 +146,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td class="fw-bold">${Utils.formatCurrency(q.total_gross)}</td>
                 <td><span class="badge bg-${getStatusBadgeColor(q.status)}">${Utils.escapeHtml(q.status.toUpperCase())}</span></td>
                 <td class="text-end pe-4">
+                    ${
+                      q.status === "approved"
+                        ? `<button type="button" class="btn btn-sm btn-outline-success me-1 btn-invoice" data-id="${q.id}" title="Facturează">
+                             <i class="fas fa-file-invoice-dollar me-1"></i> Facturează
+                           </button>`
+                        : `<button type="button" class="btn btn-sm btn-outline-secondary me-1 invisible" disabled>
+                             Facturează
+                           </button>`
+                    }
                     <button type="button" class="btn btn-sm btn-outline-info me-1 btn-view" data-id="${q.id}" title="Vizualizare">
                         <i class="fas fa-eye"></i>
                     </button>
@@ -173,6 +170,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       )
       .join("");
 
+    document.querySelectorAll(".btn-invoice").forEach((btn) => {
+      btn.addEventListener("click", () =>
+        generateInvoiceFromQuote(btn.dataset.id),
+      );
+    });
     document.querySelectorAll(".btn-view").forEach((btn) => {
       btn.addEventListener("click", () => viewQuoteDetails(btn.dataset.id));
     });
@@ -298,11 +300,81 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  async function generateInvoiceFromQuote(quoteId) {
+    try {
+      const response = await API.post("/invoices/from-quote", {
+        quote_id: parseInt(quoteId, 10),
+      });
+
+      if (response && response.success) {
+        Toast.show("Factură generată cu succes din ofertă!", "success");
+      } else {
+        let msg = response.message || "Eroare la generarea facturii.";
+        if (
+          msg.includes("already been created") ||
+          msg.includes("INVOICE_ALREADY_EXISTS")
+        ) {
+          msg = "Există deja o factură generată pentru această ofertă.";
+        }
+        showOrangeToast(msg);
+      }
+    } catch (err) {
+      console.error("Eroare generare factură:", err);
+      const rawError = err.message || "";
+
+      let msg = "Eroare de rețea la generarea facturii.";
+      if (
+        rawError.includes("already been created") ||
+        rawError.includes("INVOICE_ALREADY_EXISTS")
+      ) {
+        msg = "Există deja o factură generată pentru această ofertă.";
+      } else if (rawError) {
+        msg = `${rawError}`;
+      }
+
+      showOrangeToast(msg);
+    }
+  }
+
+  // --- HELPER LOCAL PENTRU AFIȘARE TOAST PORTOCALIU ---
+  function showOrangeToast(message) {
+    Toast.show(message, "warning");
+    const toastEl = document.getElementById("erpToast");
+    if (toastEl) {
+      toastEl.classList.remove(
+        "bg-warning",
+        "bg-danger",
+        "bg-success",
+        "bg-primary",
+        "bg-secondary",
+      );
+      toastEl.style.setProperty("background-color", "#f97316", "important");
+      toastEl.style.setProperty("color", "#ffffff", "important");
+    }
+  }
+
+  // --- HELPER LOCAL PENTRU RESATARE LA VERDE (SUCCES) ---
+  function showSuccessToast(message) {
+    const toastEl = document.getElementById("erpToast");
+    if (toastEl) {
+      // Îndepărtăm stilul inline portocaliu ca să lăsăm clasa bg-success să funcționeze
+      toastEl.style.removeProperty("background-color");
+      toastEl.style.removeProperty("color");
+      toastEl.classList.remove(
+        "bg-warning",
+        "bg-danger",
+        "bg-primary",
+        "bg-secondary",
+      );
+      toastEl.classList.add("bg-success");
+    }
+    Toast.show(message, "success");
+  }
+
   function openStatusModal(id, currentStatus) {
     document.getElementById("statusQuoteId").value = id;
     const selectEl = document.getElementById("selectNextStatus");
 
-    // Matrice strictă aliniată la Backend (FREEZE)
     const allowedTransitions = {
       draft: [
         { value: "sent", label: "Trimisă (Sent)" },

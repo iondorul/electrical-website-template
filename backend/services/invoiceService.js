@@ -2,21 +2,24 @@ const db = require("../config/db");
 const { Errors, Statuses } = require("../constants");
 
 class InvoiceService {
-  // Helper pentru conectare client SQL (tranzacții)
   static async _getDbClient() {
-    if (typeof db.getClient === "function") return await db.getClient();
-    if (typeof db.connect === "function") return await db.connect();
-    if (db.pool && typeof db.pool.connect === "function")
+    if (typeof db.getClient === "function") {
+      return await db.getClient();
+    }
+    if (typeof db.connect === "function") {
+      return await db.connect();
+    }
+    if (db.pool && typeof db.pool.connect === "function") {
       return await db.pool.connect();
+    }
     throw new Error(
       "Nu s-a putut obține un client de conectare din modulul db.",
     );
   }
 
-  // Generare număr factură secvențial cu Advisory Lock atomic per utilizator/an
   static async generateInvoiceNumber(client, userId) {
     const year = new Date().getFullYear();
-    const lockKey = `${userId}-${year}-invoice`;
+    const lockKey = `invoice-${userId}-${year}`;
 
     await client.query("SELECT pg_advisory_xact_lock(hashtext($1))", [lockKey]);
 
@@ -39,15 +42,18 @@ class InvoiceService {
     return `${prefix}${String(nextNum).padStart(4, "0")}`;
   }
 
-  // Creare factură din ofertă aprobată
-  static async createFromQuote(quoteId, userId, payload = {}) {
+  static async createFromQuote(quoteId, userId) {
     const client = await this._getDbClient();
     try {
       await client.query("BEGIN");
 
-      // 1. Preluare și validare ofertă
+      // 1. Verificare și preluare o ofertă aprobată aparținând utilizatorului
       const quoteRes = await client.query(
-        `SELECT * FROM quotes WHERE id = $1 AND created_by = $2 AND is_active = true`,
+        `SELECT q.*, c.id as client_id, p.id as project_id 
+         FROM quotes q
+         LEFT JOIN clients c ON q.client_id = c.id
+         LEFT JOIN projects p ON q.project_id = p.id
+         WHERE q.id = $1 AND q.created_by = $2 AND q.is_active = true`,
         [quoteId, userId],
       );
 
@@ -57,12 +63,14 @@ class InvoiceService {
 
       const quote = quoteRes.rows[0];
 
-      // 2. Validare status (doar ofertele aprobate pot fi facturate)
-      if (quote.status !== Statuses.QUOTE.APPROVED) {
-        throw new Error(Errors.QUOTE_NOT_APPROVED);
+      if (
+        quote.status !== "approved" &&
+        quote.status !== Statuses.QUOTE.APPROVED
+      ) {
+        throw new Error(Errors.QUOTE_NOT_APPROVED || "QUOTE_NOT_APPROVED");
       }
 
-      // 3. Verificare duplicat la nivel de aplicație
+      // 2. Verificare dacă există deja o factură generată pentru această ofertă
       const existingInvoiceRes = await client.query(
         `SELECT id FROM invoices WHERE quote_id = $1 AND is_active = true`,
         [quoteId],
@@ -72,25 +80,23 @@ class InvoiceService {
         throw new Error(Errors.INVOICE_ALREADY_EXISTS);
       }
 
+      // 3. Generare număr factură protejat prin advisory lock
       const invoiceNumber = await this.generateInvoiceNumber(client, userId);
 
-      // Calculare dată scadență (implicit 14 zile)
-      const issueDate = payload.issue_date || new Date();
-      let dueDate = payload.due_date;
-      if (!dueDate) {
-        const defaultDue = new Date(issueDate);
-        defaultDue.setDate(defaultDue.getDate() + 14);
-        dueDate = defaultDue;
-      }
+      // 4. Control date calendaristice din backend
+      const issueDate = new Date();
+      const dueDate = new Date();
+      dueDate.setDate(issueDate.getDate() + 14); // termen implicit 14 zile
 
+      // 5. Inserare factură folosind exclusiv valorile financiare din ofertă
       const invoiceQuery = `
         INSERT INTO invoices (
           invoice_number, quote_id, client_id, project_id, status,
           issue_date, due_date, subtotal_materials, subtotal_labor,
           subtotal_equipment, subtotal, discount_amount, total_net,
-          vat_rate, vat_amount, total_gross, paid_amount, currency_code,
-          terms_and_conditions, notes, created_by
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)
+          vat_rate, vat_amount, total_gross, currency_code,
+          notes, created_by
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
         RETURNING *;
       `;
 
@@ -102,56 +108,67 @@ class InvoiceService {
         Statuses.INVOICE.DRAFT,
         issueDate,
         dueDate,
-        quote.subtotal_materials,
-        quote.subtotal_labor,
+        quote.subtotal_materials || 0.0,
+        quote.subtotal_labor || 0.0,
         quote.subtotal_equipment || 0.0,
-        quote.subtotal,
-        quote.discount_amount,
-        quote.total_net,
-        quote.vat_rate,
-        quote.vat_amount,
-        quote.total_gross,
-        0.0,
+        quote.subtotal || 0.0,
+        quote.discount_amount || 0.0,
+        quote.total_net || 0.0,
+        quote.vat_rate || 19.0,
+        quote.vat_amount || 0.0,
+        quote.total_gross || 0.0,
         quote.currency_code || "EUR",
-        payload.terms_and_conditions || quote.terms_and_conditions,
-        payload.notes || quote.notes,
+        quote.notes || null,
         userId,
       ];
 
-      const newInvoiceRes = await client.query(invoiceQuery, invoiceValues);
-      const newInvoice = newInvoiceRes.rows[0];
+      let newInvoice;
+      try {
+        const newInvoiceRes = await client.query(invoiceQuery, invoiceValues);
+        newInvoice = newInvoiceRes.rows[0];
+      } catch (dbError) {
+        // Tratare explicită pentru conflictele de unicitate
+        if (dbError.constraint === "uq_invoices_quote_id") {
+          throw new Error(Errors.INVOICE_ALREADY_EXISTS);
+        }
+        if (dbError.constraint === "uq_user_invoice_number") {
+          throw new Error("INVOICE_NUMBER_CONFLICT");
+        }
+        throw dbError;
+      }
 
-      // 4. Copiere articole din quote_items (mapare 1:1 pe schema reală DB)
-      const itemsRes = await client.query(
-        `SELECT category, item_code, description, quantity, unit_of_measure, 
-                unit_price, margin_percent, total_price, notes, sort_order 
+      // 6. Copiere 1:1 a liniilor din quote_items în invoice_items
+      const quoteItemsRes = await client.query(
+        `SELECT category, item_code, description, quantity, 
+                unit_of_measure, unit_price, margin_percent, total_price, 
+                notes, sort_order 
          FROM quote_items 
-         WHERE quote_id = $1 
+         WHERE quote_id = $1
          ORDER BY sort_order ASC`,
         [quoteId],
       );
 
-      if (itemsRes.rows.length > 0) {
+      if (quoteItemsRes.rows.length > 0) {
         const values = [];
         const valueClauses = [];
 
-        itemsRes.rows.forEach((item, index) => {
-          const offset = index * 11;
+        quoteItemsRes.rows.forEach((item, index) => {
+          const offset = index * 10;
           valueClauses.push(
-            `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7}, $${offset + 8}, $${offset + 9}, $${offset + 10}, $${offset + 11})`,
+            `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7}, $${offset + 8}, $${offset + 9}, $${offset + 10})`,
           );
           values.push(
             newInvoice.id,
             item.category,
-            item.item_code || null,
+            item.item_code,
             item.description,
             item.quantity,
             item.unit_of_measure,
             item.unit_price,
             item.margin_percent,
             item.total_price,
-            item.notes || null,
-            item.sort_order || 0,
+            item.notes,
+            item.sort_order,
           );
         });
 
@@ -170,13 +187,6 @@ class InvoiceService {
       return newInvoice;
     } catch (error) {
       await client.query("ROLLBACK");
-      // Prindere eroare de unicitate din indexul unic uq_invoices_quote_id
-      if (
-        error.code === "23505" &&
-        error.constraint === "uq_invoices_quote_id"
-      ) {
-        throw new Error(Errors.INVOICE_ALREADY_EXISTS);
-      }
       throw error;
     } finally {
       if (typeof client.release === "function") {
@@ -185,12 +195,12 @@ class InvoiceService {
     }
   }
 
-  // Preluare facturi cu paginare și căutare
   static async getAll(
     userId,
     { page = 1, limit = 10, search = "", status = null },
   ) {
     const offset = (page - 1) * limit;
+
     let whereClause = `WHERE i.created_by = $1 AND i.is_active = true`;
     const params = [userId];
 
@@ -214,8 +224,10 @@ class InvoiceService {
     const countRes = await db.query(countQuery, params);
     const totalItems = parseInt(countRes.rows[0].total, 10);
 
-    let dataQuery = `
-      SELECT i.*, c.company_name as client_name, p.project_name as project_name
+    const dataQuery = `
+      SELECT i.*, 
+             c.company_name as client_name, 
+             p.project_name as project_name
       FROM invoices i
       LEFT JOIN clients c ON i.client_id = c.id
       LEFT JOIN projects p ON i.project_id = p.id
@@ -230,15 +242,14 @@ class InvoiceService {
     return {
       items: dataRes.rows,
       pagination: {
-        totalItems,
+        totalItems: totalItems,
         currentPage: page,
-        limit,
+        limit: limit,
         totalPages: Math.ceil(totalItems / limit),
       },
     };
   }
 
-  // Preluare factură completă după ID
   static async getById(id, userId) {
     const invoiceRes = await db.query(
       `SELECT i.*, c.company_name as client_name, p.project_name as project_name 
@@ -256,15 +267,9 @@ class InvoiceService {
       [id],
     );
 
-    const paymentsRes = await db.query(
-      `SELECT * FROM payments WHERE invoice_id = $1 ORDER BY payment_date DESC`,
-      [id],
-    );
-
     return {
       ...invoiceRes.rows[0],
       items: itemsRes.rows,
-      payments: paymentsRes.rows,
     };
   }
 }

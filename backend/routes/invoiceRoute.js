@@ -1,0 +1,18 @@
+const express = require("express");
+const router = express.Router();
+const InvoiceController = require("../controllers/invoiceController");
+const authenticateToken = require("../middleware/authMiddleware"); // sau calea corectă către middleware-ul tău de auth
+
+// Toate rutele de facturi sunt protejate de autentificare
+router.use(authenticateToken);
+
+// Generare factură dintr-o ofertă aprobată
+router.post("/from-quote", InvoiceController.createFromQuote);
+
+// Listare facturi (cu paginare, search, status)
+router.get("/", InvoiceController.getAll);
+
+// Preluare detalii factură după ID
+router.get("/:id", InvoiceController.getById);
+
+module.exports = router;

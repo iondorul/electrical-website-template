@@ -8,7 +8,7 @@ const clientRoutes = require("./routes/clientRoutes");
 const estimateRoutes = require("./routes/estimateRoutes");
 const quoteRoutes = require("./routes/quoteRoutes");
 
-const invoiceRoutes = require("./routes/invoices");
+const invoiceRoutes = require("./routes/invoiceRoute");
 
 console.log("SERVER LOADED");
 
