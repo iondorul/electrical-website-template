@@ -108,6 +108,23 @@ class InvoiceController {
       });
     }
   }
+  static async deleteAll(req, res) {
+    try {
+      const deletedCount = await InvoiceService.deleteAll(req.user.id);
+
+      return res.status(200).json({
+        success: true,
+        message: "Toate facturile au fost șterse cu succes.",
+        data: { deletedCount },
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: Errors.SERVER_ERROR,
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = InvoiceController;

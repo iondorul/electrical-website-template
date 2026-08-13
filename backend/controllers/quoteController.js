@@ -162,6 +162,23 @@ class QuoteController {
       });
     }
   }
+
+  static async deleteAll(req, res) {
+    try {
+      await QuoteService.deleteAll(req.user.id);
+
+      return res.status(200).json({
+        success: true,
+        message: "Toate ofertele au fost șterse cu succes.",
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: Errors.SERVER_ERROR,
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = QuoteController;

@@ -309,6 +309,24 @@ class QuoteService {
     );
     return res.rows.length > 0;
   }
+
+  static async deleteAll(userId) {
+    // 1. Șterge facturile generate din ofertele utilizatorului
+    await db.query(
+      "DELETE FROM invoices WHERE quote_id IN (SELECT id FROM quotes WHERE created_by = $1)",
+      [userId],
+    );
+    // 2. Șterge articolele din ofertele utilizatorului
+    await db.query(
+      "DELETE FROM quote_items WHERE quote_id IN (SELECT id FROM quotes WHERE created_by = $1)",
+      [userId],
+    );
+    // 3. Șterge ofertele utilizatorului
+    const result = await db.query("DELETE FROM quotes WHERE created_by = $1", [
+      userId,
+    ]);
+    return result.rowCount;
+  }
 }
 
 module.exports = QuoteService;

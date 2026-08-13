@@ -271,6 +271,12 @@ class InvoiceService {
       items: itemsRes.rows,
     };
   }
+
+  static async deleteAll(userId) {
+    const query = `UPDATE invoices SET is_active = false WHERE created_by = $1 AND is_active = true`;
+    const result = await db.query(query, [userId]);
+    return result.rowCount;
+  }
 }
 
 module.exports = InvoiceService;

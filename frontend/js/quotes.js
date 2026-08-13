@@ -342,6 +342,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  document.addEventListener("click", async (e) => {
+    const deleteBtn = e.target.closest("#btnDeleteAllQuotes");
+    if (!deleteBtn) return;
+
+    if (
+      !confirm(
+        "Ești absolut sigur, tată? Ștergi toate ofertele și articolele din baza de date!",
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const response = await API.delete("/quotes/delete-all");
+
+      if (response && response.success) {
+        Toast.show("Toate ofertele au fost șterse cu succes.", "success");
+        setTimeout(() => location.reload(), 1000);
+      } else {
+        Toast.show(
+          response.message || "Eroare la ștergerea ofertelor.",
+          "danger",
+        );
+      }
+    } catch (error) {
+      console.error("Eroare:", error);
+      Toast.show("Eroare de conexiune la server.", "danger");
+    }
+  });
+
   function openStatusModal(id, currentStatus) {
     document.getElementById("statusQuoteId").value = id;
     const selectEl = document.getElementById("selectNextStatus");

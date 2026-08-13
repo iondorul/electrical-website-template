@@ -3,6 +3,46 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentSearch = "";
   let currentStatus = "";
 
+  const btnDeleteAll = document.getElementById("btnDeleteAllInvoices");
+  if (btnDeleteAll) {
+    btnDeleteAll.addEventListener("click", async () => {
+      const confirmed = confirm(
+        "Sigur dorești să ștergi TOATE facturile? Această acțiune este ireversibilă!",
+      );
+      if (!confirmed) return;
+
+      try {
+        const response = await API.delete("/invoices");
+        if (response && response.success) {
+          if (typeof Toast !== "undefined") {
+            Toast.show("Toate facturile au fost șterse cu succes.", "success");
+          } else {
+            alert("Toate facturile au fost șterse cu succes.");
+          }
+          currentPage = 1;
+          loadInvoices();
+        } else {
+          const msg =
+            response && response.message
+              ? response.message
+              : "Nu s-au putut șterge facturile.";
+          if (typeof Toast !== "undefined") {
+            Toast.show(msg, "danger");
+          } else {
+            alert(msg);
+          }
+        }
+      } catch (err) {
+        console.error("Eroare la ștergerea totală a facturilor:", err);
+        if (typeof Toast !== "undefined") {
+          Toast.show("Eroare de rețea la ștergerea facturilor.", "danger");
+        } else {
+          alert("Eroare de rețea.");
+        }
+      }
+    });
+  }
+
   const tableBody = document.getElementById("invoicesTableBody");
   const searchInput = document.getElementById("searchInput");
   const statusFilter = document.getElementById("statusFilter");

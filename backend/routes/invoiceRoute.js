@@ -15,4 +15,6 @@ router.get("/", InvoiceController.getAll);
 // Preluare detalii factură după ID
 router.get("/:id", InvoiceController.getById);
 
+router.delete("/", InvoiceController.deleteAll);
+
 module.exports = router;
