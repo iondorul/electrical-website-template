@@ -127,7 +127,6 @@ class InvoiceService {
         const newInvoiceRes = await client.query(invoiceQuery, invoiceValues);
         newInvoice = newInvoiceRes.rows[0];
       } catch (dbError) {
-        // Tratare explicită pentru conflictele de unicitate
         if (dbError.constraint === "uq_invoices_quote_id") {
           throw new Error(Errors.INVOICE_ALREADY_EXISTS);
         }
@@ -137,7 +136,7 @@ class InvoiceService {
         throw dbError;
       }
 
-      // 6. Copiere 1:1 a liniilor din quote_items în invoice_items
+      // 6. Copiere 1:1 a liniilor din quote_items în invoice_items (11 coloane)
       const quoteItemsRes = await client.query(
         `SELECT category, item_code, description, quantity, 
                 unit_of_measure, unit_price, margin_percent, total_price, 
@@ -153,9 +152,9 @@ class InvoiceService {
         const valueClauses = [];
 
         quoteItemsRes.rows.forEach((item, index) => {
-          const offset = index * 10;
+          const offset = index * 11;
           valueClauses.push(
-            `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7}, $${offset + 8}, $${offset + 9}, $${offset + 10})`,
+            `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7}, $${offset + 8}, $${offset + 9}, $${offset + 10}, $${offset + 11})`,
           );
           values.push(
             newInvoice.id,

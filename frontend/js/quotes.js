@@ -90,11 +90,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
-  // --- HELPER LOCAL PENTRU AFIȘARE TOAST PORTOCALIU ---
-  function showOrangeToast(message) {
-    Toast.show(message, "orange");
-  }
-
   // --- FUNCȚII CRUD & UI ---
 
   async function loadQuotes() {
@@ -146,24 +141,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td class="fw-bold">${Utils.formatCurrency(q.total_gross)}</td>
                 <td><span class="badge bg-${getStatusBadgeColor(q.status)}">${Utils.escapeHtml(q.status.toUpperCase())}</span></td>
                 <td class="text-end pe-4">
-                    ${
-                      q.status === "approved"
-                        ? `<button type="button" class="btn btn-sm btn-outline-success me-1 btn-invoice" data-id="${q.id}" title="Facturează">
-                             <i class="fas fa-file-invoice-dollar me-1"></i> Facturează
-                           </button>`
-                        : `<button type="button" class="btn btn-sm btn-outline-secondary me-1 invisible" disabled>
-                             Facturează
-                           </button>`
-                    }
-                    <button type="button" class="btn btn-sm btn-outline-info me-1 btn-view" data-id="${q.id}" title="Vizualizare">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-primary me-1 btn-status" data-id="${q.id}" data-status="${q.status}" title="Schimbă Status">
-                        <i class="fas fa-tasks"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="${q.id}" title="Arhivare">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                    <div class="d-inline-flex align-items-center gap-1">
+                        ${
+                          q.status === "approved"
+                            ? `<button type="button" class="btn btn-sm btn-outline-success me-1 btn-invoice d-inline-flex align-items-center gap-1" data-id="${q.id}" title="Facturează">
+                                <i class="fas fa-file-invoice-dollar"></i> Facturează
+                              </button>`
+                            : ``
+                        }
+                        <button type="button" class="btn btn-sm btn-outline-info btn-view d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" data-id="${q.id}" title="Vizualizare">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary btn-status d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" data-id="${q.id}" data-status="${q.status}" title="Schimbă Status">
+                            <i class="fas fa-tasks"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger btn-delete d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" data-id="${q.id}" title="Arhivare">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </td>
             </tr>
         `,
@@ -239,7 +234,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (!isValid) {
-      showOrangeToast("Completează câmpurile obligatorii marcate cu roșu.");
+      Toast.show(
+        "Completează câmpurile obligatorii marcate cu roșu.",
+        "danger",
+      );
       return;
     }
 
@@ -268,15 +266,17 @@ document.addEventListener("DOMContentLoaded", async () => {
           errorMessage.includes("QUOTE_ALREADY_EXISTS")
         ) {
           errorMessage =
-            "⚠️ Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz.";
+            "Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz.";
+          Toast.show(errorMessage, "orange");
+        } else {
+          Toast.show(errorMessage, "danger");
         }
-
-        showOrangeToast(errorMessage);
       }
     } catch (err) {
       console.error("Eroare generare ofertă:", err);
 
       let errorMessage = "Eroare de rețea la generarea ofertei.";
+      let toastType = "danger";
       const rawError = err.message || "";
 
       if (
@@ -284,19 +284,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         rawError.includes("QUOTE_ALREADY_EXISTS")
       ) {
         errorMessage =
-          "⚠️ Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz.";
+          "Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz.";
+        toastType = "orange";
       } else if (rawError.includes("ESTIMATE_NOT_FOUND")) {
-        errorMessage =
-          "⚠️ Devizul selectat nu mai există sau a fost dezactivat.";
+        errorMessage = "Devizul selectat nu mai există sau a fost dezactivat.";
+        toastType = "orange";
       } else if (
         rawError.includes("Finalizat") ||
         rawError.includes("completed")
       ) {
         errorMessage =
-          "⚠️ Devizul trebuie să fie în starea Finalizat înainte de a putea genera oferta comercială.";
+          "Devizul trebuie să fie în starea Finalizat înainte de a putea genera oferta comercială.";
+        toastType = "orange";
       }
 
-      showOrangeToast(errorMessage);
+      Toast.show(errorMessage, toastType);
     }
   }
 
@@ -310,65 +312,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         Toast.show("Factură generată cu succes din ofertă!", "success");
       } else {
         let msg = response.message || "Eroare la generarea facturii.";
+        let toastType = "danger";
         if (
           msg.includes("already been created") ||
           msg.includes("INVOICE_ALREADY_EXISTS")
         ) {
           msg = "Există deja o factură generată pentru această ofertă.";
+          toastType = "orange";
         }
-        showOrangeToast(msg);
+        Toast.show(msg, toastType);
       }
     } catch (err) {
       console.error("Eroare generare factură:", err);
       const rawError = err.message || "";
 
       let msg = "Eroare de rețea la generarea facturii.";
+      let toastType = "danger";
       if (
         rawError.includes("already been created") ||
         rawError.includes("INVOICE_ALREADY_EXISTS")
       ) {
         msg = "Există deja o factură generată pentru această ofertă.";
+        toastType = "orange";
       } else if (rawError) {
         msg = `${rawError}`;
       }
 
-      showOrangeToast(msg);
+      Toast.show(msg, toastType);
     }
-  }
-
-  // --- HELPER LOCAL PENTRU AFIȘARE TOAST PORTOCALIU ---
-  function showOrangeToast(message) {
-    Toast.show(message, "warning");
-    const toastEl = document.getElementById("erpToast");
-    if (toastEl) {
-      toastEl.classList.remove(
-        "bg-warning",
-        "bg-danger",
-        "bg-success",
-        "bg-primary",
-        "bg-secondary",
-      );
-      toastEl.style.setProperty("background-color", "#f97316", "important");
-      toastEl.style.setProperty("color", "#ffffff", "important");
-    }
-  }
-
-  // --- HELPER LOCAL PENTRU RESATARE LA VERDE (SUCCES) ---
-  function showSuccessToast(message) {
-    const toastEl = document.getElementById("erpToast");
-    if (toastEl) {
-      // Îndepărtăm stilul inline portocaliu ca să lăsăm clasa bg-success să funcționeze
-      toastEl.style.removeProperty("background-color");
-      toastEl.style.removeProperty("color");
-      toastEl.classList.remove(
-        "bg-warning",
-        "bg-danger",
-        "bg-primary",
-        "bg-secondary",
-      );
-      toastEl.classList.add("bg-success");
-    }
-    Toast.show(message, "success");
   }
 
   function openStatusModal(id, currentStatus) {
@@ -396,8 +367,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     selectEl.innerHTML = "";
 
     if (options.length === 0) {
-      showOrangeToast(
+      Toast.show(
         "Această ofertă este într-un status final și nu mai poate fi modificată.",
+        "orange",
       );
       return;
     }
@@ -534,7 +506,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await API.delete(`/quotes/${id}`);
       if (response && response.success) {
-        showOrangeToast("Ofertă arhivată cu succes!");
+        Toast.show("Ofertă arhivată cu succes!", "success");
         deleteModalInstance.hide();
         await loadQuotes();
       } else {

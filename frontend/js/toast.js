@@ -26,7 +26,7 @@ const Toast = {
 
       toastMsg.innerHTML = `${icon} <span class="align-middle">${message}</span>`;
 
-      // Resetăm orice stil inline anterior (cum ar fi background-ul portocaliu forțat)
+      // Resetăm orice stil inline anterior
       toastEl.style.removeProperty("background-color");
       toastEl.style.removeProperty("color");
 
@@ -38,16 +38,15 @@ const Toast = {
         toastEl.className = `toast align-items-center text-white bg-${type} border-0`;
       }
 
-      // Distrugem instanța anterioară dacă există, ca să nu se suprascrie temporizatorul
+      // Distrugem instanța anterioară dacă există
       const existingToast = bootstrap.Toast.getInstance(toastEl);
       if (existingToast) {
         existingToast.dispose();
       }
 
-      // Configurăm autohide activ și delay la 4 secunde (4000ms)
       const toast = new bootstrap.Toast(toastEl, {
         autohide: true,
-        delay: 1000,
+        delay: 2000,
       });
 
       toast.show();
