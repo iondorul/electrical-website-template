@@ -140,6 +140,20 @@ class InvoiceController {
 
       return res.status(200).json({ success: true, data: updatedInvoice });
     } catch (error) {
+      if (error.message === "INVALID_STATUS_TRANSITION_CANCELED") {
+        return res.status(400).json({
+          success: false,
+          message:
+            "O factură anulată nu mai poate fi modificată. Emite o factură nouă dacă e nevoie.",
+        });
+      }
+      if (error.message === "INVALID_STATUS_TRANSITION_PAID_TO_DRAFT") {
+        return res.status(400).json({
+          success: false,
+          message:
+            "O factură plătită nu poate reveni la statusul Ciornă (Draft).",
+        });
+      }
       return res.status(500).json({
         success: false,
         error: Errors.SERVER_ERROR,

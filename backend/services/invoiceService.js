@@ -287,6 +287,16 @@ class InvoiceService {
 
     const current = currentRes.rows[0];
 
+    // RESTRICȚII DE TRANZIȚIE STATUS
+    if (status && status !== current.status) {
+      if (current.status === "canceled") {
+        throw new Error("INVALID_STATUS_TRANSITION_CANCELED");
+      }
+      if (current.status === "paid" && status === "draft") {
+        throw new Error("INVALID_STATUS_TRANSITION_PAID_TO_DRAFT");
+      }
+    }
+
     const finalStatus = status ?? current.status;
     const finalVatRate =
       vat_rate !== undefined && vat_rate !== null

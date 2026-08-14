@@ -312,7 +312,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     } catch (err) {
       console.error("Eroare la salvarea facturii:", err);
-      Toast.show("Eroare de rețea la salvarea facturii.", "danger");
+      const msg = err.message || "Eroare de rețea la salvarea facturii.";
+      Toast.show(msg, "danger");
     }
   }
 
