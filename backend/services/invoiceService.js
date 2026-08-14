@@ -272,6 +272,72 @@ class InvoiceService {
     };
   }
 
+  static async update(
+    id,
+    userId,
+    { status, vat_rate, issue_date, due_date, discount_amount },
+  ) {
+    // Preluăm factura curentă pentru a avea subtotalul de referință
+    const currentRes = await db.query(
+      `SELECT * FROM invoices WHERE id = $1 AND created_by = $2 AND is_active = true`,
+      [id, userId],
+    );
+
+    if (currentRes.rows.length === 0) return null;
+
+    const current = currentRes.rows[0];
+
+    const finalStatus = status ?? current.status;
+    const finalVatRate =
+      vat_rate !== undefined && vat_rate !== null
+        ? parseFloat(vat_rate)
+        : parseFloat(current.vat_rate);
+    const finalDiscount =
+      discount_amount !== undefined && discount_amount !== null
+        ? parseFloat(discount_amount)
+        : parseFloat(current.discount_amount);
+    const finalIssueDate = issue_date || current.issue_date;
+    const finalDueDate = due_date || current.due_date;
+
+    // Recalcul totaluri pe baza subtotalului existent
+    const subtotal = parseFloat(current.subtotal) || 0;
+    const totalNet = subtotal - finalDiscount;
+    const vatAmount = totalNet * (finalVatRate / 100);
+    const totalGross = totalNet + vatAmount;
+
+    const updateQuery = `
+      UPDATE invoices SET
+        status = $1,
+        vat_rate = $2,
+        discount_amount = $3,
+        issue_date = $4,
+        due_date = $5,
+        total_net = $6,
+        vat_amount = $7,
+        total_gross = $8,
+        updated_by = $9
+      WHERE id = $10 AND created_by = $11 AND is_active = true
+      RETURNING *;
+    `;
+
+    const values = [
+      finalStatus,
+      finalVatRate,
+      finalDiscount,
+      finalIssueDate,
+      finalDueDate,
+      totalNet,
+      vatAmount,
+      totalGross,
+      userId,
+      id,
+      userId,
+    ];
+
+    const result = await db.query(updateQuery, values);
+    return result.rows[0] || null;
+  }
+
   static async deleteAll(userId) {
     const query = `UPDATE invoices SET is_active = false WHERE created_by = $1 AND is_active = true`;
     const result = await db.query(query, [userId]);

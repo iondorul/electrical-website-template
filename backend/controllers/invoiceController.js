@@ -108,6 +108,46 @@ class InvoiceController {
       });
     }
   }
+
+  static async update(req, res) {
+    try {
+      const id = parseInt(req.params.id, 10);
+
+      if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+          success: false,
+          error: Errors.MISSING_REQUIRED_FIELDS,
+          message: "Invoice ID must be a valid positive integer.",
+        });
+      }
+
+      const { status, vat_rate, issue_date, due_date, discount_amount } =
+        req.body;
+
+      const updatedInvoice = await InvoiceService.update(id, req.user.id, {
+        status,
+        vat_rate,
+        issue_date,
+        due_date,
+        discount_amount,
+      });
+
+      if (!updatedInvoice) {
+        return res
+          .status(404)
+          .json({ success: false, error: Errors.INVOICE_NOT_FOUND });
+      }
+
+      return res.status(200).json({ success: true, data: updatedInvoice });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: Errors.SERVER_ERROR,
+        message: error.message,
+      });
+    }
+  }
+
   static async deleteAll(req, res) {
     try {
       const deletedCount = await InvoiceService.deleteAll(req.user.id);

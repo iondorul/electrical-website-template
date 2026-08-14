@@ -55,11 +55,10 @@
                                     </div>
                                     <div class="col-12 col-md-5">
                                         <select id="statusFilter" class="form-select">
-                                            <option value="">Toate Statusurile</option>
                                             <option value="draft">Ciornă (Draft)</option>
-                                            <option value="sent">Trimisă (Sent)</option>
+                                            <option value="issued">Emisă (Issued)</option>
+                                            <option value="partially_paid">Plătită Parțial</option>
                                             <option value="paid">Plătită (Paid)</option>
-                                            <option value="partial">Plătită Parțial (Partial)</option>
                                             <option value="overdue">Restantă (Overdue)</option>
                                             <option value="canceled">Anulată (Canceled)</option>
                                         </select>
@@ -127,6 +126,56 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Închide</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDITARE FACTURĂ -->
+    <div class="modal fade" id="editInvoiceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="editModalTitle">Editare Factură</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editInvoiceId">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Status</label>
+                            <select id="editStatus" class="form-select">
+                                <option value="draft">Ciornă (Draft)</option>
+                                <option value="issued">Emisă (Issued)</option>
+                                <option value="partially_paid">Plătită Parțial</option>
+                                <option value="paid">Plătită (Paid)</option>
+                                <option value="overdue">Restantă (Overdue)</option>
+                                <option value="canceled">Anulată (Canceled)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">TVA (%)</label>
+                            <input type="number" id="editVatRate" class="form-control" step="0.01" min="0">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Data Emiterii</label>
+                            <input type="date" id="editIssueDate" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Scadență</label>
+                            <input type="date" id="editDueDate" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Discount (valoare)</label>
+                            <input type="number" id="editDiscount" class="form-control" step="0.01" min="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveEditInvoice">
+                        <i class="fas fa-save me-1"></i> Salvează
+                    </button>
                 </div>
             </div>
         </div>

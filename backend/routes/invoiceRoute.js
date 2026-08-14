@@ -15,6 +15,9 @@ router.get("/", InvoiceController.getAll);
 // Preluare detalii factură după ID
 router.get("/:id", InvoiceController.getById);
 
+// Actualizare factură (status, date, discount, TVA)
+router.put("/:id", InvoiceController.update);
+
 router.delete("/", InvoiceController.deleteAll);
 
 module.exports = router;

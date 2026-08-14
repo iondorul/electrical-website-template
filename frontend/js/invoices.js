@@ -54,6 +54,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     viewModalInstance = new bootstrap.Modal(viewModalEl);
   }
 
+  let editModalInstance = null;
+  const editModalEl = document.getElementById("editInvoiceModal");
+  if (editModalEl) {
+    editModalInstance = new bootstrap.Modal(editModalEl);
+  }
+
+  const btnSaveEdit = document.getElementById("btnSaveEditInvoice");
+  if (btnSaveEdit) {
+    btnSaveEdit.addEventListener("click", saveInvoiceEdit);
+  }
+
   // Încărcare inițială
   await loadInvoices();
 
@@ -140,6 +151,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <button type="button" class="btn btn-sm btn-outline-info me-1 btn-view" data-id="${inv.id}" title="Vizualizare">
                         <i class="fas fa-eye"></i>
                     </button>
+                     <button type="button" class="btn btn-sm btn-outline-primary btn-edit" data-id="${inv.id}" title="Editare">
+                        <i class="fas fa-pen"></i>
+                    </button>
                 </td>
             </tr>
         `,
@@ -148,6 +162,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.querySelectorAll(".btn-view").forEach((btn) => {
       btn.addEventListener("click", () => viewInvoiceDetails(btn.dataset.id));
+    });
+
+    document.querySelectorAll(".btn-edit").forEach((btn) => {
+      btn.addEventListener("click", () => openEditInvoiceModal(btn.dataset.id));
     });
   }
 
@@ -241,6 +259,63 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  async function openEditInvoiceModal(id) {
+    try {
+      const response = await API.get(`/invoices/${id}`);
+      if (response && response.success) {
+        const inv = response.data;
+        document.getElementById("editInvoiceId").value = inv.id;
+        document.getElementById("editStatus").value = inv.status;
+        document.getElementById("editVatRate").value = inv.vat_rate;
+        document.getElementById("editIssueDate").value = inv.issue_date
+          ? inv.issue_date.split("T")[0]
+          : "";
+        document.getElementById("editDueDate").value = inv.due_date
+          ? inv.due_date.split("T")[0]
+          : "";
+        document.getElementById("editDiscount").value =
+          inv.discount_amount || 0;
+
+        if (editModalInstance) editModalInstance.show();
+      } else {
+        Toast.show("Nu s-au putut prelua datele facturii.", "danger");
+      }
+    } catch (err) {
+      console.error("Eroare la deschiderea editării:", err);
+      Toast.show("Eroare de rețea la încărcarea facturii.", "danger");
+    }
+  }
+
+  async function saveInvoiceEdit() {
+    const id = document.getElementById("editInvoiceId").value;
+    const payload = {
+      status: document.getElementById("editStatus").value,
+      vat_rate: parseFloat(document.getElementById("editVatRate").value) || 0,
+      issue_date: document.getElementById("editIssueDate").value,
+      due_date: document.getElementById("editDueDate").value,
+      discount_amount:
+        parseFloat(document.getElementById("editDiscount").value) || 0,
+    };
+
+    try {
+      const response = await API.put(`/invoices/${id}`, payload);
+      if (response && response.success) {
+        Toast.show("Factura a fost actualizată cu succes.", "success");
+        if (editModalInstance) editModalInstance.hide();
+        loadInvoices();
+      } else {
+        const msg =
+          response && response.message
+            ? response.message
+            : "Nu s-a putut actualiza factura.";
+        Toast.show(msg, "danger");
+      }
+    } catch (err) {
+      console.error("Eroare la salvarea facturii:", err);
+      Toast.show("Eroare de rețea la salvarea facturii.", "danger");
+    }
+  }
+
   function renderPagination(pagination) {
     if (!paginationContainer) return;
 
@@ -290,11 +365,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     switch (status) {
       case "paid":
         return "success";
-      case "sent":
+      case "issued":
         return "info text-dark";
       case "draft":
         return "secondary";
-      case "partial":
+      case "partially_paid":
         return "warning text-dark";
       case "overdue":
         return "danger";
