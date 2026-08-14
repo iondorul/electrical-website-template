@@ -1,0 +1,21 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "backend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "backend", "start"],
+      "port": 3000
+    },
+    {
+      "name": "frontend",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:\\Users\\iondo\\AppData\\Local\\Temp\\claude\\E--AZURE-idvsoftvisualstudiocom-electrical-website-template\\cc9a0fda-0c9a-403c-b7fe-41307d181484\\scratchpad\\static-server.js",
+        "frontend",
+        "5555"
+      ],
+      "port": 5555
+    }
+  ]
+}

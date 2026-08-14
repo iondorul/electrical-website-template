@@ -1,5 +1,30 @@
 const InvoiceService = require("../services/invoiceService");
-const { Errors } = require("../constants");
+const CompanySettingsService = require("../services/companySettingsService");
+const { generateInvoicePdf } = require("../services/invoicePdfService");
+const { sendInvoiceEmail } = require("../services/emailService");
+const { Errors, Statuses } = require("../constants");
+
+async function buildPdfBuffer(invoice, userId, preloadedCompany) {
+  const company =
+    preloadedCompany !== undefined
+      ? preloadedCompany
+      : await CompanySettingsService.getByUserId(userId);
+  return generateInvoicePdf({
+    invoice,
+    client: {
+      company_name: invoice.client_name,
+      contact_person: invoice.client_contact_person,
+      email: invoice.client_email,
+      phone: invoice.client_phone,
+      address: invoice.client_address,
+      city: invoice.client_city,
+      country: invoice.client_country,
+      postal_code: invoice.client_postal_code,
+      vat_number: invoice.client_vat_number,
+    },
+    company,
+  });
+}
 
 class InvoiceController {
   static async createFromQuote(req, res) {
@@ -152,6 +177,119 @@ class InvoiceController {
           success: false,
           message:
             "O factură plătită nu poate reveni la statusul Ciornă (Draft).",
+        });
+      }
+      return res.status(500).json({
+        success: false,
+        error: Errors.SERVER_ERROR,
+        message: error.message,
+      });
+    }
+  }
+
+  static async downloadPdf(req, res) {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+          success: false,
+          error: Errors.MISSING_REQUIRED_FIELDS,
+          message: "Invoice ID must be a valid positive integer.",
+        });
+      }
+
+      const invoice = await InvoiceService.getById(id, req.user.id);
+      if (!invoice) {
+        return res
+          .status(404)
+          .json({ success: false, error: Errors.INVOICE_NOT_FOUND });
+      }
+
+      const pdfBuffer = await buildPdfBuffer(invoice, req.user.id);
+
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        `inline; filename="${invoice.invoice_number}.pdf"`,
+      );
+      return res.send(pdfBuffer);
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: Errors.SERVER_ERROR,
+        message: error.message,
+      });
+    }
+  }
+
+  static async sendEmail(req, res) {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+          success: false,
+          error: Errors.MISSING_REQUIRED_FIELDS,
+          message: "Invoice ID must be a valid positive integer.",
+        });
+      }
+
+      const invoice = await InvoiceService.getById(id, req.user.id);
+      if (!invoice) {
+        return res
+          .status(404)
+          .json({ success: false, error: Errors.INVOICE_NOT_FOUND });
+      }
+
+      if (invoice.status === Statuses.INVOICE.CANCELED) {
+        return res.status(400).json({
+          success: false,
+          error: Errors.INVOICE_CANCELED_CANNOT_SEND,
+          message: "O factură anulată nu poate fi trimisă către client.",
+        });
+      }
+
+      if (!invoice.client_email) {
+        return res.status(400).json({
+          success: false,
+          error: Errors.INVOICE_NO_CLIENT_EMAIL,
+          message:
+            "Clientul asociat acestei facturi nu are o adresă de email completată.",
+        });
+      }
+
+      const company = await CompanySettingsService.getByUserId(req.user.id);
+      const pdfBuffer = await buildPdfBuffer(invoice, req.user.id, company);
+
+      await sendInvoiceEmail({
+        to: invoice.client_email,
+        invoiceNumber: invoice.invoice_number,
+        companyName: company?.company_name,
+        totalGross: parseFloat(invoice.total_gross).toFixed(2),
+        currency: invoice.currency_code ? invoice.currency_code.trim() : "RON",
+        dueDate: invoice.due_date
+          ? new Date(invoice.due_date).toLocaleDateString("ro-RO")
+          : "-",
+        pdfBuffer,
+      });
+
+      const updatedInvoice = await InvoiceService.markAsSent(
+        id,
+        req.user.id,
+        invoice.client_email,
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: `Factura a fost trimisă la ${invoice.client_email}.`,
+        data: updatedInvoice,
+      });
+    } catch (error) {
+      if (error.message === "SMTP_NOT_CONFIGURED") {
+        return res.status(400).json({
+          success: false,
+          error: Errors.SMTP_NOT_CONFIGURED,
+          message:
+            "Trimiterea de email nu este configurată. Completează SMTP_HOST, SMTP_USER și SMTP_PASS în .env.",
         });
       }
       return res.status(500).json({

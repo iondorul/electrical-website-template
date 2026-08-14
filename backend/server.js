@@ -9,6 +9,7 @@ const estimateRoutes = require("./routes/estimateRoutes");
 const quoteRoutes = require("./routes/quoteRoutes");
 const invoiceRoutes = require("./routes/invoiceRoute");
 const materialRoutes = require("./routes/materialRoutes");
+const companySettingsRoutes = require("./routes/companySettingsRoutes");
 
 console.log("SERVER LOADED");
 
@@ -39,6 +40,7 @@ app.use("/api/estimates", estimateRoutes);
 app.use("/api/quotes", quoteRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/materials", materialRoutes);
+app.use("/api/company-settings", companySettingsRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);

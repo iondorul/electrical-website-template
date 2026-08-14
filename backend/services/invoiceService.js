@@ -224,8 +224,9 @@ class InvoiceService {
     const totalItems = parseInt(countRes.rows[0].total, 10);
 
     const dataQuery = `
-      SELECT i.*, 
-             c.company_name as client_name, 
+      SELECT i.*,
+             c.company_name as client_name,
+             c.email as client_email,
              p.project_name as project_name
       FROM invoices i
       LEFT JOIN clients c ON i.client_id = c.id
@@ -251,7 +252,17 @@ class InvoiceService {
 
   static async getById(id, userId) {
     const invoiceRes = await db.query(
-      `SELECT i.*, c.company_name as client_name, p.project_name as project_name 
+      `SELECT i.*,
+              c.company_name as client_name,
+              c.contact_person as client_contact_person,
+              c.email as client_email,
+              c.phone as client_phone,
+              c.address as client_address,
+              c.city as client_city,
+              c.country as client_country,
+              c.postal_code as client_postal_code,
+              c.vat_number as client_vat_number,
+              p.project_name as project_name
        FROM invoices i
        LEFT JOIN clients c ON i.client_id = c.id
        LEFT JOIN projects p ON i.project_id = p.id
@@ -345,6 +356,20 @@ class InvoiceService {
     ];
 
     const result = await db.query(updateQuery, values);
+    return result.rows[0] || null;
+  }
+
+  static async markAsSent(id, userId, sentToEmail) {
+    const result = await db.query(
+      `UPDATE invoices SET
+         sent_at = now(),
+         sent_to_email = $1,
+         status = CASE WHEN status = $2 THEN $3 ELSE status END,
+         updated_by = $4
+       WHERE id = $5 AND created_by = $4 AND is_active = true
+       RETURNING *`,
+      [sentToEmail, Statuses.INVOICE.DRAFT, Statuses.INVOICE.ISSUED, userId, id],
+    );
     return result.rows[0] || null;
   }
 

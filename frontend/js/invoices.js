@@ -151,8 +151,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <button type="button" class="btn btn-sm btn-outline-info me-1 btn-view" data-id="${inv.id}" title="Vizualizare">
                         <i class="fas fa-eye"></i>
                     </button>
-                     <button type="button" class="btn btn-sm btn-outline-primary btn-edit" data-id="${inv.id}" title="Editare">
+                     <button type="button" class="btn btn-sm btn-outline-primary me-1 btn-edit" data-id="${inv.id}" title="Editare">
                         <i class="fas fa-pen"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary me-1 btn-download-pdf" data-id="${inv.id}" title="Descarcă PDF">
+                        <i class="fas fa-file-pdf"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-success btn-send-email" data-id="${inv.id}"
+                        title="${inv.client_email ? "Trimite factura pe email" : "Clientul nu are email completat"}"
+                        ${inv.client_email ? "" : "disabled"}>
+                        <i class="fas fa-paper-plane"></i>
                     </button>
                 </td>
             </tr>
@@ -167,6 +175,68 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll(".btn-edit").forEach((btn) => {
       btn.addEventListener("click", () => openEditInvoiceModal(btn.dataset.id));
     });
+
+    document.querySelectorAll(".btn-download-pdf").forEach((btn) => {
+      btn.addEventListener("click", () => downloadInvoicePdf(btn.dataset.id));
+    });
+
+    document.querySelectorAll(".btn-send-email").forEach((btn) => {
+      btn.addEventListener("click", () => sendInvoiceByEmail(btn, btn.dataset.id));
+    });
+  }
+
+  async function downloadInvoicePdf(id) {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${CONFIG.API_BASE_URL}/invoices/${id}/pdf`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.message || "Nu s-a putut genera PDF-ul.");
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    } catch (err) {
+      console.error("Eroare la descărcarea PDF-ului:", err);
+      Toast.show(err.message || "Eroare la generarea PDF-ului.", "danger");
+    }
+  }
+
+  async function sendInvoiceByEmail(btn, id) {
+    const confirmed = confirm(
+      "Trimiți această factură (PDF) pe email către client?",
+    );
+    if (!confirmed) return;
+
+    const originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`;
+
+    try {
+      const response = await API.post(`/invoices/${id}/send`, {});
+      if (response && response.success) {
+        Toast.show(
+          response.message || "Factura a fost trimisă cu succes.",
+          "success",
+        );
+        loadInvoices();
+      } else {
+        Toast.show(
+          (response && response.message) || "Nu s-a putut trimite factura.",
+          "danger",
+        );
+      }
+    } catch (err) {
+      console.error("Eroare la trimiterea facturii:", err);
+      Toast.show(err.message || "Eroare de rețea la trimitere.", "danger");
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
   }
 
   async function viewInvoiceDetails(id) {

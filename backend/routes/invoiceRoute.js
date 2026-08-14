@@ -18,6 +18,12 @@ router.get("/:id", InvoiceController.getById);
 // Actualizare factură (status, date, discount, TVA)
 router.put("/:id", InvoiceController.update);
 
+// Descărcare/preview PDF factură
+router.get("/:id/pdf", InvoiceController.downloadPdf);
+
+// Trimitere factură (PDF) pe email către client
+router.post("/:id/send", InvoiceController.sendEmail);
+
 router.delete("/", InvoiceController.deleteAll);
 
 module.exports = router;
