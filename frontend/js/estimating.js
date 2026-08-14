@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentPage = 1;
   let currentSearch = "";
 
+  let materialsCache = [];
+  let materialsMap = new Map();
+
   const tableBody = document.getElementById("estimatesTableBody");
   const searchInput = document.getElementById("searchInput");
   const itemsBody = document.getElementById("estimateItemsBody");
@@ -23,6 +26,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Încărcare inițială date și opțiuni select
   await loadEstimates();
   await loadSelectOptions();
+
+  // Încărcare inițială date și opțiuni select
+  await loadEstimates();
+  await loadSelectOptions();
+  await loadMaterialsCache();
 
   // Event Căutare
   if (searchInput) {
@@ -151,7 +159,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </select>
             </td>
             <td>
-                <input type="text" class="form-control form-control-sm item-desc" value="${Utils.escapeHtml(item.description || "")}" placeholder="Descriere linie...">
+                <input type="text" class="form-control form-control-sm item-desc" list="materialsDatalist" value="${Utils.escapeHtml(item.description || "")}" placeholder="Descriere linie...">
             </td>
             <td>
                 <input type="number" class="form-control form-control-sm item-qty" value="${item.quantity || 1}" step="0.1" min="0.1">
@@ -188,6 +196,44 @@ document.addEventListener("DOMContentLoaded", async () => {
         calculateTotals();
       });
     });
+
+    tr.querySelectorAll("input, select").forEach((el) => {
+      el.addEventListener("input", (e) => {
+        e.target.classList.remove("is-invalid");
+        calculateTotals();
+      });
+    });
+
+    // Autocomplete: la selectarea unui material din listă, completează Cost și UM
+    const descInput = tr.querySelector(".item-desc");
+    const typeSelect = tr.querySelector(".item-type");
+    descInput.addEventListener("input", (e) => {
+      const match = materialsMap.get(e.target.value);
+      if (match && typeSelect.value === "material") {
+        tr.querySelector(".item-cost").value = match.unit_price;
+        const umSelect = tr.querySelector(".item-um");
+        const umOption = Array.from(umSelect.options).find(
+          (o) => o.value === match.unit_of_measure,
+        );
+        if (umOption) {
+          umSelect.value = match.unit_of_measure;
+        }
+        calculateTotals();
+      }
+    });
+
+    // Activează sugestiile doar când tipul liniei este Material
+    typeSelect.addEventListener("change", () => {
+      if (typeSelect.value === "material") {
+        descInput.setAttribute("list", "materialsDatalist");
+      } else {
+        descInput.removeAttribute("list");
+      }
+    });
+
+    if (typeSelect.value !== "material") {
+      descInput.removeAttribute("list");
+    }
 
     tr.querySelector(".btn-remove-row").addEventListener("click", () => {
       tr.remove();
@@ -436,6 +482,31 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     } catch (err) {
       console.error("Eroare opțiuni select:", err);
+    }
+  }
+
+  async function loadMaterialsCache() {
+    try {
+      const response = await API.get("/materials?limit=1000");
+      if (response && response.success) {
+        materialsCache = response.data || [];
+        materialsMap.clear();
+
+        const datalist = document.getElementById("materialsDatalist");
+        if (datalist) {
+          datalist.innerHTML = materialsCache
+            .map((mat) => {
+              const label = mat.item_code
+                ? `${mat.name} (${mat.item_code})`
+                : mat.name;
+              materialsMap.set(label, mat);
+              return `<option value="${Utils.escapeHtml(label)}"></option>`;
+            })
+            .join("");
+        }
+      }
+    } catch (err) {
+      console.error("Eroare la încărcarea catalogului de materiale:", err);
     }
   }
 
