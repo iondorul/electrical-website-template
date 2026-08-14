@@ -7,8 +7,8 @@ const authRoutes = require("./routes/authRoutes");
 const clientRoutes = require("./routes/clientRoutes");
 const estimateRoutes = require("./routes/estimateRoutes");
 const quoteRoutes = require("./routes/quoteRoutes");
-
 const invoiceRoutes = require("./routes/invoiceRoute");
+const materialRoutes = require("./routes/materialRoutes");
 
 console.log("SERVER LOADED");
 
@@ -37,9 +37,8 @@ app.use("/api/clients", clientRoutes);
 app.use("/api/projects", require("./routes/projectRoutes"));
 app.use("/api/estimates", estimateRoutes);
 app.use("/api/quotes", quoteRoutes);
-
-// Înregistrare cale API
 app.use("/api/invoices", invoiceRoutes);
+app.use("/api/materials", materialRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);
