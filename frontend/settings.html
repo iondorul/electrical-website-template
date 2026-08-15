@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElectricalVPF ERP | Setări Firmă</title>
+    <title>ElectricalVPF ERP | Setări</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,9 +19,12 @@
 
     <!-- Dashboard & Shell CSS -->
     <link href="css/dashboard.css" rel="stylesheet">
+
+    <!-- Settings Modal CSS (scoped to this page only) -->
+    <link href="css/settings.css" rel="stylesheet">
 </head>
 
-<body data-page-title="Setări Firmă">
+<body data-page-title="Setări">
 
     <div class="erp-wrapper">
 
@@ -34,85 +37,33 @@
             <!-- Dynamic Topbar Container -->
             <div id="shellTopbar"></div>
 
-            <!-- SETTINGS BODY CONTENT -->
-            <div class="content-body">
-
-                <div class="card content-card">
-                    <div class="card-body p-4">
-                        <h5 class="fw-bold mb-1">Datele firmei emitente</h5>
-                        <p class="text-muted small mb-4">
-                            Aceste date apar în antetul facturilor PDF trimise clienților
-                            (nume firmă, adresă, CUI/CIF, IBAN).
-                        </p>
-
-                        <form id="companySettingsForm">
-                            <div class="row g-3">
-                                <div class="col-12 col-md-6">
-                                    <label for="csCompanyName" class="form-label fw-semibold">Denumire firmă *</label>
-                                    <input type="text" class="form-control" id="csCompanyName" required
-                                        placeholder="ex. S.C. ElectricalVPF S.R.L.">
-                                </div>
-                                <div class="col-12 col-md-3">
-                                    <label for="csVatNumber" class="form-label fw-semibold">CUI / CIF</label>
-                                    <input type="text" class="form-control" id="csVatNumber" placeholder="RO12345678">
-                                </div>
-                                <div class="col-12 col-md-3">
-                                    <label for="csRegistrationNumber" class="form-label fw-semibold">Nr. Reg.
-                                        Com.</label>
-                                    <input type="text" class="form-control" id="csRegistrationNumber"
-                                        placeholder="J01/1234/2020">
-                                </div>
-
-                                <div class="col-12">
-                                    <label for="csAddress" class="form-label fw-semibold">Adresă</label>
-                                    <input type="text" class="form-control" id="csAddress"
-                                        placeholder="Str. Exemplu, nr. 1">
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <label for="csCity" class="form-label fw-semibold">Oraș</label>
-                                    <input type="text" class="form-control" id="csCity">
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <label for="csCountry" class="form-label fw-semibold">Țară</label>
-                                    <input type="text" class="form-control" id="csCountry" value="România">
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <label for="csPostalCode" class="form-label fw-semibold">Cod poștal</label>
-                                    <input type="text" class="form-control" id="csPostalCode">
-                                </div>
-
-                                <div class="col-12 col-md-6">
-                                    <label for="csIban" class="form-label fw-semibold">IBAN</label>
-                                    <input type="text" class="form-control" id="csIban" placeholder="RO00 XXXX 0000 0000 0000 0000">
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <label for="csBankName" class="form-label fw-semibold">Bancă</label>
-                                    <input type="text" class="form-control" id="csBankName">
-                                </div>
-
-                                <div class="col-12 col-md-6">
-                                    <label for="csPhone" class="form-label fw-semibold">Telefon</label>
-                                    <input type="text" class="form-control" id="csPhone">
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <label for="csEmail" class="form-label fw-semibold">Email</label>
-                                    <input type="email" class="form-control" id="csEmail">
-                                </div>
-                            </div>
-
-                            <div class="mt-4 text-end">
-                                <button type="submit" class="btn btn-primary fw-semibold px-4" id="btnSaveSettings">
-                                    <i class="fas fa-floppy-disk me-2"></i> Salvează
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-            </div>
+            <!-- SETTINGS BODY CONTENT (background behind modal) -->
+            <div class="content-body"></div>
 
         </main>
 
+    </div>
+
+    <!-- SETTINGS MODAL (Claude.ai / Stripe style: fixed sidebar + dynamic content) -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered settings-modal-dialog">
+            <div class="modal-content settings-modal-content">
+                <div class="modal-header settings-modal-header">
+                    <h5 class="modal-title fw-bold mb-0">
+                        <i class="fas fa-gear me-2 text-muted"></i>Setări
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="settings-body">
+                    <nav class="settings-sidebar" id="settingsNav">
+                        <!-- Populat dinamic de settings.js din tab-urile înregistrate -->
+                    </nav>
+                    <div class="settings-content" id="settingsContent">
+                        <!-- Populat dinamic de tab-ul activ -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- TOAST CONTAINER FOR NOTIFICATIONS -->
@@ -139,7 +90,13 @@
     <script src="js/api.js"></script>
     <script src="js/shell.js"></script>
 
-    <!-- Module Specific JS -->
+    <!-- Settings Tabs (each is a self-contained, independently extensible module) -->
+    <script src="js/settings/companyTab.js"></script>
+    <script src="js/settings/accountTab.js"></script>
+    <script src="js/settings/billingTab.js"></script>
+    <script src="js/settings/privacyTab.js"></script>
+
+    <!-- Settings Controller (mounts tabs, handles switching + modal lifecycle) -->
     <script src="js/settings.js"></script>
 
 </body>

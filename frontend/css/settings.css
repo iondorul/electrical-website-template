@@ -1,0 +1,201 @@
+/* ElectricalVPF ERP — Settings Modal (Claude.ai / Stripe / Vercel style) */
+
+.settings-modal-dialog {
+  max-width: 880px;
+}
+
+.settings-modal-content {
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.18);
+}
+
+.settings-modal-header {
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.settings-modal-header .modal-title {
+  font-size: 1.05rem;
+}
+
+.settings-body {
+  display: flex;
+  min-height: 560px;
+  max-height: 72vh;
+}
+
+.settings-sidebar {
+  width: 230px;
+  flex-shrink: 0;
+  background: #f8f9fb;
+  border-right: 1px solid #eef0f3;
+  padding: 1rem 0.75rem;
+  overflow-y: auto;
+}
+
+.settings-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 9px;
+  color: #495057;
+  font-weight: 500;
+  font-size: 0.92rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  margin-bottom: 0.15rem;
+}
+
+.settings-nav-item i {
+  width: 18px;
+  text-align: center;
+  color: #868e96;
+  transition: color 0.15s ease;
+}
+
+.settings-nav-item:hover {
+  background: #eef0f3;
+}
+
+.settings-nav-item.active {
+  background: #e8edff;
+  color: #3b5bfd;
+}
+
+.settings-nav-item.active i {
+  color: #3b5bfd;
+}
+
+.settings-content {
+  flex: 1;
+  padding: 1.85rem 2.1rem;
+  overflow-y: auto;
+}
+
+.settings-section-title {
+  font-weight: 700;
+  font-size: 1.08rem;
+  margin-bottom: 0.25rem;
+}
+
+.settings-section-desc {
+  color: #868e96;
+  font-size: 0.85rem;
+  margin-bottom: 1.65rem;
+}
+
+.settings-subblock {
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid #f1f2f4;
+}
+
+.settings-subblock-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.settings-badge-soon {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #868e96;
+  background: #f1f2f4;
+  border-radius: 20px;
+  padding: 0.2rem 0.6rem;
+  letter-spacing: 0.02em;
+}
+
+.settings-placeholder-box {
+  border: 1px dashed #dee2e6;
+  border-radius: 10px;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #adb5bd;
+  font-size: 0.88rem;
+}
+
+/* Elimină iconița de fundal (✓/✗) pe care Bootstrap o adaugă automat pentru
+   .is-valid/.is-invalid — s-ar suprapune cu butonul de "ochi" din colțul
+   dreapta al câmpului. Rămâne doar borderul colorat. */
+.settings-password-field .form-control.is-valid,
+.settings-password-field .form-control.is-invalid {
+  background-image: none;
+}
+
+.settings-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.4rem;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #adb5bd;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.settings-password-toggle:hover {
+  color: #495057;
+}
+
+.settings-field-feedback {
+  display: none;
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 0.35rem;
+}
+
+.settings-field-feedback.show {
+  display: block;
+}
+
+.settings-link-placeholder {
+  color: #495057;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.settings-link-placeholder:hover {
+  color: #3b5bfd;
+  text-decoration: underline;
+}
+
+.settings-danger-zone {
+  border: 1px solid #f5c2c7;
+  background: #fff5f5;
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .settings-body {
+    flex-direction: column;
+    max-height: none;
+  }
+
+  .settings-sidebar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid #eef0f3;
+  }
+
+  .settings-nav-item {
+    flex-shrink: 0;
+  }
+
+  .settings-content {
+    padding: 1.5rem;
+  }
+}

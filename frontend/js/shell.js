@@ -30,28 +30,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     pageTitleEl.textContent = customTitle;
   }
 
-  // 5. SET USER INFO IN TOPBAR
-  const userNameEl = document.getElementById("shellUserName");
-  const userRoleEl = document.getElementById("shellUserRole");
+  // 5. SET USER INFO IN TOPBAR (dinamic, din userul autentificat)
+  loadCurrentUser();
 
-  const savedUser = JSON.parse(localStorage.getItem("user") || "{}");
-
-  if (userNameEl) {
-    userNameEl.textContent =
-      savedUser.name || savedUser.email || "Valentin Ion";
-  }
-  if (userRoleEl) {
-    userRoleEl.textContent = savedUser.role || "Administrator";
-  }
-
-  // 6. SETUP LOGOUT EVENT
+  // 6. SETUP LOGOUT EVENTS (sidebar + acces rapid din header)
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      redirectToLogin();
-    });
+    logoutBtn.addEventListener("click", performLogout);
+  }
+
+  const headerLogoutBtn = document.getElementById("headerLogoutBtn");
+  if (headerLogoutBtn) {
+    headerLogoutBtn.addEventListener("click", performLogout);
   }
 
   // 7. SETUP SIDEBAR TOGGLE & CLOSE EVENTS
@@ -109,4 +99,33 @@ async function loadComponent(containerId, componentPath) {
 
 function redirectToLogin() {
   window.location.href = "login.html";
+}
+
+function performLogout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  redirectToLogin();
+}
+
+async function loadCurrentUser() {
+  const userNameEl = document.getElementById("shellUserName");
+  const userRoleEl = document.getElementById("shellUserRole");
+
+  try {
+    const response = await API.get("/auth/me");
+    if (response && response.success && response.data) {
+      const user = response.data;
+      if (userNameEl) {
+        userNameEl.textContent = user.full_name || user.email || "Utilizator";
+      }
+      if (userRoleEl) {
+        userRoleEl.textContent = user.role || "Administrator";
+      }
+      // Permite paginilor individuale (ex. dashboard.html) să personalizeze
+      // conținut propriu pe baza userului autentificat, fără un nou apel API.
+      document.dispatchEvent(new CustomEvent("erp:user-loaded", { detail: user }));
+    }
+  } catch (err) {
+    console.error("Eroare la încărcarea utilizatorului curent:", err);
+  }
 }

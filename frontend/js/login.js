@@ -11,6 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Regex pentru validare format email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  // 0. Mesaj de succes după resetarea parolei (redirect din reset-password.html)
+  if (new URLSearchParams(window.location.search).get("resetSuccess") === "1") {
+    showAlert(
+      "Parola a fost resetată cu succes! Te poți autentifica cu noua parolă.",
+      "success",
+    );
+  }
+
   // 1. Arată / Ascunde Parola (Toggle Eye)
   if (togglePasswordBtn && passwordInput) {
     togglePasswordBtn.addEventListener("click", (e) => {

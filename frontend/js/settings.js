@@ -1,62 +1,64 @@
+/**
+ * Settings Controller
+ * Randează sidebar-ul de tab-uri din window.SettingsTabs (populat de
+ * fișierele din js/settings/*Tab.js) și gestionează comutarea între ele.
+ * Adăugarea unui tab nou = un fișier nou + un <script> în settings.html,
+ * fără a atinge acest fișier.
+ */
 document.addEventListener("DOMContentLoaded", async () => {
-  const form = document.getElementById("companySettingsForm");
-  const fields = {
-    company_name: document.getElementById("csCompanyName"),
-    vat_number: document.getElementById("csVatNumber"),
-    registration_number: document.getElementById("csRegistrationNumber"),
-    address: document.getElementById("csAddress"),
-    city: document.getElementById("csCity"),
-    country: document.getElementById("csCountry"),
-    postal_code: document.getElementById("csPostalCode"),
-    iban: document.getElementById("csIban"),
-    bank_name: document.getElementById("csBankName"),
-    phone: document.getElementById("csPhone"),
-    email: document.getElementById("csEmail"),
-  };
+  const navEl = document.getElementById("settingsNav");
+  const contentEl = document.getElementById("settingsContent");
+  const modalEl = document.getElementById("settingsModal");
 
-  await loadSettings();
+  if (!navEl || !contentEl || !modalEl) return;
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    await saveSettings();
+  const tabs = window.SettingsTabs || [];
+  let activeTabId = tabs.length ? tabs[0].id : null;
+
+  function renderNav() {
+    navEl.innerHTML = tabs
+      .map(
+        (t) => `
+          <div class="settings-nav-item ${t.id === activeTabId ? "active" : ""}" data-tab="${t.id}">
+            <i class="fas ${t.icon}"></i>
+            <span>${t.label}</span>
+          </div>
+        `,
+      )
+      .join("");
+
+    navEl.querySelectorAll(".settings-nav-item").forEach((el) => {
+      el.addEventListener("click", () => switchTab(el.dataset.tab));
+    });
+  }
+
+  async function switchTab(tabId) {
+    if (tabId === activeTabId && contentEl.dataset.loaded === tabId) return;
+    activeTabId = tabId;
+    renderNav();
+
+    const tab = tabs.find((t) => t.id === tabId);
+    contentEl.innerHTML = `
+      <div class="text-center text-muted py-5">
+        <span class="spinner-border spinner-border-sm"></span>
+      </div>
+    `;
+
+    if (tab) {
+      await tab.render(contentEl);
+      contentEl.dataset.loaded = tabId;
+    }
+  }
+
+  renderNav();
+  if (activeTabId) {
+    await switchTab(activeTabId);
+  }
+
+  modalEl.addEventListener("hidden.bs.modal", () => {
+    window.location.href = "dashboard.html";
   });
 
-  async function loadSettings() {
-    try {
-      const response = await API.get("/company-settings");
-      if (response && response.success && response.data) {
-        const settings = response.data;
-        Object.keys(fields).forEach((key) => {
-          if (settings[key] !== undefined && settings[key] !== null) {
-            fields[key].value = settings[key];
-          }
-        });
-      }
-    } catch (err) {
-      console.error("Eroare la încărcarea setărilor firmei:", err);
-      Toast.show("Eroare de rețea la încărcarea setărilor.", "danger");
-    }
-  }
-
-  async function saveSettings() {
-    const payload = {};
-    Object.keys(fields).forEach((key) => {
-      payload[key] = fields[key].value.trim();
-    });
-
-    try {
-      const response = await API.put("/company-settings", payload);
-      if (response && response.success) {
-        Toast.show("Datele firmei au fost salvate cu succes.", "success");
-      } else {
-        Toast.show(
-          (response && response.message) || "Nu s-au putut salva datele.",
-          "danger",
-        );
-      }
-    } catch (err) {
-      console.error("Eroare la salvarea setărilor firmei:", err);
-      Toast.show(err.message || "Eroare de rețea la salvare.", "danger");
-    }
-  }
+  const modalInstance = new bootstrap.Modal(modalEl);
+  modalInstance.show();
 });

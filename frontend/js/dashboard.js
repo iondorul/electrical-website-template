@@ -1,32 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // 1. ROUTE GUARD - Verificare Token
-  const token = localStorage.getItem("token");
+// Personalizează banner-ul de bun venit cu numele userului autentificat.
+// Ascultă evenimentul emis de shell.js după ce /auth/me răspunde, ca să nu
+// mai facă un al doilea apel API redundant.
+document.addEventListener("erp:user-loaded", (event) => {
+  const user = event.detail;
+  const welcomeTitleEl = document.getElementById("welcomeTitle");
+  if (!welcomeTitleEl || !user) return;
 
-  if (!token) {
-    console.warn("Acces neautorizat. Se redirectioneaza la login...");
-    window.location.href = "login.html";
-    return;
-  }
-
-  // 2. LOGOUT FUNCTIONALITY
-  const logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      // Stergem token-ul din localStorage
-      localStorage.removeItem("token");
-
-      // Redirectionare catre login
-      window.location.href = "login.html";
-    });
-  }
-
-  // 3. Mobile Sidebar Toggle
-  const sidebarToggle = document.getElementById("sidebarToggle");
-  const erpSidebar = document.getElementById("erpSidebar");
-
-  if (sidebarToggle && erpSidebar) {
-    sidebarToggle.addEventListener("click", () => {
-      erpSidebar.classList.toggle("show");
-    });
-  }
+  const firstName = (user.full_name || "").trim().split(" ")[0] || user.email;
+  welcomeTitleEl.textContent = `👤 Welcome back, ${firstName}!`;
 });

@@ -55,4 +55,25 @@ async function sendInvoiceEmail({
   });
 }
 
-module.exports = { sendInvoiceEmail, isConfigured };
+async function sendPasswordResetEmail({ to, fullName, resetLink }) {
+  const transporter = getTransporter();
+
+  const subject = "Resetare parolă - ElectricalVPF ERP";
+  const text =
+    `Bună${fullName ? ` ${fullName}` : ""},\n\n` +
+    `Ai solicitat resetarea parolei contului tău ElectricalVPF ERP.\n\n` +
+    `Accesează linkul de mai jos pentru a seta o parolă nouă ` +
+    `(valabil 1 oră de la această solicitare):\n${resetLink}\n\n` +
+    `Dacă nu ai solicitat această acțiune, poți ignora acest email — ` +
+    `parola ta rămâne neschimbată.\n\n` +
+    `Cu stimă,\nElectricalVPF ERP`;
+
+  await transporter.sendMail({
+    from: process.env.SMTP_FROM || process.env.SMTP_USER,
+    to,
+    subject,
+    text,
+  });
+}
+
+module.exports = { sendInvoiceEmail, sendPasswordResetEmail, isConfigured };
