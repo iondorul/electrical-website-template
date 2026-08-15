@@ -65,6 +65,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     btnSaveEdit.addEventListener("click", saveInvoiceEdit);
   }
 
+  let sendEmailModalInstance = null;
+  const sendEmailModalEl = document.getElementById("sendInvoiceEmailModal");
+  if (sendEmailModalEl) {
+    sendEmailModalInstance = new bootstrap.Modal(sendEmailModalEl);
+  }
+
+  const sendEmailRecipientInput = document.getElementById("sendEmailRecipient");
+  let sendEmailTriggerBtn = null;
+
+  const btnConfirmSendEmail = document.getElementById(
+    "btnConfirmSendInvoiceEmail",
+  );
+  if (btnConfirmSendEmail) {
+    btnConfirmSendEmail.addEventListener("click", confirmSendInvoiceEmail);
+  }
+
+  if (sendEmailRecipientInput) {
+    sendEmailRecipientInput.addEventListener("input", () => {
+      sendEmailRecipientInput.classList.remove("is-invalid");
+    });
+  }
+
   // Încărcare inițială
   await loadInvoices();
 
@@ -207,22 +229,79 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function sendInvoiceByEmail(btn, id) {
-    const confirmed = confirm(
-      "Trimiți această factură (PDF) pe email către client?",
-    );
-    if (!confirmed) return;
-
-    const originalHtml = btn.innerHTML;
-    btn.disabled = true;
-    btn.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`;
+    sendEmailTriggerBtn = btn;
 
     try {
-      const response = await API.post(`/invoices/${id}/send`, {});
+      const response = await API.get(`/invoices/${id}`);
+      if (!response || !response.success) {
+        Toast.show("Nu s-au putut prelua datele facturii.", "danger");
+        return;
+      }
+
+      const inv = response.data;
+      document.getElementById("sendEmailInvoiceId").value = inv.id;
+      document.getElementById("sendEmailClientName").value =
+        inv.client_contact_person || "-";
+      document.getElementById("sendEmailClientCompany").value =
+        inv.client_name || "-";
+      document.getElementById("sendEmailInvoiceNumber").value =
+        inv.invoice_number || "-";
+
+      if (sendEmailRecipientInput) {
+        sendEmailRecipientInput.value = inv.client_email || "";
+        sendEmailRecipientInput.classList.remove("is-invalid");
+      }
+
+      if (sendEmailModalInstance) sendEmailModalInstance.show();
+    } catch (err) {
+      console.error("Eroare la deschiderea modalului de trimitere:", err);
+      Toast.show("Eroare de rețea la încărcarea facturii.", "danger");
+    }
+  }
+
+  function isValidEmail(value) {
+    return Boolean(value) && value.includes("@") && value.trim().length > 3;
+  }
+
+  async function confirmSendInvoiceEmail() {
+    const id = document.getElementById("sendEmailInvoiceId").value;
+    const email = sendEmailRecipientInput
+      ? sendEmailRecipientInput.value.trim()
+      : "";
+
+    if (!isValidEmail(email)) {
+      if (sendEmailRecipientInput) {
+        sendEmailRecipientInput.classList.add("is-invalid");
+      }
+      return;
+    }
+    if (sendEmailRecipientInput) {
+      sendEmailRecipientInput.classList.remove("is-invalid");
+    }
+
+    const btnConfirmSendEmail = document.getElementById(
+      "btnConfirmSendInvoiceEmail",
+    );
+    const originalHtml = btnConfirmSendEmail.innerHTML;
+    btnConfirmSendEmail.disabled = true;
+    btnConfirmSendEmail.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`;
+
+    const triggerBtn = sendEmailTriggerBtn;
+    let triggerOriginalHtml = null;
+    if (triggerBtn) {
+      triggerOriginalHtml = triggerBtn.innerHTML;
+      triggerBtn.disabled = true;
+      triggerBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`;
+    }
+
+    try {
+      const response = await API.post(`/invoices/${id}/send`, { email });
       if (response && response.success) {
         Toast.show(
           response.message || "Factura a fost trimisă cu succes.",
           "success",
         );
+        if (sendEmailModalInstance) sendEmailModalInstance.hide();
         loadInvoices();
       } else {
         Toast.show(
@@ -234,8 +313,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Eroare la trimiterea facturii:", err);
       Toast.show(err.message || "Eroare de rețea la trimitere.", "danger");
     } finally {
-      btn.disabled = false;
-      btn.innerHTML = originalHtml;
+      btnConfirmSendEmail.disabled = false;
+      btnConfirmSendEmail.innerHTML = originalHtml;
+      if (triggerBtn) {
+        triggerBtn.disabled = false;
+        triggerBtn.innerHTML = triggerOriginalHtml;
+      }
     }
   }
 

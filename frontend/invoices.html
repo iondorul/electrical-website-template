@@ -181,6 +181,46 @@
         </div>
     </div>
 
+    <!-- MODAL TRIMITERE FACTURĂ PE EMAIL -->
+    <div class="modal fade" id="sendInvoiceEmailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Trimite Factura pe Email</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="sendEmailInvoiceId">
+                    <div class="mb-3">
+                        <label class="form-label">Nume Client</label>
+                        <input type="text" id="sendEmailClientName" class="form-control" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Companie</label>
+                        <input type="text" id="sendEmailClientCompany" class="form-control" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Număr Factură</label>
+                        <input type="text" id="sendEmailInvoiceNumber" class="form-control" readonly>
+                    </div>
+                    <div class="mb-1">
+                        <label class="form-label">Email Destinatar</label>
+                        <input type="email" id="sendEmailRecipient" class="form-control" placeholder="nume@exemplu.com">
+                        <div class="invalid-feedback" id="sendEmailRecipientError">
+                            Introduceți o adresă de email validă.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="btn btn-success" id="btnConfirmSendInvoiceEmail">
+                        <i class="fas fa-paper-plane me-1"></i> Trimite
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- TOAST CONTAINER FOR NOTIFICATIONS -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="erpToast" class="toast align-items-center text-white bg-success border-0" role="alert"

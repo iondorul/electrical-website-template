@@ -248,7 +248,24 @@ class InvoiceController {
         });
       }
 
-      if (!invoice.client_email) {
+      const requestedEmail =
+        typeof req.body.email === "string" ? req.body.email.trim() : "";
+      const isValidEmailFormat = (value) =>
+        Boolean(value) && value.includes("@") && value.length > 3;
+
+      let recipientEmail = invoice.client_email;
+      if (requestedEmail) {
+        if (!isValidEmailFormat(requestedEmail)) {
+          return res.status(400).json({
+            success: false,
+            error: Errors.MISSING_REQUIRED_FIELDS,
+            message: "Adresa de email furnizată nu este validă.",
+          });
+        }
+        recipientEmail = requestedEmail;
+      }
+
+      if (!recipientEmail) {
         return res.status(400).json({
           success: false,
           error: Errors.INVOICE_NO_CLIENT_EMAIL,
@@ -261,7 +278,7 @@ class InvoiceController {
       const pdfBuffer = await buildPdfBuffer(invoice, req.user.id, company);
 
       await sendInvoiceEmail({
-        to: invoice.client_email,
+        to: recipientEmail,
         invoiceNumber: invoice.invoice_number,
         companyName: company?.company_name,
         totalGross: parseFloat(invoice.total_gross).toFixed(2),
@@ -275,12 +292,12 @@ class InvoiceController {
       const updatedInvoice = await InvoiceService.markAsSent(
         id,
         req.user.id,
-        invoice.client_email,
+        recipientEmail,
       );
 
       return res.status(200).json({
         success: true,
-        message: `Factura a fost trimisă la ${invoice.client_email}.`,
+        message: `Factura a fost trimisă la ${recipientEmail}.`,
         data: updatedInvoice,
       });
     } catch (error) {
