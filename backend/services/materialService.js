@@ -61,13 +61,14 @@ class MaterialService {
       unit_of_measure,
       unit_price,
       stock_quantity,
+      min_stock,
     } = data;
 
     const query = `
       INSERT INTO materials (
         created_by, item_code, name, category,
-        unit_of_measure, unit_price, stock_quantity
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+        unit_of_measure, unit_price, stock_quantity, min_stock
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *;
     `;
 
@@ -79,6 +80,7 @@ class MaterialService {
       unit_of_measure,
       unit_price || 0,
       stock_quantity || 0,
+      min_stock || 0,
     ];
 
     const res = await db.query(query, values);
@@ -96,6 +98,7 @@ class MaterialService {
       unit_of_measure,
       unit_price,
       stock_quantity,
+      min_stock,
     } = data;
 
     const query = `
@@ -105,8 +108,9 @@ class MaterialService {
         category = $3,
         unit_of_measure = $4,
         unit_price = $5,
-        stock_quantity = $6
-      WHERE id = $7 AND created_by = $8 AND is_active = true
+        stock_quantity = $6,
+        min_stock = $7
+      WHERE id = $8 AND created_by = $9 AND is_active = true
       RETURNING *;
     `;
 
@@ -117,6 +121,7 @@ class MaterialService {
       unit_of_measure !== undefined ? unit_of_measure : current.unit_of_measure,
       unit_price !== undefined ? unit_price : current.unit_price,
       stock_quantity !== undefined ? stock_quantity : current.stock_quantity,
+      min_stock !== undefined ? min_stock : current.min_stock,
       id,
       userId,
     ];

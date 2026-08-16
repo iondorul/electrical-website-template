@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const InvoiceController = require("../controllers/invoiceController");
+const PaymentController = require("../controllers/paymentController");
 const authenticateToken = require("../middleware/authMiddleware"); // sau calea corectă către middleware-ul tău de auth
 
 // Toate rutele de facturi sunt protejate de autentificare
@@ -23,6 +24,10 @@ router.get("/:id/pdf", InvoiceController.downloadPdf);
 
 // Trimitere factură (PDF) pe email către client
 router.post("/:id/send", InvoiceController.sendEmail);
+
+// Înregistrare / listare plăți pentru o factură
+router.post("/:id/payments", PaymentController.recordPayment);
+router.get("/:id/payments", PaymentController.listPayments);
 
 router.delete("/", InvoiceController.deleteAll);
 

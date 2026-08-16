@@ -221,6 +221,67 @@
         </div>
     </div>
 
+    <!-- MODAL ÎNREGISTRARE PLATĂ -->
+    <div class="modal fade" id="recordPaymentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Înregistrează Plată</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="paymentInvoiceId">
+                    <div class="d-flex justify-content-between mb-3 p-2 bg-light rounded">
+                        <div>
+                            <small class="text-muted d-block">Total factură</small>
+                            <strong id="paymentTotalGross">-</strong>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted d-block">Rest de plată</small>
+                            <strong id="paymentRemaining" class="text-danger">-</strong>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Sumă *</label>
+                            <input type="number" id="paymentAmount" class="form-control" step="0.01" min="0.01">
+                            <div class="invalid-feedback" id="paymentAmountError">
+                                Introduceți o sumă validă, mai mare decât 0.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Data plății</label>
+                            <input type="date" id="paymentDate" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Metodă</label>
+                            <select id="paymentMethod" class="form-select">
+                                <option value="bank_transfer">Transfer Bancar</option>
+                                <option value="cash">Numerar</option>
+                                <option value="card">Card</option>
+                                <option value="other">Altă metodă</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nr. Referință</label>
+                            <input type="text" id="paymentReference" class="form-control" placeholder="opțional">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Note</label>
+                            <textarea id="paymentNotes" class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="btn btn-success" id="btnConfirmRecordPayment">
+                        <i class="fas fa-money-bill-wave me-1"></i> Înregistrează
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- TOAST CONTAINER FOR NOTIFICATIONS -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="erpToast" class="toast align-items-center text-white bg-success border-0" role="alert"

@@ -87,6 +87,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  let paymentModalInstance = null;
+  const paymentModalEl = document.getElementById("recordPaymentModal");
+  if (paymentModalEl) {
+    paymentModalInstance = new bootstrap.Modal(paymentModalEl);
+  }
+
+  const paymentAmountInput = document.getElementById("paymentAmount");
+  if (paymentAmountInput) {
+    paymentAmountInput.addEventListener("input", () => {
+      paymentAmountInput.classList.remove("is-invalid");
+    });
+  }
+
+  const btnConfirmRecordPayment = document.getElementById(
+    "btnConfirmRecordPayment",
+  );
+  if (btnConfirmRecordPayment) {
+    btnConfirmRecordPayment.addEventListener("click", confirmRecordPayment);
+  }
+
   // Încărcare inițială
   await loadInvoices();
 
@@ -179,10 +199,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <button type="button" class="btn btn-sm btn-outline-secondary me-1 btn-download-pdf" data-id="${inv.id}" title="Descarcă PDF">
                         <i class="fas fa-file-pdf"></i>
                     </button>
-                    <button type="button" class="btn btn-sm btn-outline-success btn-send-email" data-id="${inv.id}"
+                    <button type="button" class="btn btn-sm btn-outline-success me-1 btn-send-email" data-id="${inv.id}"
                         title="${inv.client_email ? "Trimite factura pe email" : "Clientul nu are email completat"}"
                         ${inv.client_email ? "" : "disabled"}>
                         <i class="fas fa-paper-plane"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-warning btn-record-payment" data-id="${inv.id}"
+                        title="${inv.status === "canceled" || inv.status === "paid" ? "Nu se pot înregistra plăți" : "Înregistrează plată"}"
+                        ${inv.status === "canceled" || inv.status === "paid" ? "disabled" : ""}>
+                        <i class="fas fa-money-bill-wave"></i>
                     </button>
                 </td>
             </tr>
@@ -205,6 +230,91 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll(".btn-send-email").forEach((btn) => {
       btn.addEventListener("click", () => sendInvoiceByEmail(btn, btn.dataset.id));
     });
+
+    document.querySelectorAll(".btn-record-payment").forEach((btn) => {
+      btn.addEventListener("click", () => openRecordPaymentModal(btn.dataset.id));
+    });
+  }
+
+  async function openRecordPaymentModal(id) {
+    try {
+      const response = await API.get(`/invoices/${id}`);
+      if (!response || !response.success) {
+        Toast.show("Nu s-au putut prelua datele facturii.", "danger");
+        return;
+      }
+
+      const inv = response.data;
+      const totalGross = parseFloat(inv.total_gross) || 0;
+      const paidAmount = parseFloat(inv.paid_amount) || 0;
+      const remaining = Math.max(totalGross - paidAmount, 0);
+
+      document.getElementById("paymentInvoiceId").value = inv.id;
+      document.getElementById("paymentTotalGross").textContent =
+        Utils.formatCurrency(totalGross);
+      document.getElementById("paymentRemaining").textContent =
+        Utils.formatCurrency(remaining);
+      document.getElementById("paymentAmount").value = remaining > 0 ? remaining.toFixed(2) : "";
+      document.getElementById("paymentAmount").classList.remove("is-invalid");
+      document.getElementById("paymentDate").value = new Date()
+        .toISOString()
+        .split("T")[0];
+      document.getElementById("paymentMethod").value = "bank_transfer";
+      document.getElementById("paymentReference").value = "";
+      document.getElementById("paymentNotes").value = "";
+
+      if (paymentModalInstance) paymentModalInstance.show();
+    } catch (err) {
+      console.error("Eroare la deschiderea modalului de plată:", err);
+      Toast.show("Eroare de rețea la încărcarea facturii.", "danger");
+    }
+  }
+
+  async function confirmRecordPayment() {
+    const id = document.getElementById("paymentInvoiceId").value;
+    const amount = parseFloat(document.getElementById("paymentAmount").value);
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      document.getElementById("paymentAmount").classList.add("is-invalid");
+      return;
+    }
+
+    const payload = {
+      amount,
+      payment_date: document.getElementById("paymentDate").value || undefined,
+      payment_method: document.getElementById("paymentMethod").value,
+      reference_number:
+        document.getElementById("paymentReference").value.trim() || undefined,
+      notes: document.getElementById("paymentNotes").value.trim() || undefined,
+    };
+
+    const btn = document.getElementById("btnConfirmRecordPayment");
+    const originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`;
+
+    try {
+      const response = await API.post(`/invoices/${id}/payments`, payload);
+      if (response && response.success) {
+        Toast.show(
+          response.message || "Plata a fost înregistrată cu succes.",
+          "success",
+        );
+        if (paymentModalInstance) paymentModalInstance.hide();
+        loadInvoices();
+      } else {
+        Toast.show(
+          (response && response.message) || "Nu s-a putut înregistra plata.",
+          "danger",
+        );
+      }
+    } catch (err) {
+      console.error("Eroare la înregistrarea plății:", err);
+      Toast.show(err.message || "Eroare de rețea la înregistrare.", "danger");
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
   }
 
   async function downloadInvoicePdf(id) {
@@ -396,6 +506,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             <div class="d-flex justify-content-between fs-5 fw-bold text-primary">
               <span>TOTAL BRUT FACTURĂ:</span>
               <span>${Utils.formatCurrency(inv.total_gross)}</span>
+            </div>
+            <hr class="my-2">
+            <div class="d-flex justify-content-between mb-1">
+              <span>Plătit:</span>
+              <span class="text-success fw-bold">${Utils.formatCurrency(inv.paid_amount || 0)}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span>Rest de plată:</span>
+              <span class="text-danger fw-bold">${Utils.formatCurrency(Math.max((parseFloat(inv.total_gross) || 0) - (parseFloat(inv.paid_amount) || 0), 0))}</span>
             </div>
           </div>
           ${itemsHtml}

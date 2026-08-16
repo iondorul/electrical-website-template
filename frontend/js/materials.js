@@ -182,6 +182,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("materialPrice").value = "";
     document.getElementById("materialStock").value = "";
+    document.getElementById("materialMinStock").value = "";
 
     if (id) {
       // Mod editare — încarcă datele existente
@@ -227,6 +228,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           document.getElementById("materialPrice").value = mat.unit_price;
           document.getElementById("materialStock").value = mat.stock_quantity;
+          document.getElementById("materialMinStock").value =
+            mat.min_stock || "";
         } else {
           Toast.show("Nu s-au putut prelua datele materialului.", "danger");
           return;
@@ -274,6 +277,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         parseFloat(document.getElementById("materialPrice").value) || 0,
       stock_quantity:
         parseFloat(document.getElementById("materialStock").value) || 0,
+      min_stock:
+        parseFloat(document.getElementById("materialMinStock").value) || 0,
     };
 
     try {

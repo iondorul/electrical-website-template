@@ -16,6 +16,16 @@
         "5555"
       ],
       "port": 5555
+    },
+    {
+      "name": "site",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:\\Users\\iondo\\AppData\\Local\\Temp\\claude\\E--AZURE-idvsoftvisualstudiocom-electrical-website-template\\cc9a0fda-0c9a-403c-b7fe-41307d181484\\scratchpad\\static-server.js",
+        ".",
+        "5556"
+      ],
+      "port": 5556
     }
   ]
 }

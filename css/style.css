@@ -1,11 +1,33 @@
 
 
 
-.custom-erp-btn:hover {
-    background: linear-gradient(135deg, #e55f00, #cc5200);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 107, 0, 0.5);
-    color: #fff !important;
+/*** ERP Login Button — flat, modern, no 3D/press effect ***/
+.btn-erp-login {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    background-color: #F68A0A;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-weight: 700;
+    padding: .6rem 1.3rem;
+    transition: background-color .25s ease, box-shadow .25s ease;
+}
+
+.btn-erp-login i {
+    font-size: .95em;
+}
+
+.btn-erp-login:hover,
+.btn-erp-login:focus {
+    background-color: #dd7d09;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(246, 138, 10, .35);
+}
+
+.btn-erp-login:active {
+    background-color: #c76e08;
 }
 
 /*** Spinner Start ***/
