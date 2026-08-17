@@ -92,7 +92,7 @@ exports.register = async (req, res) => {
 exports.getMe = async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT id, full_name, email, phone, role FROM users WHERE id = $1",
+      "SELECT id, full_name, email, phone, role, plan FROM users WHERE id = $1",
       [req.user.id],
     );
 

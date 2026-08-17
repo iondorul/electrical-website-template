@@ -113,7 +113,8 @@
                             </div>
                             <p class="erp-plan-desc">Pentru firme care vor control complet asupra activității.</p>
 
-                            <a href="erp-upgrade.html" class="erp-plan-cta erp-plan-cta-solid">Upgrade la Pro</a>
+                            <a href="erp-upgrade.html" class="erp-plan-cta erp-plan-cta-solid"
+                                id="proPlanCta">Upgrade la Pro</a>
 
                             <ul class="erp-plan-features">
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
@@ -164,9 +165,8 @@
                 </div>
 
                 <!-- Planul curent al userului — încărcat independent, la fiecare load al acestei pagini,
-                     din evenimentul erp:user-loaded emis de js/shell.js (care apelează /api/auth/me).
-                     TODO(backend): /api/auth/me nu expune încă un câmp "plan"/"subscription_tier".
-                     Până atunci afișăm doar un placeholder, nu o valoare inventată. -->
+                     din evenimentul erp:user-loaded emis de js/shell.js (care apelează /api/auth/me,
+                     ce include acum coloana "plan"). -->
                 <div class="erp-plans-status d-none" id="erpPlanStatus"></div>
 
             </div>
@@ -185,7 +185,7 @@
     <!-- Shell JS (Global Auth & Layout Loader — include auth guard + apel /auth/me) -->
     <script src="js/shell.js"></script>
 
-    <!-- Plan status placeholder — folosește userul deja încărcat de shell.js, fără alt apel API -->
+    <!-- Plan status: folosește userul deja încărcat de shell.js (event erp:user-loaded), fără alt apel API -->
     <script>
         document.addEventListener("erp:user-loaded", (e) => {
             const statusEl = document.getElementById("erpPlanStatus");
@@ -193,13 +193,23 @@
             const user = e.detail;
             if (!user) return;
 
-            // TODO(backend): înlocuiește placeholder-ul cu planul real când va exista un câmp
-            // "plan"/"subscription_tier" pe /api/auth/me sau un endpoint dedicat.
+            const planLabel = user.plan === "pro" ? "Pro" : "Free";
+
             statusEl.classList.remove("d-none");
             statusEl.innerHTML = `
                 Autentificat ca <strong>${user.full_name || user.email}</strong> —
-                <span class="badge-current-plan"><i class="fas fa-circle-info"></i> planul curent nu e încă disponibil</span>
+                <span class="badge-current-plan"><i class="fas fa-circle-info"></i> Plan: ${planLabel}</span>
             `;
+
+            // Dacă userul e deja pe Pro, butonul de upgrade devine etichetă inertă,
+            // simetric cu "Plan curent" de pe cardul Free.
+            if (user.plan === "pro") {
+                const proCta = document.getElementById("proPlanCta");
+                if (proCta) {
+                    proCta.outerHTML =
+                        '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true">Plan curent</span>';
+                }
+            }
         });
     </script>
 </body>

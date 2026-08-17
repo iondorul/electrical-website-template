@@ -65,8 +65,8 @@
                             </div>
 
                             <!-- Planul curent al userului — încărcat independent, direct din evenimentul
-                                 erp:user-loaded emis de js/shell.js pe această pagină. Nimic preluat din
-                                 erp-plans.html. -->
+                                 erp:user-loaded emis de js/shell.js pe această pagină (apel propriu la
+                                 /api/auth/me, care include acum coloana "plan"). Nimic preluat din erp-plans.html. -->
                             <div class="erp-plans-status d-none mt-4" id="erpPlanStatus"></div>
 
                             <div class="mt-4">
@@ -95,7 +95,7 @@
     <!-- Shell JS (Global Auth & Layout Loader — include auth guard + apel /auth/me) -->
     <script src="js/shell.js"></script>
 
-    <!-- Plan status placeholder — folosește userul deja încărcat de shell.js, fără alt apel API -->
+    <!-- Plan status: folosește userul deja încărcat de shell.js (event erp:user-loaded), fără alt apel API -->
     <script>
         document.addEventListener("erp:user-loaded", (e) => {
             const statusEl = document.getElementById("erpPlanStatus");
@@ -103,12 +103,12 @@
             const user = e.detail;
             if (!user) return;
 
-            // TODO(backend): înlocuiește placeholder-ul cu planul real când va exista un câmp
-            // "plan"/"subscription_tier" pe /api/auth/me sau un endpoint dedicat.
+            const planLabel = user.plan === "pro" ? "Pro" : "Free";
+
             statusEl.classList.remove("d-none");
             statusEl.innerHTML = `
                 Autentificat ca <strong>${user.full_name || user.email}</strong> —
-                <span class="badge-current-plan"><i class="fas fa-circle-info"></i> planul curent nu e încă disponibil</span>
+                <span class="badge-current-plan"><i class="fas fa-circle-info"></i> Plan: ${planLabel}</span>
             `;
         });
     </script>
