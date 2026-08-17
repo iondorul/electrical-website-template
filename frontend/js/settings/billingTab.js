@@ -19,9 +19,9 @@
             <div class="fw-semibold">Planul tău expiră la ${TRIAL_EXPIRES_LABEL}</div>
             <div class="text-muted small">Fără costuri până la această dată.</div>
           </div>
-          <button type="button" class="btn btn-primary fw-semibold px-4" id="btnUpgradePlan">
+          <a href="erp-plans.html" class="btn btn-primary fw-semibold px-4" id="btnUpgradePlan">
             <i class="fas fa-arrow-up-right-dots me-2"></i> Upgrade Plan
-          </button>
+          </a>
         </div>
       </div>
 
@@ -42,16 +42,6 @@
     icon: "fa-credit-card",
     async render(container) {
       container.innerHTML = template();
-
-      const upgradeBtn = container.querySelector("#btnUpgradePlan");
-      if (upgradeBtn) {
-        upgradeBtn.addEventListener("click", () => {
-          Toast.show(
-            "Upgrade-ul planului va fi disponibil în curând.",
-            "info",
-          );
-        });
-      }
     },
   };
 
