@@ -1,0 +1,114 @@
+# ElectricalVPF — CLAUDE.md
+
+Acest fișier oferă context pentru Claude Code (și orice alt asistent AI) atunci când lucrează în acest repo. Informațiile de mai jos reflectă starea reală a proiectului, verificată direct din cod, migrări și baza de date (nu presupuneri).
+
+## Ce este proiectul
+
+Repo-ul conține **două aplicații distincte** în același spațiu:
+
+1. **Site public de prezentare** (rădăcina repo: `index.html`, `about.html`, `service.html`, `pricing.html`, `contact.html`, `404.html` + `css/`, `js/`, `img/`, `lib/`, `scss/`) — template static HTML Codex ("ElectricalVpf — Dăm viață casei tale"), marketing, fără backend.
+2. **ElectricalVPF ERP** — aplicație de gestiune pentru firme de electricieni (CRM, estimări, oferte, facturi, materiale, rapoarte), formată din `frontend/` (SPA vanilla JS) + `backend/` (API Express/PostgreSQL).
+
+Tot ce urmează se referă la ERP (`frontend/` + `backend/`), zona activă de dezvoltare.
+
+## Stack tehnologic
+
+**Backend** (`backend/`):
+- Node.js + **Express 5**
+- **PostgreSQL** via `pg` (Pool, SQL brut — fără ORM)
+- Auth: `jsonwebtoken` (JWT, expiry 7d) + `bcrypt`
+- PDF-uri: `pdfkit` (fonturi DejaVuSans în `backend/assets/fonts/`)
+- Email tranzacțional: `nodemailer` către **SMTP2GO**
+- Dev: `nodemon`
+
+**Frontend ERP** (`frontend/`):
+- **Vanilla JS**, fără framework, fără build step, fără `package.json`
+- O pagină `.html` per modul + un fișier `.js` corespunzător în `frontend/js/`
+- **Bootstrap 5.3.7** (CDN) + **Font Awesome 6.7.2** (CDN)
+- Font: **Inter** (Google Fonts)
+
+## Structura folderelor
+
+```
+backend/
+  config/db.js          → pg Pool, citește DB_* din .env
+  constants/             → errors.js, statuses.js (nu hardcoda statusuri în controllere)
+  controllers/           → un fișier per domeniu (authController, clientController, ...)
+  middleware/authMiddleware.js
+  migrations/            → scripturi SQL incrementale (ALTER/CREATE), vezi secțiunea DB
+  models/                → client.js, project.js, user.js (user.js e gol momentan)
+  routes/                → un fișier per domeniu, montate în server.js sub /api/*
+  services/               → logica de business + query-uri SQL
+  server.js              → entry point Express
+
+frontend/
+  *.html                 → o pagină per modul (dashboard, clients, projects, estimating,
+                            quotes, invoices, materials, reports, settings, login, register, ...)
+  js/*.js                → logica JS a fiecărei pagini (1:1 cu .html)
+  js/settings/*Tab.js    → sub-module tab-based pentru settings.html (vezi convenția de mai jos)
+  js/config.js           → API_BASE_URL, DEFAULT_PAGE_LIMIT
+  components/            → sidebar.html, topbar.html (parțiale reutilizate)
+  css/                   → dashboard.css, login.css, reports.css, settings.css
+
+schema.sql                → dump VECHI/PARȚIAL, NU e sursă de adevăr (vezi "Probleme cunoscute")
+```
+
+## Pattern arhitectural backend
+
+`routes → controllers → services → db (pg pool, SQL brut)`
+
+- Fiecare modul (clients, projects, estimates, quotes, invoices, materials, company-settings, reports) are propriul `xRoutes.js` + `xController.js` + `xService.js`.
+- Constantele (statusuri, coduri de eroare) sunt centralizate în `backend/constants/`, nu hardcodate în controllere.
+- Convenție răspuns API: `{ success: boolean, data/message/error }`.
+- Autentificare: JWT verificat de `middleware/authMiddleware.js`.
+
+## Pattern frontend: modulul Settings
+
+`frontend/settings.html` + `frontend/js/settings.js` randează un shell generic care citește tab-urile din `window.SettingsTabs` (array populat de fișierele `frontend/js/settings/*Tab.js`, fiecare auto-înregistrându-se). **Adăugarea unui tab nou = un fișier nou + un `<script>` în `settings.html`, fără a atinge `settings.js`.** Tab-uri existente: `accountTab.js`, `billingTab.js` (UI-only, fără integrare de plăți reală — buton "Upgrade Plan" e un placeholder), `companyTab.js`, `privacyTab.js`.
+
+## Baza de date (PostgreSQL, instanță locală `ElectricalVPF`)
+
+**13 tabele**, verificate direct din DB (nu din `schema.sql`, care e învechit):
+`users`, `clients`, `projects`, `estimates`, `estimate_items`, `quotes`, `quote_items`, `invoices`, `invoice_items`, `payments`, `materials`, `company_settings`, `generated_reports`.
+
+**Enum-uri PostgreSQL reale**: `quote_status` (draft, sent, approved, rejected, expired, canceled), `invoice_status` (draft, issued, partially_paid, paid, overdue, canceled).
+**Notă:** `estimates.status` și `projects.status`/`priority` folosesc `CHECK constraint` pe `varchar`, nu enum — inconsistență existentă, de păstrat (nu de "corectat" fără cerere explicită).
+
+**Pattern soft-delete**: `is_active boolean` pe `projects`, `estimates`, `quotes`, `invoices`, `materials`. Tabelele de linii (`*_items`) și `payments` nu au `is_active` — se șterg hard, în cascadă cu părintele (FK `ON DELETE CASCADE`).
+
+**Bani**: `numeric(12,2)` pentru sume, `numeric(10,2)`/`numeric(10,3)` pentru cantități, `numeric(5,2)` pentru procente/TVA. Monedă implicită `EUR`, TVA implicit `19.00`.
+
+### Probleme cunoscute la nivel de schemă — de reținut înainte de orice migrare/deploy
+
+- **`schema.sql` e un dump vechi**, dinainte de modulele Invoices/Payments/Materials — conține doar `clients`, `estimates`, `estimate_items`, `projects`, `quote_items`, `quotes`, `users`. NU folosi acest fișier ca sursă de adevăr pentru schema curentă.
+- **`invoices`, `invoice_items`, `payments`, `materials` nu au niciun `CREATE TABLE` în tot repo-ul** (nici în `schema.sql`, nici în `backend/migrations/`) — există doar live, în baza de date locală. Dacă se rulează `schema.sql` + migrările pe o instanță nouă (ex. Neon, la deploy), aceste 4 tabele **vor lipsi**. Necesită o migrare de recuperare înainte de orice deploy real.
+- Numerotarea migrărilor are duplicate: există câte două fișiere `004_*` și `005_*` (`004_reports_prerequisites.sql`/`004_user_profile_fields.sql`, `005_generated_reports.sql`/`005_user_trial_started_at.sql`) — aplicate cu succes local, dar convenția de numerotare nu mai e strict secvențială.
+- `users.trial_started_at` există în DB (migrarea trial de 14 zile), dar `frontend/js/settings/billingTab.js` afișează încă un text hardcodat ("expiră la 15 Septembrie 2026") — nu citește `trial_started_at` din backend.
+
+## Configurare / secrete
+
+- `backend/.env` (gitignored): `PORT`, `FRONTEND_URL`, `DB_HOST/PORT/NAME/USER/PASSWORD`, `JWT_SECRET`, `SMTP_HOST/PORT/SECURE/USER/PASS/FROM`.
+- `frontend/js/config.js`: `API_BASE_URL` (hardcodat la `http://localhost:3000/api` — de actualizat manual la deploy).
+- CORS este momentan **deschis** (`app.use(cors())` fără restricție de origin în `server.js`) — de restricționat explicit la domeniul de producție înainte de go-live.
+
+## Target de hosting (planificat, nu încă implementat)
+
+Frontend → GitHub Pages · Backend → Render · DB → Neon (PostgreSQL) · DNS → Porkbun (`electricalvpf.com`, vezi `CNAME`) · Email → SMTP2GO. Cost țintă $0/lună la pornire. Lucrul curent se face **local** — nu presupune că vreun pas de deploy a fost deja făcut fără confirmare explicită.
+
+## Convenții de cod
+
+- `snake_case` în DB și payload-uri API; `camelCase` în variabile/funcții JS.
+- Texte user-facing predominant în română; identificatori de cod și multe comentarii în engleză.
+- Fără framework frontend, fără bundler — nu introduce dependențe noi (npm packages, CDN-uri noi) fără să fie necesar explicit pentru task.
+- Reutilizează stilurile CSS existente (variabile precum `--primary`, `--text`, `--muted`, `--border` din `login.css` etc.) în loc să hardcodezi culori noi.
+
+## Reguli importante / componente FROZEN
+
+**Modulele Clients, Projects, Estimating, Quotes, Invoices, Materials și Reports sunt FROZEN** — implementări de referință, confirmate funcționale. **NU le modifica, NU le atinge, NU ghici structuri de schemă sau endpoint-uri din ele** fără verificare explicită și acord prealabil. Orice task care le menționează tangențial trebuie limitat strict la scope-ul cerut, fără a atinge cod din aceste module.
+
+Module NEFROZEN, unde lucrul activ e permis: Login/Auth, Register, Settings (inclusiv tab-urile sale), Dashboard — dar verifică mereu cu utilizatorul înainte de schimbări structurale mari.
+
+## Alte observații
+
+- `estimates` are atât `user_id` (NOT NULL) cât și `created_by` (nullable) — ambele referențiază `users.id`; posibilă redundanță istorică, de păstrat ca atare.
+- Controller-ul `paymentController`/`paymentService` gestionează **plăți pe facturi** (client → firmă), un concept diferit de tab-ul "Abonament & Plăți" din Settings (care e billing SaaS, încă neconectat la vreun procesator de plăți real).
