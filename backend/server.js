@@ -3,6 +3,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const pool = require("./config/db");
+const checkPlanLimit = require("./middleware/planLimitMiddleware");
 const authRoutes = require("./routes/authRoutes");
 const clientRoutes = require("./routes/clientRoutes");
 const estimateRoutes = require("./routes/estimateRoutes");
@@ -35,10 +36,10 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
-app.use("/api/clients", clientRoutes);
+app.use("/api/clients", checkPlanLimit("clients"), clientRoutes);
 app.use("/api/projects", require("./routes/projectRoutes"));
 app.use("/api/estimates", estimateRoutes);
-app.use("/api/quotes", quoteRoutes);
+app.use("/api/quotes", checkPlanLimit("quotes"), quoteRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/materials", materialRoutes);
 app.use("/api/company-settings", companySettingsRoutes);
