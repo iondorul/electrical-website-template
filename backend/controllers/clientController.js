@@ -104,7 +104,7 @@ exports.getClients = async (req, res) => {
     // Daca nu avem parametri de cautare/paginare, returnam tot ca pana acum
     if (!search && !page && !limit) {
       const result = await pool.query(
-        `SELECT * FROM clients WHERE user_id = $1 ORDER BY id DESC`,
+        `SELECT * FROM clients WHERE user_id = $1 AND is_active = true ORDER BY id DESC`,
         [user_id],
       );
       return res.json(result.rows);
@@ -117,26 +117,28 @@ exports.getClients = async (req, res) => {
     const searchPattern = `%${search || ""}%`;
 
     const dataQuery = `
-      SELECT * FROM clients 
-      WHERE user_id = $1 
+      SELECT * FROM clients
+      WHERE user_id = $1
+        AND is_active = true
         AND (
-          company_name ILIKE $2 
-          OR contact_person ILIKE $2 
-          OR email ILIKE $2 
-          OR phone ILIKE $2 
+          company_name ILIKE $2
+          OR contact_person ILIKE $2
+          OR email ILIKE $2
+          OR phone ILIKE $2
           OR address ILIKE $2
         )
       ORDER BY id DESC
       LIMIT $3 OFFSET $4`;
 
     const countQuery = `
-      SELECT COUNT(*) FROM clients 
-      WHERE user_id = $1 
+      SELECT COUNT(*) FROM clients
+      WHERE user_id = $1
+        AND is_active = true
         AND (
-          company_name ILIKE $2 
-          OR contact_person ILIKE $2 
-          OR email ILIKE $2 
-          OR phone ILIKE $2 
+          company_name ILIKE $2
+          OR contact_person ILIKE $2
+          OR email ILIKE $2
+          OR phone ILIKE $2
           OR address ILIKE $2
         )`;
 
@@ -202,9 +204,11 @@ exports.deleteClient = async (req, res) => {
     const user_id = req.user.id;
 
     const result = await pool.query(
-      `DELETE FROM clients
+      `UPDATE clients
+       SET is_active = false
        WHERE id = $1
        AND user_id = $2
+       AND is_active = true
        RETURNING *`,
       [id, user_id],
     );
