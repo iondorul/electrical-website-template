@@ -50,6 +50,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  const requestedTab = window.location.hash.replace("#", "");
+  if (requestedTab && tabs.some((t) => t.id === requestedTab)) {
+    activeTabId = requestedTab;
+  }
+
   renderNav();
   if (activeTabId) {
     await switchTab(activeTabId);

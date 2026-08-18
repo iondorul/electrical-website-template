@@ -1,8 +1,14 @@
 <aside class="erp-sidebar" id="erpSidebar">
     <div class="sidebar-header d-flex align-items-center justify-content-between px-3">
-        <div class="brand-logo d-flex align-items-center">
-            <i class="fas fa-bolt text-warning me-2"></i>
-            <span>Electrical<strong>VPF</strong></span>
+        <div>
+            <div class="brand-logo d-flex align-items-center">
+                <i class="fas fa-bolt text-warning me-2"></i>
+                <span>Electrical<strong>VPF</strong></span>
+            </div>
+            <!-- Badge plan curent — populat de shell.js din evenimentul erp:user-loaded -->
+            <a href="settings.html#billing" class="plan-badge plan-badge-free d-none" id="sidebarPlanBadge">
+                <span>FREE PLAN</span>
+            </a>
         </div>
         <!-- BUTON DE CLOSE ALINIAT DREPT (fa-bars) -->
         <button class="btn btn-sm text-white-50 border-0 p-1" id="closeSidebarBtn" type="button" title="Close sidebar">

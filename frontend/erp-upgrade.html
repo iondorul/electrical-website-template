@@ -57,9 +57,9 @@
                             </p>
 
                             <!-- Checkout Stripe (subscription) — vezi backend/controllers/stripeController.js -->
-                            <button type="button" id="btnStartCheckout" class="erp-upgrade-placeholder"
-                                style="border-style: solid; cursor: pointer;">
-                                <i class="fas fa-lock" id="btnStartCheckoutIcon"></i>
+                            <button type="button" id="btnStartCheckout" class="erp-plan-cta erp-plan-cta-solid"
+                                style="cursor: pointer;">
+                                <i class="fas fa-credit-card me-2" id="btnStartCheckoutIcon"></i>
                                 <span id="btnStartCheckoutText">Continuă la plată</span>
                             </button>
 
@@ -128,7 +128,7 @@
                 errorEl.textContent = "";
 
                 btn.disabled = true;
-                btnIcon.classList.remove("fa-lock");
+                btnIcon.classList.remove("fa-credit-card");
                 btnIcon.classList.add("fa-spinner", "fa-spin");
                 btnText.textContent = "Se pregătește plata...";
 
@@ -154,7 +154,7 @@
 
                     btn.disabled = false;
                     btnIcon.classList.remove("fa-spinner", "fa-spin");
-                    btnIcon.classList.add("fa-lock");
+                    btnIcon.classList.add("fa-credit-card");
                     btnText.textContent = "Continuă la plată";
                 }
             });

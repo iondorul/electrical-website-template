@@ -40,10 +40,11 @@ body {
 }
 
 .sidebar-header {
-    height: var(--header-height);
+    min-height: var(--header-height);
+    height: auto;
     display: flex;
     align-items: center;
-    padding: 0 20px;
+    padding: 14px 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -51,6 +52,65 @@ body {
     font-size: 1.25rem;
     font-weight: 600;
     color: #ffffff;
+}
+
+/* --- Plan Badge (sub logo, sidebar) --- */
+.plan-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: fit-content;
+    margin: 8px auto 0;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.plan-badge:hover {
+    transform: scale(1.02);
+}
+
+/* Specificitate explicită — Bootstrap definește global a:hover { color: ... },
+   care ar suprascrie altfel culoarea albă/gri a badge-ului la hover. */
+.plan-badge-free:hover {
+    color: #e5e5e5;
+}
+
+.plan-badge-pro:hover {
+    color: #ffffff;
+}
+
+.plan-badge-icon {
+    font-size: 0.7rem;
+}
+
+.plan-badge-free {
+    background: linear-gradient(135deg, #4a4a4a, #6a6a6a);
+    color: #e5e5e5;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.3),
+        0 2px 5px rgba(0, 0, 0, 0.35);
+}
+
+.plan-badge-pro {
+    background: linear-gradient(135deg, #ff6b00, #ff7a1a);
+    color: #ffffff;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 179, 71, 0.35);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.3),
+        0 3px 8px rgba(0, 0, 0, 0.4),
+        0 0 8px rgba(255, 107, 0, 0.45);
 }
 
 .sidebar-nav {
@@ -254,7 +314,8 @@ body {
 
     .brand-logo span,
     .nav-link span,
-    .btn-logout span {
+    .btn-logout span,
+    .plan-badge {
         display: none !important;
     }
 
@@ -282,9 +343,13 @@ body {
         display: inline-block !important;
     }
 
+    .erp-sidebar.show .plan-badge {
+        display: flex !important;
+    }
+
     .erp-sidebar.show .sidebar-header {
         justify-content: flex-start !important;
-        padding: 0 20px !important;
+        padding: 14px 20px !important;
     }
 
     .erp-sidebar.show .nav-link {
@@ -330,7 +395,8 @@ body {
     /* 3. Ascundere text din Logo, Meniu si Logout */
     .erp-wrapper.sidebar-collapsed .brand-logo span,
     .erp-wrapper.sidebar-collapsed .nav-link span,
-    .erp-wrapper.sidebar-collapsed .btn-logout span {
+    .erp-wrapper.sidebar-collapsed .btn-logout span,
+    .erp-wrapper.sidebar-collapsed .plan-badge {
         display: none !important;
     }
 

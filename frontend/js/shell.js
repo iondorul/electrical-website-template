@@ -77,6 +77,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
+// Badge-ul de plan din sidebar (sub logo) — citește planul direct din
+// evenimentul erp:user-loaded, emis mai jos de loadCurrentUser().
+document.addEventListener("erp:user-loaded", (e) => {
+  const badgeEl = document.getElementById("sidebarPlanBadge");
+  if (!badgeEl) return;
+
+  const isPro = e.detail && e.detail.plan === "pro";
+
+  badgeEl.className = `plan-badge ${isPro ? "plan-badge-pro" : "plan-badge-free"}`;
+  badgeEl.innerHTML = isPro
+    ? '<i class="fas fa-crown plan-badge-icon"></i><span>PRO PLAN</span>'
+    : "<span>FREE PLAN</span>";
+});
+
 // --- HELPER FUNCTIONS ---
 
 async function loadComponent(containerId, componentPath) {

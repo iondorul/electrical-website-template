@@ -1,0 +1,208 @@
+/* ===========================================================
+   ElectricalVPF ERP - Payment Success (scoped to payment-success.html)
+=========================================================== */
+
+.success-shell {
+    position: relative;
+    max-width: 640px;
+    margin: 20px auto 0;
+    background: #ffffff;
+    border: 1px solid var(--card-border, #e2e8f0);
+    border-radius: 24px;
+    padding: 64px 40px 48px;
+    text-align: center;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, .08);
+}
+
+.success-icon {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(34, 197, 94, .12);
+    color: #16a34a;
+    font-size: 52px;
+    animation: successPop .5s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+
+@keyframes successPop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.success-plan-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border-radius: 30px;
+    background: rgba(255, 107, 0, .08);
+    border: 1px solid rgba(255, 107, 0, .2);
+    color: #e55f00;
+    font-weight: 700;
+    font-size: .82rem;
+    margin-bottom: 24px;
+    animation: successFadeUp .5s ease .1s both;
+}
+
+.success-title {
+    font-weight: 800;
+    font-size: 2rem;
+    color: #1e293b;
+    margin-bottom: 14px;
+    animation: successFadeUp .5s ease .15s both;
+}
+
+.success-desc {
+    color: #64748b;
+    font-size: 1rem;
+    max-width: 460px;
+    margin: 0 auto 34px;
+    animation: successFadeUp .5s ease .25s both;
+}
+
+.success-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: successFadeUp .5s ease .35s both;
+}
+
+.success-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 26px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: .95rem;
+    text-decoration: none;
+    min-width: 190px;
+    transition: all .2s ease;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+}
+
+.success-btn-solid {
+    background: #ff6b00;
+    border-color: #ff6b00;
+    color: #fff;
+}
+
+.success-btn-solid:hover {
+    background: #e55f00;
+    border-color: #e55f00;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(255, 107, 0, .3);
+}
+
+.success-btn-outline {
+    background: transparent;
+    border-color: var(--card-border, #e2e8f0);
+    color: #1e293b;
+}
+
+.success-btn-outline:hover {
+    border-color: #16a34a;
+    color: #16a34a;
+}
+
+.success-btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.success-error {
+    margin-top: 16px;
+    animation: successFadeUp .3s ease both;
+}
+
+@keyframes successFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Confetti — CSS-only, discret, un singur ciclu la încărcarea paginii */
+.confetti {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.confetti-piece {
+    position: absolute;
+    top: -14px;
+    width: 8px;
+    height: 14px;
+    opacity: 0;
+    animation: confettiFall 2.4s ease-in forwards;
+    border-radius: 2px;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(240px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.confetti-piece:nth-child(1) { left: 8%; background: #ff6b00; animation-delay: .05s; }
+.confetti-piece:nth-child(2) { left: 18%; background: #16a34a; animation-delay: .2s; }
+.confetti-piece:nth-child(3) { left: 28%; background: #fbbf24; animation-delay: 0s; }
+.confetti-piece:nth-child(4) { left: 38%; background: #ff6b00; animation-delay: .3s; }
+.confetti-piece:nth-child(5) { left: 50%; background: #16a34a; animation-delay: .1s; }
+.confetti-piece:nth-child(6) { left: 60%; background: #fbbf24; animation-delay: .25s; }
+.confetti-piece:nth-child(7) { left: 70%; background: #ff6b00; animation-delay: .15s; }
+.confetti-piece:nth-child(8) { left: 80%; background: #16a34a; animation-delay: .05s; }
+.confetti-piece:nth-child(9) { left: 90%; background: #fbbf24; animation-delay: .35s; }
+.confetti-piece:nth-child(10) { left: 45%; background: #ff6b00; animation-delay: .4s; }
+.confetti-piece:nth-child(11) { left: 15%; background: #fbbf24; animation-delay: .45s; }
+.confetti-piece:nth-child(12) { left: 65%; background: #16a34a; animation-delay: .5s; }
+
+@media (max-width: 576px) {
+    .success-shell {
+        padding: 48px 24px 36px;
+        margin-top: 8px;
+    }
+
+    .success-title {
+        font-size: 1.5rem;
+    }
+
+    .success-actions {
+        flex-direction: column;
+    }
+
+    .success-btn {
+        width: 100%;
+    }
+}

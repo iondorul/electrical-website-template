@@ -9,6 +9,12 @@ router.post(
   stripeController.createCheckoutSession,
 );
 
+router.get(
+  "/invoice/:sessionId",
+  authMiddleware,
+  stripeController.getInvoiceForSession,
+);
+
 // Stripe apelează direct acest endpoint — verificarea se face prin semnătura
 // webhook-ului (STRIPE_WEBHOOK_SECRET), nu prin JWT, deci fără authMiddleware.
 router.post("/webhook", stripeController.handleWebhook);
