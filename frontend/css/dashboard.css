@@ -153,6 +153,12 @@ body {
     border-color: #fecaca;
 }
 
+.header-settings-btn:hover {
+    background-color: #fff7ed;
+    color: #ff6b00;
+    border-color: #fed7aa;
+}
+
 .user-avatar {
     width: 42px;
     height: 42px;
