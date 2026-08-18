@@ -12,11 +12,18 @@ const invoiceRoutes = require("./routes/invoiceRoute");
 const materialRoutes = require("./routes/materialRoutes");
 const companySettingsRoutes = require("./routes/companySettingsRoutes");
 const reportsRoutes = require("./routes/reportsRoutes");
+const stripeRoutes = require("./routes/stripeRoutes");
 
 console.log("SERVER LOADED");
 
 const app = express();
 app.use(cors());
+
+// Stripe cere raw body (neparsat) pe /api/stripe/webhook, ca să poată verifica
+// semnătura evenimentului — montat DOAR pe această rută, înaintea lui
+// express.json() global, ca să nu afecteze restul aplicației.
+app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
+
 app.use(express.json());
 
 app.get("/", async (req, res) => {
@@ -44,6 +51,7 @@ app.use("/api/invoices", invoiceRoutes);
 app.use("/api/materials", materialRoutes);
 app.use("/api/company-settings", companySettingsRoutes);
 app.use("/api/reports", reportsRoutes);
+app.use("/api/stripe", stripeRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);
