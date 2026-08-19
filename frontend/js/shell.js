@@ -127,19 +127,28 @@ async function loadCurrentUser() {
 
   try {
     const response = await API.get("/auth/me");
-    if (response && response.success && response.data) {
-      const user = response.data;
-      if (userNameEl) {
-        userNameEl.textContent = user.full_name || user.email || "Utilizator";
-      }
-      if (userRoleEl) {
-        userRoleEl.textContent = user.role || "Administrator";
-      }
-      // Permite paginilor individuale (ex. dashboard.html) să personalizeze
-      // conținut propriu pe baza userului autentificat, fără un nou apel API.
-      document.dispatchEvent(new CustomEvent("erp:user-loaded", { detail: user }));
+
+    // Sesiune invalidă / date lipsă (backend a răspuns, dar fără un user
+    // valid) — nu doar 401/403, care sunt deja tratate global în api.js.
+    if (!response || !response.success || !response.data) {
+      performLogout();
+      return;
     }
+
+    const user = response.data;
+    if (userNameEl) {
+      userNameEl.textContent = user.full_name || user.email || "Utilizator";
+    }
+    if (userRoleEl) {
+      userRoleEl.textContent = user.role || "Administrator";
+    }
+    // Permite paginilor individuale (ex. dashboard.html) să personalizeze
+    // conținut propriu pe baza userului autentificat, fără un nou apel API.
+    document.dispatchEvent(new CustomEvent("erp:user-loaded", { detail: user }));
   } catch (err) {
+    // Eroare de rețea/timeout/5xx (backend indisponibil temporar) — sesiunea
+    // rămâne valabilă, NU delogăm. Doar 401/403 explicite duc la logout,
+    // iar acelea sunt deja tratate global în api.js (nu ajung aici ca throw).
     console.error("Eroare la încărcarea utilizatorului curent:", err);
   }
 }

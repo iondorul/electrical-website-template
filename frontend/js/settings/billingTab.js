@@ -89,10 +89,16 @@
       let plan = "free";
       try {
         const response = await API.get("/auth/me");
-        if (response && response.success && response.data) {
-          plan = response.data.plan === "pro" ? "pro" : "free";
+        // Răspuns invalid/gol (nu 401/403, alea sunt tratate deja în api.js)
+        // -> sesiunea nu mai corespunde unui user valid, delogăm.
+        if (!response || !response.success || !response.data) {
+          performLogout();
+          return;
         }
+        plan = response.data.plan === "pro" ? "pro" : "free";
       } catch (err) {
+        // Eroare de rețea/timeout/5xx — sesiunea rămâne valabilă, NU delogăm;
+        // afișăm planul implicit (free) fără să forțăm ieșirea userului.
         console.error("Eroare la determinarea planului curent:", err);
       }
 

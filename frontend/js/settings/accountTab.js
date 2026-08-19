@@ -151,13 +151,18 @@
   async function loadProfile(container) {
     try {
       const response = await API.get("/auth/me");
-      if (response && response.success && response.data) {
-        const user = response.data;
-        container.querySelector("#accFullName").value = user.full_name || "";
-        container.querySelector("#accEmail").value = user.email || "";
-        container.querySelector("#accPhone").value = user.phone || "";
+      // Răspuns invalid/gol (nu 401/403, alea sunt tratate deja în api.js)
+      // -> sesiunea nu mai corespunde unui user valid, delogăm.
+      if (!response || !response.success || !response.data) {
+        performLogout();
+        return;
       }
+      const user = response.data;
+      container.querySelector("#accFullName").value = user.full_name || "";
+      container.querySelector("#accEmail").value = user.email || "";
+      container.querySelector("#accPhone").value = user.phone || "";
     } catch (err) {
+      // Eroare de rețea/timeout/5xx — sesiunea rămâne valabilă, NU delogăm.
       console.error("Eroare la încărcarea profilului:", err);
       Toast.show("Eroare de rețea la încărcarea profilului.", "danger");
     }
