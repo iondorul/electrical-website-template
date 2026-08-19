@@ -81,10 +81,33 @@ exports.getInvoiceForSession = async (req, res) => {
   }
 };
 
+// Stripe a eliminat current_period_end/current_period_start de pe Subscription
+// începând cu versiunea API "2025-03-31.basil" (stripe-node v18+; avem instalat
+// v22.5.0, fără apiVersion fixat explicit -> folosim implicit versiunea nouă) și
+// le-a mutat pe fiecare subscription item (subscription.items.data[].current_period_end).
+// Citim ambele locații documentate, cu fallback pe cea veche pentru compatibilitate.
+// Sursă: https://docs.stripe.com/changelog/basil/2025-03-31/deprecate-subscription-current-period-start-and-end
+function extractSubscriptionPeriodEnd(subscription) {
+  if (typeof subscription.current_period_end === "number") {
+    return subscription.current_period_end;
+  }
+
+  const itemPeriodEnd = subscription.items?.data?.[0]?.current_period_end;
+  if (typeof itemPeriodEnd === "number") {
+    return itemPeriodEnd;
+  }
+
+  return null;
+}
+
 // Returnează data reală de reînnoire (current_period_end) a abonamentului Stripe
 // activ al userului curent. Pentru useri fără stripe_subscription_id (plan Free,
 // sau plan Pro setat manual/altfel decât prin checkout real) returnează
-// currentPeriodEnd: null — frontend-ul nu afișează nicio dată în acest caz.
+// currentPeriodEnd: null cu success:true — caz legitim, nu e o eroare.
+// Dacă subscriptionId există dar nu poate fi verificat (eroare Stripe) sau
+// structura răspunsului e neașteptată, răspunsul e success:false/status:"error"
+// — diferit explicit de cazul "fără abonament", ca frontend-ul și logurile să
+// nu confunde o eroare reală cu un user pe Free.
 exports.getSubscriptionStatus = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -102,19 +125,32 @@ exports.getSubscriptionStatus = async (req, res) => {
     }
 
     try {
-      const subscription =
-        await stripe.subscriptions.retrieve(subscriptionId);
-      const currentPeriodEnd = subscription.current_period_end
-        ? new Date(subscription.current_period_end * 1000).toISOString()
-        : null;
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+      const periodEndTimestamp = extractSubscriptionPeriodEnd(subscription);
 
+      if (periodEndTimestamp === null) {
+        console.error(
+          `Structura Stripe subscription neașteptată - verifică manual, subscription_id: ${subscriptionId}`,
+        );
+        return res.json({
+          success: false,
+          status: "error",
+          data: { currentPeriodEnd: null },
+        });
+      }
+
+      const currentPeriodEnd = new Date(periodEndTimestamp * 1000).toISOString();
       res.json({ success: true, data: { currentPeriodEnd } });
     } catch (stripeErr) {
       console.error(
         `Nu s-a putut prelua abonamentul Stripe (subscription_id=${subscriptionId}):`,
         stripeErr,
       );
-      res.json({ success: true, data: { currentPeriodEnd: null } });
+      res.json({
+        success: false,
+        status: "error",
+        data: { currentPeriodEnd: null },
+      });
     }
   } catch (err) {
     console.error("Eroare la verificarea statusului abonamentului:", err);

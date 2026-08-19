@@ -119,19 +119,26 @@
         if (renewalDateEl) {
           try {
             const subResponse = await API.get("/stripe/subscription-status");
-            const currentPeriodEnd =
-              subResponse &&
-              subResponse.data &&
-              subResponse.data.currentPeriodEnd;
 
-            if (currentPeriodEnd) {
-              const formatted = new Date(currentPeriodEnd).toLocaleDateString(
-                "ro-RO",
-                { day: "numeric", month: "long", year: "numeric" },
-              );
-              renewalDateEl.textContent = `Abonamentul se reînnoiește pe ${formatted}`;
+            if (subResponse && subResponse.status === "error") {
+              renewalDateEl.textContent =
+                "Nu am putut verifica data reînnoirii — contactează suportul.";
+              renewalDateEl.classList.add("text-danger");
             } else {
-              renewalDateEl.textContent = "Data reînnoirii: indisponibilă momentan";
+              const currentPeriodEnd =
+                subResponse &&
+                subResponse.data &&
+                subResponse.data.currentPeriodEnd;
+
+              if (currentPeriodEnd) {
+                const formatted = new Date(currentPeriodEnd).toLocaleDateString(
+                  "ro-RO",
+                  { day: "numeric", month: "long", year: "numeric" },
+                );
+                renewalDateEl.textContent = `Abonamentul se reînnoiește pe ${formatted}`;
+              } else {
+                renewalDateEl.textContent = "Data reînnoirii: indisponibilă momentan";
+              }
             }
           } catch (err) {
             console.error("Eroare la preluarea datei de reînnoire:", err);
