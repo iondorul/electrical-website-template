@@ -45,7 +45,13 @@
                         <i class="fas fa-bolt"></i>
                         ElectricalVPF ERP
                     </span>
-                    <h2 class="erp-plans-title">Planuri &amp; Abonament</h2>
+                    <div class="d-flex align-items-center justify-content-center gap-3 erp-plans-title-row">
+                        <a href="settings.html#billing" class="erp-plans-back-icon" title="Înapoi la Abonament & Plăți"
+                            aria-label="Înapoi la Abonament & Plăți">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <h2 class="erp-plans-title">Planuri &amp; Abonament</h2>
+                    </div>
                     <p class="erp-plans-subtitle">
                         Alege planul potrivit pentru firma ta. Poți face upgrade oricând, fără angajament.
                     </p>
@@ -63,7 +69,8 @@
                             </div>
                             <p class="erp-plan-desc">Pentru a testa ERP-ul cu volum redus de activitate.</p>
 
-                            <span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true">Plan curent</span>
+                            <span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true" id="freePlanCta">Plan
+                                curent</span>
 
                             <ul class="erp-plan-features">
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
@@ -115,8 +122,8 @@
                             </div>
                             <p class="erp-plan-desc">Pentru firme care vor control complet asupra activității.</p>
 
-                            <a href="erp-upgrade.html" class="erp-plan-cta erp-plan-cta-solid"
-                                id="proPlanCta">Upgrade la Pro</a>
+                            <a href="erp-upgrade.html" class="erp-plan-cta erp-plan-cta-solid" id="proPlanCta">Upgrade
+                                la Pro</a>
 
                             <ul class="erp-plan-features">
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
@@ -169,12 +176,60 @@
                 <!-- Planul curent al userului — încărcat independent, la fiecare load al acestei pagini,
                      din evenimentul erp:user-loaded emis de js/shell.js (care apelează /api/auth/me,
                      ce include acum coloana "plan"). -->
-                <div class="erp-plans-status d-none" id="erpPlanStatus"></div>
+                <div class="mt-4 erp-plans-back-row">
+                    <a href="settings.html#billing" class="erp-plan-cta erp-plan-cta-outline">
+                        <i class="fas fa-arrow-left me-2"></i>Înapoi la Abonament &amp; Plăți
+                    </a>
+                    <div class="erp-plans-status d-none" id="erpPlanStatus"></div>
+                </div>
 
             </div>
 
         </main>
 
+    </div>
+
+    <!-- Modal confirmare Downgrade la Free — doar UI, fără logică de downgrade efectivă încă -->
+    <div class="modal fade" id="downgradeConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fas fa-triangle-exclamation text-warning me-2"></i>Treci la planul Free?
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-3">
+                        Dacă treci la Free, vei pierde imediat accesul la funcțiile exclusive Pro:
+                    </p>
+                    <ul class="mb-3">
+                        <li>Utilizatori multipli — rămâi la 1 utilizator</li>
+                        <li>Clienți nelimitați — limitat la 2 clienți</li>
+                        <li>Proiecte nelimitate — limitat la 2 proiecte active</li>
+                        <li>Estimări și oferte nelimitate — limitat la 5 estimări / 2 oferte pe lună</li>
+                        <li>Facturare completă — dezactivată</li>
+                        <li>Analytics financiar avansat — dezactivat</li>
+                        <li>Export Excel/CSV — dezactivat</li>
+                        <li>Funcții AI și automatizări — dezactivate</li>
+                        <li>PDF profesional fără watermark — revine la watermark ElectricalVPF</li>
+                    </ul>
+                    <p class="text-muted small mb-0">
+                        <i class="fas fa-circle-info me-1"></i>
+                        Downgrade-ul automat nu este încă disponibil. Pentru moment, contactează suportul
+                        pentru a finaliza schimbarea planului.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Renunță</button>
+                    <!-- TODO(backend): implementare reală downgrade (Stripe subscription update/cancel) —
+                         deocamdată dezactivat intenționat, doar confirmare vizuală. -->
+                    <button type="button" class="btn btn-secondary" disabled>
+                        Confirmă Downgrade (în curând)
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Bootstrap JS -->
@@ -204,12 +259,20 @@
             `;
 
             // Dacă userul e deja pe Pro, butonul de upgrade devine etichetă inertă,
-            // simetric cu "Plan curent" de pe cardul Free.
+            // simetric cu "Plan curent" de pe cardul Free — iar cardul Free arată
+            // în schimb un buton "Downgrade la Free" (doar UI + modal, fără logică reală).
             if (user.plan === "pro") {
                 const proCta = document.getElementById("proPlanCta");
                 if (proCta) {
                     proCta.outerHTML =
                         '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true">Plan curent</span>';
+                }
+
+                const freeCta = document.getElementById("freePlanCta");
+                if (freeCta) {
+                    freeCta.outerHTML =
+                        '<button type="button" class="erp-plan-cta erp-plan-cta-outline" id="btnDowngradeToFree" ' +
+                        'data-bs-toggle="modal" data-bs-target="#downgradeConfirmModal">Downgrade la Free</button>';
                 }
             }
         });

@@ -83,7 +83,7 @@ schema.sql                → dump VECHI/PARȚIAL, NU e sursă de adevăr (vezi 
 - **`schema.sql` e un dump vechi**, dinainte de modulele Invoices/Payments/Materials — conține doar `clients`, `estimates`, `estimate_items`, `projects`, `quote_items`, `quotes`, `users`. NU folosi acest fișier ca sursă de adevăr pentru schema curentă.
 - **`invoices`, `invoice_items`, `payments`, `materials` nu au niciun `CREATE TABLE` în tot repo-ul** (nici în `schema.sql`, nici în `backend/migrations/`) — există doar live, în baza de date locală. Dacă se rulează `schema.sql` + migrările pe o instanță nouă (ex. Neon, la deploy), aceste 4 tabele **vor lipsi**. Necesită o migrare de recuperare înainte de orice deploy real.
 - Numerotarea migrărilor are duplicate: există câte două fișiere `004_*` și `005_*` (`004_reports_prerequisites.sql`/`004_user_profile_fields.sql`, `005_generated_reports.sql`/`005_user_trial_started_at.sql`) — aplicate cu succes local, dar convenția de numerotare nu mai e strict secvențială.
-- `users.trial_started_at` există în DB (migrarea trial de 14 zile), dar `frontend/js/settings/billingTab.js` afișează încă un text hardcodat ("expiră la 15 Septembrie 2026") — nu citește `trial_started_at` din backend.
+- Nu există trial — doar planurile `free`/`pro` (`users.plan`). Migrarea 005 adăugase `trial_started_at`, dar nicio logică de acces temporar Pro n-a fost vreodată implementată pe ea; coloana e eliminată prin migrarea 011 (DROP COLUMN).
 
 ## Configurare / secrete
 

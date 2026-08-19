@@ -119,9 +119,17 @@
     border-radius: 12px;
     font-weight: 700;
     font-size: .92rem;
+    font-family: inherit;
+    line-height: normal;
     text-decoration: none;
     margin-bottom: 28px;
     transition: all .2s ease;
+    /* Neutralizează chrome-ul nativ al <button> (fundal/border de sistem),
+       ca un <button> cu aceste clase să arate identic cu un <a>. */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
 }
 
 .erp-plan-cta-outline {
@@ -271,4 +279,49 @@
     max-width: 240px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.erp-plans-back-row {
+    text-align: center;
+}
+
+/* Variantă "doar icon" a .erp-plan-cta-outline — pentru butonul de back de lângă titlu */
+.erp-plans-back-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1.5px solid var(--card-border, #e2e8f0);
+    background: transparent;
+    color: #1e293b;
+    font-size: .95rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.erp-plans-back-icon:hover {
+    border-color: #ff6b00;
+    color: #e55f00;
+}
+
+/* Elimină margin-bottom asimetric al titlului DOAR în acest rând, ca align-items:
+   center să centreze real butonul de back față de textul titlului, nu față de
+   cutia lui (care includea marginea de jos). Spațiul față de subtitlu se mută
+   pe wrapper, ca să rămână identic. */
+.erp-plans-title-row {
+    margin-bottom: 10px;
+}
+
+.erp-plans-title-row .erp-plans-title {
+    margin-bottom: 0;
+}
+
+.erp-plans-back-row .erp-plan-cta {
+    display: inline-block;
+    width: fit-content;
+    white-space: nowrap;
 }

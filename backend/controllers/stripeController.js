@@ -81,6 +81,50 @@ exports.getInvoiceForSession = async (req, res) => {
   }
 };
 
+// Returnează data reală de reînnoire (current_period_end) a abonamentului Stripe
+// activ al userului curent. Pentru useri fără stripe_subscription_id (plan Free,
+// sau plan Pro setat manual/altfel decât prin checkout real) returnează
+// currentPeriodEnd: null — frontend-ul nu afișează nicio dată în acest caz.
+exports.getSubscriptionStatus = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const userRes = await pool.query(
+      "SELECT stripe_subscription_id FROM users WHERE id = $1",
+      [userId],
+    );
+
+    const subscriptionId =
+      userRes.rows[0] && userRes.rows[0].stripe_subscription_id;
+
+    if (!subscriptionId) {
+      return res.json({ success: true, data: { currentPeriodEnd: null } });
+    }
+
+    try {
+      const subscription =
+        await stripe.subscriptions.retrieve(subscriptionId);
+      const currentPeriodEnd = subscription.current_period_end
+        ? new Date(subscription.current_period_end * 1000).toISOString()
+        : null;
+
+      res.json({ success: true, data: { currentPeriodEnd } });
+    } catch (stripeErr) {
+      console.error(
+        `Nu s-a putut prelua abonamentul Stripe (subscription_id=${subscriptionId}):`,
+        stripeErr,
+      );
+      res.json({ success: true, data: { currentPeriodEnd: null } });
+    }
+  } catch (err) {
+    console.error("Eroare la verificarea statusului abonamentului:", err);
+    res.status(500).json({
+      success: false,
+      error: err.message || "Nu s-a putut verifica statusul abonamentului.",
+    });
+  }
+};
+
 // Webhook Stripe — verifică semnătura cu STRIPE_WEBHOOK_SECRET (raw body,
 // vezi middleware-ul express.raw montat în server.js DOAR pe această rută).
 // La checkout.session.completed, trece userul pe plan='pro'.
@@ -107,9 +151,10 @@ exports.handleWebhook = async (req, res) => {
         (session.metadata && session.metadata.userId);
 
       if (userId) {
-        await pool.query("UPDATE users SET plan = 'pro' WHERE id = $1", [
-          userId,
-        ]);
+        await pool.query(
+          "UPDATE users SET plan = 'pro', stripe_subscription_id = $2 WHERE id = $1",
+          [userId, session.subscription],
+        );
       } else {
         console.error(
           "checkout.session.completed fără userId (client_reference_id/metadata) — nu s-a putut face upgrade.",
