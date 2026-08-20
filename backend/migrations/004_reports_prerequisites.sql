@@ -1,8 +1,9 @@
 -- Prerechizite pentru modulul Reports:
 -- 1. Prag de stoc redus per material (nu exista niciun camp de referinta anterior).
 -- 2. Index pe payments.invoice_id pentru agregarile din Reports/Financial.
-
-ALTER TABLE public.materials
-  ADD COLUMN IF NOT EXISTS min_stock numeric DEFAULT 0;
-
-CREATE INDEX IF NOT EXISTS idx_payments_invoice_id ON public.payments (invoice_id);
+--
+-- Notă: materials și payments nu au CREATE TABLE propriu-zis decât în
+-- 013_recover_missing_tables.sql. Pe o instanță nouă, 004 rulează înaintea
+-- lui 013, deci ALTER TABLE/CREATE INDEX de aici ar eșua ("relation does not
+-- exist"); coloana min_stock și indexul idx_payments_invoice_id au fost mutate
+-- direct în definițiile din 013.

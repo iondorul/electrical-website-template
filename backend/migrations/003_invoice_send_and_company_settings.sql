@@ -1,8 +1,10 @@
 -- Adaugă suport pentru trimiterea facturilor pe email (PDF) și datele firmei emitente.
-
-ALTER TABLE public.invoices
-  ADD COLUMN IF NOT EXISTS sent_at timestamp with time zone,
-  ADD COLUMN IF NOT EXISTS sent_to_email character varying(255);
+--
+-- Notă: coloanele sent_at/sent_to_email pe invoices sunt create direct în
+-- 013_recover_missing_tables.sql (invoices nu are CREATE TABLE propriu-zis
+-- decât acolo — vezi acel fișier). Pe o instanță nouă, 003 rulează înaintea
+-- lui 013, deci ALTER TABLE public.invoices de aici ar eșua ("relation does
+-- not exist"); de aceea a fost mutat direct în definiția tabelului din 013.
 
 CREATE TABLE IF NOT EXISTS public.company_settings (
     id serial PRIMARY KEY,
