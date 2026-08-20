@@ -64,7 +64,7 @@ schema.sql                → dump VECHI/PARȚIAL, NU e sursă de adevăr (vezi 
 
 ## Pattern frontend: modulul Settings
 
-`frontend/settings.html` + `frontend/js/settings.js` randează un shell generic care citește tab-urile din `window.SettingsTabs` (array populat de fișierele `frontend/js/settings/*Tab.js`, fiecare auto-înregistrându-se). **Adăugarea unui tab nou = un fișier nou + un `<script>` în `settings.html`, fără a atinge `settings.js`.** Tab-uri existente: `accountTab.js`, `billingTab.js` (UI-only, fără integrare de plăți reală — buton "Upgrade Plan" e un placeholder), `companyTab.js`, `privacyTab.js`.
+`frontend/settings.html` + `frontend/js/settings.js` randează un shell generic care citește tab-urile din `window.SettingsTabs` (array populat de fișierele `frontend/js/settings/*Tab.js`, fiecare auto-înregistrându-se). **Adăugarea unui tab nou = un fișier nou + un `<script>` în `settings.html`, fără a atinge `settings.js`.** Tab-uri existente: `accountTab.js`, `billingTab.js` (integrare Stripe reală — afișează planul curent din `users.plan`, data de reînnoire din `/stripe/subscription-status`, badge Pro clickabil către `erp-plans.html`), `companyTab.js`, `privacyTab.js`.
 
 ## Baza de date (PostgreSQL, instanță locală `ElectricalVPF`)
 
@@ -111,4 +111,40 @@ Module NEFROZEN, unde lucrul activ e permis: Login/Auth, Register, Settings (inc
 ## Alte observații
 
 - `estimates` are atât `user_id` (NOT NULL) cât și `created_by` (nullable) — ambele referențiază `users.id`; posibilă redundanță istorică, de păstrat ca atare.
-- Controller-ul `paymentController`/`paymentService` gestionează **plăți pe facturi** (client → firmă), un concept diferit de tab-ul "Abonament & Plăți" din Settings (care e billing SaaS, încă neconectat la vreun procesator de plăți real).
+- Controller-ul `paymentController`/`paymentService` gestionează **plăți pe facturi** (client → firmă), un concept diferit de tab-ul "Abonament & Plăți" din Settings (care e billing SaaS, acum conectat real la Stripe — vezi secțiunea de progres de mai jos).
+
+## Progres — funcționalități implementate (istoric, cronologic pe module)
+
+### Stripe & Planuri (Free/Pro)
+- Integrare Stripe completă: `stripe.checkout.sessions.create` (mode subscription) + webhook cu verificare semnătură (`express.raw` montat doar pe `/api/stripe/webhook`, înaintea `express.json()` global). La `checkout.session.completed`, userul trece pe `plan='pro'`.
+- Coloană `users.plan` (migrarea `008_user_plan.sql`) + `backend/middleware/planLimitMiddleware.js` pentru enforcement limite Free vs Pro (clients, quotes — montat direct pe rutele respective în `server.js`).
+- Coloană `users.stripe_subscription_id` (migrarea `010_user_stripe_subscription_id.sql`) + `GET /api/stripe/subscription-status` (returnează `currentPeriodEnd` + `downgradeScheduled`).
+- **Fix Stripe API "Basil"** (versiune `2025-03-31.basil`+, folosită implicit de `stripe` v22.5.0): `subscription.current_period_end` a fost mutat pe `subscription.items.data[0].current_period_end`. Rezolvat prin helper-ul `extractSubscriptionPeriodEnd()` în `stripeController.js`, cu fallback pe locația veche.
+- **Flux complet "Downgrade to Free"** (TDD — 7 teste Jest în `backend/controllers/stripeController.test.js`, plus verificare live end-to-end cu Stripe test-mode real + DB, nu doar teste automate):
+  - `POST /api/stripe/schedule-downgrade` → `stripe.subscriptions.update(id, { cancel_at_period_end: true })` + `users.downgrade_scheduled = true` (userul rămâne `plan='pro'`, păstrează accesul).
+  - `POST /api/stripe/cancel-scheduled-downgrade` → revine la `cancel_at_period_end: false` + `downgrade_scheduled = false`.
+  - Webhook `customer.subscription.deleted` (declanșat de Stripe la expirarea reală a perioadei) → `plan='free'`, `stripe_subscription_id=NULL`, `downgrade_scheduled=false`.
+  - Migrarea `012_user_downgrade_scheduled.sql` (coloană `users.downgrade_scheduled boolean DEFAULT false`).
+  - Ambele apeluri Stripe sunt "fail-safe": dacă apelul către Stripe eșuează, DB nu se modifică deloc (niciun UPDATE silențios/incorect).
+- UI `frontend/erp-plans.html`: carduri Free/Pro cu feature-listă, buton "Upgrade la Pro" → `erp-upgrade.html` → Stripe Checkout, buton "Downgrade la Free" → modal de confirmare cu dată reală de expirare (din `/stripe/subscription-status`), stare dinamică "Downgrade programat pentru [dată]" + buton "Anulează downgrade-ul programat", mesaje de eroare inline (fără schimbare silențioasă de plan la eroare Stripe). Stiluri: `.erp-plan-cta` + modificatori `-solid`/`-outline` în `frontend/css/erp-plans.css`.
+- `payment-success.html` + `GET /api/stripe/invoice/:sessionId` (returnează `hosted_invoice_url`, cu verificare ownership pe `client_reference_id`/`metadata.userId`).
+
+### Eliminare trial
+- `trial_started_at` eliminat complet — cod (backend + frontend) și coloană DB (migrarea `011_drop_trial_started_at.sql`, `DROP COLUMN`). Doar planurile `free`/`pro` există; nicio logică de acces temporar Pro.
+
+### Auth & sesiune
+- Auth guard consistency (`js/shell.js`, `js/settings/accountTab.js`, `js/settings/billingTab.js`): logout forțat (`performLogout()`) doar pe `401`/`403` explicit de la `/auth/me` — NU pe erori de rețea/timeout/5xx, ca sesiunea să rămână activă la un restart scurt de backend.
+
+### Alte module finalizate anterior (FROZEN, neatinse recent — vezi secțiunea de mai jos)
+- Clients, Projects, Estimating, Quotes, Invoices, Materials, Reports.
+- Send Invoice (PDF via `pdfkit`, fonturi DejaVu Sans, trimitere prin `nodemailer`/SMTP2GO).
+- Forgot Password / Reset Password (migrarea `007_password_reset_token.sql`, email prin SMTP2GO).
+- Register page cu validare live.
+- Dynamic header/sidebar shell (`js/shell.js`, apel `GET /api/auth/me`, evenimentul `erp:user-loaded`).
+
+## Ce rămâne de implementat
+
+- **Failed payment handling** — niciun flux pentru card refuzat la reînnoirea automată a abonamentului Pro (ex. webhook `invoice.payment_failed`); userul nu e notificat, nu există retry/grace period.
+- **Discount-uri la reînnoire** — planificate (10% la angajament 6 luni, 20% la 12 luni), neînceput, scope explicit exclus din task-urile Stripe de până acum.
+- **Migrare la producție** — target Frontend → GitHub Pages · Backend → Render · DB → Neon · DNS → Porkbun, planificat dar neimplementat (vezi „Target de hosting" mai sus); necesită și migrarea de recuperare pentru `invoices`/`invoice_items`/`payments`/`materials` (fără `CREATE TABLE` în repo, vezi „Probleme cunoscute la nivel de schemă").
+- **SMTP2GO domain verification** — blocată de migrarea DNS către Porkbun (nu poate fi verificat domeniul de trimitere înainte ca DNS-ul să fie efectiv migrat).
