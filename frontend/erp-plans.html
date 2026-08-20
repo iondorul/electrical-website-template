@@ -71,6 +71,8 @@
 
                             <span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true" id="freePlanCta">Plan
                                 curent</span>
+                            <div class="alert alert-danger d-none small py-2 px-3" id="freeCtaError" role="alert">
+                            </div>
 
                             <ul class="erp-plan-features">
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
@@ -214,18 +216,17 @@
                         <li>Funcții AI și automatizări — dezactivate</li>
                         <li>PDF profesional fără watermark — revine la watermark ElectricalVPF</li>
                     </ul>
-                    <p class="text-muted small mb-0">
+                    <p class="text-muted small mb-0" id="downgradeAutoText">
                         <i class="fas fa-circle-info me-1"></i>
-                        Downgrade-ul automat nu este încă disponibil. Pentru moment, contactează suportul
-                        pentru a finaliza schimbarea planului.
+                        Planul Free va fi activat automat după expirarea perioadei curente plătite. Până
+                        atunci, păstrezi accesul complet la funcțiile Pro.
                     </p>
+                    <div class="alert alert-danger d-none small mt-3 mb-0" id="downgradeError" role="alert"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Renunță</button>
-                    <!-- TODO(backend): implementare reală downgrade (Stripe subscription update/cancel) —
-                         deocamdată dezactivat intenționat, doar confirmare vizuală. -->
-                    <button type="button" class="btn btn-secondary" disabled>
-                        Confirmă Downgrade (în curând)
+                    <button type="button" class="btn btn-primary" id="btnConfirmDowngrade">
+                        Confirmă Downgrade
                     </button>
                 </div>
             </div>
@@ -244,7 +245,152 @@
 
     <!-- Plan status: folosește userul deja încărcat de shell.js (event erp:user-loaded), fără alt apel API -->
     <script>
-        document.addEventListener("erp:user-loaded", (e) => {
+        function formatPeriodEndDate(iso) {
+            return new Date(iso).toLocaleDateString("ro-RO", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+            });
+        }
+
+        // Cardul Free -> starea normală: buton activ "Downgrade la Free" (deschide modalul).
+        function renderFreeCtaDefault() {
+            const current = document.getElementById("btnDowngradeToFree") ||
+                document.getElementById("freeCtaSlot");
+            if (!current) return;
+            current.outerHTML =
+                '<button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnDowngradeToFree" ' +
+                'data-bs-toggle="modal" data-bs-target="#downgradeConfirmModal">Downgrade la Free</button>';
+
+            const errorEl = document.getElementById("freeCtaError");
+            if (errorEl) {
+                errorEl.classList.add("d-none");
+                errorEl.textContent = "";
+            }
+        }
+
+        // Cardul Free -> downgrade deja programat: mesaj cu data + buton de anulare.
+        function renderFreeCtaScheduled(currentPeriodEnd) {
+            const current = document.getElementById("btnDowngradeToFree") ||
+                document.getElementById("freeCtaSlot");
+            if (!current) return;
+
+            const dateText = currentPeriodEnd
+                ? formatPeriodEndDate(currentPeriodEnd)
+                : "data de expirare a perioadei curente";
+
+            current.outerHTML = `
+                <div class="erp-plan-cta erp-plan-cta-outline" id="freeCtaSlot" style="cursor: default; display: block;">
+                    <div class="mb-2 small">
+                        <i class="fas fa-clock me-1"></i>Downgrade programat pentru <strong>${dateText}</strong>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-danger w-100" id="btnCancelScheduledDowngrade">
+                        Anulează downgrade-ul programat
+                    </button>
+                </div>
+            `;
+
+            const errorEl = document.getElementById("freeCtaError");
+            if (errorEl) {
+                errorEl.classList.add("d-none");
+                errorEl.textContent = "";
+            }
+        }
+
+        async function handleConfirmDowngrade(btn) {
+            const errorEl = document.getElementById("downgradeError");
+            if (errorEl) {
+                errorEl.classList.add("d-none");
+                errorEl.textContent = "";
+            }
+
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Se procesează...";
+
+            try {
+                const response = await API.post("/stripe/schedule-downgrade", {});
+                if (!response || !response.success) {
+                    throw new Error(
+                        (response && response.error) ||
+                        "Nu s-a putut programa downgrade-ul.",
+                    );
+                }
+
+                const currentPeriodEnd = response.data && response.data.currentPeriodEnd;
+
+                const modalEl = document.getElementById("downgradeConfirmModal");
+                const modalInstance = window.bootstrap && modalEl
+                    ? window.bootstrap.Modal.getInstance(modalEl)
+                    : null;
+                if (modalInstance) modalInstance.hide();
+
+                renderFreeCtaScheduled(currentPeriodEnd);
+            } catch (err) {
+                console.error("Eroare la programarea downgrade-ului:", err);
+                if (errorEl) {
+                    errorEl.textContent =
+                        err.message ||
+                        "Nu s-a putut programa downgrade-ul. Încearcă din nou.";
+                    errorEl.classList.remove("d-none");
+                }
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        }
+
+        async function handleCancelScheduledDowngrade(btn) {
+            const errorEl = document.getElementById("freeCtaError");
+            if (errorEl) {
+                errorEl.classList.add("d-none");
+                errorEl.textContent = "";
+            }
+
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Se anulează...";
+
+            try {
+                const response = await API.post("/stripe/cancel-scheduled-downgrade", {});
+                if (!response || !response.success) {
+                    throw new Error(
+                        (response && response.error) ||
+                        "Nu s-a putut anula downgrade-ul programat.",
+                    );
+                }
+
+                renderFreeCtaDefault();
+            } catch (err) {
+                console.error("Eroare la anularea downgrade-ului programat:", err);
+                btn.disabled = false;
+                btn.textContent = originalText;
+                if (errorEl) {
+                    errorEl.textContent =
+                        err.message ||
+                        "Nu s-a putut anula downgrade-ul programat. Încearcă din nou.";
+                    errorEl.classList.remove("d-none");
+                }
+            }
+        }
+
+        // Delegare pe document — butoanele "Downgrade la Free" / "Confirmă Downgrade" /
+        // "Anulează downgrade-ul programat" sunt (re)create dinamic prin outerHTML, deci
+        // orice listener atașat direct pe elementul vechi s-ar pierde la fiecare swap.
+        document.addEventListener("click", (e) => {
+            const confirmBtn = e.target.closest("#btnConfirmDowngrade");
+            if (confirmBtn) {
+                handleConfirmDowngrade(confirmBtn);
+                return;
+            }
+
+            const cancelBtn = e.target.closest("#btnCancelScheduledDowngrade");
+            if (cancelBtn) {
+                handleCancelScheduledDowngrade(cancelBtn);
+            }
+        });
+
+        document.addEventListener("erp:user-loaded", async (e) => {
             const statusEl = document.getElementById("erpPlanStatus");
             if (!statusEl) return;
             const user = e.detail;
@@ -260,7 +406,7 @@
 
             // Dacă userul e deja pe Pro, butonul de upgrade devine etichetă inertă,
             // simetric cu "Plan curent" de pe cardul Free — iar cardul Free arată
-            // în schimb un buton "Downgrade la Free" (doar UI + modal, fără logică reală).
+            // în schimb un buton "Downgrade la Free" (deschide modalul de confirmare).
             if (user.plan === "pro") {
                 const proCta = document.getElementById("proPlanCta");
                 if (proCta) {
@@ -271,8 +417,43 @@
                 const freeCta = document.getElementById("freePlanCta");
                 if (freeCta) {
                     freeCta.outerHTML =
-                        '<button type="button" class="erp-plan-cta erp-plan-cta-outline" id="btnDowngradeToFree" ' +
+                        '<button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnDowngradeToFree" ' +
                         'data-bs-toggle="modal" data-bs-target="#downgradeConfirmModal">Downgrade la Free</button>';
+                }
+
+                // Data reală de expirare + starea downgrade_scheduled — un singur apel,
+                // reutilizat atât pentru textul din modal cât și pentru starea cardului Free.
+                // Dacă nu e disponibilă, textul static (fallback) din HTML rămâne neschimbat.
+                const downgradeTextEl = document.getElementById("downgradeAutoText");
+                try {
+                    const subResponse = await API.get("/stripe/subscription-status");
+                    const currentPeriodEnd =
+                        subResponse &&
+                        subResponse.data &&
+                        subResponse.data.currentPeriodEnd;
+                    const downgradeScheduled =
+                        subResponse &&
+                        subResponse.data &&
+                        subResponse.data.downgradeScheduled;
+
+                    if (downgradeTextEl && currentPeriodEnd) {
+                        const formatted = formatPeriodEndDate(currentPeriodEnd);
+                        downgradeTextEl.innerHTML = `
+                            <i class="fas fa-circle-info me-1"></i>
+                            Planul Free va fi activat automat după <strong>${formatted}</strong>,
+                            data la care expiră perioada curentă plătită. Până atunci, păstrezi
+                            accesul complet la funcțiile Pro.
+                        `;
+                    }
+
+                    if (downgradeScheduled) {
+                        renderFreeCtaScheduled(currentPeriodEnd);
+                    }
+                } catch (err) {
+                    console.error(
+                        "Eroare la preluarea statusului abonamentului pentru pagina de planuri:",
+                        err,
+                    );
                 }
             }
         });

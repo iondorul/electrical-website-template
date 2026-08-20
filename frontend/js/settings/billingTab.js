@@ -57,8 +57,8 @@
       <div class="card border-0" style="background: #f8f9fb; border-radius: 12px;">
         <div class="card-body p-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
           <div>
-            <span class="plan-badge plan-badge-pro mb-2" style="display: inline-flex; margin: 0;"><i
-                class="fas fa-crown plan-badge-icon"></i><span>Plan Pro</span></span>
+            <a href="erp-plans.html" class="plan-badge plan-badge-pro mb-2" style="display: inline-flex; margin: 0;"><i
+                class="fas fa-crown plan-badge-icon"></i><span>Plan Pro</span></a>
             <div class="fw-semibold" id="billingRenewalDate">Data reînnoirii: se încarcă...</div>
             <div class="text-muted small">Abonamentul se reînnoiește automat lunar.</div>
           </div>

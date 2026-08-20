@@ -113,15 +113,20 @@ exports.getSubscriptionStatus = async (req, res) => {
     const userId = req.user.id;
 
     const userRes = await pool.query(
-      "SELECT stripe_subscription_id FROM users WHERE id = $1",
+      "SELECT stripe_subscription_id, downgrade_scheduled FROM users WHERE id = $1",
       [userId],
     );
 
     const subscriptionId =
       userRes.rows[0] && userRes.rows[0].stripe_subscription_id;
+    const downgradeScheduled =
+      (userRes.rows[0] && userRes.rows[0].downgrade_scheduled) || false;
 
     if (!subscriptionId) {
-      return res.json({ success: true, data: { currentPeriodEnd: null } });
+      return res.json({
+        success: true,
+        data: { currentPeriodEnd: null, downgradeScheduled: false },
+      });
     }
 
     try {
@@ -135,12 +140,12 @@ exports.getSubscriptionStatus = async (req, res) => {
         return res.json({
           success: false,
           status: "error",
-          data: { currentPeriodEnd: null },
+          data: { currentPeriodEnd: null, downgradeScheduled },
         });
       }
 
       const currentPeriodEnd = new Date(periodEndTimestamp * 1000).toISOString();
-      res.json({ success: true, data: { currentPeriodEnd } });
+      res.json({ success: true, data: { currentPeriodEnd, downgradeScheduled } });
     } catch (stripeErr) {
       console.error(
         `Nu s-a putut prelua abonamentul Stripe (subscription_id=${subscriptionId}):`,
@@ -149,7 +154,7 @@ exports.getSubscriptionStatus = async (req, res) => {
       res.json({
         success: false,
         status: "error",
-        data: { currentPeriodEnd: null },
+        data: { currentPeriodEnd: null, downgradeScheduled },
       });
     }
   } catch (err) {
@@ -157,6 +162,121 @@ exports.getSubscriptionStatus = async (req, res) => {
     res.status(500).json({
       success: false,
       error: err.message || "Nu s-a putut verifica statusul abonamentului.",
+    });
+  }
+};
+
+// Programează downgrade la Free la finalul perioadei curent plătite —
+// stripe.subscriptions.update(id, { cancel_at_period_end: true }). Userul
+// rămâne plan='pro' (păstrează accesul) — doar downgrade_scheduled devine true.
+// Dacă apelul Stripe eșuează, DB nu se atinge deloc (nicio schimbare silențioasă).
+exports.scheduleDowngrade = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const userRes = await pool.query(
+      "SELECT stripe_subscription_id FROM users WHERE id = $1",
+      [userId],
+    );
+    const subscriptionId =
+      userRes.rows[0] && userRes.rows[0].stripe_subscription_id;
+
+    if (!subscriptionId) {
+      return res.status(400).json({
+        success: false,
+        error: "Nu ai un abonament Pro activ de anulat.",
+      });
+    }
+
+    let subscription;
+    try {
+      subscription = await stripe.subscriptions.update(subscriptionId, {
+        cancel_at_period_end: true,
+      });
+    } catch (stripeErr) {
+      console.error(
+        `Eroare Stripe la programarea downgrade-ului (subscription_id=${subscriptionId}):`,
+        stripeErr,
+      );
+      return res.status(500).json({
+        success: false,
+        error:
+          stripeErr.message ||
+          "Nu s-a putut programa downgrade-ul. Încearcă din nou.",
+      });
+    }
+
+    await pool.query(
+      "UPDATE users SET downgrade_scheduled = true WHERE id = $1",
+      [userId],
+    );
+
+    const periodEndTimestamp = extractSubscriptionPeriodEnd(subscription);
+    const currentPeriodEnd = periodEndTimestamp
+      ? new Date(periodEndTimestamp * 1000).toISOString()
+      : null;
+
+    res.json({
+      success: true,
+      data: { downgradeScheduled: true, currentPeriodEnd },
+    });
+  } catch (err) {
+    console.error("Eroare la programarea downgrade-ului:", err);
+    res.status(500).json({
+      success: false,
+      error: err.message || "Nu s-a putut programa downgrade-ul.",
+    });
+  }
+};
+
+// Anulează un downgrade programat — cancel_at_period_end: false. Simetric cu
+// scheduleDowngrade: dacă Stripe eșuează, DB nu se atinge.
+exports.cancelScheduledDowngrade = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const userRes = await pool.query(
+      "SELECT stripe_subscription_id FROM users WHERE id = $1",
+      [userId],
+    );
+    const subscriptionId =
+      userRes.rows[0] && userRes.rows[0].stripe_subscription_id;
+
+    if (!subscriptionId) {
+      return res.status(400).json({
+        success: false,
+        error: "Nu ai un abonament Pro activ.",
+      });
+    }
+
+    try {
+      await stripe.subscriptions.update(subscriptionId, {
+        cancel_at_period_end: false,
+      });
+    } catch (stripeErr) {
+      console.error(
+        `Eroare Stripe la anularea downgrade-ului programat (subscription_id=${subscriptionId}):`,
+        stripeErr,
+      );
+      return res.status(500).json({
+        success: false,
+        error:
+          stripeErr.message ||
+          "Nu s-a putut anula downgrade-ul programat. Încearcă din nou.",
+      });
+    }
+
+    await pool.query(
+      "UPDATE users SET downgrade_scheduled = false WHERE id = $1",
+      [userId],
+    );
+
+    res.json({ success: true, data: { downgradeScheduled: false } });
+  } catch (err) {
+    console.error("Eroare la anularea downgrade-ului programat:", err);
+    res.status(500).json({
+      success: false,
+      error: err.message || "Nu s-a putut anula downgrade-ul programat.",
     });
   }
 };
@@ -196,6 +316,19 @@ exports.handleWebhook = async (req, res) => {
           "checkout.session.completed fără userId (client_reference_id/metadata) — nu s-a putut face upgrade.",
         );
       }
+    }
+
+    // Stripe trimite acest eveniment automat când perioada plătită expiră și
+    // cancel_at_period_end era true (downgrade programat) — abonamentul chiar
+    // s-a încheiat. Găsim userul după subscription_id (nu avem userId direct
+    // pe acest eveniment) și îl trecem efectiv pe Free.
+    if (event.type === "customer.subscription.deleted") {
+      const subscription = event.data.object;
+
+      await pool.query(
+        "UPDATE users SET plan = 'free', stripe_subscription_id = NULL, downgrade_scheduled = false WHERE stripe_subscription_id = $1",
+        [subscription.id],
+      );
     }
 
     res.json({ received: true });

@@ -143,6 +143,14 @@
     color: #e55f00;
 }
 
+/* "Plan curent" — inert complet: fără hover, fără cursor de click, fără interacțiune.
+   Ambele instanțe (Free implicit + Pro randat dinamic la erp:user-loaded) au deja
+   aria-disabled="true" în HTML/JS — doar stilul lipsea. */
+.erp-plan-cta[aria-disabled="true"] {
+    cursor: default;
+    pointer-events: none;
+}
+
 .erp-plan-cta-solid {
     background: #ff6b00;
     border: 1.5px solid #ff6b00;

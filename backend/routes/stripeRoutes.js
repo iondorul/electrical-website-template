@@ -21,6 +21,18 @@ router.get(
   stripeController.getSubscriptionStatus,
 );
 
+router.post(
+  "/schedule-downgrade",
+  authMiddleware,
+  stripeController.scheduleDowngrade,
+);
+
+router.post(
+  "/cancel-scheduled-downgrade",
+  authMiddleware,
+  stripeController.cancelScheduledDowngrade,
+);
+
 // Stripe apelează direct acest endpoint — verificarea se face prin semnătura
 // webhook-ului (STRIPE_WEBHOOK_SECRET), nu prin JWT, deci fără authMiddleware.
 router.post("/webhook", stripeController.handleWebhook);
