@@ -63,7 +63,7 @@
             <div class="text-muted small">Abonamentul se reînnoiește automat lunar.</div>
           </div>
           <button type="button" class="btn btn-outline-primary fw-semibold px-4" id="btnRenewEarly">
-            <i class="fas fa-rotate me-2"></i> Reînnoiește abonamentul acum
+            <i class="fas fa-rotate me-2"></i> Extinde abonamentul
           </button>
         </div>
       </div>
