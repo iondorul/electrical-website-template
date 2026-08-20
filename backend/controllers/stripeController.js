@@ -340,8 +340,11 @@ exports.handleWebhook = async (req, res) => {
         (session.metadata && session.metadata.userId);
 
       if (userId) {
+        // payment_failed_at = NULL: dacă userul se reabonează după un eșec
+        // definitiv (subscription_id nou), nu trebuie să rămână stale un
+        // avertisment de plată eșuată de la abonamentul anterior, deja închis.
         await pool.query(
-          "UPDATE users SET plan = 'pro', stripe_subscription_id = $2 WHERE id = $1",
+          "UPDATE users SET plan = 'pro', stripe_subscription_id = $2, payment_failed_at = NULL WHERE id = $1",
           [userId, session.subscription],
         );
       } else {
@@ -358,8 +361,12 @@ exports.handleWebhook = async (req, res) => {
     if (event.type === "customer.subscription.deleted") {
       const subscription = event.data.object;
 
+      // payment_failed_at = NULL alături de resetul de plan: abonamentul chiar
+      // s-a încheiat (fie prin downgrade programat, fie prin eșecul final al
+      // tuturor reîncercărilor) — avertismentul de plată eșuată nu mai are ce
+      // reprezenta pentru un user care oricum nu mai are abonament activ.
       await pool.query(
-        "UPDATE users SET plan = 'free', stripe_subscription_id = NULL, downgrade_scheduled = false WHERE stripe_subscription_id = $1",
+        "UPDATE users SET plan = 'free', stripe_subscription_id = NULL, downgrade_scheduled = false, payment_failed_at = NULL WHERE stripe_subscription_id = $1",
         [subscription.id],
       );
     }
@@ -368,7 +375,7 @@ exports.handleWebhook = async (req, res) => {
     // rămâne plan='pro' (nu se atinge plan/downgrade_scheduled aici), doar
     // marcăm momentul eșecului și trimitem un avertisment. Eșecul final (toate
     // reîncercările epuizate) e acoperit de customer.subscription.deleted mai
-    // sus, nemodificat.
+    // sus, care acum resetează și payment_failed_at.
     //
     // Spre deosebire de blocurile de mai sus, orice eroare aici (DB sau email)
     // e prinsă local și doar logată, fără să urce la catch-ul general — Stripe

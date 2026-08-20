@@ -147,7 +147,7 @@ describe("cancelScheduledDowngrade", () => {
 });
 
 describe("handleWebhook — customer.subscription.deleted", () => {
-  test("la expirarea reală a abonamentului, resetează userul: plan='free', stripe_subscription_id=NULL, downgrade_scheduled=false", async () => {
+  test("la expirarea reală a abonamentului, resetează userul: plan='free', stripe_subscription_id=NULL, downgrade_scheduled=false, payment_failed_at=NULL", async () => {
     mockConstructEvent.mockReturnValueOnce({
       type: "customer.subscription.deleted",
       data: { object: { id: "sub_123" } },
@@ -168,8 +168,63 @@ describe("handleWebhook — customer.subscription.deleted", () => {
     expect(sql).toMatch(/plan\s*=\s*'free'/i);
     expect(sql).toMatch(/stripe_subscription_id\s*=\s*null/i);
     expect(sql).toMatch(/downgrade_scheduled\s*=\s*false/i);
+    expect(sql).toMatch(/payment_failed_at\s*=\s*null/i);
     expect(params).toEqual(["sub_123"]);
     expect(res.json).toHaveBeenCalledWith({ received: true });
+  });
+});
+
+describe("handleWebhook — checkout.session.completed", () => {
+  test("trece userul pe plan='pro', setează stripe_subscription_id și resetează payment_failed_at=NULL", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          client_reference_id: "1",
+          subscription: "sub_new_456",
+        },
+      },
+    });
+
+    pool.query.mockResolvedValueOnce({ rows: [] });
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    await stripeController.handleWebhook(req, res);
+
+    expect(pool.query).toHaveBeenCalledTimes(1);
+    const [sql, params] = pool.query.mock.calls[0];
+    expect(sql).toMatch(/plan\s*=\s*'pro'/i);
+    expect(sql).toMatch(/stripe_subscription_id\s*=\s*\$2/i);
+    expect(sql).toMatch(/payment_failed_at\s*=\s*null/i);
+    expect(params).toEqual(["1", "sub_new_456"]);
+    expect(res.json).toHaveBeenCalledWith({ received: true });
+  });
+
+  test("fără userId identificabil (client_reference_id/metadata), doar loghează — nu apelează DB, tot 200", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "checkout.session.completed",
+      data: { object: { subscription: "sub_new_456" } },
+    });
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    const consoleErrSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    await stripeController.handleWebhook(req, res);
+
+    expect(pool.query).not.toHaveBeenCalled();
+    expect(res.json).toHaveBeenCalledWith({ received: true });
+
+    consoleErrSpy.mockRestore();
   });
 });
 
