@@ -411,7 +411,8 @@
                 const proCta = document.getElementById("proPlanCta");
                 if (proCta) {
                     proCta.outerHTML =
-                        '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true">Plan curent</span>';
+                        '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true">Plan curent</span>' +
+                        '<div class="small text-muted mt-2" id="proPlanDateInfo"></div>';
                 }
 
                 const freeCta = document.getElementById("freePlanCta");
@@ -435,6 +436,28 @@
                         subResponse &&
                         subResponse.data &&
                         subResponse.data.downgradeScheduled;
+                    const paymentFailedAt =
+                        subResponse &&
+                        subResponse.data &&
+                        subResponse.data.paymentFailedAt;
+
+                    // Data lângă "Plan curent": reînnoire dacă abonamentul e activ,
+                    // expirare dacă downgrade-ul e programat. Dacă ultima plată a
+                    // eșuat (grace period), NU afișăm "Reînnoire" — ar fi derutant
+                    // să sugerăm reînnoire automată garantată cât timp Stripe încă
+                    // reîncearcă o plată eșuată; avertismentul dedicat există deja
+                    // separat, în tab-ul Settings/Billing.
+                    const proDateInfoEl = document.getElementById("proPlanDateInfo");
+                    if (proDateInfoEl && currentPeriodEnd) {
+                        const formattedProDate = formatPeriodEndDate(currentPeriodEnd);
+                        if (downgradeScheduled) {
+                            proDateInfoEl.innerHTML =
+                                `<i class="fas fa-calendar-xmark me-1"></i>Expiră la data de ${formattedProDate}`;
+                        } else if (!paymentFailedAt) {
+                            proDateInfoEl.innerHTML =
+                                `<i class="fas fa-rotate me-1"></i>Reînnoire la data de ${formattedProDate}`;
+                        }
+                    }
 
                     if (downgradeTextEl && currentPeriodEnd) {
                         const formatted = formatPeriodEndDate(currentPeriodEnd);
