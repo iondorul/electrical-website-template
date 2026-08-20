@@ -111,7 +111,7 @@
         if (renewBtn) {
           renewBtn.addEventListener("click", () => {
             Toast.show(
-              "Reînnoirea anticipată va fi disponibilă în curând.",
+              "Extinderea abonamentului va fi disponibilă în curând.",
               "info",
             );
           });
