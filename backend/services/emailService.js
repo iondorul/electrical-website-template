@@ -76,4 +76,30 @@ async function sendPasswordResetEmail({ to, fullName, resetLink }) {
   });
 }
 
-module.exports = { sendInvoiceEmail, sendPasswordResetEmail, isConfigured };
+async function sendPaymentFailedEmail({ to, fullName }) {
+  const transporter = getTransporter();
+
+  const subject = "Plată eșuată - abonamentul tău Pro ElectricalVPF ERP";
+  const text =
+    `Bună${fullName ? ` ${fullName}` : ""},\n\n` +
+    `Ultima încercare de plată pentru abonamentul tău Pro a eșuat. ` +
+    `Stripe va reîncerca automat plata în zilele următoare — nu trebuie să faci nimic acum, ` +
+    `abonamentul tău rămâne activ pe durata acestor reîncercări.\n\n` +
+    `Dacă toate reîncercările eșuează, abonamentul va reveni automat la planul Free. ` +
+    `Dacă problema persistă, verifică metoda de plată asociată contului tău Stripe.\n\n` +
+    `Cu stimă,\nElectricalVPF ERP`;
+
+  await transporter.sendMail({
+    from: process.env.SMTP_FROM || process.env.SMTP_USER,
+    to,
+    subject,
+    text,
+  });
+}
+
+module.exports = {
+  sendInvoiceEmail,
+  sendPasswordResetEmail,
+  sendPaymentFailedEmail,
+  isConfigured,
+};

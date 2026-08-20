@@ -68,6 +68,8 @@
         </div>
       </div>
 
+      <div id="billingPaymentFailedBanner"></div>
+
       <div class="settings-subblock">
         <div class="settings-subblock-title">Istoric Facturi Abonament</div>
         <div class="settings-placeholder-box">
@@ -139,6 +141,20 @@
               } else {
                 renewalDateEl.textContent = "Data reînnoirii: indisponibilă momentan";
               }
+            }
+
+            // Banner discret, non-blocant — apare doar dacă ultima încercare
+            // de plată a eșuat (grace period Stripe, retry automat în curs).
+            const paymentFailedAt =
+              subResponse && subResponse.data && subResponse.data.paymentFailedAt;
+            const bannerEl = container.querySelector("#billingPaymentFailedBanner");
+            if (bannerEl && paymentFailedAt) {
+              bannerEl.innerHTML = `
+                <div class="alert alert-warning d-flex align-items-center gap-2 py-2 px-3 mb-0 mt-3" role="alert">
+                  <i class="fas fa-triangle-exclamation"></i>
+                  <span>Ultima plată a eșuat. Stripe va reîncerca automat plata în zilele următoare — nu trebuie să faci nimic acum.</span>
+                </div>
+              `;
             }
           } catch (err) {
             console.error("Eroare la preluarea datei de reînnoire:", err);

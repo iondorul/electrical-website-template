@@ -1,0 +1,74 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - complementary [ref=f4e3]:
+      - generic [ref=f4e4]:
+        - generic [ref=f4e6]:
+          - generic [ref=f4e7]: 
+          - generic [ref=f4e8]:
+            - text: Electrical
+            - strong [ref=f4e9]: VPF
+        - button "" [ref=f4e10] [cursor=pointer]
+      - navigation [ref=f4e12]:
+        - list [ref=f4e13]:
+          - listitem [ref=f4e14]:
+            - link " Dashboard" [ref=f4e15] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f4e16]: 
+              - generic [ref=f4e17]: Dashboard
+          - listitem [ref=f4e18]:
+            - link " Clients" [ref=f4e19] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f4e20]: 
+              - generic [ref=f4e21]: Clients
+          - listitem [ref=f4e22]:
+            - link " Projects" [ref=f4e23] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f4e24]: 
+              - generic [ref=f4e25]: Projects
+          - listitem [ref=f4e26]:
+            - link " Estimating" [ref=f4e27] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f4e28]: 
+              - generic [ref=f4e29]: Estimating
+          - listitem [ref=f4e30]:
+            - link " Quotes" [ref=f4e31] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f4e32]: 
+              - generic [ref=f4e33]: Quotes
+          - listitem [ref=f4e34]:
+            - link " Invoices" [ref=f4e35] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f4e36]: 
+              - generic [ref=f4e37]: Invoices
+          - listitem [ref=f4e38]:
+            - link " Materials" [ref=f4e39] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f4e40]: 
+              - generic [ref=f4e41]: Materials
+          - listitem [ref=f4e42]:
+            - link " Reports" [ref=f4e43] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f4e44]: 
+              - generic [ref=f4e45]: Reports
+          - listitem [ref=f4e46]:
+            - link " Settings" [ref=f4e47] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f4e48]: 
+              - generic [ref=f4e49]: Settings
+      - button " Logout" [ref=f4e51] [cursor=pointer]:
+        - generic [ref=f4e52]: 
+        - text: Logout
+    - main [ref=f4e53]:
+      - generic [ref=f4e55]:
+        - heading "Setări" [level=4] [ref=f4e57]
+        - generic [ref=f4e58]:
+          - link "Setări" [ref=f4e59] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f4e60]: 
+          - button "Logout" [ref=f4e62] [cursor=pointer]:
+            - generic [ref=f4e63]: 
+          - generic [ref=f4e65]:
+            - generic [ref=f4e66]: "--"
+            - text: "--"
+          - generic [ref=f4e67]: 
+  - text:      

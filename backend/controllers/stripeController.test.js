@@ -18,6 +18,12 @@ jest.mock("stripe", () => {
   }));
 });
 
+const mockSendPaymentFailedEmail = jest.fn();
+
+jest.mock("../services/emailService", () => ({
+  sendPaymentFailedEmail: (...args) => mockSendPaymentFailedEmail(...args),
+}));
+
 const pool = require("../config/db");
 const stripeController = require("./stripeController");
 
@@ -164,6 +170,225 @@ describe("handleWebhook — customer.subscription.deleted", () => {
     expect(sql).toMatch(/downgrade_scheduled\s*=\s*false/i);
     expect(params).toEqual(["sub_123"]);
     expect(res.json).toHaveBeenCalledWith({ received: true });
+  });
+});
+
+describe("handleWebhook — invoice.payment_failed", () => {
+  test("setează payment_failed_at=NOW() (nu atinge plan/downgrade_scheduled) și trimite emailul de avertizare", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "invoice.payment_failed",
+      data: { object: { subscription: "sub_123" } },
+    });
+
+    pool.query.mockResolvedValueOnce({
+      rows: [{ id: 1, email: "user@example.com", full_name: "Ion Pop" }],
+    });
+    mockSendPaymentFailedEmail.mockResolvedValueOnce();
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    await stripeController.handleWebhook(req, res);
+
+    expect(pool.query).toHaveBeenCalledTimes(1);
+    const [sql, params] = pool.query.mock.calls[0];
+    expect(sql).toMatch(/UPDATE\s+users/i);
+    expect(sql).toMatch(/payment_failed_at\s*=\s*now\(\)/i);
+    expect(sql).not.toMatch(/\bplan\s*=/i);
+    expect(sql).not.toMatch(/downgrade_scheduled\s*=/i);
+    expect(params).toEqual(["sub_123"]);
+
+    expect(mockSendPaymentFailedEmail).toHaveBeenCalledWith({
+      to: "user@example.com",
+      fullName: "Ion Pop",
+    });
+
+    expect(res.json).toHaveBeenCalledWith({ received: true });
+    expect(res.status).not.toHaveBeenCalled();
+  });
+
+  test("citește subscription_id și din invoice.parent.subscription_details.subscription (Basil)", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "invoice.payment_failed",
+      data: {
+        object: {
+          parent: { subscription_details: { subscription: "sub_basil" } },
+        },
+      },
+    });
+
+    pool.query.mockResolvedValueOnce({
+      rows: [{ id: 1, email: "user@example.com", full_name: "Ion Pop" }],
+    });
+    mockSendPaymentFailedEmail.mockResolvedValueOnce();
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    await stripeController.handleWebhook(req, res);
+
+    const [, params] = pool.query.mock.calls[0];
+    expect(params).toEqual(["sub_basil"]);
+    expect(res.json).toHaveBeenCalledWith({ received: true });
+  });
+
+  test("dacă niciun user nu are acel subscription_id, doar loghează — nu trimite email, răspunde tot 200", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "invoice.payment_failed",
+      data: { object: { subscription: "sub_necunoscut" } },
+    });
+
+    pool.query.mockResolvedValueOnce({ rows: [] });
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    const consoleErrSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    await stripeController.handleWebhook(req, res);
+
+    expect(mockSendPaymentFailedEmail).not.toHaveBeenCalled();
+    expect(res.json).toHaveBeenCalledWith({ received: true });
+    expect(res.status).not.toHaveBeenCalled();
+
+    consoleErrSpy.mockRestore();
+  });
+
+  test("dacă query-ul DB eșuează, nu blochează webhook-ul — loghează eroarea și răspunde tot 200 (fail-safe)", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "invoice.payment_failed",
+      data: { object: { subscription: "sub_123" } },
+    });
+
+    pool.query.mockRejectedValueOnce(new Error("connection terminated"));
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    const consoleErrSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    await stripeController.handleWebhook(req, res);
+
+    expect(mockSendPaymentFailedEmail).not.toHaveBeenCalled();
+    expect(res.json).toHaveBeenCalledWith({ received: true });
+    expect(res.status).not.toHaveBeenCalled();
+    expect(consoleErrSpy).toHaveBeenCalled();
+
+    consoleErrSpy.mockRestore();
+  });
+
+  test("dacă trimiterea emailului eșuează, tot nu blochează webhook-ul — DB rămâne deja actualizat, răspunde 200", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "invoice.payment_failed",
+      data: { object: { subscription: "sub_123" } },
+    });
+
+    pool.query.mockResolvedValueOnce({
+      rows: [{ id: 1, email: "user@example.com", full_name: "Ion Pop" }],
+    });
+    mockSendPaymentFailedEmail.mockRejectedValueOnce(new Error("SMTP down"));
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    const consoleErrSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    await stripeController.handleWebhook(req, res);
+
+    expect(mockSendPaymentFailedEmail).toHaveBeenCalledTimes(1);
+    expect(res.json).toHaveBeenCalledWith({ received: true });
+    expect(res.status).not.toHaveBeenCalled();
+
+    consoleErrSpy.mockRestore();
+  });
+});
+
+describe("handleWebhook — invoice.payment_succeeded", () => {
+  test("resetează payment_failed_at la NULL pentru userul cu acel subscription_id", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "invoice.payment_succeeded",
+      data: { object: { subscription: "sub_123" } },
+    });
+
+    pool.query.mockResolvedValueOnce({ rows: [] });
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    await stripeController.handleWebhook(req, res);
+
+    expect(pool.query).toHaveBeenCalledTimes(1);
+    const [sql, params] = pool.query.mock.calls[0];
+    expect(sql).toMatch(/UPDATE\s+users/i);
+    expect(sql).toMatch(/payment_failed_at\s*=\s*null/i);
+    expect(params).toEqual(["sub_123"]);
+
+    expect(res.json).toHaveBeenCalledWith({ received: true });
+    expect(res.status).not.toHaveBeenCalled();
+  });
+
+  test("dacă subscription_id nu poate fi identificat pe invoice, nu apelează DB și răspunde tot 200", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "invoice.payment_succeeded",
+      data: { object: {} },
+    });
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    const consoleErrSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    await stripeController.handleWebhook(req, res);
+
+    expect(pool.query).not.toHaveBeenCalled();
+    expect(res.json).toHaveBeenCalledWith({ received: true });
+
+    consoleErrSpy.mockRestore();
+  });
+
+  test("dacă query-ul DB eșuează, nu blochează webhook-ul — răspunde tot 200 (fail-safe)", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "invoice.payment_succeeded",
+      data: { object: { subscription: "sub_123" } },
+    });
+
+    pool.query.mockRejectedValueOnce(new Error("connection terminated"));
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    const consoleErrSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    await stripeController.handleWebhook(req, res);
+
+    expect(res.json).toHaveBeenCalledWith({ received: true });
+    expect(res.status).not.toHaveBeenCalled();
+
+    consoleErrSpy.mockRestore();
   });
 });
 
