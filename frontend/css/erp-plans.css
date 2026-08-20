@@ -82,14 +82,14 @@
     font-weight: 700;
     font-size: 1.25rem;
     color: #1e293b;
-    margin-bottom: 14px;
+    margin-bottom: 6px;
 }
 
 .erp-plan-price {
     display: flex;
     align-items: baseline;
     gap: 6px;
-    margin-bottom: 8px;
+    margin-bottom: 2px;
 }
 
 .erp-plan-amount {
@@ -107,7 +107,7 @@
 .erp-plan-desc {
     color: #64748b;
     font-size: .86rem;
-    margin-bottom: 24px;
+    margin-bottom: 0;
     min-height: 38px;
 }
 
@@ -163,6 +163,21 @@
     color: #fff;
     transform: translateY(-2px);
     box-shadow: 0 10px 22px rgba(255, 107, 0, .3);
+}
+
+/* Data de reînnoire/expirare de lângă "Plan curent" (randată dinamic, vezi
+   erp-plans.html). #ff6b00 e același portocaliu folosit deja în acest fișier
+   la .erp-plan-cta-solid/.erp-plan-badge — nicio variabilă CSS nu-l expune pe
+   această pagină (--primary există doar în login.css, neîncărcat aici), iar
+   erp-plans.css însuși nu folosește o variabilă pentru el nicăieri, deci e
+   hardcodat identic cu restul fișierului, nu o culoare nouă.
+   Clasă (nu doar #proPlanDateInfo), ca să poată fi reutilizată și pentru
+   placeholder-ul invizibil de pe cardul Free — aceeași înălțime de linie,
+   ca butoanele "Downgrade la Free" / "Plan curent" să rămână aliniate. */
+.erp-plan-date-info {
+    font-size: .75rem;
+    color: #ff6b00;
+    text-align: center;
 }
 
 .erp-plan-features {

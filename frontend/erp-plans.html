@@ -411,13 +411,19 @@
                 const proCta = document.getElementById("proPlanCta");
                 if (proCta) {
                     proCta.outerHTML =
-                        '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true">Plan curent</span>' +
-                        '<div class="small text-muted mt-2" id="proPlanDateInfo"></div>';
+                        '<div class="erp-plan-date-info mb-1" id="proPlanDateInfo"></div>' +
+                        '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true">Plan curent</span>';
                 }
 
                 const freeCta = document.getElementById("freePlanCta");
                 if (freeCta) {
+                    // Placeholder invizibil, aceeași înălțime ca #proPlanDateInfo de pe
+                    // cardul Pro (aceeași clasă/margin) — fără el, "Downgrade la Free" s-ar
+                    // dezalinia vertical față de "Plan curent" ori de câte ori cardul Pro
+                    // afișează text deasupra butonului său.
                     freeCta.outerHTML =
+                        '<div class="erp-plan-date-info mb-1" style="visibility: hidden;" aria-hidden="true">' +
+                        '<i class="far fa-clock me-1"></i>&nbsp;</div>' +
                         '<button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnDowngradeToFree" ' +
                         'data-bs-toggle="modal" data-bs-target="#downgradeConfirmModal">Downgrade la Free</button>';
                 }
@@ -452,10 +458,10 @@
                         const formattedProDate = formatPeriodEndDate(currentPeriodEnd);
                         if (downgradeScheduled) {
                             proDateInfoEl.innerHTML =
-                                `<i class="fas fa-calendar-xmark me-1"></i>Expiră la data de ${formattedProDate}`;
+                                `<i class="far fa-clock me-1"></i>Expiră la data de ${formattedProDate}`;
                         } else if (!paymentFailedAt) {
                             proDateInfoEl.innerHTML =
-                                `<i class="fas fa-rotate me-1"></i>Reînnoire la data de ${formattedProDate}`;
+                                `<i class="far fa-clock me-1"></i>Reînnoire la data de ${formattedProDate}`;
                         }
                     }
 
