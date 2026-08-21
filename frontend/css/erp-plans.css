@@ -85,6 +85,62 @@
     margin-bottom: 6px;
 }
 
+/* Toggle Lunar/Anual (doar UI momentan — vezi erp-plans.html pentru logica de
+   schimbare a prețului afișat; nu declanșează încă niciun checkout real). */
+.erp-billing-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.erp-billing-toggle-label {
+    font-size: .8rem;
+    font-weight: 600;
+    color: #94a3b8;
+    transition: color .2s ease;
+}
+
+.erp-billing-toggle-label.active {
+    color: #1e293b;
+}
+
+.erp-billing-switch {
+    position: relative;
+    width: 40px;
+    height: 22px;
+    border-radius: 999px;
+    border: none;
+    background: #e2e8f0;
+    cursor: pointer;
+    padding: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: background-color .2s ease;
+}
+
+.erp-billing-switch[aria-checked="true"] {
+    background: #ff6b00;
+}
+
+.erp-billing-switch-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+    transition: transform .2s ease;
+}
+
+.erp-billing-switch[aria-checked="true"] .erp-billing-switch-thumb {
+    transform: translateX(18px);
+}
+
 .erp-plan-price {
     display: flex;
     align-items: baseline;
@@ -102,6 +158,13 @@
 .erp-plan-period {
     color: #64748b;
     font-size: .88rem;
+}
+
+.erp-plan-discount-badge {
+    color: #ff6b00;
+    font-size: .78rem;
+    font-weight: 600;
+    margin-bottom: 8px;
 }
 
 .erp-plan-desc {

@@ -118,10 +118,23 @@
                         <div class="erp-plan-card erp-plan-card-pro">
                             <span class="erp-plan-badge">Recomandat</span>
                             <div class="erp-plan-name">Pro</div>
-                            <div class="erp-plan-price">
-                                <span class="erp-plan-amount">€14.90</span>
-                                <span class="erp-plan-period">/lună</span>
+
+                            <div class="erp-billing-toggle">
+                                <span class="erp-billing-toggle-label active" id="billingLabelMonthly">Lunar</span>
+                                <button type="button" class="erp-billing-switch" id="billingIntervalSwitch"
+                                    role="switch" aria-checked="false"
+                                    aria-label="Comută între facturare lunară și anuală">
+                                    <span class="erp-billing-switch-thumb"></span>
+                                </button>
+                                <span class="erp-billing-toggle-label" id="billingLabelYearly">Anual</span>
                             </div>
+
+                            <div class="erp-plan-price">
+                                <span class="erp-plan-amount" id="proPlanAmount">€14.90</span>
+                                <span class="erp-plan-period" id="proPlanPeriod">/lună</span>
+                            </div>
+                            <div class="erp-plan-discount-badge d-none" id="proPlanDiscountBadge">Economisești 20% cu
+                                plata anuală</div>
                             <p class="erp-plan-desc">Pentru firme care vor control complet asupra activității.</p>
 
                             <a href="erp-upgrade.html" class="erp-plan-cta erp-plan-cta-solid" id="proPlanCta">Upgrade
@@ -252,6 +265,12 @@
                 year: "numeric",
             });
         }
+
+        // Starea reală a abonamentului (din /stripe/subscription-status), reținută
+        // aici ca să poată fi citită și de toggle-ul Lunar/Anual — vezi mai jos.
+        let realCurrentPeriodEnd = null;
+        let realDowngradeScheduled = false;
+        let realPaymentFailedAt = null;
 
         // Cardul Free -> starea normală: buton activ "Downgrade la Free" (deschide modalul).
         function renderFreeCtaDefault() {
@@ -447,6 +466,10 @@
                         subResponse.data &&
                         subResponse.data.paymentFailedAt;
 
+                    realCurrentPeriodEnd = currentPeriodEnd || null;
+                    realDowngradeScheduled = Boolean(downgradeScheduled);
+                    realPaymentFailedAt = paymentFailedAt || null;
+
                     // Data lângă "Plan curent": reînnoire dacă abonamentul e activ,
                     // expirare dacă downgrade-ul e programat. Dacă ultima plată a
                     // eșuat (grace period), NU afișăm "Reînnoire" — ar fi derutant
@@ -486,6 +509,64 @@
                 }
             }
         });
+
+        // Toggle Lunar/Anual pe cardul Pro — doar UI momentan: schimbă prețul
+        // afișat și badge-ul de discount, fără să atingă fluxul de checkout
+        // (erp-upgrade.html / Stripe) sau butonul "Upgrade la Pro"/"Plan curent".
+        // Price ID-ul anual (STRIPE_PRICE_ID_PRO_YEARLY) există deja în
+        // backend/.env, dar nu e folosit încă aici — cablarea reală rămâne
+        // task separat.
+        const PRO_PRICE_MONTHLY = { amount: "€14.90", period: "/lună" };
+        const PRO_PRICE_YEARLY = { amount: "€143.04", period: "/an" };
+
+        const billingSwitch = document.getElementById("billingIntervalSwitch");
+        if (billingSwitch) {
+            const amountEl = document.getElementById("proPlanAmount");
+            const periodEl = document.getElementById("proPlanPeriod");
+            const discountEl = document.getElementById("proPlanDiscountBadge");
+            const labelMonthly = document.getElementById("billingLabelMonthly");
+            const labelYearly = document.getElementById("billingLabelYearly");
+
+            billingSwitch.addEventListener("click", () => {
+                const isYearly = billingSwitch.getAttribute("aria-checked") === "true";
+                const nextIsYearly = !isYearly;
+
+                billingSwitch.setAttribute("aria-checked", String(nextIsYearly));
+                labelMonthly.classList.toggle("active", !nextIsYearly);
+                labelYearly.classList.toggle("active", nextIsYearly);
+
+                const price = nextIsYearly ? PRO_PRICE_YEARLY : PRO_PRICE_MONTHLY;
+                amountEl.textContent = price.amount;
+                periodEl.textContent = price.period;
+                discountEl.classList.toggle("d-none", !nextIsYearly);
+
+                // Preview vizual al datei de reînnoire pentru "Anual" (data reală
+                // + 1 an) — doar text afișat, nimic nu se salvează/trimite către
+                // backend. Se aplică doar în starea "Reînnoire" (abonament activ,
+                // fără downgrade programat, fără plată eșuată); pentru "Expiră"
+                // sau plată eșuată, textul rămâne neschimbat (nu sunt stări de
+                // "reînnoire", deci nu au ce previzualiza).
+                const proDateInfoEl = document.getElementById("proPlanDateInfo");
+                if (
+                    proDateInfoEl &&
+                    realCurrentPeriodEnd &&
+                    !realDowngradeScheduled &&
+                    !realPaymentFailedAt
+                ) {
+                    const baseDate = new Date(realCurrentPeriodEnd);
+                    const displayDate = nextIsYearly
+                        ? new Date(
+                              baseDate.getFullYear() + 1,
+                              baseDate.getMonth(),
+                              baseDate.getDate(),
+                          )
+                        : baseDate;
+                    const formatted = formatPeriodEndDate(displayDate);
+                    proDateInfoEl.innerHTML =
+                        `<i class="far fa-clock me-1"></i>Reînnoire la data de ${formatted}`;
+                }
+            });
+        }
     </script>
 </body>
 
