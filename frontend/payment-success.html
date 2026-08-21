@@ -62,14 +62,14 @@
                         <i class="fas fa-circle-check"></i>
                     </div>
 
-                    <span class="success-plan-badge">
+                    <span class="success-plan-badge" id="successPlanBadge">
                         <i class="fas fa-bolt"></i>
                         Plan Pro activat
                     </span>
 
-                    <h1 class="success-title">Felicitări! Ai trecut la planul Pro 🎉</h1>
+                    <h1 class="success-title" id="successTitle">Felicitări! Ai trecut la planul Pro 🎉</h1>
 
-                    <p class="success-desc">
+                    <p class="success-desc" id="successDesc">
                         Plata a fost procesată cu succes. Ai acum acces complet la toate funcțiile
                         ElectricalVPF ERP.
                     </p>
@@ -152,6 +152,58 @@
                     btnInvoiceText.textContent = originalText;
                 }
             });
+        });
+    </script>
+
+    <!-- Mesaj diferit pentru switch-ul Lunar→Anual (vezi erp-plans.html →
+         stripeController.js#switchToYearly) — diferențiat prin parametrul
+         ?type=yearly-switch din success_url, setat direct de backend la
+         crearea sesiunii Checkout. Ales în locul verificării metadatelor
+         sesiunii ca să nu mai fie nevoie de un apel API suplimentar doar
+         pentru a decide ce text se afișează. -->
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get("type") !== "yearly-switch") return;
+
+            const badgeEl = document.getElementById("successPlanBadge");
+            const titleEl = document.getElementById("successTitle");
+            const descEl = document.getElementById("successDesc");
+
+            if (badgeEl) {
+                badgeEl.innerHTML = '<i class="fas fa-calendar-check"></i> Plan Anual activat';
+            }
+            if (titleEl) {
+                titleEl.textContent = "Ai trecut cu succes la planul Anual! 🎉";
+            }
+
+            // Data reală de reînnoire — dacă webhook-ul checkout.session.completed
+            // n-a apucat încă să actualizeze DB-ul (race condition acceptată deja
+            // de fluxul existent Free→Pro), omitem propoziția, fără să blocăm restul mesajului.
+            let renewalText = "";
+            try {
+                const response = await API.get("/stripe/subscription-status");
+                const currentPeriodEnd =
+                    response && response.data && response.data.currentPeriodEnd;
+                if (currentPeriodEnd) {
+                    const formatted = new Date(currentPeriodEnd).toLocaleDateString(
+                        "ro-RO",
+                        { day: "numeric", month: "long", year: "numeric" },
+                    );
+                    renewalText = ` Următoarea reînnoire: ${formatted}.`;
+                }
+            } catch (err) {
+                console.error(
+                    "Eroare la preluarea datei de reînnoire pentru mesajul de succes:",
+                    err,
+                );
+            }
+
+            if (descEl) {
+                descEl.textContent =
+                    "Abonamentul tău Pro este acum activ pentru următoarele 12 luni, " +
+                    "cu 20% economie față de plata lunară." + renewalText;
+            }
         });
     </script>
 </body>

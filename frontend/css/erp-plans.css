@@ -411,3 +411,13 @@
     width: fit-content;
     white-space: nowrap;
 }
+
+/* Butoanele din modalul de confirmare "Trece la plata lunară" folosesc aceleași
+   clase de culoare/font/colțuri ca restul paginii, dar auto-width, inline, unul
+   lângă altul — nu block/full-width ca pe cardurile de preț. */
+.modal-footer .erp-plan-cta {
+    display: inline-block;
+    width: fit-content;
+    white-space: nowrap;
+    margin-bottom: 0;
+}

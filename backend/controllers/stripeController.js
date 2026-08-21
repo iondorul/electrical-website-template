@@ -155,7 +155,12 @@ exports.getSubscriptionStatus = async (req, res) => {
     if (!subscriptionId) {
       return res.json({
         success: true,
-        data: { currentPeriodEnd: null, downgradeScheduled: false, paymentFailedAt: null },
+        data: {
+          currentPeriodEnd: null,
+          downgradeScheduled: false,
+          paymentFailedAt: null,
+          billingInterval: null,
+        },
       });
     }
 
@@ -170,14 +175,32 @@ exports.getSubscriptionStatus = async (req, res) => {
         return res.json({
           success: false,
           status: "error",
-          data: { currentPeriodEnd: null, downgradeScheduled, paymentFailedAt },
+          data: {
+            currentPeriodEnd: null,
+            downgradeScheduled,
+            paymentFailedAt,
+            billingInterval: null,
+          },
         });
       }
+
+      // Intervalul real de facturare (lunar/anual) e citit direct din Stripe,
+      // nu dintr-o coloană DB — subscription e deja preluat mai sus pentru
+      // currentPeriodEnd, deci nu costă un apel suplimentar. Sursă de adevăr
+      // unică, la fel ca restul câmpurilor din acest endpoint.
+      const currentItem =
+        subscription.items && subscription.items.data && subscription.items.data[0];
+      const billingInterval =
+        (currentItem &&
+          currentItem.price &&
+          currentItem.price.recurring &&
+          currentItem.price.recurring.interval) ||
+        null;
 
       const currentPeriodEnd = new Date(periodEndTimestamp * 1000).toISOString();
       res.json({
         success: true,
-        data: { currentPeriodEnd, downgradeScheduled, paymentFailedAt },
+        data: { currentPeriodEnd, downgradeScheduled, paymentFailedAt, billingInterval },
       });
     } catch (stripeErr) {
       console.error(
@@ -187,7 +210,12 @@ exports.getSubscriptionStatus = async (req, res) => {
       res.json({
         success: false,
         status: "error",
-        data: { currentPeriodEnd: null, downgradeScheduled, paymentFailedAt },
+        data: {
+          currentPeriodEnd: null,
+          downgradeScheduled,
+          paymentFailedAt,
+          billingInterval: null,
+        },
       });
     }
   } catch (err) {
@@ -314,6 +342,183 @@ exports.cancelScheduledDowngrade = async (req, res) => {
   }
 };
 
+// Creează o sesiune Stripe Checkout nouă (mode: subscription) pentru trecerea
+// de pe lunar (STRIPE_PRICE_ID_PRO) pe anual (STRIPE_PRICE_ID_PRO_YEARLY).
+// Deliberat NU e un subscriptions.update() pe abonamentul existent — un
+// Checkout Session nou oferă aceeași transparență (userul vede suma, cardul,
+// confirmă explicit) și gestionare SCA/3D Secure nativă, la fel ca la
+// upgrade-ul inițial Free→Pro. Efectul secundar: se creează un abonament NOU
+// în Stripe; cel vechi e anulat separat, în webhook, după checkout.session.completed
+// (vezi handleWebhook mai jos) — nu aici, ca să nu rămână userul fără abonament
+// activ dacă închide tab-ul de checkout înainte de a plăti.
+exports.switchToYearly = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const userRes = await pool.query(
+      "SELECT stripe_subscription_id FROM users WHERE id = $1",
+      [userId],
+    );
+    const subscriptionId =
+      userRes.rows[0] && userRes.rows[0].stripe_subscription_id;
+
+    if (!subscriptionId) {
+      return res.status(400).json({
+        success: false,
+        error: "Nu ai un abonament Pro activ de actualizat.",
+      });
+    }
+
+    let customerId;
+    try {
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+      const currentItem = subscription.items.data[0];
+
+      // Guard împotriva dublei taxări: dacă abonamentul e deja pe prețul anual
+      // (ex. userul apasă butonul a doua oară după un reload care nu reflectă
+      // starea reală), nu mai creăm încă un checkout — ar rezulta încă un
+      // abonament nou + încă o taxare de €143.04, ireversibil conform politicii
+      // "fără refund".
+      if (
+        currentItem &&
+        currentItem.price &&
+        currentItem.price.id === process.env.STRIPE_PRICE_ID_PRO_YEARLY
+      ) {
+        return res.status(400).json({
+          success: false,
+          error: "Ești deja pe planul anual.",
+        });
+      }
+
+      customerId = subscription.customer;
+    } catch (stripeErr) {
+      console.error(
+        `Eroare Stripe la pregătirea trecerii la plata anuală (subscription_id=${subscriptionId}):`,
+        stripeErr,
+      );
+      return res.status(500).json({
+        success: false,
+        error:
+          stripeErr.message ||
+          "Nu s-a putut pregăti plata anuală. Încearcă din nou sau contactează suportul.",
+      });
+    }
+
+    const frontendUrl =
+      process.env.FRONTEND_URL || "http://127.0.0.1:5500/frontend";
+
+    let session;
+    try {
+      session = await stripe.checkout.sessions.create({
+        mode: "subscription",
+        customer: customerId,
+        line_items: [
+          { price: process.env.STRIPE_PRICE_ID_PRO_YEARLY, quantity: 1 },
+        ],
+        client_reference_id: String(userId),
+        metadata: {
+          userId: String(userId),
+          flow: "yearly-switch",
+          oldSubscriptionId: subscriptionId,
+        },
+        success_url: `${frontendUrl}/payment-success.html?type=yearly-switch&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${frontendUrl}/erp-plans.html?canceled=true`,
+      });
+    } catch (stripeErr) {
+      console.error(
+        `Eroare Stripe la crearea sesiunii de checkout pentru plata anuală (subscription_id=${subscriptionId}):`,
+        stripeErr,
+      );
+      return res.status(500).json({
+        success: false,
+        error:
+          stripeErr.message ||
+          "Nu s-a putut crea sesiunea de plată. Încearcă din nou sau contactează suportul.",
+      });
+    }
+
+    res.json({ success: true, url: session.url });
+  } catch (err) {
+    console.error("Eroare la pregătirea trecerii la plata anuală:", err);
+    res.status(500).json({
+      success: false,
+      error: err.message || "Nu s-a putut procesa plata anuală.",
+    });
+  }
+};
+
+// Trece abonamentul Pro existent de pe anual (STRIPE_PRICE_ID_PRO_YEARLY) pe
+// lunar (STRIPE_PRICE_ID_PRO) — deliberat NU e simetric cu switchToYearly.
+// Fără Checkout Session, fără taxare imediată: doar schimbă item-ul
+// abonamentului existent (subscriptions.update, proration_behavior: 'none',
+// FĂRĂ billing_cycle_anchor). Efectul: userul păstrează accesul Pro până la
+// finalul perioadei anuale deja plătite (fără refund, fără proration — vezi
+// politica de anulare deja stabilită), iar de la reînnoirea următoare Stripe
+// facturează automat la prețul lunar. Nu se creează niciun abonament nou și
+// nu e nevoie să se anuleze vreunul — e același subscription_id, neschimbat.
+exports.switchToMonthly = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const userRes = await pool.query(
+      "SELECT stripe_subscription_id FROM users WHERE id = $1",
+      [userId],
+    );
+    const subscriptionId =
+      userRes.rows[0] && userRes.rows[0].stripe_subscription_id;
+
+    if (!subscriptionId) {
+      return res.status(400).json({
+        success: false,
+        error: "Nu ai un abonament Pro activ de actualizat.",
+      });
+    }
+
+    try {
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+      const currentItem = subscription.items.data[0];
+
+      // Guard simetric cu cel din switchToYearly: dacă e deja pe lunar, nu mai
+      // rulăm update-ul din nou (no-op inofensiv la nivel Stripe, dar respins
+      // explicit aici ca răspunsul să fie clar pentru frontend).
+      if (
+        currentItem &&
+        currentItem.price &&
+        currentItem.price.id === process.env.STRIPE_PRICE_ID_PRO
+      ) {
+        return res.status(400).json({
+          success: false,
+          error: "Ești deja pe planul lunar.",
+        });
+      }
+
+      await stripe.subscriptions.update(subscriptionId, {
+        items: [{ id: currentItem.id, price: process.env.STRIPE_PRICE_ID_PRO }],
+        proration_behavior: "none",
+      });
+    } catch (stripeErr) {
+      console.error(
+        `Eroare Stripe la trecerea la plata lunară (subscription_id=${subscriptionId}):`,
+        stripeErr,
+      );
+      return res.status(500).json({
+        success: false,
+        error:
+          stripeErr.message ||
+          "Nu s-a putut procesa trecerea la plata lunară. Încearcă din nou sau contactează suportul.",
+      });
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Eroare la trecerea la plata lunară:", err);
+    res.status(500).json({
+      success: false,
+      error: err.message || "Nu s-a putut procesa trecerea la plata lunară.",
+    });
+  }
+};
+
 // Webhook Stripe — verifică semnătura cu STRIPE_WEBHOOK_SECRET (raw body,
 // vezi middleware-ul express.raw montat în server.js DOAR pe această rută).
 // La checkout.session.completed, trece userul pe plan='pro'.
@@ -338,15 +543,62 @@ exports.handleWebhook = async (req, res) => {
       const userId =
         session.client_reference_id ||
         (session.metadata && session.metadata.userId);
+      const isYearlySwitch =
+        session.metadata && session.metadata.flow === "yearly-switch";
 
       if (userId) {
-        // payment_failed_at = NULL: dacă userul se reabonează după un eșec
-        // definitiv (subscription_id nou), nu trebuie să rămână stale un
-        // avertisment de plată eșuată de la abonamentul anterior, deja închis.
-        await pool.query(
-          "UPDATE users SET plan = 'pro', stripe_subscription_id = $2, payment_failed_at = NULL WHERE id = $1",
-          [userId, session.subscription],
-        );
+        if (isYearlySwitch) {
+          // Userul era deja Pro (lunar) — doar schimbăm stripe_subscription_id
+          // pe noul abonament anual și resetăm downgrade_scheduled/payment_failed_at.
+          // NU atingem plan (deja 'pro').
+          await pool.query(
+            "UPDATE users SET stripe_subscription_id = $2, downgrade_scheduled = false, payment_failed_at = NULL WHERE id = $1",
+            [userId, session.subscription],
+          );
+
+          // Anulăm vechiul abonament lunar abia acum, după ce noul abonament
+          // anual e confirmat plătit — altfel, dacă userul închide tab-ul de
+          // checkout înainte de a plăti, ar rămâne fără niciun abonament activ.
+          const oldSubscriptionId = session.metadata.oldSubscriptionId;
+          if (oldSubscriptionId) {
+            try {
+              await stripe.subscriptions.cancel(oldSubscriptionId);
+            } catch (cancelErr) {
+              console.error(
+                `Eroare la anularea vechiului abonament lunar (old_subscription_id=${oldSubscriptionId}, user_id=${userId}) după switch la anual:`,
+                cancelErr,
+              );
+              // Log persistent, nu doar consolă — DB-ul indică deja corect noul
+              // abonament (cel activ, plătit), dar cel vechi ar putea rămâne
+              // activ în Stripe și să se reînnoiască neintenționat dacă
+              // anularea a eșuat. Verificat manual periodic (vezi CLAUDE.md).
+              try {
+                await pool.query(
+                  "INSERT INTO billing_errors (user_id, context, stripe_subscription_id, error_message) VALUES ($1, $2, $3, $4)",
+                  [
+                    userId,
+                    "yearly_switch_old_subscription_cancel_failed",
+                    oldSubscriptionId,
+                    cancelErr.message || String(cancelErr),
+                  ],
+                );
+              } catch (logErr) {
+                console.error(
+                  "Eroare la scrierea în billing_errors (anulare abonament vechi eșuată):",
+                  logErr,
+                );
+              }
+            }
+          }
+        } else {
+          // payment_failed_at = NULL: dacă userul se reabonează după un eșec
+          // definitiv (subscription_id nou), nu trebuie să rămână stale un
+          // avertisment de plată eșuată de la abonamentul anterior, deja închis.
+          await pool.query(
+            "UPDATE users SET plan = 'pro', stripe_subscription_id = $2, payment_failed_at = NULL WHERE id = $1",
+            [userId, session.subscription],
+          );
+        }
       } else {
         console.error(
           "checkout.session.completed fără userId (client_reference_id/metadata) — nu s-a putut face upgrade.",

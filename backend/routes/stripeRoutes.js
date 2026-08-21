@@ -33,6 +33,18 @@ router.post(
   stripeController.cancelScheduledDowngrade,
 );
 
+router.post(
+  "/switch-to-yearly",
+  authMiddleware,
+  stripeController.switchToYearly,
+);
+
+router.post(
+  "/switch-to-monthly",
+  authMiddleware,
+  stripeController.switchToMonthly,
+);
+
 // Stripe apelează direct acest endpoint — verificarea se face prin semnătura
 // webhook-ului (STRIPE_WEBHOOK_SECRET), nu prin JWT, deci fără authMiddleware.
 router.post("/webhook", stripeController.handleWebhook);
