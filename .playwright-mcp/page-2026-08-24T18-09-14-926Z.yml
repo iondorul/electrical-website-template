@@ -1,0 +1,92 @@
+- generic [ref=f22e2]:
+  - complementary [ref=f22e3]:
+    - generic [ref=f22e4]:
+      - generic [ref=f22e5]:
+        - generic [ref=f22e6]:
+          - generic [ref=f22e7]: 
+          - generic [ref=f22e8]:
+            - text: Electrical
+            - strong [ref=f22e9]: VPF
+        - link " PRO PLAN" [ref=f22e10] [cursor=pointer]:
+          - /url: settings.html#billing
+          - generic [ref=f22e11]: 
+          - generic [ref=f22e12]: PRO PLAN
+      - button "" [ref=f22e13] [cursor=pointer]
+    - navigation [ref=f22e15]:
+      - list [ref=f22e16]:
+        - listitem [ref=f22e17]:
+          - link " Dashboard" [ref=f22e18] [cursor=pointer]:
+            - /url: dashboard.html
+            - generic [ref=f22e19]: 
+            - generic [ref=f22e20]: Dashboard
+        - listitem [ref=f22e21]:
+          - link " Clients" [ref=f22e22] [cursor=pointer]:
+            - /url: clients.html
+            - generic [ref=f22e23]: 
+            - generic [ref=f22e24]: Clients
+        - listitem [ref=f22e25]:
+          - link " Projects" [ref=f22e26] [cursor=pointer]:
+            - /url: projects.html
+            - generic [ref=f22e27]: 
+            - generic [ref=f22e28]: Projects
+        - listitem [ref=f22e29]:
+          - link " Estimating" [ref=f22e30] [cursor=pointer]:
+            - /url: estimating.html
+            - generic [ref=f22e31]: 
+            - generic [ref=f22e32]: Estimating
+        - listitem [ref=f22e33]:
+          - link " Quotes" [ref=f22e34] [cursor=pointer]:
+            - /url: quotes.html
+            - generic [ref=f22e35]: 
+            - generic [ref=f22e36]: Quotes
+        - listitem [ref=f22e37]:
+          - link " Invoices" [ref=f22e38] [cursor=pointer]:
+            - /url: invoices.html
+            - generic [ref=f22e39]: 
+            - generic [ref=f22e40]: Invoices
+        - listitem [ref=f22e41]:
+          - link " Materials" [ref=f22e42] [cursor=pointer]:
+            - /url: materials.html
+            - generic [ref=f22e43]: 
+            - generic [ref=f22e44]: Materials
+        - listitem [ref=f22e45]:
+          - link " Reports" [ref=f22e46] [cursor=pointer]:
+            - /url: reports.html
+            - generic [ref=f22e47]: 
+            - generic [ref=f22e48]: Reports
+        - listitem [ref=f22e49]:
+          - link " Settings" [ref=f22e50] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f22e51]: 
+            - generic [ref=f22e52]: Settings
+    - button " Logout" [ref=f22e54] [cursor=pointer]:
+      - generic [ref=f22e55]: 
+      - text: Logout
+  - main [ref=f22e56]:
+    - generic [ref=f22e58]:
+      - heading "Plată reușită" [level=4] [ref=f22e60]
+      - generic [ref=f22e61]:
+        - link "Setări" [ref=f22e62] [cursor=pointer]:
+          - /url: settings.html
+          - generic [ref=f22e63]: 
+        - button "Logout" [ref=f22e65] [cursor=pointer]:
+          - generic [ref=f22e66]: 
+        - generic [ref=f22e68]:
+          - generic [ref=f22e69]: cometa_2
+          - text: Administrator
+        - generic [ref=f22e70]: 
+    - generic [ref=f22e73]:
+      - generic [ref=f22e74]: 
+      - generic [ref=f22e76]:
+        - generic [ref=f22e77]: 
+        - text: Plan Pro reactivat
+      - heading "Bine ai revenit pe planul Pro! 🎉" [level=1] [ref=f22e78]
+      - paragraph [ref=f22e79]: Plata a fost procesată cu succes — downgrade-ul programat a fost anulat, abonamentul tău Pro este activ până la 24 decembrie 2031.
+      - generic [ref=f22e80]:
+        - button " Vezi Factura" [ref=f22e81] [cursor=pointer]:
+          - generic [ref=f22e82]: 
+          - generic [ref=f22e83]: Vezi Factura
+        - link " Mergi la Dashboard" [ref=f22e84] [cursor=pointer]:
+          - /url: dashboard.html
+          - generic [ref=f22e85]: 
+          - text: Mergi la Dashboard

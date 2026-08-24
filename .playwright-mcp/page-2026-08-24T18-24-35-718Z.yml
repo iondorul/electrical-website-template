@@ -1,0 +1,95 @@
+- generic [ref=f50e2]:
+  - complementary [ref=f50e3]:
+    - generic [ref=f50e4]:
+      - generic [ref=f50e5]:
+        - generic [ref=f50e6]:
+          - generic [ref=f50e7]: 
+          - generic [ref=f50e8]:
+            - text: Electrical
+            - strong [ref=f50e9]: VPF
+        - link " PRO PLAN" [ref=f50e10] [cursor=pointer]:
+          - /url: settings.html#billing
+          - generic [ref=f50e11]: 
+          - generic [ref=f50e12]: PRO PLAN
+      - button "" [ref=f50e13] [cursor=pointer]
+    - navigation [ref=f50e15]:
+      - list [ref=f50e16]:
+        - listitem [ref=f50e17]:
+          - link " Dashboard" [ref=f50e18] [cursor=pointer]:
+            - /url: dashboard.html
+            - generic [ref=f50e19]: 
+            - generic [ref=f50e20]: Dashboard
+        - listitem [ref=f50e21]:
+          - link " Clients" [ref=f50e22] [cursor=pointer]:
+            - /url: clients.html
+            - generic [ref=f50e23]: 
+            - generic [ref=f50e24]: Clients
+        - listitem [ref=f50e25]:
+          - link " Projects" [ref=f50e26] [cursor=pointer]:
+            - /url: projects.html
+            - generic [ref=f50e27]: 
+            - generic [ref=f50e28]: Projects
+        - listitem [ref=f50e29]:
+          - link " Estimating" [ref=f50e30] [cursor=pointer]:
+            - /url: estimating.html
+            - generic [ref=f50e31]: 
+            - generic [ref=f50e32]: Estimating
+        - listitem [ref=f50e33]:
+          - link " Quotes" [ref=f50e34] [cursor=pointer]:
+            - /url: quotes.html
+            - generic [ref=f50e35]: 
+            - generic [ref=f50e36]: Quotes
+        - listitem [ref=f50e37]:
+          - link " Invoices" [ref=f50e38] [cursor=pointer]:
+            - /url: invoices.html
+            - generic [ref=f50e39]: 
+            - generic [ref=f50e40]: Invoices
+        - listitem [ref=f50e41]:
+          - link " Materials" [ref=f50e42] [cursor=pointer]:
+            - /url: materials.html
+            - generic [ref=f50e43]: 
+            - generic [ref=f50e44]: Materials
+        - listitem [ref=f50e45]:
+          - link " Reports" [ref=f50e46] [cursor=pointer]:
+            - /url: reports.html
+            - generic [ref=f50e47]: 
+            - generic [ref=f50e48]: Reports
+        - listitem [ref=f50e49]:
+          - link " Settings" [ref=f50e50] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f50e51]: 
+            - generic [ref=f50e52]: Settings
+    - button " Logout" [ref=f50e54] [cursor=pointer]:
+      - generic [ref=f50e55]: 
+      - text: Logout
+  - main [ref=f50e56]:
+    - generic [ref=f50e58]:
+      - heading "Upgrade la Pro" [level=4] [ref=f50e60]
+      - generic [ref=f50e61]:
+        - link "Setări" [ref=f50e62] [cursor=pointer]:
+          - /url: settings.html
+          - generic [ref=f50e63]: 
+        - button "Logout" [ref=f50e65] [cursor=pointer]:
+          - generic [ref=f50e66]: 
+        - generic [ref=f50e68]:
+          - generic [ref=f50e69]: cometa_2
+          - text: Administrator
+        - generic [ref=f50e70]: 
+    - generic [ref=f50e75]:
+      - generic [ref=f50e76]: 
+      - heading "Upgrade la planul Pro" [level=1] [ref=f50e78]
+      - paragraph [ref=f50e79]: Trece la Pro în siguranță, prin Stripe — card bancar, factură automată și acces instant la toate funcțiile ERP.
+      - button " Continuă la plată" [ref=f50e80] [cursor=pointer]:
+        - generic [ref=f50e81]: 
+        - text: Continuă la plată
+      - generic [ref=f50e82]:
+        - text: Autentificat ca
+        - strong [ref=f50e83]: cometa_2
+        - text: —
+        - generic [ref=f50e84]:
+          - generic [ref=f50e85]: 
+          - text: "Plan: Pro"
+      - link " Înapoi la planuri" [ref=f50e87] [cursor=pointer]:
+        - /url: erp-plans.html
+        - generic [ref=f50e88]: 
+        - text: Înapoi la planuri

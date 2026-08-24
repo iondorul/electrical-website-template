@@ -2,19 +2,117 @@ const pool = require("../config/db");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const { sendPaymentFailedEmail } = require("../services/emailService");
 
-// Creează o sesiune Stripe Checkout (mode: subscription) pentru planul Pro
-// și returnează URL-ul către care frontend-ul trebuie să redirecționeze userul.
+// Creează o sesiune Stripe Checkout pentru planul Pro și returnează URL-ul
+// către care frontend-ul trebuie să redirecționeze userul.
+//
+// Caz special: dacă userul e în grace period (a confirmat deja "Downgrade la
+// Free" — users.plan e 'free', dar downgrade_scheduled=true și abonamentul
+// Stripe rămâne activ cu cancel_at_period_end=true, până la current_period_end
+// deja plătit), "Upgrade la Pro" TOT trece printr-o Checkout Session reală,
+// cu plată efectivă — NU o reactivare gratuită (decizie explicită, revizuită
+// după o încercare inițială greșită). Diferă doar tipul de sesiune: mode:
+// 'payment' (ca renewNow, FĂRĂ a crea un abonament Stripe nou — ar rezulta 2
+// abonamente active simultan pentru același user, exact mizeria curățată
+// manual într-un task anterior). Suma facturată (€14.90/€143.04) urmează
+// intervalul ALES de user pe toggle-ul din erp-plans.html (req.body.interval),
+// NU intervalul curent al abonamentului — bug găsit live: userul alegea
+// Anual, dar reactivarea rămânea mereu pe Lunar. Intervalul ales e scris în
+// metadata.interval; dacă diferă de cel curent, handleWebhook schimbă și
+// prețul abonamentului Stripe (vezi mai jos). Efectul complet (anulare
+// downgrade programat pe Stripe + restaurare plan='pro' + extindere dată =
+// vechiul current_period_end + 1 interval ALES, NU azi) se aplică abia în
+// webhook (flow:'grace-period-upgrade'), după plată confirmată.
 exports.createCheckoutSession = async (req, res) => {
   try {
     const userId = req.user.id;
     const frontendUrl =
       process.env.FRONTEND_URL || "http://127.0.0.1:5500/frontend";
 
+    const userRes = await pool.query(
+      "SELECT stripe_subscription_id, downgrade_scheduled FROM users WHERE id = $1",
+      [userId],
+    );
+    const subscriptionId =
+      userRes.rows[0] && userRes.rows[0].stripe_subscription_id;
+    const downgradeScheduled =
+      (userRes.rows[0] && userRes.rows[0].downgrade_scheduled) || false;
+
+    if (subscriptionId && downgradeScheduled) {
+      // Doar verificare că abonamentul chiar există/e accesibil înainte de a
+      // crea o sesiune de plată — intervalul NU se mai citește de aici (vezi
+      // comentariul de mai sus).
+      try {
+        await stripe.subscriptions.retrieve(subscriptionId);
+      } catch (stripeErr) {
+        console.error(
+          `Eroare Stripe la verificarea abonamentului pentru reactivare (subscription_id=${subscriptionId}):`,
+          stripeErr,
+        );
+        return res.status(500).json({
+          success: false,
+          error:
+            stripeErr.message ||
+            "Nu s-a putut pregăti plata. Încearcă din nou sau contactează suportul.",
+        });
+      }
+
+      const interval = req.body && req.body.interval === "year" ? "year" : "month";
+      const isYearly = interval === "year";
+      const unitAmount = isYearly ? 14304 : 1490; // €143.04 / €14.90
+      const productName = isYearly
+        ? "Reactivare ElectricalVPF Pro — 1 an"
+        : "Reactivare ElectricalVPF Pro — 1 lună";
+
+      let session;
+      try {
+        session = await stripe.checkout.sessions.create({
+          mode: "payment",
+          line_items: [
+            {
+              price_data: {
+                currency: "eur",
+                unit_amount: unitAmount,
+                product_data: { name: productName },
+              },
+              quantity: 1,
+            },
+          ],
+          client_reference_id: String(userId),
+          metadata: { userId: String(userId), flow: "grace-period-upgrade", interval },
+          success_url: `${frontendUrl}/payment-success.html?type=grace-period-upgrade&session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${frontendUrl}/erp-upgrade.html?canceled=true&interval=${interval}`,
+        });
+      } catch (stripeErr) {
+        console.error(
+          `Eroare Stripe la crearea sesiunii de plată pentru reactivare (subscription_id=${subscriptionId}):`,
+          stripeErr,
+        );
+        return res.status(500).json({
+          success: false,
+          error:
+            stripeErr.message ||
+            "Nu s-a putut crea sesiunea de plată. Încearcă din nou sau contactează suportul.",
+        });
+      }
+
+      return res.json({ success: true, url: session.url });
+    }
+
+    // Interval ales de user pe toggle-ul Lunar/Anual din erp-plans.html,
+    // transmis prin body (vezi erp-upgrade.html) — folosit doar la primul
+    // abonament (fără istoric Stripe); reactivarea din grace period de mai
+    // sus își ia mereu intervalul din abonamentul existent, nu de aici.
+    const interval = req.body && req.body.interval === "year" ? "year" : "month";
+    const priceId =
+      interval === "year"
+        ? process.env.STRIPE_PRICE_ID_PRO_YEARLY
+        : process.env.STRIPE_PRICE_ID_PRO;
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [
         {
-          price: process.env.STRIPE_PRICE_ID_PRO,
+          price: priceId,
           quantity: 1,
         },
       ],
@@ -23,7 +121,7 @@ exports.createCheckoutSession = async (req, res) => {
         userId: String(userId),
       },
       success_url: `${frontendUrl}/payment-success.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${frontendUrl}/erp-upgrade.html?canceled=true`,
+      cancel_url: `${frontendUrl}/erp-upgrade.html?canceled=true&interval=${interval}`,
     });
 
     res.json({ success: true, url: session.url });
@@ -244,8 +342,15 @@ exports.getSubscriptionStatus = async (req, res) => {
 };
 
 // Programează downgrade la Free la finalul perioadei curent plătite —
-// stripe.subscriptions.update(id, { cancel_at_period_end: true }). Userul
-// rămâne plan='pro' (păstrează accesul) — doar downgrade_scheduled devine true.
+// stripe.subscriptions.update(id, { cancel_at_period_end: true }).
+//
+// users.plan reprezintă STRICT planul ALES de user, nu starea reală Stripe —
+// devine 'free' IMEDIAT la confirmare, chiar dacă abonamentul Stripe rămâne
+// activ până la current_period_end. Accesul real la facilitățile Pro (limite
+// clients/quotes, vezi planLimitMiddleware.js) e controlat separat, din
+// downgrade_scheduled — NU se oprește doar pentru că plan a devenit 'free'.
+// UI-ul (badge, "planul curent") citește direct din plan, deci va arăta
+// corect "Free" imediat, deși accesul real continuă până la expirare.
 // Dacă apelul Stripe eșuează, DB nu se atinge deloc (nicio schimbare silențioasă).
 exports.scheduleDowngrade = async (req, res) => {
   try {
@@ -284,7 +389,7 @@ exports.scheduleDowngrade = async (req, res) => {
     }
 
     await pool.query(
-      "UPDATE users SET downgrade_scheduled = true WHERE id = $1",
+      "UPDATE users SET downgrade_scheduled = true, plan = 'free' WHERE id = $1",
       [userId],
     );
 
@@ -302,58 +407,6 @@ exports.scheduleDowngrade = async (req, res) => {
     res.status(500).json({
       success: false,
       error: err.message || "Nu s-a putut programa downgrade-ul.",
-    });
-  }
-};
-
-// Anulează un downgrade programat — cancel_at_period_end: false. Simetric cu
-// scheduleDowngrade: dacă Stripe eșuează, DB nu se atinge.
-exports.cancelScheduledDowngrade = async (req, res) => {
-  try {
-    const userId = req.user.id;
-
-    const userRes = await pool.query(
-      "SELECT stripe_subscription_id FROM users WHERE id = $1",
-      [userId],
-    );
-    const subscriptionId =
-      userRes.rows[0] && userRes.rows[0].stripe_subscription_id;
-
-    if (!subscriptionId) {
-      return res.status(400).json({
-        success: false,
-        error: "Nu ai un abonament Pro activ.",
-      });
-    }
-
-    try {
-      await stripe.subscriptions.update(subscriptionId, {
-        cancel_at_period_end: false,
-      });
-    } catch (stripeErr) {
-      console.error(
-        `Eroare Stripe la anularea downgrade-ului programat (subscription_id=${subscriptionId}):`,
-        stripeErr,
-      );
-      return res.status(500).json({
-        success: false,
-        error:
-          stripeErr.message ||
-          "Nu s-a putut anula downgrade-ul programat. Încearcă din nou.",
-      });
-    }
-
-    await pool.query(
-      "UPDATE users SET downgrade_scheduled = false WHERE id = $1",
-      [userId],
-    );
-
-    res.json({ success: true, data: { downgradeScheduled: false } });
-  } catch (err) {
-    console.error("Eroare la anularea downgrade-ului programat:", err);
-    res.status(500).json({
-      success: false,
-      error: err.message || "Nu s-a putut anula downgrade-ul programat.",
     });
   }
 };
@@ -542,6 +595,42 @@ function addBillingInterval(date, interval, intervalCount) {
   return result;
 }
 
+// Calculează noua dată de expirare efectivă pentru un top-up plătit
+// (renew-now SAU grace-period-upgrade — vezi handleWebhook mai jos): vechea
+// dată reală din Stripe (sau extensia locală existentă, dacă e mai târzie —
+// extensiile se cumulează, altfel a doua plată ar "sări" peste prima) + 1
+// interval. Returnează null dacă subscription-ul nu are o dată de expirare
+// identificabilă (structură Stripe neașteptată).
+//
+// intervalOverride: folosit doar de grace-period-upgrade, când userul a ales
+// un interval diferit de cel curent al abonamentului (vezi handleWebhook) —
+// renew-now nu suportă schimbarea intervalului, deci nu-l transmite niciodată
+// și cade pe intervalul curent al abonamentului, ca înainte.
+function computeExtendedPeriodEnd(subscription, existingExtension, intervalOverride) {
+  const rawPeriodEndTimestamp = extractSubscriptionPeriodEnd(subscription);
+  const rawPeriodEnd = rawPeriodEndTimestamp
+    ? new Date(rawPeriodEndTimestamp * 1000)
+    : null;
+
+  const base =
+    existingExtension && rawPeriodEnd && existingExtension > rawPeriodEnd
+      ? existingExtension
+      : rawPeriodEnd;
+  if (!base) return null;
+
+  let interval = intervalOverride;
+  let intervalCount = 1;
+  if (!interval) {
+    const currentItem =
+      subscription.items && subscription.items.data && subscription.items.data[0];
+    const recurring = currentItem && currentItem.price && currentItem.price.recurring;
+    interval = (recurring && recurring.interval) || "month";
+    intervalCount = (recurring && recurring.interval_count) || 1;
+  }
+
+  return addBillingInterval(base, interval, intervalCount);
+}
+
 // Reînnoire anticipată plătită — cere userului să confirme o plată REALĂ
 // printr-un Stripe Checkout Session (mode:'payment', FĂRĂ proration), exact
 // ca la upgrade-ul inițial Free→Pro / switchToYearly.
@@ -716,44 +805,101 @@ exports.handleWebhook = async (req, res) => {
           } else {
             const subscription =
               await stripe.subscriptions.retrieve(subscriptionId);
-            const rawPeriodEndTimestamp =
-              extractSubscriptionPeriodEnd(subscription);
-            const rawPeriodEnd = rawPeriodEndTimestamp
-              ? new Date(rawPeriodEndTimestamp * 1000)
-              : null;
+            const newPeriodEnd = computeExtendedPeriodEnd(
+              subscription,
+              existingExtension,
+            );
 
-            // Baza de la care extindem: dacă există deja o extensie locală
-            // mai târzie decât data brută din Stripe (userul a mai dat
-            // "Reînnoiește acum" recent), extensiile se cumulează — pornim
-            // de la ultima dată efectivă, altfel a doua reînnoire ar "sări"
-            // peste prima în loc să se adauge la ea.
-            const base =
-              existingExtension && rawPeriodEnd && existingExtension > rawPeriodEnd
-                ? existingExtension
-                : rawPeriodEnd;
-
-            // Intervalul cu care extindem — citit din ACEEAȘI subscription
-            // deja retrieve-uită mai sus (fără apel Stripe suplimentar), nu
-            // presupus "lună" fix. Găsit prin testare live: un user pe Anual
-            // ar fi primit greșit doar +1 lună (renewNow deja plătește suma
-            // corectă — €143.04/€14.90 — pe baza aceluiași interval real).
-            const currentItem =
-              subscription.items && subscription.items.data && subscription.items.data[0];
-            const recurring = currentItem && currentItem.price && currentItem.price.recurring;
-            const interval = (recurring && recurring.interval) || "month";
-            const intervalCount = (recurring && recurring.interval_count) || 1;
-
-            if (!base) {
+            if (!newPeriodEnd) {
               console.error(
                 `checkout.session.completed (renew-now): nu s-a putut determina current_period_end pentru subscription_id=${subscriptionId}.`,
               );
             } else {
-              const newPeriodEnd = addBillingInterval(base, interval, intervalCount);
               await pool.query(
                 "UPDATE users SET renewal_extension_period_end = $2 WHERE id = $1",
                 [userId, newPeriodEnd],
               );
             }
+          }
+        } else if (flow === "grace-period-upgrade") {
+          // "Upgrade la Pro" apăsat în grace period (users.plan deja 'free',
+          // downgrade_scheduled=true) — plată reală confirmată acum. Aceeași
+          // formulă ca renew-now pentru noua dată (vechiul current_period_end
+          // + 1 interval ALES de user, NU azi), plus efectele suplimentare
+          // specifice acestui caz: anulăm efectiv downgrade-ul programat PE
+          // ABONAMENTUL STRIPE (cancel_at_period_end:false) — altfel userul
+          // ar pierde accesul oricum la data originală de expirare, în ciuda
+          // plății tocmai făcute — și restaurăm users.plan='pro'.
+          //
+          // Dacă intervalul ales (session.metadata.interval, scris la
+          // crearea sesiunii — vezi createCheckoutSession) diferă de
+          // intervalul curent al item-ului din abonament, schimbăm și
+          // prețul abonamentului Stripe, ÎN ACELAȘI apel subscriptions.update
+          // (același mecanism ca switchToYearly/switchToMonthly:
+          // proration_behavior:'none', fără taxare suplimentară — userul a
+          // plătit deja suma corectă prin Checkout Session-ul mode:'payment'
+          // de mai sus). Fără interval în metadata (sesiuni vechi, dinainte
+          // de acest fix) — cade sigur pe intervalul curent, ca înainte.
+          const requestedInterval =
+            (session.metadata && session.metadata.interval) || null;
+
+          const extRes = await pool.query(
+            "SELECT stripe_subscription_id, renewal_extension_period_end FROM users WHERE id = $1",
+            [userId],
+          );
+          const subscriptionId =
+            extRes.rows[0] && extRes.rows[0].stripe_subscription_id;
+          const existingExtension =
+            extRes.rows[0] && extRes.rows[0].renewal_extension_period_end;
+
+          if (!subscriptionId) {
+            console.error(
+              `checkout.session.completed (grace-period-upgrade) fără stripe_subscription_id pentru user_id=${userId}.`,
+            );
+          } else {
+            const subscription =
+              await stripe.subscriptions.retrieve(subscriptionId);
+            const newPeriodEnd = computeExtendedPeriodEnd(
+              subscription,
+              existingExtension,
+              requestedInterval,
+            );
+
+            const currentItem =
+              subscription.items &&
+              subscription.items.data &&
+              subscription.items.data[0];
+            const currentInterval =
+              currentItem &&
+              currentItem.price &&
+              currentItem.price.recurring &&
+              currentItem.price.recurring.interval;
+
+            const subscriptionUpdate = { cancel_at_period_end: false };
+            if (
+              requestedInterval &&
+              currentItem &&
+              currentInterval &&
+              currentInterval !== requestedInterval
+            ) {
+              subscriptionUpdate.items = [
+                {
+                  id: currentItem.id,
+                  price:
+                    requestedInterval === "year"
+                      ? process.env.STRIPE_PRICE_ID_PRO_YEARLY
+                      : process.env.STRIPE_PRICE_ID_PRO,
+                },
+              ];
+              subscriptionUpdate.proration_behavior = "none";
+            }
+
+            await stripe.subscriptions.update(subscriptionId, subscriptionUpdate);
+
+            await pool.query(
+              "UPDATE users SET plan = 'pro', downgrade_scheduled = false, payment_failed_at = NULL, renewal_extension_period_end = $2 WHERE id = $1",
+              [userId, newPeriodEnd],
+            );
           }
         } else {
           // payment_failed_at = NULL: dacă userul se reabonează după un eșec

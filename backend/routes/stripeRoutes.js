@@ -28,12 +28,6 @@ router.post(
 );
 
 router.post(
-  "/cancel-scheduled-downgrade",
-  authMiddleware,
-  stripeController.cancelScheduledDowngrade,
-);
-
-router.post(
   "/switch-to-yearly",
   authMiddleware,
   stripeController.switchToYearly,

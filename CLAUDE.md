@@ -194,3 +194,59 @@ Module NEFROZEN, unde lucrul activ e permis: Login/Auth, Register, Settings (inc
 - **Teste Jest pentru switch-ul Lunar↔Anual (ambele direcții)** — niciuna din `switchToYearly` (Checkout Session + ramura `yearly-switch` din webhook, inclusiv anularea vechiului abonament + logging în `billing_errors`) sau `switchToMonthly` (`subscriptions.update` direct) nu are teste automate — doar verificare live, end-to-end, cu Stripe test-mode real (spre deosebire de restul fluxurilor Stripe din `stripeController.test.js`, toate acoperite de TDD).
 - **Migrare la producție** — target Frontend → GitHub Pages · Backend → Render · DB → Neon · DNS → Porkbun, planificat dar neimplementat (vezi „Target de hosting" mai sus). Schema pentru `invoices`/`invoice_items`/`payments`/`materials` e acum recuperată și idempotentă (migrarea `013`, vezi „Probleme cunoscute la nivel de schemă").
 - **SMTP2GO domain verification** — blocată de migrarea DNS către Porkbun (nu poate fi verificat domeniul de trimitere înainte ca DNS-ul să fie efectiv migrat).
+
+## Sesiune 24 august 2026 — rezumat
+
+**Bug-uri găsite și reparate azi** (`backend/controllers/stripeController.js`, `backend/controllers/stripeController.test.js`, `frontend/erp-plans.html`, `frontend/erp-upgrade.html`, `frontend/payment-success.html`, `frontend/css/erp-plans.css`):
+
+1. **Race condition pe `payment-success.html`** — badge-ul de plan din sidebar (`shell.js`) rămânea "FREE PLAN" după o plată reușită (grace-period-upgrade sau Free→Pro), pentru că pagina interoga `/auth/me`/`/stripe/subscription-status` imediat la load, înainte ca webhook-ul Stripe (eveniment async, server-to-server) să apuce să scrie `plan='pro'` în DB. Reprodus live, cu plată reală, cu screenshot înainte/după. Fix: `waitForPlanUpgrade()`/`fetchRenewalDateWithRetry()` — reîncercări scurte (până la 6×1.5s) în loc de un singur fetch optimist, apoi re-emit `erp:user-loaded` cu datele proaspete.
+2. **`cancel_url` din `createCheckoutSession` (ambele ramuri — grace-period-upgrade și abonament nou) nu păstra parametrul `interval`** — la Back/X din Stripe Checkout, userul care alesese Anual ajungea înapoi pe `erp-upgrade.html?canceled=true` fără `interval=year`, deci pagina cădea pe Lunar. Găsit de user cu screenshot, reprodus și reparat: `cancel_url` include acum `&interval=${interval}`, la fel ca `success_url`.
+3. **Interval-ul ales de user (Lunar/Anual) nu ajungea în reactivarea din grace period** — `createCheckoutSession` (ramura `mode:'payment'`, grace-period-upgrade) determina intervalul din abonamentul Stripe EXISTENT, nu din alegerea userului. Acum citește `req.body.interval`, scrie alegerea în `session.metadata.interval`, iar webhook-ul (`flow: 'grace-period-upgrade'`) schimbă și prețul abonamentului Stripe dacă intervalul ales diferă de cel curent (`subscriptions.update` cu `proration_behavior:'none'`, în același apel care anulează downgrade-ul programat) — mecanism simetric cu `switchToYearly`/`switchToMonthly`, dar integrat în fluxul de reactivare plătită.
+4. **Panou nou pe `erp-upgrade.html`** ("Plan ales" + explicație clară a ce se adaugă și până când, cu data calculată din `current_period_end` existent + intervalul ales) — cerut explicit de user ca reasigurare vizuală că "nimeni nu-i fură banii".
+
+**Verificare** (pe toate nivelurile, nu doar Jest): 52 teste Jest (`stripeController.test.js` + `planLimitMiddleware.test.js`), verificare reală prin Stripe API (curl + `stripe checkout sessions retrieve`/`subscriptions retrieve`, nu doar mock-uri), webhook trimis manual cu semnătură validă (`STRIPE_WEBHOOK_SECRET`) pentru a testa exact efectul fără a depinde de `stripe listen`, verificare vizuală Playwright (screenshot înainte/după, pe fiecare bug găsit), testat end-to-end pe cont real (`id=1`, `iondoruno@gmail.com`) — Downgrade → Upgrade la Pro (Anual și separat Lunar) → plată reală cu card de test → confirmare finală în DB + Stripe CLI.
+
+**Alte descoperiri operaționale din sesiune**:
+- `stripe listen --forward-to localhost:3000/api/stripe/webhook` se oprește uneori între sesiuni (proces separat, nu pornește automat) — fără el, webhook-urile Stripe reale nu ajung deloc la backend-ul local, deci nicio plată reală nu actualizează DB-ul. De verificat/pornit la începutul fiecărei sesiuni de testare live.
+- `electricalvpf.com` (GitHub Pages) e deja live, dar servește HTML static VECHI (fără commit-urile de azi) — nimic din sesiune nu a fost dat cu `git push`. `frontend/js/config.js` are `API_BASE_URL` hardcodat pe `localhost:3000`, deci site-ul live nu funcționează pentru clienți reali oricum (funcționează doar pentru developer, cu backend local pornit) — task de deploy separat, neînceput azi, discutat dar amânat explicit de user ("Asteapta. Nu te grabi.").
+- Găsit, dar NEATINS (în afara scope-ului de azi): dacă un user deja Pro activ (nu în grace period) ajunge manual pe `erp-upgrade.html` (link vechi/tab uitat) și plătește, se creează un abonament Stripe DUPLICAT — `createCheckoutSession` nu verifică dacă userul are deja un abonament activ înainte de a crea unul nou pe ramura `mode:'subscription'`. De adresat într-un task viitor.
+
+**Status Git**: Task-urile de azi (separarea `users.plan`/stare Stripe reală, nota de grace period pe cardul Free, corectarea textului din modalul de downgrade, fix-urile descrise mai sus) sunt încă NEcomise local — de comis manual din VS Code Source Control (userul a cerut explicit să nu se facă push/deploy fără discuție prealabilă).
+
+---
+
+## TASK — prima oră de mâine
+
+**Universal Renewal Extension Dropdown (1 lună / 6 luni / 1 an / 3 ani / 5 ani)**
+
+Context: Extinde fluxul "Reînnoiește acum" existent (implementat și verificat azi, adaptiv Lunar/Anual) într-un dropdown universal de extindere, utilizabil indiferent dacă abonamentul Stripe de bază e Monthly sau Annual.
+
+Opțiuni & discounturi:
+- 1 lună — 0% discount
+- 6 luni — 10% discount
+- 1 an — 20% discount
+- 3 ani — 30% discount
+- 5 ani — 40% discount
+
+Mecanism:
+- Plată unică (one-time) via Stripe Checkout pentru perioada/discountul ales.
+- Se adaugă (extend) peste `current_period_end` existent — NICIODATĂ reset.
+- NU folosi `billing_cycle_anchor`, NU folosi proration/credit.
+- Abonamentul Stripe de bază (monthly sau yearly) rămâne complet neatins.
+- Extensia se ține într-o coloană locală în DB: `renewal_extension_period_end` (deja există, folosită de `renew-now`/`grace-period-upgrade`).
+- Se cumulează aditiv la utilizări repetate (extindere peste extindere).
+- Model de referință UX: multi-period prepay renewal de la SmarterASP.
+
+Cerințe critice:
+- Linia din invoice/Checkout trebuie să reflecte perioada reală aleasă și prețul real cu discount aplicat — NU un mesaj generic hardcodat.
+- Calculul prețului cu discount trebuie verificat împotriva prețului de bază Pro (€14.90/lună) înainte de trimiterea către Stripe Checkout.
+- `cancel_url` trebuie să păstreze parametrii aleși (perioadă/discount), la fel ca fix-ul aplicat azi la bug-ul similar din `createCheckoutSession` — NU repeta aceeași greșeală într-un flux nou.
+
+Precondiție: Fluxul "Reînnoiește acum" (adaptive 1-month/1-year) e implementat ȘI verificat vizual — CONFIRMAT azi, inclusiv cele două bug-uri de sincronizare (race condition `payment-success.html` + `cancel_url` fără `interval`) reparate și verificate.
+
+Abordare:
+- Test-first: scrie testele înainte (care trebuie să pice), apoi implementează codul.
+- Dacă UI-ul implică decizii ambigue de layout → Plan Mode înainte de a atinge cod.
+- Verificare pe toate nivelurile (teste automate, Stripe API real, Playwright vizual, end-to-end pe cont real) — nu declara task-ul complet doar pe baza testelor Jest.
+
+FREEZE: Nu modifica modulele Clients, Projects, Estimating, Quotes, Invoices, Materials, Reports.

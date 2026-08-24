@@ -51,10 +51,20 @@
                             <h1 class="erp-upgrade-title">Upgrade la planul Pro</h1>
 
                             <p class="erp-upgrade-desc">
-                                Flow-ul de plată este în pregătire. În curând vei putea trece la Pro direct din
-                                această pagină — card bancar, factură automată și acces instant la toate funcțiile
-                                ERP.
+                                Trece la Pro în siguranță, prin Stripe — card bancar, factură automată și
+                                acces instant la toate funcțiile ERP.
                             </p>
+
+                            <!-- Plan ales (Lunar/Anual, din ?interval= setat de toggle-ul de pe erp-plans.html)
+                                 + reasigurare clară că timpul deja plătit nu se pierde niciodată — vezi scriptul
+                                 de mai jos. Ascuns până la primul calcul reușit (evită un "flash" cu date greșite). -->
+                            <div class="erp-upgrade-plan-info d-none" id="upgradePlanInfo">
+                                <div class="erp-upgrade-plan-row">
+                                    <span>Plan ales</span>
+                                    <strong id="upgradePlanChosenLabel"></strong>
+                                </div>
+                                <p class="erp-upgrade-plan-note" id="upgradePlanNote"></p>
+                            </div>
 
                             <!-- Checkout Stripe (subscription) — vezi backend/controllers/stripeController.js -->
                             <button type="button" id="btnStartCheckout" class="erp-plan-cta erp-plan-cta-solid"
@@ -96,6 +106,85 @@
     <!-- Shell JS (Global Auth & Layout Loader — include auth guard + apel /auth/me) -->
     <script src="js/shell.js"></script>
 
+    <!-- Plan ales — afișează intervalul (Lunar/Anual) și explică exact ce se
+         întâmplă cu banii/timpul deja plătit înainte ca userul să confirme.
+         Intervalul afișat e ÎNTOTDEAUNA cel ales de user pe toggle-ul din
+         erp-plans.html (?interval=month|year, citit din query string) —
+         inclusiv în grace period, unde createCheckoutSession/handleWebhook
+         acum onorează efectiv această alegere (schimbă și prețul
+         abonamentului Stripe dacă diferă de cel curent, vezi
+         stripeController.js). Două cazuri de text:
+         1. Grace period (abonament Stripe încă activ, current_period_end
+            deja plătit) — "Ai deja acces Pro plătit până la X. Această
+            plată adaugă [interval ales] — noul acces se întinde până la
+            X + interval ales."
+         2. User genuin Free (fără abonament) — nu există "deja plătit";
+            textul spune doar ce se adaugă și până când ține noul acces.
+         Data nouă e calculată client-side (UTC-safe, ca addBillingInterval
+         din backend) doar pentru afișaj — suma și data reale rămân mereu
+         cele calculate de Stripe la finalizarea plății. -->
+    <script>
+        function addIntervalUTC(date, interval) {
+            const result = new Date(date.getTime());
+            if (interval === "year") {
+                result.setUTCFullYear(result.getUTCFullYear() + 1);
+            } else {
+                result.setUTCMonth(result.getUTCMonth() + 1);
+            }
+            return result;
+        }
+
+        function formatDateRo(date) {
+            return date.toLocaleDateString("ro-RO", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const infoEl = document.getElementById("upgradePlanInfo");
+            const chosenLabelEl = document.getElementById("upgradePlanChosenLabel");
+            const noteEl = document.getElementById("upgradePlanNote");
+            if (!infoEl || !chosenLabelEl || !noteEl) return;
+
+            const params = new URLSearchParams(window.location.search);
+            const interval = params.get("interval") === "year" ? "year" : "month";
+
+            try {
+                const subResponse = await API.get("/stripe/subscription-status");
+                const data = subResponse && subResponse.data;
+                const hasExistingPeriod = Boolean(data && data.currentPeriodEnd);
+
+                const isYearly = interval === "year";
+                const priceLabel = isYearly ? "€143.04/an" : "€14.90/lună";
+                const intervalLabel = isYearly ? "Anual" : "Lunar";
+                const addedLabel = isYearly ? "1 an" : "1 lună";
+
+                chosenLabelEl.textContent = `${intervalLabel} — ${priceLabel}`;
+
+                const baseDate = hasExistingPeriod ? new Date(data.currentPeriodEnd) : new Date();
+                const formattedNewDate = formatDateRo(addIntervalUTC(baseDate, interval));
+
+                if (hasExistingPeriod) {
+                    const formattedPaidUntil = formatDateRo(baseDate);
+                    noteEl.innerHTML =
+                        `Ai deja acces Pro plătit până la <strong>${formattedPaidUntil}</strong>. ` +
+                        `Această plată adaugă <strong>${addedLabel}</strong> — noul acces se va ` +
+                        `întinde până la <strong>${formattedNewDate}</strong>.`;
+                } else {
+                    noteEl.innerHTML =
+                        `La confirmare, se adaugă <strong>${addedLabel}</strong> de acces Pro, ` +
+                        `cu reînnoire la <strong>${formattedNewDate}</strong>.`;
+                }
+
+                infoEl.classList.remove("d-none");
+            } catch (err) {
+                console.error("Eroare la pregătirea previzualizării planului ales:", err);
+            }
+        });
+    </script>
+
     <!-- Plan status: folosește userul deja încărcat de shell.js (event erp:user-loaded), fără alt apel API -->
     <script>
         document.addEventListener("erp:user-loaded", (e) => {
@@ -114,7 +203,11 @@
         });
     </script>
 
-    <!-- Checkout Stripe: pornește sesiunea de plată la click, redirecționează spre Stripe -->
+    <!-- Checkout Stripe: pornește sesiunea de plată la click, redirecționează spre Stripe.
+         Funcționează identic indiferent dacă userul e în grace period (downgrade
+         programat) sau nu — backend-ul decide singur tipul de sesiune Checkout
+         (vezi stripeController.js#createCheckoutSession), dar răspunde mereu cu
+         `url`, către care redirecționăm la fel, fără nicio ramură specială aici. -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const btn = document.getElementById("btnStartCheckout");
@@ -133,13 +226,17 @@
                 btnText.textContent = "Se pregătește plata...";
 
                 try {
+                    const params = new URLSearchParams(window.location.search);
+                    const interval = params.get("interval") === "year" ? "year" : "month";
+
                     const response = await API.post(
                         "/stripe/create-checkout-session",
-                        {},
+                        { interval },
                     );
 
                     if (!response || !response.url) {
                         throw new Error(
+                            (response && response.error) ||
                             "Răspuns invalid de la server (lipsește URL-ul de plată).",
                         );
                     }

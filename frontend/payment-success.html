@@ -105,6 +105,71 @@
     <!-- Shell JS (Global Auth & Layout Loader — include auth guard + apel /auth/me) -->
     <script src="js/shell.js"></script>
 
+    <!-- Fix race condition confirmată live, cu plată reală: shell.js face
+         propriul /auth/me la încărcarea paginii, în paralel cu redirect-ul de
+         la Stripe — dar webhook-ul care scrie plan='pro' în DB e un eveniment
+         SEPARAT, server-to-server, care poate ajunge DUPĂ ce browserul e deja
+         pe această pagină. Rezultatul: badge-ul din sidebar rămâne "FREE PLAN"
+         deși plata tocmai a reușit, până la următoarea navigare/reload — exact
+         bug-ul raportat live. Fix: reîncercăm /auth/me la interval scurt (nu
+         un singur fetch optimist) până vedem plan:'pro', apoi re-emitem
+         erp:user-loaded cu datele proaspete, ca listener-ul deja existent din
+         shell.js (care randează badge-ul) să se actualizeze fără duplicare de
+         cod. Rulează necondiționat, pentru orice tip de redirect de succes —
+         pentru renew-now (unde planul era deja 'pro' dinainte de plată) se
+         rezolvă instant, din primul fetch. -->
+    <script>
+        async function waitForPlanUpgrade(maxAttempts, delayMs) {
+            for (let attempt = 0; attempt < maxAttempts; attempt++) {
+                try {
+                    const response = await API.get("/auth/me");
+                    const user = response && response.data;
+                    if (user && user.plan === "pro") {
+                        document.dispatchEvent(
+                            new CustomEvent("erp:user-loaded", { detail: user }),
+                        );
+                        return true;
+                    }
+                } catch (err) {
+                    console.error("Eroare la verificarea planului după plată:", err);
+                }
+                if (attempt < maxAttempts - 1) {
+                    await new Promise((resolve) => setTimeout(resolve, delayMs));
+                }
+            }
+            return false;
+        }
+
+        // Aceeași cauză, aplicată la data de reînnoire/expirare afișată în text
+        // (renew-now și grace-period-upgrade mai jos) — renewal_extension_period_end
+        // e scris de ACELAȘI webhook, deci poate fi la fel de stale la un
+        // singur fetch. Reîncercăm și aici, păstrând ultimul rezultat obținut.
+        async function fetchRenewalDateWithRetry(maxAttempts, delayMs) {
+            let lastDate = null;
+            for (let attempt = 0; attempt < maxAttempts; attempt++) {
+                try {
+                    const response = await API.get("/stripe/subscription-status");
+                    const currentPeriodEnd =
+                        response && response.data && response.data.currentPeriodEnd;
+                    if (currentPeriodEnd) lastDate = currentPeriodEnd;
+                } catch (err) {
+                    console.error(
+                        "Eroare la preluarea datei de reînnoire pentru mesajul de succes:",
+                        err,
+                    );
+                }
+                if (attempt < maxAttempts - 1) {
+                    await new Promise((resolve) => setTimeout(resolve, delayMs));
+                }
+            }
+            return lastDate;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            waitForPlanUpgrade(6, 1500);
+        });
+    </script>
+
     <!-- Vezi Factura: preia session_id din URL (setat de Stripe la redirect), apelează
          GET /api/stripe/invoice/:sessionId, deschide factura într-un tab nou -->
     <script>
@@ -185,26 +250,58 @@
             // webhook-ul n-a apucat încă să scrie noua dată) nu poate presupune
             // "o lună" fix.
             let renewalText = "abonamentul tău Pro a fost extins.";
-            try {
-                const response = await API.get("/stripe/subscription-status");
-                const currentPeriodEnd =
-                    response && response.data && response.data.currentPeriodEnd;
-                if (currentPeriodEnd) {
-                    const formatted = new Date(currentPeriodEnd).toLocaleDateString(
-                        "ro-RO",
-                        { day: "numeric", month: "long", year: "numeric" },
-                    );
-                    renewalText = `noua ta dată de reînnoire este ${formatted}.`;
-                }
-            } catch (err) {
-                console.error(
-                    "Eroare la preluarea datei de reînnoire pentru mesajul de succes:",
-                    err,
+            const currentPeriodEnd = await fetchRenewalDateWithRetry(4, 1500);
+            if (currentPeriodEnd) {
+                const formatted = new Date(currentPeriodEnd).toLocaleDateString(
+                    "ro-RO",
+                    { day: "numeric", month: "long", year: "numeric" },
                 );
+                renewalText = `noua ta dată de reînnoire este ${formatted}.`;
             }
 
             if (descEl) {
                 descEl.textContent = `Plata a fost procesată cu succes — ${renewalText}`;
+            }
+        });
+    </script>
+
+    <!-- Mesaj diferit pentru "Upgrade la Pro" apăsat în grace period (downgrade
+         programat, users.plan era 'free' — vezi erp-upgrade.html →
+         stripeController.js#createCheckoutSession/handleWebhook,
+         flow:'grace-period-upgrade') — diferențiat prin ?type=grace-period-upgrade.
+         Webhook-ul deja a anulat downgrade-ul programat pe Stripe și a restaurat
+         plan='pro' până acum; data afișată vine din același
+         /stripe/subscription-status ca la renew-now mai sus. -->
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get("type") !== "grace-period-upgrade") return;
+
+            const badgeEl = document.getElementById("successPlanBadge");
+            const titleEl = document.getElementById("successTitle");
+            const descEl = document.getElementById("successDesc");
+
+            if (badgeEl) {
+                badgeEl.innerHTML = '<i class="fas fa-crown"></i> Plan Pro reactivat';
+            }
+            if (titleEl) {
+                titleEl.textContent = "Bine ai revenit pe planul Pro! 🎉";
+            }
+
+            let renewalText = "abonamentul tău Pro este activ.";
+            const currentPeriodEnd = await fetchRenewalDateWithRetry(4, 1500);
+            if (currentPeriodEnd) {
+                const formatted = new Date(currentPeriodEnd).toLocaleDateString(
+                    "ro-RO",
+                    { day: "numeric", month: "long", year: "numeric" },
+                );
+                renewalText = `abonamentul tău Pro este activ până la ${formatted}.`;
+            }
+
+            if (descEl) {
+                descEl.textContent =
+                    `Plata a fost procesată cu succes — downgrade-ul programat a fost anulat, ` +
+                    renewalText;
             }
         });
     </script>

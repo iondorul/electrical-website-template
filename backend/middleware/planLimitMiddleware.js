@@ -73,12 +73,20 @@ function checkPlanLimit(resourceType) {
 
     try {
       const userResult = await pool.query(
-        "SELECT plan FROM users WHERE id = $1",
+        "SELECT plan, downgrade_scheduled FROM users WHERE id = $1",
         [userId],
       );
       const plan = userResult.rows[0] && userResult.rows[0].plan;
+      const downgradeScheduled =
+        (userResult.rows[0] && userResult.rows[0].downgrade_scheduled) ||
+        false;
 
-      if (plan !== "free") return next(); // Pro = nelimitat
+      // users.plan reprezintă STRICT planul ALES de user, nu accesul real —
+      // la "Downgrade la Free" confirmat, plan devine 'free' imediat, dar
+      // abonamentul Stripe rămâne activ (downgrade_scheduled=true) până la
+      // current_period_end deja plătit. Accesul la facilități nelimitate
+      // continuă până atunci — de-asta verificăm ambele, nu doar plan.
+      if (plan === "pro" || downgradeScheduled) return next(); // acces Pro efectiv = nelimitat
 
       const count =
         resourceType === "clients"
