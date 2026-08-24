@@ -247,8 +247,14 @@
     </div>
 
     <!-- Modal confirmare "Trece la plata lunară" — vezi handleConfirmSwitchToMonthly
-         mai jos. Textul cu data reală (realCurrentPeriodEnd) e populat dinamic la
-         show.bs.modal, nu static, pentru că data vine din /stripe/subscription-status. -->
+         mai jos. Text static (nu mai e populat dinamic la show.bs.modal) —
+         verificat live, cu apel real la Stripe: subscriptions.update() cu
+         proration_behavior:'none' și interval schimbat NU păstrează vechea
+         dată de expirare — Stripe recalculează IMEDIAT perioada curentă la
+         noul interval, pornind de la billing_cycle_anchor al abonamentului.
+         De-asta textul nu mai promite o dată exactă înainte de confirmare —
+         noua dată reală se citește din nou din /stripe/subscription-status
+         DUPĂ succes și se afișează abia atunci pe card. -->
     <div class="modal fade" id="switchToMonthlyConfirmModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -260,8 +266,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="mb-3" id="switchToMonthlyModalMainText"></p>
-                    <p class="text-muted small mb-0" id="switchToMonthlyModalSecondaryText"></p>
+                    <p class="mb-3">
+                        Nu vei fi taxat acum. Confirmarea schimbă doar direcția de facturare —
+                        planul tău trece pe lunar, fără nicio taxare suplimentară în acest moment.
+                    </p>
+                    <p class="text-muted small mb-0">
+                        De la reînnoirea următoare, vei plăti €14.90/lună în loc de €143.04/an.
+                        Noua dată de reînnoire va fi actualizată pe card după confirmare.
+                    </p>
                     <div class="alert alert-danger d-none small mt-3 mb-0" id="switchToMonthlyModalError"
                         role="alert"></div>
                 </div>
@@ -270,6 +282,55 @@
                         data-bs-dismiss="modal">Anulează</button>
                     <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmSwitchToMonthly">
                         Confirmă trecerea la lunar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal confirmare "Trece la plata anuală" — mirror al
+         switchToMonthlyConfirmModal de mai sus. Vezi handleConfirmSwitchToYearly
+         mai jos. Text static (nu mai e populat dinamic la show.bs.modal) —
+         verificat live, cu apel real la Stripe: subscriptions.update() cu
+         proration_behavior:'none' și interval schimbat NU amână efectul până
+         la vechea dată de expirare (asta ar necesita Subscription Schedules,
+         mecanism mai complex, deliberat neales) — Stripe recalculează IMEDIAT
+         perioada curentă la noul interval, pornind de la billing_cycle_anchor
+         al abonamentului (care nu se mișcă niciodată). De-asta textul nu mai
+         promite o dată exactă înainte de confirmare — noua dată reală se
+         citește din nou din /stripe/subscription-status DUPĂ succes (vezi
+         handleConfirmSwitchToYearly) și se afișează abia atunci pe card.
+         Înlocuiește vechiul flux (redirect direct către Stripe Checkout, cu
+         taxare imediată €143.04) — acum simetric cu "Trece la plata lunară":
+         fără taxare acum, doar schimbare de direcție. -->
+    <div class="modal fade" id="switchToYearlyConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i>Confirmă trecerea la plata
+                        anuală
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-3">
+                        Nu vei fi taxat acum. Confirmarea schimbă doar direcția de facturare —
+                        planul tău trece pe anual, fără nicio taxare suplimentară în acest moment.
+                    </p>
+                    <p class="text-muted small mb-0">
+                        De la reînnoirea următoare, vei plăti €143.04/an (economisești 20%) în loc
+                        de €14.90/lună. Noua dată de reînnoire va fi actualizată pe card după
+                        confirmare.
+                    </p>
+                    <div class="alert alert-danger d-none small mt-3 mb-0" id="switchToYearlyModalError"
+                        role="alert"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="erp-plan-cta erp-plan-cta-outline"
+                        data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmSwitchToYearly">
+                        Confirmă trecerea la anual
                     </button>
                 </div>
             </div>
@@ -303,6 +364,87 @@
         let realPaymentFailedAt = null;
         let realBillingInterval = null; // 'month' | 'year' | null
         let isProUser = false;
+
+        // Randare unică a #proPlanCtaSlot, apelată atât imediat după ce fetch-ul
+        // /stripe/subscription-status populează stările "real*" de mai sus, cât și
+        // din handler-ul de click al toggle-ului Lunar/Anual — înlocuiește logica
+        // altfel duplicată în cele două locuri. Ramuri, în ordine:
+        //   1. toggle ≠ interval real -> butoanele existente de switch (neschimbate).
+        //   2. toggle = interval real ȘI downgrade_scheduled=true -> "Plan curent"
+        //      inert (neschimbat — starea de downgrade e deja comunicată prin
+        //      #proPlanDateInfo, "Expiră la data de X").
+        //   3. toggle = interval real ȘI downgrade_scheduled=false -> NOU: buton
+        //      "Reînnoiește acum" (outline, acțiune secundară pe un plan deja activ
+        //      — conform principiului de design calm din CLAUDE.md). Rămâne vizibil
+        //      și dacă payment_failed_at e setat (decizie deliberată: e cel mai util
+        //      moment pentru un retry imediat de taxare, fără să aștepte retry-ul
+        //      automat Stripe).
+        function renderProCtaSlot(nextIsYearly) {
+            const proCtaSlot = document.getElementById("proPlanCtaSlot");
+            if (!proCtaSlot) return;
+
+            const effectiveReal = realBillingInterval || "month";
+            const matchesReal = nextIsYearly
+                ? effectiveReal === "year"
+                : effectiveReal === "month";
+
+            if (!matchesReal) {
+                // Ambele direcții deschid modalul de confirmare (data-bs-toggle), nu
+                // apelează direct request-ul — vezi handleConfirmSwitchToYearly/
+                // handleConfirmSwitchToMonthly mai jos, legate de butoanele din
+                // interiorul modalelor respective. Simetric: nicio taxare imediată
+                // în niciuna din direcții.
+                if (nextIsYearly) {
+                    proCtaSlot.outerHTML =
+                        '<button type="button" class="erp-plan-cta erp-plan-cta-solid" ' +
+                        'data-action="switch-yearly" id="proPlanCtaSlot" data-bs-toggle="modal" ' +
+                        'data-bs-target="#switchToYearlyConfirmModal">Trece la plata anuală</button>';
+                } else {
+                    proCtaSlot.outerHTML =
+                        '<button type="button" class="erp-plan-cta erp-plan-cta-solid" ' +
+                        'data-action="switch-monthly" id="proPlanCtaSlot" data-bs-toggle="modal" ' +
+                        'data-bs-target="#switchToMonthlyConfirmModal">Trece la plata lunară</button>';
+                }
+                return;
+            }
+
+            if (realDowngradeScheduled) {
+                proCtaSlot.outerHTML =
+                    '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true" ' +
+                    'id="proPlanCtaSlot">Plan curent</span>';
+                return;
+            }
+
+            // Fără modal — click-ul declanșează direct handleRenewNow(), care
+            // creează o Stripe Checkout Session și redirecționează userul
+            // acolo pentru confirmarea plății (singurul flux din pagina asta
+            // care mai taxează imediat — switch-yearly/switch-monthly nu mai
+            // taxează, vezi renderProCtaSlot mai sus). Vezi comentariul din
+            // stripeController.js#renewNow pentru de ce NU mai există un
+            // preview local înainte de asta.
+            proCtaSlot.outerHTML =
+                '<button type="button" class="erp-plan-cta erp-plan-cta-outline" ' +
+                'data-action="renew-now" id="proPlanCtaSlot">Reînnoiește acum</button>';
+        }
+
+        // Randare unică a #proPlanDateInfo — extrasă din erp:user-loaded (unde
+        // rula inline) pentru a fi reutilizată și de handleConfirmSwitchToYearly/
+        // handleConfirmSwitchToMonthly, care re-interoghează subscription-status
+        // după succes (non-optimist — verificat live că Stripe recalculează
+        // imediat perioada curentă la schimbarea intervalului, deci orice text
+        // optimist bazat pe presupuneri client-side ar fi greșit).
+        function renderProDateInfo(currentPeriodEnd, downgradeScheduled, paymentFailedAt) {
+            const proDateInfoEl = document.getElementById("proPlanDateInfo");
+            if (!proDateInfoEl || !currentPeriodEnd) return;
+            const formattedProDate = formatPeriodEndDate(currentPeriodEnd);
+            if (downgradeScheduled) {
+                proDateInfoEl.innerHTML =
+                    `<i class="far fa-clock me-1"></i>Expiră la data de ${formattedProDate}`;
+            } else if (!paymentFailedAt) {
+                proDateInfoEl.innerHTML =
+                    `<i class="far fa-clock me-1"></i>Reînnoire la data de ${formattedProDate}`;
+            }
+        }
 
         // Cardul Free -> starea normală: buton activ "Downgrade la Free" (deschide modalul).
         function renderFreeCtaDefault() {
@@ -425,17 +567,18 @@
             }
         }
 
-        // "Trece la plata anuală" — deschide un Stripe Checkout Session nou
-        // (vezi backend/controllers/stripeController.js#switchToYearly), la fel
-        // ca la upgrade-ul inițial Free→Pro din erp-upgrade.html: userul vede
-        // suma, cardul, confirmă explicit pe pagina Stripe (SCA/3D Secure
-        // gestionat nativ acolo). Nu mai există stare de succes de tratat aici
-        // — pagina navighează către Stripe; la revenire (payment-success.html →
-        // erp-plans.html), logica deja existentă din erp:user-loaded randează
-        // corect "Plan curent" + data reală, pentru că webhook-ul deja a
-        // actualizat DB-ul până atunci.
-        async function handleSwitchToYearly(btn) {
-            const errorEl = document.getElementById("proCtaError");
+        // "Trece la plata anuală" — simetric cu "Trece la plata lunară" mai jos,
+        // deliberat NU mai redirecționează spre Stripe Checkout: doar schimbă
+        // item-ul abonamentului existent (subscriptions.update, fără taxare
+        // imediată — vezi backend/controllers/stripeController.js#switchToYearly).
+        // Înlocuiește complet vechiul flux (Checkout Session mode:'subscription',
+        // taxare imediată €143.04, anulare separată a abonamentului vechi în
+        // webhook). Cere confirmare explicită printr-un modal
+        // (#switchToYearlyConfirmModal, text static — vezi comentariul din HTML
+        // de ce nu mai promite o dată exactă) — pattern identic cu
+        // handleConfirmSwitchToMonthly de mai jos.
+        async function handleConfirmSwitchToYearly(btn) {
+            const errorEl = document.getElementById("switchToYearlyModalError");
             if (errorEl) {
                 errorEl.classList.add("d-none");
                 errorEl.textContent = "";
@@ -443,62 +586,75 @@
 
             const originalText = btn.textContent;
             btn.disabled = true;
-            btn.textContent = "Se pregătește plata...";
+            btn.textContent = "Se procesează...";
 
             try {
                 const response = await API.post("/stripe/switch-to-yearly", {});
-                if (!response || !response.url) {
+                if (!response || !response.success) {
                     throw new Error(
                         (response && response.error) ||
-                        "Nu s-a putut procesa plata anuală.",
+                        "Nu s-a putut procesa trecerea la plata anuală.",
                     );
                 }
 
-                window.location.href = response.url;
+                const modalEl = document.getElementById("switchToYearlyConfirmModal");
+                const modalInstance = window.bootstrap && modalEl
+                    ? window.bootstrap.Modal.getInstance(modalEl)
+                    : null;
+                if (modalInstance) modalInstance.hide();
+
+                // Non-optimist: re-interoghează /stripe/subscription-status (live din
+                // Stripe) în loc să presupună starea rezultată — verificat live că
+                // Stripe recalculează imediat perioada curentă la schimbarea
+                // intervalului, deci data reală nu e previzibilă client-side.
+                const subResponse = await API.get("/stripe/subscription-status");
+                if (subResponse && subResponse.success && subResponse.data) {
+                    realCurrentPeriodEnd = subResponse.data.currentPeriodEnd || null;
+                    realDowngradeScheduled = Boolean(subResponse.data.downgradeScheduled);
+                    realPaymentFailedAt = subResponse.data.paymentFailedAt || null;
+                    realBillingInterval = subResponse.data.billingInterval || null;
+
+                    const switchEl = document.getElementById("billingIntervalSwitch");
+                    const labelMonthlyEl = document.getElementById("billingLabelMonthly");
+                    const labelYearlyEl = document.getElementById("billingLabelYearly");
+                    const amountEl = document.getElementById("proPlanAmount");
+                    const periodEl = document.getElementById("proPlanPeriod");
+                    const discountEl = document.getElementById("proPlanDiscountBadge");
+                    const isYearly = realBillingInterval === "year";
+
+                    if (switchEl) switchEl.setAttribute("aria-checked", String(isYearly));
+                    if (labelMonthlyEl) labelMonthlyEl.classList.toggle("active", !isYearly);
+                    if (labelYearlyEl) labelYearlyEl.classList.toggle("active", isYearly);
+                    if (amountEl) amountEl.textContent = isYearly ? "€143.04" : "€14.90";
+                    if (periodEl) periodEl.textContent = isYearly ? "/an" : "/lună";
+                    if (discountEl) discountEl.classList.toggle("d-none", !isYearly);
+
+                    renderProDateInfo(realCurrentPeriodEnd, realDowngradeScheduled, realPaymentFailedAt);
+                    renderProCtaSlot(isYearly);
+                }
             } catch (err) {
                 console.error("Eroare la trecerea la plata anuală:", err);
-                btn.disabled = false;
-                btn.textContent = originalText;
                 if (errorEl) {
                     errorEl.textContent =
                         err.message ||
-                        "Nu s-a putut procesa plata anuală. Încearcă din nou.";
+                        "Nu s-a putut procesa trecerea la plata anuală. Încearcă din nou.";
                     errorEl.classList.remove("d-none");
                 }
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
             }
         }
 
         // "Trece la plata lunară" — invers față de switchToYearly, deliberat NU
         // redirecționează spre Stripe: doar schimbă item-ul abonamentului existent
         // (subscriptions.update, fără taxare imediată — vezi
-        // backend/controllers/stripeController.js#switchToMonthly). Accesul Pro
-        // rămâne activ până la finalul perioadei anuale deja plătite; abia la
-        // reînnoirea următoare Stripe facturează la prețul lunar. Cere confirmare
-        // explicită printr-un modal (#switchToMonthlyConfirmModal) înainte de
-        // request — pattern identic cu handleConfirmDowngrade de mai sus: eroarea
-        // rămâne în modal (userul poate reîncerca fără să-l reschidă), succesul
-        // închide modalul și actualizează cardul (nu navighează nicăieri).
-        const switchToMonthlyModalEl = document.getElementById("switchToMonthlyConfirmModal");
-        if (switchToMonthlyModalEl) {
-            switchToMonthlyModalEl.addEventListener("show.bs.modal", () => {
-                const formatted = realCurrentPeriodEnd
-                    ? formatPeriodEndDate(realCurrentPeriodEnd)
-                    : "data de reînnoire";
-                const mainTextEl = document.getElementById("switchToMonthlyModalMainText");
-                const secondaryTextEl = document.getElementById("switchToMonthlyModalSecondaryText");
-                if (mainTextEl) {
-                    mainTextEl.innerHTML =
-                        `Nu vei fi taxat acum. Rămâi cu acces Pro complet până la ` +
-                        `<strong>${formatted}</strong>, fără nicio schimbare imediată.`;
-                }
-                if (secondaryTextEl) {
-                    secondaryTextEl.innerHTML =
-                        `Începând cu <strong>${formatted}</strong>, abonamentul tău se va reînnoi ` +
-                        `lunar, la €14.90/lună, în loc de anual. Poți reveni oricând la planul anual.`;
-                }
-            });
-        }
-
+        // backend/controllers/stripeController.js#switchToMonthly). Cere confirmare
+        // explicită printr-un modal (#switchToMonthlyConfirmModal, text static —
+        // vezi comentariul din HTML) înainte de request — pattern identic cu
+        // handleConfirmDowngrade de mai sus: eroarea rămâne în modal (userul poate
+        // reîncerca fără să-l reschidă), succesul închide modalul și actualizează
+        // cardul (nu navighează nicăieri).
         async function handleConfirmSwitchToMonthly(btn) {
             const errorEl = document.getElementById("switchToMonthlyModalError");
             if (errorEl) {
@@ -519,32 +675,37 @@
                     );
                 }
 
-                realBillingInterval = "month";
-
                 const modalEl = document.getElementById("switchToMonthlyConfirmModal");
                 const modalInstance = window.bootstrap && modalEl
                     ? window.bootstrap.Modal.getInstance(modalEl)
                     : null;
                 if (modalInstance) modalInstance.hide();
 
-                const switchEl = document.getElementById("billingIntervalSwitch");
-                const labelMonthlyEl = document.getElementById("billingLabelMonthly");
-                const labelYearlyEl = document.getElementById("billingLabelYearly");
-                const amountEl = document.getElementById("proPlanAmount");
-                const periodEl = document.getElementById("proPlanPeriod");
-                const discountEl = document.getElementById("proPlanDiscountBadge");
-                const proCtaSlot = document.getElementById("proPlanCtaSlot");
+                // Non-optimist — vezi comentariul identic din handleConfirmSwitchToYearly.
+                const subResponse = await API.get("/stripe/subscription-status");
+                if (subResponse && subResponse.success && subResponse.data) {
+                    realCurrentPeriodEnd = subResponse.data.currentPeriodEnd || null;
+                    realDowngradeScheduled = Boolean(subResponse.data.downgradeScheduled);
+                    realPaymentFailedAt = subResponse.data.paymentFailedAt || null;
+                    realBillingInterval = subResponse.data.billingInterval || null;
 
-                if (switchEl) switchEl.setAttribute("aria-checked", "false");
-                if (labelMonthlyEl) labelMonthlyEl.classList.add("active");
-                if (labelYearlyEl) labelYearlyEl.classList.remove("active");
-                if (amountEl) amountEl.textContent = "€14.90";
-                if (periodEl) periodEl.textContent = "/lună";
-                if (discountEl) discountEl.classList.add("d-none");
-                if (proCtaSlot) {
-                    proCtaSlot.outerHTML =
-                        '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true" ' +
-                        'id="proPlanCtaSlot">Plan curent</span>';
+                    const switchEl = document.getElementById("billingIntervalSwitch");
+                    const labelMonthlyEl = document.getElementById("billingLabelMonthly");
+                    const labelYearlyEl = document.getElementById("billingLabelYearly");
+                    const amountEl = document.getElementById("proPlanAmount");
+                    const periodEl = document.getElementById("proPlanPeriod");
+                    const discountEl = document.getElementById("proPlanDiscountBadge");
+                    const isYearly = realBillingInterval === "year";
+
+                    if (switchEl) switchEl.setAttribute("aria-checked", String(isYearly));
+                    if (labelMonthlyEl) labelMonthlyEl.classList.toggle("active", !isYearly);
+                    if (labelYearlyEl) labelYearlyEl.classList.toggle("active", isYearly);
+                    if (amountEl) amountEl.textContent = isYearly ? "€143.04" : "€14.90";
+                    if (periodEl) periodEl.textContent = isYearly ? "/an" : "/lună";
+                    if (discountEl) discountEl.classList.toggle("d-none", !isYearly);
+
+                    renderProDateInfo(realCurrentPeriodEnd, realDowngradeScheduled, realPaymentFailedAt);
+                    renderProCtaSlot(isYearly);
                 }
             } catch (err) {
                 console.error("Eroare la trecerea la plata lunară:", err);
@@ -557,6 +718,51 @@
             } finally {
                 btn.disabled = false;
                 btn.textContent = originalText;
+            }
+        }
+
+        // "Reînnoiește acum" — Stripe Checkout Session nouă (mode:'payment'),
+        // singurul flux de pe pagina asta care taxează imediat (spre deosebire
+        // de switch-yearly/switch-monthly, ambele doar programează, fără nicio
+        // taxare). Fără modal local, fără preview — userul confirmă plata
+        // direct pe pagina Stripe (SCA/3D Secure gestionat nativ acolo). Nu mai există stare
+        // de succes de tratat aici — pagina navighează către Stripe; la
+        // revenire (payment-success.html → erp-plans.html), webhook-ul deja
+        // a calculat și scris noua dată de expirare (vezi
+        // backend/controllers/stripeController.js#handleWebhook, flow:
+        // 'renew-now'), iar logica existentă din erp:user-loaded o afișează
+        // corect.
+        async function handleRenewNow(btn) {
+            const errorEl = document.getElementById("proCtaError");
+            if (errorEl) {
+                errorEl.classList.add("d-none");
+                errorEl.textContent = "";
+            }
+
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Se pregătește plata...";
+
+            try {
+                const response = await API.post("/stripe/renew-now", {});
+                if (!response || !response.url) {
+                    throw new Error(
+                        (response && response.error) ||
+                        "Nu s-a putut procesa reînnoirea.",
+                    );
+                }
+
+                window.location.href = response.url;
+            } catch (err) {
+                console.error("Eroare la reînnoirea imediată:", err);
+                btn.disabled = false;
+                btn.textContent = originalText;
+                if (errorEl) {
+                    errorEl.textContent =
+                        err.message ||
+                        "Nu s-a putut procesa reînnoirea. Încearcă din nou.";
+                    errorEl.classList.remove("d-none");
+                }
             }
         }
 
@@ -583,14 +789,22 @@
                 return;
             }
 
-            // Doar starea-buton (nu span-ul inert "Plan curent", care oricum are
-            // pointer-events:none) trebuie să declanșeze acțiunea. Aici doar
-            // direcția Anual — varianta "Trece la plata lunară" deschide modalul
-            // de confirmare declarativ (data-bs-toggle), nu are nevoie de JS aici;
-            // acțiunea reală pleacă din #btnConfirmSwitchToMonthly, mai sus.
+            const confirmYearlyBtn = e.target.closest("#btnConfirmSwitchToYearly");
+            if (confirmYearlyBtn) {
+                handleConfirmSwitchToYearly(confirmYearlyBtn);
+                return;
+            }
+
+            // Ramifică pe data-action, nu doar pe tag+interval — mai multe variante
+            // de buton pot avea id="proPlanCtaSlot" (switch-yearly/switch-monthly/
+            // renew-now), deci un simplu "tagName === BUTTON" ar fi ambiguu.
+            // switch-yearly și switch-monthly se bazează doar pe data-bs-toggle
+            // declarativ (fără JS aici, simetric — fără taxare imediată în
+            // niciuna din direcții); doar renew-now redirecționează direct spre
+            // Stripe Checkout, deci are nevoie de branch explicit.
             const proCtaBtn = e.target.closest("#proPlanCtaSlot");
-            if (proCtaBtn && proCtaBtn.tagName === "BUTTON" && realBillingInterval !== "year") {
-                handleSwitchToYearly(proCtaBtn);
+            if (proCtaBtn && proCtaBtn.getAttribute("data-action") === "renew-now") {
+                handleRenewNow(proCtaBtn);
             }
         });
 
@@ -614,6 +828,10 @@
             if (user.plan === "pro") {
                 isProUser = true;
 
+                // Stare de încărcare, înlocuită imediat ce fetch-ul de mai jos
+                // populează realBillingInterval/realDowngradeScheduled (vezi
+                // renderProCtaSlot() mai sus) — evită orice flash incorect al
+                // stării CTA reale (ex. downgrade programat) înainte de fetch.
                 const proCta = document.getElementById("proPlanCta");
                 if (proCta) {
                     proCta.outerHTML =
@@ -663,10 +881,16 @@
                     realPaymentFailedAt = paymentFailedAt || null;
                     realBillingInterval = billingInterval || null;
 
+                    // Re-randează CTA-ul acum că starea reală e cunoscută — fix pentru
+                    // un gap preexistent: fără acest apel, cardul rămânea mereu pe
+                    // "Plan curent" hardcodat la încărcare, indiferent de
+                    // downgrade_scheduled, până la prima interacțiune manuală cu toggle-ul.
+                    renderProCtaSlot(realBillingInterval === "year");
+
                     // Toggle-ul + prețul pornesc sincronizate cu intervalul real de
-                    // facturare (nu implicit pe Lunar). CTA-ul rămâne "Plan curent"
-                    // (deja setat mai sus) — toggle-ul afișează exact starea reală,
-                    // nimic de schimbat până nu-l comută userul manual pe Lunar
+                    // facturare (nu implicit pe Lunar) — CTA-ul e deja corect setat
+                    // mai sus de renderProCtaSlot(), nimic de schimbat aici decât
+                    // toggle-ul vizual/prețul, până nu-l comută userul manual
                     // (vezi handler-ul toggle-ului de mai jos).
                     if (realBillingInterval === "year") {
                         const switchEl = document.getElementById("billingIntervalSwitch");
@@ -691,17 +915,7 @@
                     // să sugerăm reînnoire automată garantată cât timp Stripe încă
                     // reîncearcă o plată eșuată; avertismentul dedicat există deja
                     // separat, în tab-ul Settings/Billing.
-                    const proDateInfoEl = document.getElementById("proPlanDateInfo");
-                    if (proDateInfoEl && currentPeriodEnd) {
-                        const formattedProDate = formatPeriodEndDate(currentPeriodEnd);
-                        if (downgradeScheduled) {
-                            proDateInfoEl.innerHTML =
-                                `<i class="far fa-clock me-1"></i>Expiră la data de ${formattedProDate}`;
-                        } else if (!paymentFailedAt) {
-                            proDateInfoEl.innerHTML =
-                                `<i class="far fa-clock me-1"></i>Reînnoire la data de ${formattedProDate}`;
-                        }
-                    }
+                    renderProDateInfo(currentPeriodEnd, downgradeScheduled, paymentFailedAt);
 
                     if (downgradeTextEl && currentPeriodEnd) {
                         const formatted = formatPeriodEndDate(currentPeriodEnd);
@@ -787,36 +1001,10 @@
                 }
 
                 // CTA-ul e o simplă comparație "ce arată toggle-ul acum" vs. "care e
-                // starea reală": dacă se potrivesc, "Plan curent" (inert, nimic de
-                // schimbat); dacă nu, buton de acțiune în direcția corectă. Simetric
-                // pentru ambele direcții — real=month fallback dacă nu știm încă
-                // intervalul real (comportamentul sigur de dinainte de acest task).
+                // starea reală", extrasă în renderProCtaSlot() de mai sus — apelată
+                // și aici, și imediat după fetch-ul inițial de subscription-status.
                 if (isProUser) {
-                    const proCtaSlot = document.getElementById("proPlanCtaSlot");
-                    if (proCtaSlot) {
-                        const effectiveReal = realBillingInterval || "month";
-                        const matchesReal = nextIsYearly
-                            ? effectiveReal === "year"
-                            : effectiveReal === "month";
-
-                        if (matchesReal) {
-                            proCtaSlot.outerHTML =
-                                '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true" ' +
-                                'id="proPlanCtaSlot">Plan curent</span>';
-                        } else if (nextIsYearly) {
-                            proCtaSlot.outerHTML =
-                                '<button type="button" class="erp-plan-cta erp-plan-cta-solid" ' +
-                                'id="proPlanCtaSlot">Trece la plata anuală</button>';
-                        } else {
-                            // Deschide modalul de confirmare (data-bs-toggle), nu apelează
-                            // direct request-ul — vezi handleConfirmSwitchToMonthly mai jos,
-                            // legat de butonul din interiorul modalului.
-                            proCtaSlot.outerHTML =
-                                '<button type="button" class="erp-plan-cta erp-plan-cta-solid" ' +
-                                'id="proPlanCtaSlot" data-bs-toggle="modal" ' +
-                                'data-bs-target="#switchToMonthlyConfirmModal">Trece la plata lunară</button>';
-                        }
-                    }
+                    renderProCtaSlot(nextIsYearly);
                 }
             });
         }

@@ -103,6 +103,12 @@ Frontend → GitHub Pages · Backend → Render · DB → Neon (PostgreSQL) · D
 - Fără framework frontend, fără bundler — nu introduce dependențe noi (npm packages, CDN-uri noi) fără să fie necesar explicit pentru task.
 - Reutilizează stilurile CSS existente (variabile precum `--primary`, `--text`, `--muted`, `--border` din `login.css` etc.) în loc să hardcodezi culori noi.
 
+### Principiu de design UI (ElectricalVPF) — regulă permanentă
+
+Contrastul vine din spațiere și claritate, nu din culori tari sau border-uri groase. Elementele importante nu trebuie să "urle" vizual — premium înseamnă calm, discret, cu respirație. Evită border-uri peste 1px, umbre puternice, sau culori saturate pe elemente secundare.
+
+Se aplică la orice element nou de UI creat de acum înainte, fără să fie nevoie să fie repetat explicit în fiecare task.
+
 ## Reguli importante / componente FROZEN
 
 **Modulele Clients, Projects, Estimating, Quotes, Invoices, Materials și Reports sunt FROZEN** — implementări de referință, confirmate funcționale. **NU le modifica, NU le atinge, NU ghici structuri de schemă sau endpoint-uri din ele** fără verificare explicită și acord prealabil. Orice task care le menționează tangențial trebuie limitat strict la scope-ul cerut, fără a atinge cod din aceste module.

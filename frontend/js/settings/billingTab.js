@@ -61,10 +61,8 @@
                 class="fas fa-crown plan-badge-icon"></i><span>Plan Pro</span></a>
             <div class="fw-semibold" id="billingRenewalDate">Data reînnoirii: se încarcă...</div>
             <div class="text-muted small">Abonamentul se reînnoiește automat lunar.</div>
+            <a href="erp-plans.html" class="billing-manage-link mt-2">Administrează abonamentul</a>
           </div>
-          <button type="button" class="btn btn-outline-primary fw-semibold px-4" id="btnRenewEarly">
-            <i class="fas fa-rotate me-2"></i> Extinde abonamentul
-          </button>
         </div>
       </div>
 
@@ -107,16 +105,6 @@
       container.innerHTML = plan === "pro" ? templatePro() : templateFree();
 
       if (plan === "pro") {
-        const renewBtn = container.querySelector("#btnRenewEarly");
-        if (renewBtn) {
-          renewBtn.addEventListener("click", () => {
-            Toast.show(
-              "Extinderea abonamentului va fi disponibilă în curând.",
-              "info",
-            );
-          });
-        }
-
         const renewalDateEl = container.querySelector("#billingRenewalDate");
         if (renewalDateEl) {
           try {

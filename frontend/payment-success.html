@@ -155,32 +155,36 @@
         });
     </script>
 
-    <!-- Mesaj diferit pentru switch-ul Lunar→Anual (vezi erp-plans.html →
-         stripeController.js#switchToYearly) — diferențiat prin parametrul
-         ?type=yearly-switch din success_url, setat direct de backend la
-         crearea sesiunii Checkout. Ales în locul verificării metadatelor
-         sesiunii ca să nu mai fie nevoie de un apel API suplimentar doar
-         pentru a decide ce text se afișează. -->
+    <!-- Mesaj diferit pentru "Reînnoiește acum" (vezi erp-plans.html →
+         stripeController.js#renewNow/handleWebhook flow:'renew-now') —
+         diferențiat prin ?type=renew-now din success_url, setat de backend
+         la crearea sesiunii Checkout. Data afișată vine din
+         users.renewal_extension_period_end (via /stripe/subscription-status,
+         care deja alege data efectivă mai târzie dintre extensia locală și
+         data brută Stripe) — scrisă de webhook doar după confirmarea reală a
+         plății; dacă webhook-ul n-a apucat încă, omitem grațios propoziția
+         cu data, fără să blocăm restul mesajului. -->
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             const params = new URLSearchParams(window.location.search);
-            if (params.get("type") !== "yearly-switch") return;
+            if (params.get("type") !== "renew-now") return;
 
             const badgeEl = document.getElementById("successPlanBadge");
             const titleEl = document.getElementById("successTitle");
             const descEl = document.getElementById("successDesc");
 
             if (badgeEl) {
-                badgeEl.innerHTML = '<i class="fas fa-calendar-check"></i> Plan Anual activat';
+                badgeEl.innerHTML = '<i class="fas fa-calendar-plus"></i> Reînnoire confirmată';
             }
             if (titleEl) {
-                titleEl.textContent = "Ai trecut cu succes la planul Anual! 🎉";
+                titleEl.textContent = "Reînnoirea anticipată a fost confirmată! 🎉";
             }
 
-            // Data reală de reînnoire — dacă webhook-ul checkout.session.completed
-            // n-a apucat încă să actualizeze DB-ul (race condition acceptată deja
-            // de fluxul existent Free→Pro), omitem propoziția, fără să blocăm restul mesajului.
-            let renewalText = "";
+            // Text neutru la interval — renewNow e adaptiv (lunar/anual), deci
+            // fallback-ul (folosit doar dacă /subscription-status eșuează sau
+            // webhook-ul n-a apucat încă să scrie noua dată) nu poate presupune
+            // "o lună" fix.
+            let renewalText = "abonamentul tău Pro a fost extins.";
             try {
                 const response = await API.get("/stripe/subscription-status");
                 const currentPeriodEnd =
@@ -190,7 +194,7 @@
                         "ro-RO",
                         { day: "numeric", month: "long", year: "numeric" },
                     );
-                    renewalText = ` Următoarea reînnoire: ${formatted}.`;
+                    renewalText = `noua ta dată de reînnoire este ${formatted}.`;
                 }
             } catch (err) {
                 console.error(
@@ -200,9 +204,7 @@
             }
 
             if (descEl) {
-                descEl.textContent =
-                    "Abonamentul tău Pro este acum activ pentru următoarele 12 luni, " +
-                    "cu 20% economie față de plata lunară." + renewalText;
+                descEl.textContent = `Plata a fost procesată cu succes — ${renewalText}`;
             }
         });
     </script>
