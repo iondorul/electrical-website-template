@@ -92,6 +92,16 @@ schema.sql                → dump VECHI/PARȚIAL, NU e sursă de adevăr (vezi 
 - `frontend/js/config.js`: `API_BASE_URL` (hardcodat la `http://localhost:3000/api` — de actualizat manual la deploy).
 - CORS este momentan **deschis** (`app.use(cors())` fără restricție de origin în `server.js`) — de restricționat explicit la domeniul de producție înainte de go-live.
 
+## Pornire mediu de dezvoltare local — `start-dev.bat`
+
+Rulează `start-dev.bat` din rădăcina proiectului (dublu-click sau din orice terminal) ca să pornești, dintr-un singur pas, în două ferestre separate (loguri clare pentru fiecare):
+1. Backend-ul (`npm start` în `backend/`, adică `node server.js`).
+2. `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
+
+**De ce contează `stripe listen`**: NU e persistent între sesiuni — se oprește când închizi fereastra/terminalul. Fără el, webhook-urile reale de la Stripe (plăți, reînnoiri, upgrade-uri) nu ajung deloc la backend-ul local, deci DB-ul nu se actualizează niciodată după o plată reușită (userul rămâne vizual pe planul vechi, deși a fost taxat real) — bug găsit și confirmat de mai multe ori în sesiunile din 24-25 august 2026, mereu din aceeași cauză operațională, nu de cod. Pornește `start-dev.bat` la începutul **oricărei** sesiuni unde testezi ceva legat de Stripe (upgrade, downgrade, reînnoire, switch de plan).
+
+Frontend-ul (serverul static de pe portul 5500) nu e inclus în script — pornește-l separat cum lucrezi de obicei (ex. Live Server / `python -m http.server 5500`).
+
 ## Target de hosting (planificat, nu încă implementat)
 
 Frontend → GitHub Pages · Backend → Render · DB → Neon (PostgreSQL) · DNS → Porkbun (`electricalvpf.com`, vezi `CNAME`) · Email → SMTP2GO. Cost țintă $0/lună la pornire. Lucrul curent se face **local** — nu presupune că vreun pas de deploy a fost deja făcut fără confirmare explicită.

@@ -56,12 +56,18 @@
 
       <div class="card border-0" style="background: #f8f9fb; border-radius: 12px;">
         <div class="card-body p-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <!-- 210px = lățimea reală a butonului Logout din sidebar (sidebar
+               fix 250px - padding 20px×2, vezi #logoutBtn/.btn-logout în
+               dashboard.css) — badge-ul PLAN PRO o folosește explicit, ca să
+               fie identică cu Logout. Butonul "Administrează abonamentul" de
+               mai jos rămâne intenționat la lățimea lui naturală (cât textul
+               pe un rând), fără să copieze acest 210px. -->
           <div>
-            <a href="erp-plans.html" class="plan-badge plan-badge-pro mb-2" style="display: inline-flex; margin: 0;"><i
+            <a href="erp-plans.html" class="plan-badge plan-badge-pro mb-2" style="display: flex; margin: 0; width: 210px; box-sizing: border-box; border-radius: 8px;"><i
                 class="fas fa-crown plan-badge-icon"></i><span>Plan Pro</span></a>
             <div class="fw-semibold" id="billingRenewalDate">Data reînnoirii: se încarcă...</div>
             <div class="text-muted small">Abonamentul se reînnoiește automat lunar.</div>
-            <a href="erp-plans.html" class="billing-manage-link mt-2">Administrează abonamentul</a>
+            <a href="erp-plans.html" class="billing-manage-link mt-2"><i class="fas fa-credit-card me-2"></i>Administrează abonamentul</a>
           </div>
         </div>
       </div>

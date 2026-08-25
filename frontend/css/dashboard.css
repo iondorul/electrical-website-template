@@ -44,7 +44,11 @@ body {
     height: auto;
     display: flex;
     align-items: center;
-    padding: 14px 20px;
+    position: relative;
+    /* padding-bottom mărit față de 14px original — compensează spațiul pe
+       care badge-ul îl ocupa în flux normal (acum position:absolute, vezi
+       .plan-badge), ca înălțimea header-ului să rămână neschimbată. */
+    padding: 14px 20px 62px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -54,7 +58,14 @@ body {
     color: #ffffff;
 }
 
-/* --- Plan Badge (sub logo, sidebar) --- */
+/* --- Plan Badge (bază, reutilizată în sidebar ȘI în Settings > Abonament &
+   Plăți — billingTab.js folosește aceleași clase .plan-badge/.plan-badge-pro
+   pe un link separat, cu propriul layout, prin override inline
+   display:inline-flex/margin:0). Rămâne generică — orice poziționare
+   specifică unui singur loc de utilizare NU intră aici, ci pe un selector
+   dedicat (vezi #sidebarPlanBadge mai jos) — bug găsit live: poziționarea
+   absolută adăugată aici pentru sidebar se propaga și în Settings,
+   suprapunând badge-ul peste "Administrează abonamentul". */
 .plan-badge {
     display: flex;
     align-items: center;
@@ -76,6 +87,22 @@ body {
 
 .plan-badge:hover {
     transform: scale(1.02);
+}
+
+/* --- Plan Badge: poziționare specifică sidebar-ului, doar pe #sidebarPlanBadge
+   (id static din sidebar.html, neschimbat de shell.js — shell.js rescrie doar
+   className la fiecare erp:user-loaded, deci o clasă nouă adăugată acolo s-ar
+   pierde; un selector pe id rezistă). Centrat sub "ElectricalVPF" (nu sub
+   iconița ⚡+text) și lățime identică cu .btn-logout din sidebar-footer —
+   vezi position:relative pe .sidebar-header mai sus. */
+#sidebarPlanBadge {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    top: 52px;
+    width: auto;
+    margin: 0;
+    border-radius: 8px;
 }
 
 /* Specificitate explicită — Bootstrap definește global a:hover { color: ... },
@@ -240,7 +267,37 @@ body {
     background: #ffffff;
     border: 1px solid var(--card-border);
     border-radius: 12px;
-    padding: 24px;
+    padding: 18px 24px;
+}
+
+/* Rafinare tipografică a bannerului de bun venit — executive/premium, nu
+   "hero" de landing page. Doar prezentare vizuală (font-size/weight/
+   letter-spacing/culoare), markup-ul (#welcomeTitle, setat dinamic din
+   dashboard.js) și structura rămân neatinse. Reducere ~30% față de h2
+   Bootstrap implicit (2rem). */
+.welcome-card h2#welcomeTitle {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: #1e293b;
+}
+
+.welcome-card p.text-muted {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: #94a3b8;
+}
+
+.welcome-card .badge {
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 5px 12px;
+    letter-spacing: 0.01em;
+}
+
+.welcome-card .badge i {
+    font-size: 0.5rem;
 }
 
 .kpi-card {
