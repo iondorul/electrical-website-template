@@ -96,6 +96,79 @@
 
     </div>
 
+    <!-- Modal "Reînnoiește acum" — identic cu #renewNowConfirmModal din
+         erp-plans.html (duplicare deliberată, aceeași convenție ca
+         addIntervalUTC/formatDateRo de mai jos — pagină fără modul JS
+         partajat). Apare DOAR pentru cazul grace-period-upgrade (acces deja
+         plătit) — vezi condiționarea pe isGracePeriodReactivation din
+         scripturile de mai jos; cazul genuin Free (mode:'subscription',
+         prima abonare) NU e atins, butonul rămâne exact ca azi. -->
+    <div class="modal fade" id="renewNowConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i>Reînnoiește acum
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="erp-renew-period-options">
+                        <label class="erp-renew-period-row">
+                            <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="1m" checked>
+                            <span class="erp-renew-period-card">
+                                <span class="erp-renew-period-label">1 lună</span>
+                                <span class="erp-renew-period-price">€14.90</span>
+                            </span>
+                        </label>
+                        <label class="erp-renew-period-row">
+                            <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="6m">
+                            <span class="erp-renew-period-card">
+                                <span class="erp-renew-period-label">6 luni</span>
+                                <span class="erp-renew-period-price">€80.46<span
+                                        class="erp-renew-period-discount">-10%</span></span>
+                            </span>
+                        </label>
+                        <label class="erp-renew-period-row">
+                            <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="1y">
+                            <span class="erp-renew-period-card">
+                                <span class="erp-renew-period-label">1 an</span>
+                                <span class="erp-renew-period-price">€143.04<span
+                                        class="erp-renew-period-discount">-20%</span></span>
+                            </span>
+                        </label>
+                        <label class="erp-renew-period-row">
+                            <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="3y">
+                            <span class="erp-renew-period-card">
+                                <span class="erp-renew-period-label">3 ani</span>
+                                <span class="erp-renew-period-price">€375.48<span
+                                        class="erp-renew-period-discount">-30%</span></span>
+                            </span>
+                        </label>
+                        <label class="erp-renew-period-row">
+                            <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="5y">
+                            <span class="erp-renew-period-card">
+                                <span class="erp-renew-period-label">5 ani<span
+                                        class="erp-renew-period-best-tag">Cel mai avantajos</span></span>
+                                <span class="erp-renew-period-price">€536.40<span
+                                        class="erp-renew-period-discount">-40%</span></span>
+                            </span>
+                        </label>
+                    </div>
+                    <p class="mb-0 small text-muted mt-3" id="renewNowPeriodNote"></p>
+                    <div class="alert alert-danger d-none small mt-3 mb-0" id="renewNowModalError" role="alert"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="erp-plan-cta erp-plan-cta-outline"
+                        data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmRenewNow">
+                        Continuă la plată
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -142,6 +215,66 @@
             });
         }
 
+        // Modal "Reînnoiește acum" (grace period): tabel oglindă identic cu
+        // RENEWAL_PERIODS din backend/controllers/stripeController.js — doar
+        // pentru afișaj, prețul REAL e mereu calculat de resolveRenewalPeriod()
+        // pe server. addMonthsUTC e algoritmic identic cu ramura "month" din
+        // addBillingInterval() al backend-ului (același Date UTC, aceeași
+        // metodă nativă — comportament garantat identic, nu o aproximare).
+        // Baza de pornire (gracePeriodCurrentEnd) vine din același
+        // /stripe/subscription-status folosit mai jos pentru "Plan ales",
+        // care deja aplică logica "efectivă" (max între extensia locală și
+        // data brută Stripe) — aceeași bază ca și computeExtendedPeriodEnd()
+        // din backend.
+        const RENEWAL_PERIODS_DISPLAY = {
+            "1m": { months: 1, label: "1 lună" },
+            "6m": { months: 6, label: "6 luni" },
+            "1y": { months: 12, label: "1 an" },
+            "3y": { months: 36, label: "3 ani" },
+            "5y": { months: 60, label: "5 ani" },
+        };
+
+        function addMonthsUTC(date, months) {
+            const result = new Date(date.getTime());
+            result.setUTCMonth(result.getUTCMonth() + months);
+            return result;
+        }
+
+        function getSelectedRenewPeriod() {
+            const checked = document.querySelector('input[name="renewPeriod"]:checked');
+            return checked ? checked.value : "1m";
+        }
+
+        // Setate mai jos, în blocul care populează panoul "Plan ales" — folosite
+        // atât de acel panou, cât și de modal (notă) și de scriptul de checkout
+        // (ca să decidă dacă butonul deschide modalul sau merge direct la
+        // Stripe, vezi ultimul <script> din fișier).
+        let isGracePeriodReactivation = false;
+        let gracePeriodCurrentEnd = null;
+
+        function updateRenewNowPeriodNote() {
+            const noteEl = document.getElementById("renewNowPeriodNote");
+            if (!noteEl || !gracePeriodCurrentEnd) return;
+            const period =
+                RENEWAL_PERIODS_DISPLAY[getSelectedRenewPeriod()] || RENEWAL_PERIODS_DISPLAY["1m"];
+            const newDate = formatDateRo(
+                addMonthsUTC(new Date(gracePeriodCurrentEnd), period.months),
+            );
+            noteEl.textContent =
+                `Ai deja acces Pro plătit până la ${formatDateRo(new Date(gracePeriodCurrentEnd))}. ` +
+                `Se adaugă ${period.label} — noul acces se va întinde până la ${newDate}.`;
+        }
+
+        const renewNowModalEl = document.getElementById("renewNowConfirmModal");
+        if (renewNowModalEl) {
+            renewNowModalEl.addEventListener("show.bs.modal", updateRenewNowPeriodNote);
+        }
+        document.addEventListener("change", (e) => {
+            if (e.target && e.target.name === "renewPeriod") {
+                updateRenewNowPeriodNote();
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", async () => {
             const infoEl = document.getElementById("upgradePlanInfo");
             const chosenLabelEl = document.getElementById("upgradePlanChosenLabel");
@@ -155,6 +288,21 @@
                 const subResponse = await API.get("/stripe/subscription-status");
                 const data = subResponse && subResponse.data;
                 const hasExistingPeriod = Boolean(data && data.currentPeriodEnd);
+                isGracePeriodReactivation = hasExistingPeriod;
+                if (hasExistingPeriod) {
+                    gracePeriodCurrentEnd = data.currentPeriodEnd;
+
+                    // Butonul "Continuă la plată" devine declarativ (deschide
+                    // modalul, ca switch-yearly/switch-monthly din erp-plans.html)
+                    // — logica din scriptul de checkout de mai jos oprește
+                    // early la vederea isGracePeriodReactivation și lasă
+                    // Bootstrap să preia click-ul.
+                    const checkoutBtn = document.getElementById("btnStartCheckout");
+                    if (checkoutBtn) {
+                        checkoutBtn.setAttribute("data-bs-toggle", "modal");
+                        checkoutBtn.setAttribute("data-bs-target", "#renewNowConfirmModal");
+                    }
+                }
 
                 const isYearly = interval === "year";
                 const priceLabel = isYearly ? "€143.04/an" : "€14.90/lună";
@@ -204,10 +352,15 @@
     </script>
 
     <!-- Checkout Stripe: pornește sesiunea de plată la click, redirecționează spre Stripe.
-         Funcționează identic indiferent dacă userul e în grace period (downgrade
-         programat) sau nu — backend-ul decide singur tipul de sesiune Checkout
-         (vezi stripeController.js#createCheckoutSession), dar răspunde mereu cu
-         `url`, către care redirecționăm la fel, fără nicio ramură specială aici. -->
+         Cazul genuin Free (mode:'subscription', prima abonare) rămâne exact ca
+         azi — click direct, fără modal. Cazul grace period (acces deja plătit)
+         e interceptat: butonul a primit data-bs-toggle="modal" dinamic mai sus
+         (vezi isGracePeriodReactivation), deci Bootstrap deschide modalul în
+         loc să declanșeze acest listener — guard-ul de mai jos previne dubla
+         acțiune dacă listener-ul tot rulează (click-ul unui buton cu
+         data-bs-toggle nu e prevenit automat de Bootstrap). Confirmarea reală
+         pentru grace period se întâmplă din #btnConfirmRenewNow, în interiorul
+         modalului — vezi handleConfirmRenewNow mai jos. -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const btn = document.getElementById("btnStartCheckout");
@@ -217,6 +370,8 @@
             if (!btn) return;
 
             btn.addEventListener("click", async () => {
+                if (isGracePeriodReactivation) return;
+
                 errorEl.classList.add("d-none");
                 errorEl.textContent = "";
 
@@ -255,6 +410,63 @@
                     btnText.textContent = "Continuă la plată";
                 }
             });
+        });
+    </script>
+
+    <!-- Confirmare din modalul "Reînnoiește acum" (grace period) — trimite
+         atât interval-ul ales pe erp-plans.html (Lunar/Anual, schimbă prețul
+         abonamentului de bază dacă diferă), cât și period-ul ales acum în
+         modal (câte luni se extinde renewal_extension_period_end, vezi
+         backend/controllers/stripeController.js). Cele două rămân complet
+         independente pe server — vezi handleWebhook, ramura grace-period-upgrade. -->
+    <script>
+        async function handleConfirmRenewNow(btn) {
+            const errorEl = document.getElementById("renewNowModalError");
+            if (errorEl) {
+                errorEl.classList.add("d-none");
+                errorEl.textContent = "";
+            }
+
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Se pregătește plata...";
+
+            try {
+                const period = getSelectedRenewPeriod();
+                const params = new URLSearchParams(window.location.search);
+                const interval = params.get("interval") === "year" ? "year" : "month";
+
+                const response = await API.post(
+                    "/stripe/create-checkout-session",
+                    { interval, period },
+                );
+
+                if (!response || !response.url) {
+                    throw new Error(
+                        (response && response.error) ||
+                        "Răspuns invalid de la server (lipsește URL-ul de plată).",
+                    );
+                }
+
+                window.location.href = response.url;
+            } catch (err) {
+                console.error("Eroare la inițierea plății Stripe (reînnoire):", err);
+                btn.disabled = false;
+                btn.textContent = originalText;
+                if (errorEl) {
+                    errorEl.textContent =
+                        (err && err.message) ||
+                        "Nu s-a putut iniția plata. Încearcă din nou sau contactează suportul.";
+                    errorEl.classList.remove("d-none");
+                }
+            }
+        }
+
+        document.addEventListener("click", (e) => {
+            const confirmRenewNowBtn = e.target.closest("#btnConfirmRenewNow");
+            if (confirmRenewNowBtn) {
+                handleConfirmRenewNow(confirmRenewNowBtn);
+            }
         });
     </script>
 </body>

@@ -56,17 +56,19 @@ describe("createCheckoutSession", () => {
   // deja 'free', dar abonamentul Stripe rămâne activ cu
   // cancel_at_period_end=true, până la current_period_end deja plătit).
   // "Upgrade la Pro" în acest caz TOT trece printr-o Checkout Session reală,
-  // cu plată efectivă — NU o reactivare gratuită. Suma facturată e cea a
-  // intervalului ALES de user pe toggle-ul din erp-plans.html (req.body.interval,
-  // exact ca la ramura de user genuin Free mai jos) — NU mai e derivată din
-  // intervalul curent al abonamentului (bug găsit live: userul alegea Anual,
-  // dar reactivarea rămânea mereu pe Lunar, ignorând complet alegerea).
-  // Intervalul ales e scris în metadata.interval, ca handleWebhook să știe ce
-  // s-a plătit efectiv și, dacă diferă de intervalul curent al abonamentului,
-  // să schimbe și prețul abonamentului Stripe (vezi handleWebhook mai jos).
-  // stripe.subscriptions.retrieve rămâne apelat aici doar ca verificare că
-  // abonamentul chiar există/e accesibil înainte de a crea o sesiune de plată.
-  test("grace period, interval='month' (implicit) — creează Checkout Session mode:'payment', €14.90, flow:'grace-period-upgrade'", async () => {
+  // cu plată efectivă — NU o reactivare gratuită. stripe.subscriptions.retrieve
+  // rămâne apelat aici doar ca verificare că abonamentul chiar există/e
+  // accesibil înainte de a crea o sesiune de plată.
+  //
+  // Suma facturată e determinată STRICT de `period` (dropdown-ul cu 5 opțiuni,
+  // 1 lună/6 luni/1 an/3 ani/5 ani + discount, vezi RENEWAL_PERIODS) — mereu
+  // calculată din baza €14.90/lună, INDIFERENT de `interval` (Lunar/Anual) sau
+  // de intervalul curent al abonamentului. `interval` rămâne complet
+  // independent: decide DOAR dacă se schimbă și prețul abonamentului Stripe
+  // de bază (vezi handleWebhook mai jos) — nu are niciun efect asupra sumei
+  // plătite acum pentru extindere. Cele două axe (period → sumă/extindere,
+  // interval → schimbare plan de bază) sunt intenționat decuplate.
+  test("grace period, period='1m' (implicit) — €14.90, 0% discount, flow:'grace-period-upgrade'", async () => {
     pool.query.mockResolvedValueOnce({
       rows: [{ stripe_subscription_id: "sub_123", downgrade_scheduled: true }],
     });
@@ -93,6 +95,7 @@ describe("createCheckoutSession", () => {
           userId: "1",
           flow: "grace-period-upgrade",
           interval: "month",
+          months: "1",
         }),
         line_items: [
           expect.objectContaining({
@@ -100,6 +103,9 @@ describe("createCheckoutSession", () => {
             price_data: expect.objectContaining({
               currency: "eur",
               unit_amount: 1490,
+              product_data: expect.objectContaining({
+                name: expect.stringMatching(/1 lună/),
+              }),
             }),
           }),
         ],
@@ -114,12 +120,152 @@ describe("createCheckoutSession", () => {
     });
   });
 
-  test("grace period, interval='year' ales din toggle — creează Checkout Session cu €143.04, indiferent de intervalul curent al abonamentului", async () => {
+  test("grace period, period='6m' — €80.46 (6×€14.90, 10% discount)", async () => {
     pool.query.mockResolvedValueOnce({
       rows: [{ stripe_subscription_id: "sub_456", downgrade_scheduled: true }],
     });
-    // Abonamentul curent e pe LUNAR — testează explicit că alegerea userului
-    // (Anual) câștigă, nu intervalul existent al abonamentului.
+    mockRetrieve.mockResolvedValueOnce({
+      items: { data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }] },
+    });
+    mockSessionsCreate.mockResolvedValueOnce({ url: "https://checkout.stripe.com/s_6m" });
+
+    const req = { user: { id: 1 }, body: { period: "6m" } };
+    const res = mockRes();
+
+    await stripeController.createCheckoutSession(req, res);
+
+    expect(mockSessionsCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({ months: "6" }),
+        line_items: [
+          expect.objectContaining({
+            price_data: expect.objectContaining({
+              unit_amount: 8046,
+              product_data: expect.objectContaining({ name: expect.stringMatching(/6 luni/) }),
+            }),
+          }),
+        ],
+      }),
+    );
+  });
+
+  test("grace period, period='1y' — €143.04 (20% discount), INDIFERENT de interval='month' ales pe toggle", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_subscription_id: "sub_789", downgrade_scheduled: true }],
+    });
+    mockRetrieve.mockResolvedValueOnce({
+      items: { data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }] },
+    });
+    mockSessionsCreate.mockResolvedValueOnce({ url: "https://checkout.stripe.com/s_1y" });
+
+    // interval='month' (toggle pe Lunar) + period='1y' — testează explicit
+    // decuplarea: alegerea de interval NU trebuie să schimbe suma facturată.
+    const req = { user: { id: 1 }, body: { interval: "month", period: "1y" } };
+    const res = mockRes();
+
+    await stripeController.createCheckoutSession(req, res);
+
+    expect(mockSessionsCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({ interval: "month", months: "12" }),
+        line_items: [
+          expect.objectContaining({
+            price_data: expect.objectContaining({
+              unit_amount: 14304,
+              product_data: expect.objectContaining({ name: expect.stringMatching(/1 an/) }),
+            }),
+          }),
+        ],
+      }),
+    );
+  });
+
+  test("grace period, period='3y' — €375.48 (30% discount)", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_subscription_id: "sub_3y", downgrade_scheduled: true }],
+    });
+    mockRetrieve.mockResolvedValueOnce({
+      items: { data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }] },
+    });
+    mockSessionsCreate.mockResolvedValueOnce({ url: "https://checkout.stripe.com/s_3y" });
+
+    const req = { user: { id: 1 }, body: { period: "3y" } };
+    const res = mockRes();
+
+    await stripeController.createCheckoutSession(req, res);
+
+    expect(mockSessionsCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({ months: "36" }),
+        line_items: [
+          expect.objectContaining({
+            price_data: expect.objectContaining({
+              unit_amount: 37548,
+              product_data: expect.objectContaining({ name: expect.stringMatching(/3 ani/) }),
+            }),
+          }),
+        ],
+      }),
+    );
+  });
+
+  test("grace period, period='5y' — €536.40 (40% discount)", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_subscription_id: "sub_5y", downgrade_scheduled: true }],
+    });
+    mockRetrieve.mockResolvedValueOnce({
+      items: { data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }] },
+    });
+    mockSessionsCreate.mockResolvedValueOnce({ url: "https://checkout.stripe.com/s_5y" });
+
+    const req = { user: { id: 1 }, body: { period: "5y" } };
+    const res = mockRes();
+
+    await stripeController.createCheckoutSession(req, res);
+
+    expect(mockSessionsCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({ months: "60" }),
+        line_items: [
+          expect.objectContaining({
+            price_data: expect.objectContaining({
+              unit_amount: 53640,
+              product_data: expect.objectContaining({ name: expect.stringMatching(/5 ani/) }),
+            }),
+          }),
+        ],
+      }),
+    );
+  });
+
+  test("grace period, period necunoscut ('foo') — cade sigur pe '1m' (€14.90), nu crapă", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_subscription_id: "sub_bad", downgrade_scheduled: true }],
+    });
+    mockRetrieve.mockResolvedValueOnce({
+      items: { data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }] },
+    });
+    mockSessionsCreate.mockResolvedValueOnce({ url: "https://checkout.stripe.com/s_fallback" });
+
+    const req = { user: { id: 1 }, body: { period: "foo" } };
+    const res = mockRes();
+
+    await stripeController.createCheckoutSession(req, res);
+
+    expect(mockSessionsCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({ months: "1" }),
+        line_items: [
+          expect.objectContaining({ price_data: expect.objectContaining({ unit_amount: 1490 }) }),
+        ],
+      }),
+    );
+  });
+
+  test("interval='year' ales pe toggle — schimbă metadata.interval, dar NU suma facturată (rămâne €14.90 la period='1m' implicit)", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_subscription_id: "sub_456", downgrade_scheduled: true }],
+    });
     mockRetrieve.mockResolvedValueOnce({
       items: {
         data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }],
@@ -136,10 +282,10 @@ describe("createCheckoutSession", () => {
 
     expect(mockSessionsCreate).toHaveBeenCalledWith(
       expect.objectContaining({
-        metadata: expect.objectContaining({ interval: "year" }),
+        metadata: expect.objectContaining({ interval: "year", months: "1" }),
         line_items: [
           expect.objectContaining({
-            price_data: expect.objectContaining({ unit_amount: 14304 }),
+            price_data: expect.objectContaining({ unit_amount: 1490 }),
           }),
         ],
       }),
@@ -913,11 +1059,15 @@ describe("renewNow", () => {
   // userul confirmă explicit pe pagina Stripe; calculul efectiv al noii date
   // se face abia în webhook, după plată confirmată (vezi describe-ul de mai jos).
   //
-  // Adaptiv la intervalul real al abonamentului (verificat live: userul pe
-  // Anual vedea tot €14.90/"1 lună" la reînnoire — nu avea sens; acum
-  // stripe.subscriptions.retrieve() citește intervalul real înainte de a crea
-  // sesiunea, exact ca la getSubscriptionStatus).
-  test("abonament lunar: creează o Checkout Session mode:'payment', €14.90 / 1 lună, fără proration, metadata flow:'renew-now'", async () => {
+  // Dropdown universal "Reînnoiește acum" (1 lună/6 luni/1 an/3 ani/5 ani,
+  // discount 0/10/20/30/40%) — suma NU mai e adaptivă la intervalul curent al
+  // abonamentului (comportamentul vechi, verificat live ieri, dar înlocuit azi
+  // explicit la cererea userului: dropdown-ul trebuie să fie universal,
+  // indiferent dacă abonamentul de bază e Monthly sau Annual). Prețul e mereu
+  // calculat din baza €14.90/lună × luni × (1 − discount) — vezi RENEWAL_PERIODS.
+  // stripe.subscriptions.retrieve rămâne apelat doar ca verificare de
+  // accesibilitate a abonamentului, nu mai determină prețul.
+  test("period='1m' (implicit, fără period în body) — €14.90, 0% discount, metadata flow:'renew-now', months:'1'", async () => {
     pool.query.mockResolvedValueOnce({
       rows: [{ stripe_subscription_id: "sub_123", downgrade_scheduled: false }],
     });
@@ -927,10 +1077,10 @@ describe("renewNow", () => {
       },
     });
     mockSessionsCreate.mockResolvedValueOnce({
-      url: "https://checkout.stripe.com/session_renew_now_monthly",
+      url: "https://checkout.stripe.com/session_renew_now_1m",
     });
 
-    const req = { user: { id: 1 } };
+    const req = { user: { id: 1 }, body: {} };
     const res = mockRes();
 
     await stripeController.renewNow(req, res);
@@ -940,7 +1090,7 @@ describe("renewNow", () => {
       expect.objectContaining({
         mode: "payment",
         client_reference_id: "1",
-        metadata: expect.objectContaining({ userId: "1", flow: "renew-now" }),
+        metadata: expect.objectContaining({ userId: "1", flow: "renew-now", months: "1" }),
         line_items: [
           expect.objectContaining({
             quantity: 1,
@@ -962,11 +1112,14 @@ describe("renewNow", () => {
 
     expect(res.json).toHaveBeenCalledWith({
       success: true,
-      url: "https://checkout.stripe.com/session_renew_now_monthly",
+      url: "https://checkout.stripe.com/session_renew_now_1m",
     });
   });
 
-  test("abonament anual: creează o Checkout Session cu €143.04 / 1 an, nu €14.90 / 1 lună", async () => {
+  // Testează explicit că, spre deosebire de comportamentul vechi, un
+  // abonament ANUAL primește tot prețul de bază lunar la period='1m' — nu mai
+  // există nicio adaptare la intervalul curent al abonamentului.
+  test("period='1m' pe abonament ANUAL — tot €14.90 (nu €143.04), prețul nu mai depinde de intervalul abonamentului", async () => {
     pool.query.mockResolvedValueOnce({
       rows: [{ stripe_subscription_id: "sub_456", downgrade_scheduled: false }],
     });
@@ -976,10 +1129,10 @@ describe("renewNow", () => {
       },
     });
     mockSessionsCreate.mockResolvedValueOnce({
-      url: "https://checkout.stripe.com/session_renew_now_yearly",
+      url: "https://checkout.stripe.com/session_renew_now_1m_yearly_sub",
     });
 
-    const req = { user: { id: 1 } };
+    const req = { user: { id: 1 }, body: { period: "1m" } };
     const res = mockRes();
 
     await stripeController.renewNow(req, res);
@@ -988,15 +1141,148 @@ describe("renewNow", () => {
       expect.objectContaining({
         line_items: [
           expect.objectContaining({
-            quantity: 1,
+            price_data: expect.objectContaining({ unit_amount: 1490 }),
+          }),
+        ],
+      }),
+    );
+  });
+
+  test("period='6m' — €80.46 (6×€14.90, 10% discount)", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_subscription_id: "sub_6m", downgrade_scheduled: false }],
+    });
+    mockRetrieve.mockResolvedValueOnce({
+      items: { data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }] },
+    });
+    mockSessionsCreate.mockResolvedValueOnce({ url: "https://checkout.stripe.com/rn_6m" });
+
+    const req = { user: { id: 1 }, body: { period: "6m" } };
+    const res = mockRes();
+
+    await stripeController.renewNow(req, res);
+
+    expect(mockSessionsCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({ months: "6" }),
+        line_items: [
+          expect.objectContaining({
             price_data: expect.objectContaining({
-              currency: "eur",
-              unit_amount: 14304,
-              product_data: expect.objectContaining({
-                name: expect.stringMatching(/1 an/),
-              }),
+              unit_amount: 8046,
+              product_data: expect.objectContaining({ name: expect.stringMatching(/6 luni/) }),
             }),
           }),
+        ],
+      }),
+    );
+  });
+
+  test("period='1y' — €143.04 (12×€14.90, 20% discount)", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_subscription_id: "sub_1y", downgrade_scheduled: false }],
+    });
+    mockRetrieve.mockResolvedValueOnce({
+      items: { data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }] },
+    });
+    mockSessionsCreate.mockResolvedValueOnce({ url: "https://checkout.stripe.com/rn_1y" });
+
+    const req = { user: { id: 1 }, body: { period: "1y" } };
+    const res = mockRes();
+
+    await stripeController.renewNow(req, res);
+
+    expect(mockSessionsCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({ months: "12" }),
+        line_items: [
+          expect.objectContaining({
+            price_data: expect.objectContaining({
+              unit_amount: 14304,
+              product_data: expect.objectContaining({ name: expect.stringMatching(/1 an/) }),
+            }),
+          }),
+        ],
+      }),
+    );
+  });
+
+  test("period='3y' — €375.48 (36×€14.90, 30% discount)", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_subscription_id: "sub_3y", downgrade_scheduled: false }],
+    });
+    mockRetrieve.mockResolvedValueOnce({
+      items: { data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }] },
+    });
+    mockSessionsCreate.mockResolvedValueOnce({ url: "https://checkout.stripe.com/rn_3y" });
+
+    const req = { user: { id: 1 }, body: { period: "3y" } };
+    const res = mockRes();
+
+    await stripeController.renewNow(req, res);
+
+    expect(mockSessionsCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({ months: "36" }),
+        line_items: [
+          expect.objectContaining({
+            price_data: expect.objectContaining({
+              unit_amount: 37548,
+              product_data: expect.objectContaining({ name: expect.stringMatching(/3 ani/) }),
+            }),
+          }),
+        ],
+      }),
+    );
+  });
+
+  test("period='5y' — €536.40 (60×€14.90, 40% discount)", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_subscription_id: "sub_5y", downgrade_scheduled: false }],
+    });
+    mockRetrieve.mockResolvedValueOnce({
+      items: { data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }] },
+    });
+    mockSessionsCreate.mockResolvedValueOnce({ url: "https://checkout.stripe.com/rn_5y" });
+
+    const req = { user: { id: 1 }, body: { period: "5y" } };
+    const res = mockRes();
+
+    await stripeController.renewNow(req, res);
+
+    expect(mockSessionsCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({ months: "60" }),
+        line_items: [
+          expect.objectContaining({
+            price_data: expect.objectContaining({
+              unit_amount: 53640,
+              product_data: expect.objectContaining({ name: expect.stringMatching(/5 ani/) }),
+            }),
+          }),
+        ],
+      }),
+    );
+  });
+
+  test("period necunoscut ('foo') — cade sigur pe '1m' (€14.90), nu crapă", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_subscription_id: "sub_bad", downgrade_scheduled: false }],
+    });
+    mockRetrieve.mockResolvedValueOnce({
+      items: { data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }] },
+    });
+    mockSessionsCreate.mockResolvedValueOnce({ url: "https://checkout.stripe.com/rn_fallback" });
+
+    const req = { user: { id: 1 }, body: { period: "foo" } };
+    const res = mockRes();
+
+    await stripeController.renewNow(req, res);
+
+    expect(mockSessionsCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({ months: "1" }),
+        line_items: [
+          expect.objectContaining({ price_data: expect.objectContaining({ unit_amount: 1490 }) }),
         ],
       }),
     );
@@ -1007,7 +1293,7 @@ describe("renewNow", () => {
       rows: [{ stripe_subscription_id: "sub_123", downgrade_scheduled: true }],
     });
 
-    const req = { user: { id: 1 } };
+    const req = { user: { id: 1 }, body: {} };
     const res = mockRes();
 
     await stripeController.renewNow(req, res);
@@ -1022,7 +1308,7 @@ describe("renewNow", () => {
       rows: [{ stripe_subscription_id: null, downgrade_scheduled: false }],
     });
 
-    const req = { user: { id: 1 } };
+    const req = { user: { id: 1 }, body: {} };
     const res = mockRes();
 
     await stripeController.renewNow(req, res);
@@ -1032,13 +1318,13 @@ describe("renewNow", () => {
     expect(res.status).toHaveBeenCalledWith(400);
   });
 
-  test("dacă determinarea intervalului real eșuează (eroare Stripe la retrieve), returnează 500 și nu creează nicio sesiune", async () => {
+  test("dacă verificarea abonamentului eșuează (eroare Stripe la retrieve), returnează 500 și nu creează nicio sesiune", async () => {
     pool.query.mockResolvedValueOnce({
       rows: [{ stripe_subscription_id: "sub_123", downgrade_scheduled: false }],
     });
     mockRetrieve.mockRejectedValueOnce(new Error("Stripe API is down"));
 
-    const req = { user: { id: 1 } };
+    const req = { user: { id: 1 }, body: {} };
     const res = mockRes();
 
     await stripeController.renewNow(req, res);
@@ -1062,7 +1348,7 @@ describe("renewNow", () => {
     });
     mockSessionsCreate.mockRejectedValueOnce(new Error("Stripe API is down"));
 
-    const req = { user: { id: 1 } };
+    const req = { user: { id: 1 }, body: {} };
     const res = mockRes();
 
     await stripeController.renewNow(req, res);
@@ -1089,13 +1375,13 @@ describe("handleWebhook — checkout.session.completed (flow: renew-now)", () =>
     jest.useRealTimers();
   });
 
-  test("calculează noul current_period_end = VECHIUL current_period_end + 1 lună (nu azi + 1 lună)", async () => {
+  test("months:'1' — noul current_period_end = VECHIUL current_period_end + 1 lună (nu azi + 1 lună)", async () => {
     mockConstructEvent.mockReturnValueOnce({
       type: "checkout.session.completed",
       data: {
         object: {
           client_reference_id: "1",
-          metadata: { userId: "1", flow: "renew-now" },
+          metadata: { userId: "1", flow: "renew-now", months: "1" },
         },
       },
     });
@@ -1140,13 +1426,18 @@ describe("handleWebhook — checkout.session.completed (flow: renew-now)", () =>
     expect(res.json).toHaveBeenCalledWith({ received: true });
   });
 
-  test("abonament anual: calculează noul current_period_end = vechiul + 1 AN (nu +1 lună) — găsit prin testare live pe un user real pe planul Anual", async () => {
+  // Universalitate: months:'12' pe un abonament LUNAR (nu anual) tot extinde
+  // cu 12 luni (1 an) — dovedește că extensia depinde STRICT de metadata.months
+  // (alegerea userului din dropdown), NU de intervalul curent al abonamentului
+  // Stripe. Comportamentul vechi (adaptiv la subscription.items.price.recurring)
+  // a fost înlocuit explicit azi, la cererea userului.
+  test("months:'12' pe abonament LUNAR — extinde tot cu 12 luni (1 an), indiferent de intervalul abonamentului", async () => {
     mockConstructEvent.mockReturnValueOnce({
       type: "checkout.session.completed",
       data: {
         object: {
           client_reference_id: "1",
-          metadata: { userId: "1", flow: "renew-now" },
+          metadata: { userId: "1", flow: "renew-now", months: "12" },
         },
       },
     });
@@ -1160,9 +1451,9 @@ describe("handleWebhook — checkout.session.completed (flow: renew-now)", () =>
       .mockResolvedValueOnce({ rows: [] });
 
     mockRetrieve.mockResolvedValueOnce({
-      current_period_end: Math.floor(new Date("2027-08-24T09:00:00.000Z").getTime() / 1000),
+      current_period_end: Math.floor(new Date("2026-09-20T09:00:00.000Z").getTime() / 1000),
       items: {
-        data: [{ price: { recurring: { interval: "year", interval_count: 1 } } }],
+        data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }],
       },
     });
 
@@ -1175,7 +1466,75 @@ describe("handleWebhook — checkout.session.completed (flow: renew-now)", () =>
     await stripeController.handleWebhook(req, res);
 
     const [, updateParams] = pool.query.mock.calls[1];
-    expect(updateParams[1].toISOString()).toBe("2028-08-24T09:00:00.000Z");
+    expect(updateParams[1].toISOString()).toBe("2027-09-20T09:00:00.000Z");
+  });
+
+  test("months:'36' (3 ani) — extinde corect peste mai mulți ani", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          client_reference_id: "1",
+          metadata: { userId: "1", flow: "renew-now", months: "36" },
+        },
+      },
+    });
+
+    pool.query
+      .mockResolvedValueOnce({
+        rows: [{ stripe_subscription_id: "sub_3y", renewal_extension_period_end: null }],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    mockRetrieve.mockResolvedValueOnce({
+      current_period_end: Math.floor(new Date("2026-09-20T09:00:00.000Z").getTime() / 1000),
+      items: { data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }] },
+    });
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    await stripeController.handleWebhook(req, res);
+
+    const [, updateParams] = pool.query.mock.calls[1];
+    expect(updateParams[1].toISOString()).toBe("2029-09-20T09:00:00.000Z");
+  });
+
+  test("fără metadata.months (sesiune veche, dinainte de dropdown) — cade sigur pe 1 lună", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          client_reference_id: "1",
+          metadata: { userId: "1", flow: "renew-now" },
+        },
+      },
+    });
+
+    pool.query
+      .mockResolvedValueOnce({
+        rows: [{ stripe_subscription_id: "sub_legacy", renewal_extension_period_end: null }],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    mockRetrieve.mockResolvedValueOnce({
+      current_period_end: Math.floor(new Date("2026-09-20T09:00:00.000Z").getTime() / 1000),
+      items: { data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }] },
+    });
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    await stripeController.handleWebhook(req, res);
+
+    const [, updateParams] = pool.query.mock.calls[1];
+    expect(updateParams[1].toISOString()).toBe("2026-10-20T09:00:00.000Z");
   });
 
   test("dacă există deja o extensie locală mai târzie decât data brută din Stripe, extensiile se cumulează (pornește de la extensia existentă, nu de la valoarea brută)", async () => {
@@ -1184,7 +1543,7 @@ describe("handleWebhook — checkout.session.completed (flow: renew-now)", () =>
       data: {
         object: {
           client_reference_id: "1",
-          metadata: { userId: "1", flow: "renew-now" },
+          metadata: { userId: "1", flow: "renew-now", months: "1" },
         },
       },
     });
@@ -1270,13 +1629,13 @@ describe("handleWebhook — checkout.session.completed (flow: grace-period-upgra
     jest.useRealTimers();
   });
 
-  test("calculează noul current_period_end = vechiul + 1 interval (nu azi), anulează downgrade-ul pe Stripe și restaurează plan='pro'", async () => {
+  test("calculează noul current_period_end = vechiul + 1 lună (months implicit), anulează downgrade-ul pe Stripe și restaurează plan='pro'", async () => {
     mockConstructEvent.mockReturnValueOnce({
       type: "checkout.session.completed",
       data: {
         object: {
           client_reference_id: "1",
-          metadata: { userId: "1", flow: "grace-period-upgrade" },
+          metadata: { userId: "1", flow: "grace-period-upgrade", months: "1" },
         },
       },
     });
@@ -1357,24 +1716,29 @@ describe("handleWebhook — checkout.session.completed (flow: grace-period-upgra
     consoleErrSpy.mockRestore();
   });
 
-  // Bug găsit live: userul selecta Anual pe toggle-ul din erp-plans.html,
+  // Bug găsit live ieri: userul selecta Anual pe toggle-ul din erp-plans.html,
   // dar reactivarea din grace period rămânea mereu pe intervalul VECHI al
-  // abonamentului (Lunar), ignorând complet alegerea — atât suma facturată
-  // (deja acoperit mai sus, în createCheckoutSession), cât și abonamentul
-  // Stripe însuși, care rămânea pe prețul lunar. Fix: metadata.interval
-  // (scris la crearea sesiunii, cu alegerea reală a userului) e citit aici;
-  // dacă diferă de intervalul curent al item-ului din abonament, schimbă și
-  // prețul abonamentului (același mecanism ca switchToYearly/switchToMonthly:
-  // proration_behavior:'none', fără taxare suplimentară — userul a plătit
-  // deja suma corectă prin Checkout Session-ul mode:'payment'), în ACELAȘI
-  // apel subscriptions.update care anulează downgrade-ul programat.
-  test("interval ales ('year') diferă de intervalul curent al abonamentului ('month') — schimbă și prețul abonamentului, calculează noua dată pe intervalul ales", async () => {
+  // abonamentului (Lunar), ignorând complet alegerea. Fix: metadata.interval
+  // (scris la crearea sesiunii) e citit aici; dacă diferă de intervalul
+  // curent al item-ului din abonament, schimbă și prețul abonamentului
+  // (același mecanism ca switchToYearly/switchToMonthly: proration_behavior:
+  // 'none', fără taxare suplimentară), în ACELAȘI apel subscriptions.update
+  // care anulează downgrade-ul programat.
+  //
+  // Decuplare deliberată, azi: `interval` decide DOAR dacă se schimbă prețul
+  // abonamentului de bază — NU mai influențează câte luni se extinde
+  // renewal_extension_period_end (asta vine STRICT din metadata.months,
+  // dropdown-ul cu 5 opțiuni, la fel ca la renew-now). Ieri cele două erau
+  // cuplate (alegerea de interval determina implicit "+1 unitate din acel
+  // interval"); azi sunt complet independente — vezi testul de combinare
+  // de mai jos, care le verifică pe amândouă simultan.
+  test("interval ales ('year') diferă de intervalul curent al abonamentului ('month') — schimbă și prețul abonamentului; data urmează STRICT months (implicit 1 lună), nu intervalul", async () => {
     mockConstructEvent.mockReturnValueOnce({
       type: "checkout.session.completed",
       data: {
         object: {
           client_reference_id: "1",
-          metadata: { userId: "1", flow: "grace-period-upgrade", interval: "year" },
+          metadata: { userId: "1", flow: "grace-period-upgrade", interval: "year", months: "1" },
         },
       },
     });
@@ -1415,10 +1779,53 @@ describe("handleWebhook — checkout.session.completed (flow: grace-period-upgra
     });
 
     const [, updateParams] = pool.query.mock.calls[1];
-    // Noua dată = vechiul current_period_end + 1 AN (intervalul ales), nu +1 lună.
-    expect(updateParams[1].toISOString()).toBe("2027-09-20T09:00:00.000Z");
+    // Doar +1 lună (months:'1'), NU +1 an — deși interval='year' a schimbat prețul abonamentului.
+    expect(updateParams[1].toISOString()).toBe("2026-10-20T09:00:00.000Z");
 
     expect(res.json).toHaveBeenCalledWith({ received: true });
+  });
+
+  test("interval='year' ȘI months='12' combinate — schimbă prețul abonamentului ȘI extinde cu 12 luni, cele două axe funcționează simultan", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          client_reference_id: "1",
+          metadata: { userId: "1", flow: "grace-period-upgrade", interval: "year", months: "12" },
+        },
+      },
+    });
+
+    pool.query
+      .mockResolvedValueOnce({
+        rows: [{ stripe_subscription_id: "sub_combo", renewal_extension_period_end: null }],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    mockRetrieve.mockResolvedValueOnce({
+      current_period_end: Math.floor(new Date("2026-09-20T09:00:00.000Z").getTime() / 1000),
+      items: {
+        data: [{ id: "si_combo", price: { recurring: { interval: "month", interval_count: 1 } } }],
+      },
+    });
+    mockUpdate.mockResolvedValueOnce({ id: "sub_combo" });
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    await stripeController.handleWebhook(req, res);
+
+    expect(mockUpdate).toHaveBeenCalledWith("sub_combo", {
+      cancel_at_period_end: false,
+      items: [{ id: "si_combo", price: "price_test_yearly" }],
+      proration_behavior: "none",
+    });
+
+    const [, updateParams] = pool.query.mock.calls[1];
+    expect(updateParams[1].toISOString()).toBe("2027-09-20T09:00:00.000Z");
   });
 
   test("interval ales ('month') coincide cu intervalul curent al abonamentului — NU trimite items/proration_behavior, doar anulează downgrade-ul", async () => {
@@ -1427,7 +1834,7 @@ describe("handleWebhook — checkout.session.completed (flow: grace-period-upgra
       data: {
         object: {
           client_reference_id: "1",
-          metadata: { userId: "1", flow: "grace-period-upgrade", interval: "month" },
+          metadata: { userId: "1", flow: "grace-period-upgrade", interval: "month", months: "1" },
         },
       },
     });
@@ -1469,7 +1876,46 @@ describe("handleWebhook — checkout.session.completed (flow: grace-period-upgra
     expect(updateParams[1].toISOString()).toBe("2026-10-20T09:00:00.000Z");
   });
 
-  test("metadata.interval lipsă (sesiune veche, dinainte de fix) — cade sigur pe intervalul curent al abonamentului, ca înainte", async () => {
+  test("metadata.months='6' fără schimbare de interval — extinde cu 6 luni (period='6m' din dropdown)", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          client_reference_id: "1",
+          metadata: { userId: "1", flow: "grace-period-upgrade", interval: "month", months: "6" },
+        },
+      },
+    });
+
+    pool.query
+      .mockResolvedValueOnce({
+        rows: [{ stripe_subscription_id: "sub_6m", renewal_extension_period_end: null }],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    mockRetrieve.mockResolvedValueOnce({
+      current_period_end: Math.floor(new Date("2026-09-20T09:00:00.000Z").getTime() / 1000),
+      items: {
+        data: [{ id: "si_6m", price: { recurring: { interval: "month", interval_count: 1 } } }],
+      },
+    });
+    mockUpdate.mockResolvedValueOnce({ id: "sub_6m" });
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    await stripeController.handleWebhook(req, res);
+
+    expect(mockUpdate).toHaveBeenCalledWith("sub_6m", { cancel_at_period_end: false });
+
+    const [, updateParams] = pool.query.mock.calls[1];
+    expect(updateParams[1].toISOString()).toBe("2027-03-20T09:00:00.000Z");
+  });
+
+  test("metadata.interval ȘI months lipsă (sesiune veche, dinainte de dropdown) — cade sigur pe intervalul curent al abonamentului, fără schimbare de preț", async () => {
     mockConstructEvent.mockReturnValueOnce({
       type: "checkout.session.completed",
       data: {
@@ -1514,6 +1960,7 @@ describe("handleWebhook — checkout.session.completed (flow: grace-period-upgra
     });
 
     const [, updateParams] = pool.query.mock.calls[1];
+    // Fără months, cade pe intervalul curent al abonamentului (aici 'year' din mock) — +1 an.
     expect(updateParams[1].toISOString()).toBe("2027-09-20T09:00:00.000Z");
   });
 });

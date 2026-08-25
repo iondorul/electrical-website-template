@@ -243,6 +243,92 @@
     text-align: center;
 }
 
+/* Carduri de selecție a perioadei în modalul "Reînnoiește acum"
+   (erp-plans.html + erp-upgrade.html, caz grace period) — pattern radio
+   ascuns + <label> stilizat, fără JS pentru starea vizuală de selecție.
+   Design deliberat sobru (cerință explicită a userului, respinsă inițial o
+   propunere cu <select> clasic): fără culori țipătoare, fără badge-uri,
+   border 1px pe toate rândurile (doar culoarea diferă pe cel selectat, nu
+   grosimea) — contrastul vine din spațiere, nu din elemente vizuale
+   agresive, conform principiului de design din CLAUDE.md. */
+/* Font Verdana aplicat explicit pe acest modal, la cererea userului — DELIBERAT
+   diferit de restul aplicației (Inter, din dashboard.css). Nu e o eroare, e o
+   excepție intenționată doar pentru #renewNowConfirmModal. Regula stă pe
+   rădăcina modalului (nu doar pe carduri), ca să cascadă și în titlu/butoane/
+   notă (butoanele .erp-plan-cta au font-family:inherit, deci preiau Verdana
+   automat, fără conflict de specificitate). */
+#renewNowConfirmModal {
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+.erp-renew-period-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.erp-renew-period-row {
+    display: block;
+    cursor: pointer;
+}
+
+.erp-renew-period-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.erp-renew-period-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--card-border, #e2e8f0);
+    border-radius: 10px;
+    background: #ffffff;
+    transition: border-color .15s ease;
+}
+
+.erp-renew-period-input:checked+.erp-renew-period-card {
+    border-color: #ff6b00;
+}
+
+.erp-renew-period-input:focus-visible+.erp-renew-period-card {
+    outline: 2px solid #ff6b00;
+    outline-offset: 2px;
+}
+
+.erp-renew-period-label {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: .92rem;
+}
+
+.erp-renew-period-best-tag {
+    display: block;
+    font-size: .72rem;
+    font-weight: 500;
+    color: #ff6b00;
+    margin-top: 2px;
+}
+
+.erp-renew-period-price {
+    text-align: right;
+    font-weight: 700;
+    color: #1e293b;
+    font-size: .95rem;
+    white-space: nowrap;
+}
+
+.erp-renew-period-discount {
+    display: block;
+    font-size: .72rem;
+    font-weight: 400;
+    color: #64748b;
+}
+
 .erp-plan-features {
     list-style: none;
     margin: 0;

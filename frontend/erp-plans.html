@@ -337,6 +337,85 @@
         </div>
     </div>
 
+    <!-- Modal "Reînnoiește acum" — dropdown universal cu 5 perioade de prepay
+         (1 lună/6 luni/1 an/3 ani/5 ani, discount 0/10/20/30/40%, vezi
+         backend/controllers/stripeController.js#RENEWAL_PERIODS). Carduri de
+         selecție (radio ascuns + label stilizat, vezi .erp-renew-period-*
+         din erp-plans.css), NU <select> clasic — cerință explicită de design:
+         toate cele 5 opțiuni vizibile simultan, fără elemente vizuale de
+         tip "sales page" (fără badge-uri, fără culori roșu/verde, fără
+         urgență falsă) — un singur buton de confirmare în footer, nu unul
+         per card. Prețurile sunt fixe/deterministe (nicio fereastră de
+         "acum" care poate drifta), deci sigur de afișat ca preview
+         client-side înainte de checkout — spre deosebire de mecanismul
+         proration/billing_cycle_anchor abandonat la switchToYearly/
+         switchToMonthly. -->
+    <div class="modal fade" id="renewNowConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i>Reînnoiește acum
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="erp-renew-period-options">
+                        <label class="erp-renew-period-row">
+                            <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="1m" checked>
+                            <span class="erp-renew-period-card">
+                                <span class="erp-renew-period-label">1 lună</span>
+                                <span class="erp-renew-period-price">€14.90</span>
+                            </span>
+                        </label>
+                        <label class="erp-renew-period-row">
+                            <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="6m">
+                            <span class="erp-renew-period-card">
+                                <span class="erp-renew-period-label">6 luni</span>
+                                <span class="erp-renew-period-price">€80.46<span
+                                        class="erp-renew-period-discount">-10%</span></span>
+                            </span>
+                        </label>
+                        <label class="erp-renew-period-row">
+                            <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="1y">
+                            <span class="erp-renew-period-card">
+                                <span class="erp-renew-period-label">1 an</span>
+                                <span class="erp-renew-period-price">€143.04<span
+                                        class="erp-renew-period-discount">-20%</span></span>
+                            </span>
+                        </label>
+                        <label class="erp-renew-period-row">
+                            <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="3y">
+                            <span class="erp-renew-period-card">
+                                <span class="erp-renew-period-label">3 ani</span>
+                                <span class="erp-renew-period-price">€375.48<span
+                                        class="erp-renew-period-discount">-30%</span></span>
+                            </span>
+                        </label>
+                        <label class="erp-renew-period-row">
+                            <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="5y">
+                            <span class="erp-renew-period-card">
+                                <span class="erp-renew-period-label">5 ani<span
+                                        class="erp-renew-period-best-tag">Cel mai avantajos</span></span>
+                                <span class="erp-renew-period-price">€536.40<span
+                                        class="erp-renew-period-discount">-40%</span></span>
+                            </span>
+                        </label>
+                    </div>
+                    <p class="mb-0 small text-muted mt-3" id="renewNowPeriodNote"></p>
+                    <div class="alert alert-danger d-none small mt-3 mb-0" id="renewNowModalError" role="alert"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="erp-plan-cta erp-plan-cta-outline"
+                        data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmRenewNow">
+                        Continuă la plată
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -355,6 +434,56 @@
                 month: "long",
                 year: "numeric",
             });
+        }
+
+        // Modal "Reînnoiește acum" — tabel oglindă al RENEWAL_PERIODS din
+        // backend/controllers/stripeController.js (doar pentru afișaj: prețul
+        // REAL, autoritar, e mereu calculat de resolveRenewalPeriod() pe
+        // server, la crearea sesiunii Checkout). "months" trebuie să rămână
+        // identic cu valorile din backend — dacă se schimbă acolo, schimbă și
+        // aici.
+        const RENEWAL_PERIODS_DISPLAY = {
+            "1m": { months: 1, label: "1 lună" },
+            "6m": { months: 6, label: "6 luni" },
+            "1y": { months: 12, label: "1 an" },
+            "3y": { months: 36, label: "3 ani" },
+            "5y": { months: 60, label: "5 ani" },
+        };
+
+        // Identic algoritmic cu ramura "month" din addBillingInterval()
+        // (backend/controllers/stripeController.js) — setUTCMonth cu un
+        // număr de luni, pe un Date UTC. Comportamentul JS Date la capăt de
+        // lună (ex. 31 ian + 1 lună → 3 martie) e ACELAȘI pe ambele părți,
+        // pentru că e același motor ECMAScript/aceeași metodă nativă, nu o
+        // reimplementare separată care ar putea diverge. Baza de pornire
+        // (realCurrentPeriodEnd) vine din /stripe/subscription-status, care
+        // deja aplică aceeași logică "efectivă" (max între extensia locală
+        // și data brută Stripe) ca și computeExtendedPeriodEnd() din backend
+        // — deci previzualizarea de aici și data reală scrisă de webhook
+        // după plată pornesc din exact aceeași bază și folosesc exact
+        // același calcul.
+        function addMonthsUTC(date, months) {
+            const result = new Date(date.getTime());
+            result.setUTCMonth(result.getUTCMonth() + months);
+            return result;
+        }
+
+        function getSelectedRenewPeriod() {
+            const checked = document.querySelector('input[name="renewPeriod"]:checked');
+            return checked ? checked.value : "1m";
+        }
+
+        function updateRenewNowPeriodNote() {
+            const noteEl = document.getElementById("renewNowPeriodNote");
+            if (!noteEl || !realCurrentPeriodEnd) return;
+            const period =
+                RENEWAL_PERIODS_DISPLAY[getSelectedRenewPeriod()] || RENEWAL_PERIODS_DISPLAY["1m"];
+            const newDate = formatPeriodEndDate(
+                addMonthsUTC(new Date(realCurrentPeriodEnd), period.months),
+            );
+            noteEl.textContent =
+                `Acces Pro activ până la ${formatPeriodEndDate(realCurrentPeriodEnd)}. ` +
+                `Se adaugă ${period.label} — noul acces se va întinde până la ${newDate}.`;
         }
 
         // Starea reală a abonamentului (din /stripe/subscription-status), reținută
@@ -415,16 +544,15 @@
                 return;
             }
 
-            // Fără modal — click-ul declanșează direct handleRenewNow(), care
-            // creează o Stripe Checkout Session și redirecționează userul
-            // acolo pentru confirmarea plății (singurul flux din pagina asta
-            // care mai taxează imediat — switch-yearly/switch-monthly nu mai
-            // taxează, vezi renderProCtaSlot mai sus). Vezi comentariul din
-            // stripeController.js#renewNow pentru de ce NU mai există un
-            // preview local înainte de asta.
+            // Deschide modalul cu cele 5 opțiuni de prepay (#renewNowConfirmModal)
+            // — declarativ, ca switch-yearly/switch-monthly, fără JS pe click-ul
+            // inițial. Confirmarea reală (POST /stripe/renew-now + redirect spre
+            // Stripe) se întâmplă din butonul #btnConfirmRenewNow, din interiorul
+            // modalului — vezi handleConfirmRenewNow mai jos.
             proCtaSlot.outerHTML =
                 '<button type="button" class="erp-plan-cta erp-plan-cta-outline" ' +
-                'data-action="renew-now" id="proPlanCtaSlot">Reînnoiește acum</button>';
+                'data-action="renew-now" id="proPlanCtaSlot" data-bs-toggle="modal" ' +
+                'data-bs-target="#renewNowConfirmModal">Reînnoiește acum</button>';
         }
 
         // Randare unică a #proPlanDateInfo — extrasă din erp:user-loaded (unde
@@ -649,19 +777,21 @@
             }
         }
 
-        // "Reînnoiește acum" — Stripe Checkout Session nouă (mode:'payment'),
-        // singurul flux de pe pagina asta care taxează imediat (spre deosebire
-        // de switch-yearly/switch-monthly, ambele doar programează, fără nicio
-        // taxare). Fără modal local, fără preview — userul confirmă plata
-        // direct pe pagina Stripe (SCA/3D Secure gestionat nativ acolo). Nu mai există stare
-        // de succes de tratat aici — pagina navighează către Stripe; la
-        // revenire (payment-success.html → erp-plans.html), webhook-ul deja
-        // a calculat și scris noua dată de expirare (vezi
-        // backend/controllers/stripeController.js#handleWebhook, flow:
-        // 'renew-now'), iar logica existentă din erp:user-loaded o afișează
-        // corect.
-        async function handleRenewNow(btn) {
-            const errorEl = document.getElementById("proCtaError");
+        // "Reînnoiește acum" — modal cu 5 opțiuni de prepay, apoi Stripe
+        // Checkout Session nouă (mode:'payment'), singurul flux de pe pagina
+        // asta care taxează imediat (spre deosebire de switch-yearly/
+        // switch-monthly, ambele doar programează, fără nicio taxare). Fără
+        // preview server-side — prețurile sunt fixe/deterministe (vezi
+        // RENEWAL_PERIODS_DISPLAY mai sus), userul confirmă suma exactă în
+        // modal, apoi plata pe pagina Stripe (SCA/3D Secure gestionat nativ
+        // acolo). Nu mai există stare de succes de tratat aici — pagina
+        // navighează către Stripe; la revenire (payment-success.html →
+        // erp-plans.html), webhook-ul deja a calculat și scris noua dată de
+        // expirare (vezi backend/controllers/stripeController.js#handleWebhook,
+        // flow: 'renew-now'), iar logica existentă din erp:user-loaded o
+        // afișează corect.
+        async function handleConfirmRenewNow(btn) {
+            const errorEl = document.getElementById("renewNowModalError");
             if (errorEl) {
                 errorEl.classList.add("d-none");
                 errorEl.textContent = "";
@@ -672,7 +802,8 @@
             btn.textContent = "Se pregătește plata...";
 
             try {
-                const response = await API.post("/stripe/renew-now", {});
+                const period = getSelectedRenewPeriod();
+                const response = await API.post("/stripe/renew-now", { period });
                 if (!response || !response.url) {
                     throw new Error(
                         (response && response.error) ||
@@ -694,10 +825,24 @@
             }
         }
 
+        // Notă dinamică a modalului: populată la fiecare deschidere (selecția
+        // implicită "1m" e deja bifată în HTML) și la fiecare schimbare de
+        // opțiune — delegat pe document, ca și restul listener-elor din fișier.
+        const renewNowModalEl = document.getElementById("renewNowConfirmModal");
+        if (renewNowModalEl) {
+            renewNowModalEl.addEventListener("show.bs.modal", updateRenewNowPeriodNote);
+        }
+        document.addEventListener("change", (e) => {
+            if (e.target && e.target.name === "renewPeriod") {
+                updateRenewNowPeriodNote();
+            }
+        });
+
         // Delegare pe document — butoanele "Downgrade la Free" / "Confirmă Downgrade" /
         // "Anulează downgrade-ul programat" / "Trece la plata anuală" / "Confirmă
-        // trecerea la lunar" sunt (re)create dinamic prin outerHTML, deci orice
-        // listener atașat direct pe elementul vechi s-ar pierde la fiecare swap.
+        // trecerea la lunar" / "Continuă la plată" (din modalul de reînnoire) sunt
+        // (re)create dinamic prin outerHTML, deci orice listener atașat direct pe
+        // elementul vechi s-ar pierde la fiecare swap.
         document.addEventListener("click", (e) => {
             const confirmBtn = e.target.closest("#btnConfirmDowngrade");
             if (confirmBtn) {
@@ -717,16 +862,9 @@
                 return;
             }
 
-            // Ramifică pe data-action, nu doar pe tag+interval — mai multe variante
-            // de buton pot avea id="proPlanCtaSlot" (switch-yearly/switch-monthly/
-            // renew-now), deci un simplu "tagName === BUTTON" ar fi ambiguu.
-            // switch-yearly și switch-monthly se bazează doar pe data-bs-toggle
-            // declarativ (fără JS aici, simetric — fără taxare imediată în
-            // niciuna din direcții); doar renew-now redirecționează direct spre
-            // Stripe Checkout, deci are nevoie de branch explicit.
-            const proCtaBtn = e.target.closest("#proPlanCtaSlot");
-            if (proCtaBtn && proCtaBtn.getAttribute("data-action") === "renew-now") {
-                handleRenewNow(proCtaBtn);
+            const confirmRenewNowBtn = e.target.closest("#btnConfirmRenewNow");
+            if (confirmRenewNowBtn) {
+                handleConfirmRenewNow(confirmRenewNowBtn);
             }
         });
 
