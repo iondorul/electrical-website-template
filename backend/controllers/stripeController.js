@@ -38,11 +38,14 @@ exports.createCheckoutSession = async (req, res) => {
       (userRes.rows[0] && userRes.rows[0].downgrade_scheduled) || false;
 
     if (subscriptionId && downgradeScheduled) {
-      // Doar verificare că abonamentul chiar există/e accesibil înainte de a
-      // crea o sesiune de plată — intervalul NU se mai citește de aici (vezi
-      // comentariul de mai sus).
+      // Verificare că abonamentul chiar există/e accesibil înainte de a crea o
+      // sesiune de plată — intervalul NU se mai citește de aici (vezi comentariul
+      // de mai sus). Rezultatul e păstrat pentru `.customer` (vezi imediat mai
+      // jos), ca sesiunea one-time să se atașeze clientului Stripe real, nu unui
+      // customer nou/inexistent.
+      let subscription;
       try {
-        await stripe.subscriptions.retrieve(subscriptionId);
+        subscription = await stripe.subscriptions.retrieve(subscriptionId);
       } catch (stripeErr) {
         console.error(
           `Eroare Stripe la verificarea abonamentului pentru reactivare (subscription_id=${subscriptionId}):`,
@@ -68,6 +71,8 @@ exports.createCheckoutSession = async (req, res) => {
       try {
         session = await stripe.checkout.sessions.create({
           mode: "payment",
+          customer: subscription.customer,
+          invoice_creation: { enabled: true },
           line_items: [
             {
               price_data: {
@@ -182,6 +187,67 @@ exports.getInvoiceForSession = async (req, res) => {
     res.status(500).json({
       success: false,
       error: err.message || "Nu s-a putut prelua factura.",
+    });
+  }
+};
+
+// Istoric complet de facturi Stripe (subscription-uri recurente ȘI plăți
+// one-time "Reînnoiește acum"/reactivare grace-period, ambele cu invoice_creation
+// activat — vezi createCheckoutSession/renewNow) — GET /stripe/invoices.
+// customerId vine STRICT din DB, cheiat pe req.user.id (JWT) — niciun ID
+// acceptat din client, deci userul nu poate cere niciodată facturile altcuiva.
+exports.getInvoices = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const userRes = await pool.query(
+      "SELECT stripe_customer_id, stripe_subscription_id FROM users WHERE id = $1",
+      [userId],
+    );
+    let customerId = userRes.rows[0] && userRes.rows[0].stripe_customer_id;
+
+    // Backfill pentru conturi cu plăți dinainte de migrarea 017
+    // (stripe_customer_id încă NULL, dar au un abonament din care putem deriva
+    // customerId real) — scris o singură dată, self-healing.
+    if (!customerId) {
+      const subscriptionId =
+        userRes.rows[0] && userRes.rows[0].stripe_subscription_id;
+      if (subscriptionId) {
+        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+        customerId = subscription.customer;
+        if (customerId) {
+          await pool.query(
+            "UPDATE users SET stripe_customer_id = $2 WHERE id = $1",
+            [userId, customerId],
+          );
+        }
+      }
+    }
+
+    if (!customerId) {
+      return res.json({ success: true, data: [] });
+    }
+
+    const invoices = await stripe.invoices.list({ customer: customerId, limit: 100 });
+    const data = invoices.data.map((inv) => ({
+      id: inv.id,
+      date: inv.created ? new Date(inv.created * 1000).toISOString() : null,
+      amount: inv.total,
+      currency: inv.currency,
+      description:
+        (inv.lines && inv.lines.data && inv.lines.data[0] && inv.lines.data[0].description) ||
+        inv.description ||
+        "Abonament ElectricalVPF Pro",
+      status: inv.status,
+      invoicePdf: inv.invoice_pdf,
+      hostedInvoiceUrl: inv.hosted_invoice_url,
+    }));
+
+    res.json({ success: true, data });
+  } catch (err) {
+    console.error("Eroare la preluarea istoricului de facturi:", err);
+    res.status(500).json({
+      success: false,
+      error: err.message || "Nu s-a putut prelua istoricul de facturi.",
     });
   }
 };
@@ -728,10 +794,13 @@ exports.renewNow = async (req, res) => {
       });
     }
 
-    // Doar verificare că abonamentul chiar există/e accesibil — prețul NU se
-    // mai determină de aici (vezi comentariul de mai sus).
+    // Verificare că abonamentul chiar există/e accesibil — prețul NU se mai
+    // determină de aici (vezi comentariul de mai sus). Rezultatul e păstrat
+    // pentru `.customer`, ca sesiunea one-time să se atașeze clientului Stripe
+    // real (altfel invoice_creation ar genera o factură neatașată userului).
+    let subscription;
     try {
-      await stripe.subscriptions.retrieve(subscriptionId);
+      subscription = await stripe.subscriptions.retrieve(subscriptionId);
     } catch (stripeErr) {
       console.error(
         `Eroare Stripe la verificarea abonamentului pentru reînnoire (subscription_id=${subscriptionId}):`,
@@ -755,6 +824,8 @@ exports.renewNow = async (req, res) => {
     try {
       session = await stripe.checkout.sessions.create({
         mode: "payment",
+        customer: subscription.customer,
+        invoice_creation: { enabled: true },
         line_items: [
           {
             price_data: {
@@ -820,6 +891,20 @@ exports.handleWebhook = async (req, res) => {
       const flow = session.metadata && session.metadata.flow;
 
       if (userId) {
+        // Capturare permanentă a Stripe Customer ID — necesară pentru GET
+        // /api/stripe/invoices (stripe.invoices.list cere un customer explicit).
+        // Comună tuturor celor 3 fluxuri (mode:'subscription' îl are deja nativ
+        // de la Stripe; renew-now/grace-period-upgrade îl au acum explicit,
+        // vezi customer: subscription.customer în createCheckoutSession/renewNow).
+        // NICIODATĂ golită de alt branch (spre deosebire de stripe_subscription_id
+        // la customer.subscription.deleted) — e istoric permanent, nu stare curentă.
+        if (session.customer) {
+          await pool.query(
+            "UPDATE users SET stripe_customer_id = $2 WHERE id = $1 AND stripe_customer_id IS DISTINCT FROM $2",
+            [userId, session.customer],
+          );
+        }
+
         if (flow === "renew-now") {
           // Reînnoire anticipată plătită — abonamentul Stripe existent NU e
           // atins (rămâne pe propriul ciclu automat). Calculăm noua dată

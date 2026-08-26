@@ -38,7 +38,7 @@
 
       <div class="settings-subblock">
         <div class="settings-subblock-title">Istoric Facturi Abonament</div>
-        <div class="settings-placeholder-box">
+        <div class="settings-placeholder-box" id="billingInvoiceHistory">
           <i class="fas fa-file-invoice fs-4 mb-2 d-block"></i>
           Nu există facturi de abonament emise încă.<br>
           Istoricul plăților va apărea aici.
@@ -76,7 +76,7 @@
 
       <div class="settings-subblock">
         <div class="settings-subblock-title">Istoric Facturi Abonament</div>
-        <div class="settings-placeholder-box">
+        <div class="settings-placeholder-box" id="billingInvoiceHistory">
           <i class="fas fa-file-invoice fs-4 mb-2 d-block"></i>
           Nu există facturi de abonament emise încă.<br>
           Istoricul plăților va apărea aici.
@@ -109,6 +109,61 @@
       }
 
       container.innerHTML = plan === "pro" ? templatePro() : templateFree();
+
+      // Istoric de facturi (subscription recurente + plăți one-time
+      // "Reînnoiește acum"/reactivare grace-period) — necondiționat de plan
+      // (un user redevenit Free poate avea istoric de dinainte de downgrade).
+      try {
+        const invResponse = await API.get("/stripe/invoices");
+        const invoices = invResponse && invResponse.data;
+        const historyEl = container.querySelector("#billingInvoiceHistory");
+        if (historyEl && invoices && invoices.length > 0) {
+          historyEl.outerHTML = invoices
+            .map((inv) => {
+              const dateLabel = inv.date
+                ? new Date(inv.date).toLocaleDateString("ro-RO", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })
+                : "Dată indisponibilă";
+              const amountLabel = `${(inv.amount / 100).toFixed(2)} ${String(
+                inv.currency || "",
+              ).toUpperCase()}`;
+              const isPaid = inv.status === "paid";
+              const statusLabel = isPaid ? "Plătită" : inv.status;
+              // hostedInvoiceUrl deschide pagina Stripe a facturii (vizualizare
+              // directă în browser) — invoicePdf trimite Content-Disposition:
+              // attachment de la Stripe, deci FORȚEAZĂ mereu descărcarea,
+              // indiferent de target="_blank" (headerul e al Stripe, nu-l putem
+              // suprascrie dintr-un simplu link). invoicePdf rămâne doar fallback,
+              // pentru cazul rar în care hostedInvoiceUrl lipsește.
+              const pdfUrl = inv.hostedInvoiceUrl || inv.invoicePdf;
+              const pdfLink = pdfUrl
+                ? `<a href="${pdfUrl}" target="_blank" rel="noopener" class="billing-invoice-pdf-link ms-3" title="Deschide factura"><i class="fas fa-file-pdf"></i></a>`
+                : "";
+              return `
+                <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                  <div>
+                    <div class="fw-semibold">${dateLabel}</div>
+                    <div class="text-muted small">${inv.description}</div>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <div class="text-end">
+                      <div class="fw-semibold">${amountLabel}</div>
+                      <div class="small ${isPaid ? "text-success" : "text-danger"}">${statusLabel}</div>
+                    </div>
+                    ${pdfLink}
+                  </div>
+                </div>
+              `;
+            })
+            .join("");
+        }
+        // Listă goală sau eroare — placeholder-ul static rămâne neschimbat.
+      } catch (err) {
+        console.error("Eroare la preluarea istoricului de facturi:", err);
+      }
 
       if (plan === "pro") {
         const renewalDateEl = container.querySelector("#billingRenewalDate");

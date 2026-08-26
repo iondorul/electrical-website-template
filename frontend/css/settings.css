@@ -203,6 +203,22 @@
   box-shadow: 0 4px 10px rgba(15, 23, 42, .08);
 }
 
+/* Iconiță PDF pe rândurile din Istoric Facturi Abonament — roșu recognizabil
+   (culoarea universală de PDF, nu un accent al aplicației), ca userul să
+   identifice instant acțiunea fără text. Deschide hostedInvoiceUrl (pagina
+   Stripe a facturii) într-un tab nou, nu descarcă direct. */
+.billing-invoice-pdf-link {
+  color: #dc2626;
+  font-size: 1.15rem;
+  line-height: 1;
+  transition: color .15s ease, transform .15s ease;
+}
+
+.billing-invoice-pdf-link:hover {
+  color: #b91c1c;
+  transform: scale(1.08);
+}
+
 .settings-danger-zone {
   border: 1px solid #f5c2c7;
   background: #fff5f5;

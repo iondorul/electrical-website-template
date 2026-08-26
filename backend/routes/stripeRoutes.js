@@ -15,6 +15,8 @@ router.get(
   stripeController.getInvoiceForSession,
 );
 
+router.get("/invoices", authMiddleware, stripeController.getInvoices);
+
 router.get(
   "/subscription-status",
   authMiddleware,

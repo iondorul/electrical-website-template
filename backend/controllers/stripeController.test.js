@@ -12,6 +12,7 @@ const mockUpdate = jest.fn();
 const mockRetrieve = jest.fn();
 const mockConstructEvent = jest.fn();
 const mockSessionsCreate = jest.fn();
+const mockInvoicesList = jest.fn();
 
 jest.mock("stripe", () => {
   return jest.fn(() => ({
@@ -23,6 +24,9 @@ jest.mock("stripe", () => {
       sessions: {
         create: mockSessionsCreate,
       },
+    },
+    invoices: {
+      list: mockInvoicesList,
     },
     webhooks: {
       constructEvent: mockConstructEvent,
@@ -73,6 +77,7 @@ describe("createCheckoutSession", () => {
       rows: [{ stripe_subscription_id: "sub_123", downgrade_scheduled: true }],
     });
     mockRetrieve.mockResolvedValueOnce({
+      customer: "cus_abc",
       items: {
         data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }],
       },
@@ -90,6 +95,8 @@ describe("createCheckoutSession", () => {
     expect(mockSessionsCreate).toHaveBeenCalledWith(
       expect.objectContaining({
         mode: "payment",
+        customer: "cus_abc",
+        invoice_creation: { enabled: true },
         client_reference_id: "1",
         metadata: expect.objectContaining({
           userId: "1",
@@ -686,6 +693,9 @@ describe("handleWebhook — customer.subscription.deleted", () => {
     expect(sql).toMatch(/downgrade_scheduled\s*=\s*false/i);
     expect(sql).toMatch(/payment_failed_at\s*=\s*null/i);
     expect(sql).toMatch(/renewal_extension_period_end\s*=\s*null/i);
+    // stripe_customer_id NU trebuie golit aici — e istoric permanent, spre
+    // deosebire de stripe_subscription_id (vezi migrarea 017).
+    expect(sql).not.toMatch(/stripe_customer_id/i);
     expect(params).toEqual(["sub_123"]);
     expect(res.json).toHaveBeenCalledWith({ received: true });
   });
@@ -742,6 +752,64 @@ describe("handleWebhook — checkout.session.completed", () => {
     expect(res.json).toHaveBeenCalledWith({ received: true });
 
     consoleErrSpy.mockRestore();
+  });
+
+  // Capturare permanentă stripe_customer_id — comună celor 3 fluxuri, necesară
+  // pentru GET /stripe/invoices (stripe.invoices.list cere un customer explicit).
+  test("session.customer prezent — scrie stripe_customer_id, într-un UPDATE separat de restul efectelor", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          client_reference_id: "1",
+          customer: "cus_abc",
+          subscription: "sub_new_456",
+        },
+      },
+    });
+
+    pool.query.mockResolvedValue({ rows: [] });
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    await stripeController.handleWebhook(req, res);
+
+    const customerUpdateCall = pool.query.mock.calls.find(([sql]) =>
+      /stripe_customer_id/i.test(sql),
+    );
+    expect(customerUpdateCall).toBeTruthy();
+    expect(customerUpdateCall[1]).toEqual(["1", "cus_abc"]);
+    expect(res.json).toHaveBeenCalledWith({ received: true });
+  });
+
+  test("session.customer absent — nu scrie stripe_customer_id (niciun query suplimentar în afară de efectul principal)", async () => {
+    mockConstructEvent.mockReturnValueOnce({
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          client_reference_id: "1",
+          subscription: "sub_new_456",
+        },
+      },
+    });
+
+    pool.query.mockResolvedValueOnce({ rows: [] });
+
+    const req = {
+      headers: { "stripe-signature": "sig" },
+      body: Buffer.from("{}"),
+    };
+    const res = mockRes();
+
+    await stripeController.handleWebhook(req, res);
+
+    expect(pool.query).toHaveBeenCalledTimes(1);
+    const [sql] = pool.query.mock.calls[0];
+    expect(sql).not.toMatch(/stripe_customer_id/i);
   });
 });
 
@@ -1072,6 +1140,7 @@ describe("renewNow", () => {
       rows: [{ stripe_subscription_id: "sub_123", downgrade_scheduled: false }],
     });
     mockRetrieve.mockResolvedValueOnce({
+      customer: "cus_abc",
       items: {
         data: [{ price: { recurring: { interval: "month", interval_count: 1 } } }],
       },
@@ -1089,6 +1158,8 @@ describe("renewNow", () => {
     expect(mockSessionsCreate).toHaveBeenCalledWith(
       expect.objectContaining({
         mode: "payment",
+        customer: "cus_abc",
+        invoice_creation: { enabled: true },
         client_reference_id: "1",
         metadata: expect.objectContaining({ userId: "1", flow: "renew-now", months: "1" }),
         line_items: [
@@ -1962,5 +2033,111 @@ describe("handleWebhook — checkout.session.completed (flow: grace-period-upgra
     const [, updateParams] = pool.query.mock.calls[1];
     // Fără months, cade pe intervalul curent al abonamentului (aici 'year' din mock) — +1 an.
     expect(updateParams[1].toISOString()).toBe("2027-09-20T09:00:00.000Z");
+  });
+});
+
+describe("getInvoices", () => {
+  test("stripe_customer_id deja în DB — apelează stripe.invoices.list cu acel customer, formatează toate câmpurile", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_customer_id: "cus_abc", stripe_subscription_id: "sub_123" }],
+    });
+    mockInvoicesList.mockResolvedValueOnce({
+      data: [
+        {
+          id: "in_1",
+          created: Math.floor(new Date("2026-08-20T10:00:00.000Z").getTime() / 1000),
+          total: 14304,
+          currency: "eur",
+          description: null,
+          lines: { data: [{ description: "1 × ElectricalVPF Pro (at €14.90 / month)" }] },
+          status: "paid",
+          invoice_pdf: "https://stripe.test/inv1.pdf",
+          hosted_invoice_url: "https://stripe.test/inv1",
+        },
+      ],
+    });
+
+    const req = { user: { id: 1 } };
+    const res = mockRes();
+
+    await stripeController.getInvoices(req, res);
+
+    expect(mockInvoicesList).toHaveBeenCalledWith({ customer: "cus_abc", limit: 100 });
+    expect(pool.query).toHaveBeenCalledTimes(1); // fără backfill — customerId deja în DB
+    expect(res.json).toHaveBeenCalledWith({
+      success: true,
+      data: [
+        {
+          id: "in_1",
+          date: "2026-08-20T10:00:00.000Z",
+          amount: 14304,
+          currency: "eur",
+          description: "1 × ElectricalVPF Pro (at €14.90 / month)",
+          status: "paid",
+          invoicePdf: "https://stripe.test/inv1.pdf",
+          hostedInvoiceUrl: "https://stripe.test/inv1",
+        },
+      ],
+    });
+  });
+
+  test("stripe_customer_id NULL, stripe_subscription_id NULL — răspunde cu listă goală, fără niciun apel Stripe", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_customer_id: null, stripe_subscription_id: null }],
+    });
+
+    const req = { user: { id: 1 } };
+    const res = mockRes();
+
+    await stripeController.getInvoices(req, res);
+
+    expect(mockRetrieve).not.toHaveBeenCalled();
+    expect(mockInvoicesList).not.toHaveBeenCalled();
+    expect(res.json).toHaveBeenCalledWith({ success: true, data: [] });
+  });
+
+  test("stripe_customer_id NULL, stripe_subscription_id prezent — backfill: derivă customerId din abonament, îl scrie în DB, apoi listează facturile", async () => {
+    pool.query
+      .mockResolvedValueOnce({
+        rows: [{ stripe_customer_id: null, stripe_subscription_id: "sub_123" }],
+      })
+      .mockResolvedValueOnce({ rows: [] }); // UPDATE backfill
+
+    mockRetrieve.mockResolvedValueOnce({ customer: "cus_derived" });
+    mockInvoicesList.mockResolvedValueOnce({ data: [] });
+
+    const req = { user: { id: 1 } };
+    const res = mockRes();
+
+    await stripeController.getInvoices(req, res);
+
+    expect(mockRetrieve).toHaveBeenCalledWith("sub_123");
+    const updateCall = pool.query.mock.calls[1];
+    expect(updateCall[0]).toMatch(/stripe_customer_id/i);
+    expect(updateCall[1]).toEqual([1, "cus_derived"]);
+    expect(mockInvoicesList).toHaveBeenCalledWith({ customer: "cus_derived", limit: 100 });
+    expect(res.json).toHaveBeenCalledWith({ success: true, data: [] });
+  });
+
+  test("eroare Stripe la invoices.list — returnează 500", async () => {
+    pool.query.mockResolvedValueOnce({
+      rows: [{ stripe_customer_id: "cus_abc", stripe_subscription_id: "sub_123" }],
+    });
+    mockInvoicesList.mockRejectedValueOnce(new Error("Stripe indisponibil"));
+
+    const req = { user: { id: 1 } };
+    const res = mockRes();
+
+    const consoleErrSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    await stripeController.getInvoices(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({
+      success: false,
+      error: "Stripe indisponibil",
+    });
+
+    consoleErrSpy.mockRestore();
   });
 });
