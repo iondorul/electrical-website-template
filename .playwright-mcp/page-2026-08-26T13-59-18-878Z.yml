@@ -1,0 +1,98 @@
+- generic [ref=f135e2]:
+  - complementary [ref=f135e3]:
+    - generic [ref=f135e4]:
+      - generic [ref=f135e5]:
+        - generic [ref=f135e6]:
+          - generic [ref=f135e7]: 
+          - generic [ref=f135e8]:
+            - text: Electrical
+            - strong [ref=f135e9]: VPF
+        - link " PRO PLAN" [ref=f135e10] [cursor=pointer]:
+          - /url: settings.html#billing
+          - generic [ref=f135e183]: 
+          - generic [ref=f135e184]: PRO PLAN
+      - button "" [ref=f135e13] [cursor=pointer]
+    - navigation [ref=f135e15]:
+      - list [ref=f135e16]:
+        - listitem [ref=f135e17]:
+          - link " Dashboard" [ref=f135e18] [cursor=pointer]:
+            - /url: dashboard.html
+            - generic [ref=f135e19]: 
+            - generic [ref=f135e20]: Dashboard
+        - listitem [ref=f135e21]:
+          - link " Clienți" [ref=f135e185] [cursor=pointer]:
+            - /url: clients.html
+            - generic [ref=f135e23]: 
+            - generic [ref=f135e24]: Clienți
+        - listitem [ref=f135e25]:
+          - link " Proiecte" [ref=f135e186] [cursor=pointer]:
+            - /url: projects.html
+            - generic [ref=f135e27]: 
+            - generic [ref=f135e28]: Proiecte
+        - listitem [ref=f135e29]:
+          - link " Estimări" [ref=f135e187] [cursor=pointer]:
+            - /url: estimating.html
+            - generic [ref=f135e31]: 
+            - generic [ref=f135e32]: Estimări
+        - listitem [ref=f135e33]:
+          - link " Oferte" [ref=f135e188] [cursor=pointer]:
+            - /url: quotes.html
+            - generic [ref=f135e35]: 
+            - generic [ref=f135e36]: Oferte
+        - listitem [ref=f135e37]:
+          - link " Facturi" [ref=f135e189] [cursor=pointer]:
+            - /url: invoices.html
+            - generic [ref=f135e39]: 
+            - generic [ref=f135e40]: Facturi
+        - listitem [ref=f135e41]:
+          - link " Materiale" [ref=f135e190] [cursor=pointer]:
+            - /url: materials.html
+            - generic [ref=f135e43]: 
+            - generic [ref=f135e44]: Materiale
+        - listitem [ref=f135e45]:
+          - link " Rapoarte" [ref=f135e191] [cursor=pointer]:
+            - /url: reports.html
+            - generic [ref=f135e47]: 
+            - generic [ref=f135e48]: Rapoarte
+        - listitem [ref=f135e49]:
+          - link " Setări" [ref=f135e192] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f135e51]: 
+            - generic [ref=f135e52]: Setări
+    - button " Logout" [ref=f135e54] [cursor=pointer]:
+      - generic [ref=f135e55]: 
+      - text: Logout
+  - main [ref=f135e56]:
+    - generic [ref=f135e58]:
+      - heading "Plată reușită" [level=4] [ref=f135e193]
+      - generic [ref=f135e61]:
+        - generic [ref=f135e62]:
+          - button "Română " [ref=f135e194] [cursor=pointer]:
+            - generic [ref=f135e200]: Română
+            - generic [ref=f135e201]: 
+          - text: 
+        - link "Setări" [ref=f135e202] [cursor=pointer]:
+          - /url: settings.html
+          - generic [ref=f135e74]: 
+        - button "Logout" [ref=f135e76] [cursor=pointer]:
+          - generic [ref=f135e77]: 
+        - generic [ref=f135e79]:
+          - generic [ref=f135e80]: cometa_2
+          - text: Administrator
+        - button "Schimbă avatarul" [ref=f135e203] [cursor=pointer]:
+          - img "Avatar electrician" [ref=f135e82]
+    - generic [ref=f135e92]:
+      - generic [ref=f135e93]: 
+      - generic [ref=f135e95]:
+        - generic [ref=f135e204]: 
+        - text: Plan Pro reactivat
+      - heading "Bine ai revenit pe planul Pro! 🎉" [level=1] [ref=f135e205]
+      - paragraph [ref=f135e98]: Your payment was processed successfully — the scheduled downgrade has been canceled, your Pro subscription is active until June 24, 2039.
+      - generic [ref=f135e99]:
+        - button " Factura indisponibilă" [disabled] [ref=f135e206]:
+          - generic [ref=f135e101]: 
+          - generic [ref=f135e102]: Factura indisponibilă
+        - link " Mergi la Dashboard" [ref=f135e207] [cursor=pointer]:
+          - /url: dashboard.html
+          - generic [ref=f135e104]: 
+          - generic [ref=f135e105]: Mergi la Dashboard

@@ -7,17 +7,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (btnDeleteAll) {
     btnDeleteAll.addEventListener("click", async () => {
       const confirmed = confirm(
-        "Sigur dorești să ștergi TOATE facturile? Această acțiune este ireversibilă!",
+        t("invoices.deleteAllConfirm", "Sigur dorești să ștergi TOATE facturile? Această acțiune este ireversibilă!"),
       );
       if (!confirmed) return;
 
       try {
         const response = await API.delete("/invoices");
         if (response && response.success) {
+          const msgOk = t("invoices.allDeleted", "Toate facturile au fost șterse cu succes.");
           if (typeof Toast !== "undefined") {
-            Toast.show("Toate facturile au fost șterse cu succes.", "success");
+            Toast.show(msgOk, "success");
           } else {
-            alert("Toate facturile au fost șterse cu succes.");
+            alert(msgOk);
           }
           currentPage = 1;
           loadInvoices();
@@ -25,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           const msg =
             response && response.message
               ? response.message
-              : "Nu s-au putut șterge facturile.";
+              : t("invoices.deleteAllFailed", "Nu s-au putut șterge facturile.");
           if (typeof Toast !== "undefined") {
             Toast.show(msg, "danger");
           } else {
@@ -35,9 +36,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       } catch (err) {
         console.error("Eroare la ștergerea totală a facturilor:", err);
         if (typeof Toast !== "undefined") {
-          Toast.show("Eroare de rețea la ștergerea facturilor.", "danger");
+          Toast.show(t("invoices.deleteAllNetworkError", "Eroare de rețea la ștergerea facturilor."), "danger");
         } else {
-          alert("Eroare de rețea.");
+          alert(t("common.networkError", "Eroare de rețea."));
         }
       }
     });
@@ -110,6 +111,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Încărcare inițială
   await loadInvoices();
 
+  // La schimbarea de limbă: re-randează cu datele curente — reutilizează
+  // fluxul existent, fără logică nouă.
+  document.addEventListener("erp:locale-changed", loadInvoices);
+
   // Căutare debounced
   if (searchInput) {
     searchInput.addEventListener(
@@ -131,10 +136,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  // Etichetă de status — statusul se afișa BRUT (inv.status.toUpperCase(),
+  // fără nicio traducere existentă), spre deosebire de projects.js.
+  // getStatusBadgeColor de mai jos rămâne neatinsă (culoare, nu text).
+  function getStatusLabel(status) {
+    const labels = {
+      draft: t("estimating.status.draft", "Ciornă (Draft)"),
+      issued: t("invoices.status.issued", "Emisă (Issued)"),
+      partially_paid: t("invoices.status.partially_paid", "Plătită Parțial"),
+      paid: t("invoices.status.paid", "Plătită (Paid)"),
+      overdue: t("invoices.status.overdue", "Restantă (Overdue)"),
+      canceled: t("quotes.status.canceled", "Anulată (Canceled)"),
+    };
+    return (labels[status] || status).toUpperCase();
+  }
+
   async function loadInvoices() {
     try {
       if (tableBody) {
-        tableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">Se încarcă facturile...</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">${t("invoices.loadingList", "Se încarcă facturile...")}</td></tr>`;
       }
 
       const queryParams = new URLSearchParams({
@@ -151,16 +171,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         renderPagination(response.pagination);
       } else {
         if (tableBody) {
-          tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">Nu s-au putut încărca facturile.</td></tr>`;
+          tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">${t("invoices.loadFailed", "Nu s-au putut încărca facturile.")}</td></tr>`;
         }
       }
     } catch (err) {
       console.error("Eroare la încărcare facturi:", err);
       if (typeof Toast !== "undefined") {
-        Toast.show("Eroare de rețea la încărcarea facturilor.", "danger");
+        Toast.show(t("invoices.networkLoadError", "Eroare de rețea la încărcarea facturilor."), "danger");
       }
       if (tableBody) {
-        tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">Eroare de rețea.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">${t("common.networkError", "Eroare de rețea.")}</td></tr>`;
       }
     }
   }
@@ -169,7 +189,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!tableBody) return;
 
     if (!invoices || invoices.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">Nu există facturi înregistrate.</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">${t("invoices.noInvoices", "Nu există facturi înregistrate.")}</td></tr>`;
       return;
     }
 
@@ -182,30 +202,30 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </td>
                 <td>
                     <span class="d-block fw-bold">${Utils.escapeHtml(inv.client_name || "-")}</span>
-                    <small class="text-muted">${Utils.escapeHtml(inv.project_name || "Fără proiect")}</small>
+                    <small class="text-muted">${Utils.escapeHtml(inv.project_name || t("estimating.noProject", "Fără proiect"))}</small>
                 </td>
                 <td>${Utils.formatDate ? Utils.formatDate(inv.issue_date) : inv.issue_date}</td>
                 <td>${Utils.formatDate ? Utils.formatDate(inv.due_date) : inv.due_date}</td>
                 <td>${Utils.formatCurrency(inv.total_net)}</td>
                 <td class="fw-bold">${Utils.formatCurrency(inv.total_gross)}</td>
-                <td><span class="badge bg-${getStatusBadgeColor(inv.status)}">${Utils.escapeHtml(inv.status.toUpperCase())}</span></td>
+                <td><span class="badge bg-${getStatusBadgeColor(inv.status)}">${Utils.escapeHtml(getStatusLabel(inv.status))}</span></td>
                 <td class="text-end pe-4">
-                    <button type="button" class="btn btn-sm btn-outline-info me-1 btn-view" data-id="${inv.id}" title="Vizualizare">
+                    <button type="button" class="btn btn-sm btn-outline-info me-1 btn-view" data-id="${inv.id}" title="${t("quotes.viewAction", "Vizualizare")}">
                         <i class="fas fa-eye"></i>
                     </button>
-                     <button type="button" class="btn btn-sm btn-outline-primary me-1 btn-edit" data-id="${inv.id}" title="Editare">
+                     <button type="button" class="btn btn-sm btn-outline-primary me-1 btn-edit" data-id="${inv.id}" title="${t("common.edit", "Editare")}">
                         <i class="fas fa-pen"></i>
                     </button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary me-1 btn-download-pdf" data-id="${inv.id}" title="Descarcă PDF">
+                    <button type="button" class="btn btn-sm btn-outline-secondary me-1 btn-download-pdf" data-id="${inv.id}" title="${t("invoices.downloadPdf", "Descarcă PDF")}">
                         <i class="fas fa-file-pdf"></i>
                     </button>
                     <button type="button" class="btn btn-sm btn-outline-success me-1 btn-send-email" data-id="${inv.id}"
-                        title="${inv.client_email ? "Trimite factura pe email" : "Clientul nu are email completat"}"
+                        title="${inv.client_email ? t("invoices.sendByEmailTitle", "Trimite factura pe email") : t("invoices.noClientEmail", "Clientul nu are email completat")}"
                         ${inv.client_email ? "" : "disabled"}>
                         <i class="fas fa-paper-plane"></i>
                     </button>
                     <button type="button" class="btn btn-sm btn-outline-warning btn-record-payment" data-id="${inv.id}"
-                        title="${inv.status === "canceled" || inv.status === "paid" ? "Nu se pot înregistra plăți" : "Înregistrează plată"}"
+                        title="${inv.status === "canceled" || inv.status === "paid" ? t("invoices.cannotRecordPayments", "Nu se pot înregistra plăți") : t("invoices.recordPaymentTitle", "Înregistrează plată")}"
                         ${inv.status === "canceled" || inv.status === "paid" ? "disabled" : ""}>
                         <i class="fas fa-money-bill-wave"></i>
                     </button>
@@ -240,7 +260,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await API.get(`/invoices/${id}`);
       if (!response || !response.success) {
-        Toast.show("Nu s-au putut prelua datele facturii.", "danger");
+        Toast.show(t("invoices.fetchFailed", "Nu s-au putut prelua datele facturii."), "danger");
         return;
       }
 
@@ -266,7 +286,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (paymentModalInstance) paymentModalInstance.show();
     } catch (err) {
       console.error("Eroare la deschiderea modalului de plată:", err);
-      Toast.show("Eroare de rețea la încărcarea facturii.", "danger");
+      Toast.show(t("invoices.loadNetworkError", "Eroare de rețea la încărcarea facturii."), "danger");
     }
   }
 
@@ -297,20 +317,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       const response = await API.post(`/invoices/${id}/payments`, payload);
       if (response && response.success) {
         Toast.show(
-          response.message || "Plata a fost înregistrată cu succes.",
+          response.message || t("invoices.paymentRecorded", "Plata a fost înregistrată cu succes."),
           "success",
         );
         if (paymentModalInstance) paymentModalInstance.hide();
         loadInvoices();
       } else {
         Toast.show(
-          (response && response.message) || "Nu s-a putut înregistra plata.",
+          (response && response.message) || t("invoices.paymentRecordFailed", "Nu s-a putut înregistra plata."),
           "danger",
         );
       }
     } catch (err) {
       console.error("Eroare la înregistrarea plății:", err);
-      Toast.show(err.message || "Eroare de rețea la înregistrare.", "danger");
+      Toast.show(err.message || t("invoices.recordNetworkError", "Eroare de rețea la înregistrare."), "danger");
     } finally {
       btn.disabled = false;
       btn.innerHTML = originalHtml;
@@ -326,7 +346,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
-        throw new Error(data.message || "Nu s-a putut genera PDF-ul.");
+        throw new Error(data.message || t("invoices.pdfGenerateFailed", "Nu s-a putut genera PDF-ul."));
       }
 
       const blob = await response.blob();
@@ -334,7 +354,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.open(url, "_blank");
     } catch (err) {
       console.error("Eroare la descărcarea PDF-ului:", err);
-      Toast.show(err.message || "Eroare la generarea PDF-ului.", "danger");
+      Toast.show(err.message || t("invoices.pdfError", "Eroare la generarea PDF-ului."), "danger");
     }
   }
 
@@ -344,7 +364,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await API.get(`/invoices/${id}`);
       if (!response || !response.success) {
-        Toast.show("Nu s-au putut prelua datele facturii.", "danger");
+        Toast.show(t("invoices.fetchFailed", "Nu s-au putut prelua datele facturii."), "danger");
         return;
       }
 
@@ -365,7 +385,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (sendEmailModalInstance) sendEmailModalInstance.show();
     } catch (err) {
       console.error("Eroare la deschiderea modalului de trimitere:", err);
-      Toast.show("Eroare de rețea la încărcarea facturii.", "danger");
+      Toast.show(t("invoices.loadNetworkError", "Eroare de rețea la încărcarea facturii."), "danger");
     }
   }
 
@@ -408,20 +428,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       const response = await API.post(`/invoices/${id}/send`, { email });
       if (response && response.success) {
         Toast.show(
-          response.message || "Factura a fost trimisă cu succes.",
+          response.message || t("invoices.sentSuccess", "Factura a fost trimisă cu succes."),
           "success",
         );
         if (sendEmailModalInstance) sendEmailModalInstance.hide();
         loadInvoices();
       } else {
         Toast.show(
-          (response && response.message) || "Nu s-a putut trimite factura.",
+          (response && response.message) || t("invoices.sendFailed", "Nu s-a putut trimite factura."),
           "danger",
         );
       }
     } catch (err) {
       console.error("Eroare la trimiterea facturii:", err);
-      Toast.show(err.message || "Eroare de rețea la trimitere.", "danger");
+      Toast.show(err.message || t("invoices.sendNetworkError", "Eroare de rețea la trimitere."), "danger");
     } finally {
       btnConfirmSendEmail.disabled = false;
       btnConfirmSendEmail.innerHTML = originalHtml;
@@ -437,8 +457,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       const response = await API.get(`/invoices/${id}`);
       if (response && response.success) {
         const inv = response.data;
-        document.getElementById("viewModalTitle").textContent =
-          `Detalii Factură: ${inv.invoice_number}`;
+        document.getElementById("viewModalTitle").textContent = t(
+          "invoices.invoiceDetailsWithNumber",
+          `Detalii Factură: ${inv.invoice_number}`,
+          { number: inv.invoice_number },
+        );
 
         let itemsHtml = "";
         if (inv.items && inv.items.length > 0) {
@@ -446,12 +469,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             <table class="table table-sm table-bordered mt-3 align-middle">
               <thead class="table-light">
                 <tr>
-                  <th>Categorie</th>
-                  <th>Descriere</th>
-                  <th>Cant.</th>
-                  <th>UM</th>
-                  <th>Preț U.</th>
-                  <th>Total</th>
+                  <th>${t("quotes.itemTable.category", "Categorie")}</th>
+                  <th>${t("estimating.itemTable.description", "Descriere")}</th>
+                  <th>${t("quotes.itemTable.qty", "Cant.")}</th>
+                  <th>${t("estimating.itemTable.unit", "UM")}</th>
+                  <th>${t("quotes.itemTable.unitPrice", "Preț U.")}</th>
+                  <th>${t("estimating.itemTable.total", "Total")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -476,44 +499,44 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         document.getElementById("viewModalBody").innerHTML = `
           <div class="row g-2 mb-3">
-            <div class="col-md-6"><strong>Client:</strong> ${Utils.escapeHtml(inv.client_name || "-")}</div>
-            <div class="col-md-6"><strong>Proiect:</strong> ${Utils.escapeHtml(inv.project_name || "-")}</div>
-            <div class="col-md-6"><strong>Data Emiterii:</strong> ${Utils.formatDate ? Utils.formatDate(inv.issue_date) : inv.issue_date}</div>
-            <div class="col-md-6"><strong>Scadență:</strong> ${Utils.formatDate ? Utils.formatDate(inv.due_date) : inv.due_date}</div>
+            <div class="col-md-6"><strong>${t("dashboard.table.client", "Client")}:</strong> ${Utils.escapeHtml(inv.client_name || "-")}</div>
+            <div class="col-md-6"><strong>${t("quotes.projectLabel", "Proiect")}:</strong> ${Utils.escapeHtml(inv.project_name || "-")}</div>
+            <div class="col-md-6"><strong>${t("quotes.table.issueDate", "Data Emiterii")}:</strong> ${Utils.formatDate ? Utils.formatDate(inv.issue_date) : inv.issue_date}</div>
+            <div class="col-md-6"><strong>${t("invoices.table.dueDate", "Scadență")}:</strong> ${Utils.formatDate ? Utils.formatDate(inv.due_date) : inv.due_date}</div>
           </div>
           <div class="card bg-light p-3 border-0 mb-2">
             <div class="d-flex justify-content-between mb-1">
-              <span>Subtotal Materials:</span>
+              <span>${t("quotes.subtotalMaterials", "Subtotal Materials")}:</span>
               <span>${Utils.formatCurrency(inv.subtotal_materials)}</span>
             </div>
             <div class="d-flex justify-content-between mb-1">
-              <span>Subtotal Labor:</span>
+              <span>${t("quotes.subtotalLabor", "Subtotal Labor")}:</span>
               <span>${Utils.formatCurrency(inv.subtotal_labor)}</span>
             </div>
             <div class="d-flex justify-content-between mb-1">
-              <span>Discount:</span>
+              <span>${t("quotes.discount", "Discount")}:</span>
               <span>${Utils.formatCurrency(inv.discount_amount)}</span>
             </div>
             <div class="d-flex justify-content-between mb-1">
-              <span>Total Net:</span>
+              <span>${t("quotes.table.totalNet", "Total Net")}:</span>
               <span>${Utils.formatCurrency(inv.total_net)}</span>
             </div>
             <div class="d-flex justify-content-between mb-1">
-              <span>TVA (${inv.vat_rate}%):</span>
+              <span>${t("quotes.vatWithRate", "TVA ({{rate}}%)", { rate: inv.vat_rate })}:</span>
               <span>${Utils.formatCurrency(inv.vat_amount)}</span>
             </div>
             <hr class="my-2">
             <div class="d-flex justify-content-between fs-5 fw-bold text-primary">
-              <span>TOTAL BRUT FACTURĂ:</span>
+              <span>${t("invoices.totalGrossInvoice", "TOTAL BRUT FACTURĂ:")}</span>
               <span>${Utils.formatCurrency(inv.total_gross)}</span>
             </div>
             <hr class="my-2">
             <div class="d-flex justify-content-between mb-1">
-              <span>Plătit:</span>
+              <span>${t("invoices.paidLabel", "Plătit")}:</span>
               <span class="text-success fw-bold">${Utils.formatCurrency(inv.paid_amount || 0)}</span>
             </div>
             <div class="d-flex justify-content-between">
-              <span>Rest de plată:</span>
+              <span>${t("invoices.remainingBalance", "Rest de plată")}:</span>
               <span class="text-danger fw-bold">${Utils.formatCurrency(Math.max((parseFloat(inv.total_gross) || 0) - (parseFloat(inv.paid_amount) || 0), 0))}</span>
             </div>
           </div>
@@ -524,10 +547,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           viewModalInstance.show();
         }
       } else {
-        Toast.show("Nu s-au putut prelua detaliile facturii.", "danger");
+        Toast.show(t("invoices.detailsFetchFailed", "Nu s-au putut prelua detaliile facturii."), "danger");
       }
     } catch (err) {
-      Toast.show("Eroare de rețea la încărcarea facturii.", "danger");
+      Toast.show(t("invoices.loadNetworkError", "Eroare de rețea la încărcarea facturii."), "danger");
     }
   }
 
@@ -550,11 +573,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (editModalInstance) editModalInstance.show();
       } else {
-        Toast.show("Nu s-au putut prelua datele facturii.", "danger");
+        Toast.show(t("invoices.fetchFailed", "Nu s-au putut prelua datele facturii."), "danger");
       }
     } catch (err) {
       console.error("Eroare la deschiderea editării:", err);
-      Toast.show("Eroare de rețea la încărcarea facturii.", "danger");
+      Toast.show(t("invoices.loadNetworkError", "Eroare de rețea la încărcarea facturii."), "danger");
     }
   }
 
@@ -572,19 +595,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await API.put(`/invoices/${id}`, payload);
       if (response && response.success) {
-        Toast.show("Factura a fost actualizată cu succes.", "success");
+        Toast.show(t("invoices.updated", "Factura a fost actualizată cu succes."), "success");
         if (editModalInstance) editModalInstance.hide();
         loadInvoices();
       } else {
         const msg =
           response && response.message
             ? response.message
-            : "Nu s-a putut actualiza factura.";
+            : t("invoices.updateFailed", "Nu s-a putut actualiza factura.");
         Toast.show(msg, "danger");
       }
     } catch (err) {
       console.error("Eroare la salvarea facturii:", err);
-      const msg = err.message || "Eroare de rețea la salvarea facturii.";
+      const msg = err.message || t("invoices.saveNetworkError", "Eroare de rețea la salvarea facturii.");
       Toast.show(msg, "danger");
     }
   }
@@ -602,7 +625,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     html += `
       <li class="page-item ${page === 1 ? "disabled" : ""}">
-        <button class="page-link" data-page="${page - 1}">Înapoi</button>
+        <button class="page-link" data-page="${page - 1}">${t("common.back", "Înapoi")}</button>
       </li>
     `;
 
@@ -616,7 +639,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     html += `
       <li class="page-item ${page === totalPages ? "disabled" : ""}">
-        <button class="page-link" data-page="${page + 1}">Înainte</button>
+        <button class="page-link" data-page="${page + 1}">${t("common.next", "Înainte")}</button>
       </li>
     `;
 

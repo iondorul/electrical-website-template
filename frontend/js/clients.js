@@ -34,6 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- INITIAL FETCH ---
   fetchClients();
 
+  // La schimbarea de limbă: re-randează cu aceleași date (pagină/căutare
+  // curentă) în limba nouă — reutilizează exact fluxul existent, fără logică
+  // nouă (același GET pe care orice altă acțiune din pagină îl declanșează deja).
+  document.addEventListener("erp:locale-changed", fetchClients);
+
   // --- SEARCH CU DEBOUNCE REUTILIZABIL DIN UTILS ---
   if (searchInput) {
     searchInput.addEventListener(
@@ -60,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderPagination(total);
     } catch (err) {
       Toast.show(
-        err.message || "Eroare la încărcarea listei de clienți.",
+        err.message || t("clients.loadError", "Eroare la încărcarea listei de clienți."),
         "danger",
       );
     } finally {
@@ -103,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const tr = document.createElement("tr");
 
       const displayName =
-        client.contact_person || client.company_name || "Fără Nume";
+        client.contact_person || client.company_name || t("clients.noName", "Fără Nume");
       const displayCompany = client.company_name || "-";
       const displayLocation = client.city || client.address || "-";
       const clientId = client.id;
@@ -122,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </td>
             <td>
                 <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
-                    Activ
+                    ${t("clients.active", "Activ")}
                 </span>
             </td>
             <td class="text-end pe-4">
@@ -174,7 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         clientModal.hide();
         Toast.show(
-          isEdit ? "Client actualizat cu succes!" : "Client adăugat cu succes!",
+          isEdit
+            ? t("clients.updated", "Client actualizat cu succes!")
+            : t("clients.created", "Client adăugat cu succes!"),
           "success",
         );
         fetchClients();
@@ -192,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         await API.delete(`/clients/${selectedClientId}`);
         deleteModal.hide();
-        Toast.show("Clientul a fost șters.", "warning");
+        Toast.show(t("clients.deleted", "Clientul a fost șters."), "warning");
         fetchClients();
       } catch (err) {
         Toast.show(err.message, "danger");
@@ -203,17 +210,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- VALIDARE FORMULAR ---
   function validateClientForm(data) {
     if (!data.contact_person || data.contact_person.length < 3) {
-      Toast.show("Numele trebuie să conțină cel puțin 3 caractere!", "danger");
+      Toast.show(t("clients.nameTooShort", "Numele trebuie să conțină cel puțin 3 caractere!"), "danger");
       return false;
     }
 
     if (!data.email || !Utils.isEmail(data.email)) {
-      Toast.show("Introduceți o adresă de email validă!", "danger");
+      Toast.show(t("clients.invalidEmail", "Introduceți o adresă de email validă!"), "danger");
       return false;
     }
 
     if (!data.phone || data.phone.length < 7) {
-      Toast.show("Introduceți un număr de telefon valid!", "danger");
+      Toast.show(t("clients.invalidPhone", "Introduceți un număr de telefon valid!"), "danger");
       return false;
     }
 
@@ -226,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
       clientForm.reset();
       inputId.value = "";
       document.getElementById("clientModalLabel").textContent =
-        "Adaugă Client Nou";
+        t("clients.addNew", "Adaugă Client Nou");
     });
   }
 
@@ -238,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inputPhone.value = client.phone || "";
     inputCity.value = client.city || client.address || "";
 
-    document.getElementById("clientModalLabel").textContent = "Editează Client";
+    document.getElementById("clientModalLabel").textContent = t("clients.editClient", "Editează Client");
     clientModal.show();
   }
 
@@ -258,7 +265,11 @@ document.addEventListener("DOMContentLoaded", () => {
       currentPage * CONFIG.DEFAULT_PAGE_LIMIT,
       totalItems,
     );
-    paginationInfo.textContent = `Afișare ${startItem} - ${endItem} din ${totalItems} clienți`;
+    paginationInfo.textContent = t(
+      "clients.paginationInfo",
+      `Afișare ${startItem} - ${endItem} din ${totalItems} clienți`,
+      { start: startItem, end: endItem, total: totalItems },
+    );
 
     if (totalPages <= 1) return;
 

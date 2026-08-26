@@ -1,0 +1,98 @@
+- generic [ref=f135e2]:
+  - complementary [ref=f135e3]:
+    - generic [ref=f135e4]:
+      - generic [ref=f135e5]:
+        - generic [ref=f135e6]:
+          - generic [ref=f135e7]: 
+          - generic [ref=f135e8]:
+            - text: Electrical
+            - strong [ref=f135e9]: VPF
+        - link " PRO PLAN" [ref=f135e10] [cursor=pointer]:
+          - /url: settings.html#billing
+          - generic [ref=f135e11]: 
+          - generic [ref=f135e12]: PRO PLAN
+      - button "" [ref=f135e13] [cursor=pointer]
+    - navigation [ref=f135e15]:
+      - list [ref=f135e16]:
+        - listitem [ref=f135e17]:
+          - link " Dashboard" [ref=f135e18] [cursor=pointer]:
+            - /url: dashboard.html
+            - generic [ref=f135e19]: 
+            - generic [ref=f135e20]: Dashboard
+        - listitem [ref=f135e21]:
+          - link " Clients" [ref=f135e22] [cursor=pointer]:
+            - /url: clients.html
+            - generic [ref=f135e23]: 
+            - generic [ref=f135e24]: Clients
+        - listitem [ref=f135e25]:
+          - link " Projects" [ref=f135e26] [cursor=pointer]:
+            - /url: projects.html
+            - generic [ref=f135e27]: 
+            - generic [ref=f135e28]: Projects
+        - listitem [ref=f135e29]:
+          - link " Estimating" [ref=f135e30] [cursor=pointer]:
+            - /url: estimating.html
+            - generic [ref=f135e31]: 
+            - generic [ref=f135e32]: Estimating
+        - listitem [ref=f135e33]:
+          - link " Quotes" [ref=f135e34] [cursor=pointer]:
+            - /url: quotes.html
+            - generic [ref=f135e35]: 
+            - generic [ref=f135e36]: Quotes
+        - listitem [ref=f135e37]:
+          - link " Invoices" [ref=f135e38] [cursor=pointer]:
+            - /url: invoices.html
+            - generic [ref=f135e39]: 
+            - generic [ref=f135e40]: Invoices
+        - listitem [ref=f135e41]:
+          - link " Materials" [ref=f135e42] [cursor=pointer]:
+            - /url: materials.html
+            - generic [ref=f135e43]: 
+            - generic [ref=f135e44]: Materials
+        - listitem [ref=f135e45]:
+          - link " Reports" [ref=f135e46] [cursor=pointer]:
+            - /url: reports.html
+            - generic [ref=f135e47]: 
+            - generic [ref=f135e48]: Reports
+        - listitem [ref=f135e49]:
+          - link " Settings" [ref=f135e50] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f135e51]: 
+            - generic [ref=f135e52]: Settings
+    - button " Logout" [ref=f135e54] [cursor=pointer]:
+      - generic [ref=f135e55]: 
+      - text: Logout
+  - main [ref=f135e56]:
+    - generic [ref=f135e58]:
+      - heading "Payment Successful" [level=4] [ref=f135e60]
+      - generic [ref=f135e61]:
+        - generic [ref=f135e62]:
+          - button "English " [ref=f135e63] [cursor=pointer]:
+            - generic [ref=f135e71]: English
+            - generic [ref=f135e72]: 
+          - text: 
+        - link "Settings" [ref=f135e73] [cursor=pointer]:
+          - /url: settings.html
+          - generic [ref=f135e74]: 
+        - button "Logout" [ref=f135e76] [cursor=pointer]:
+          - generic [ref=f135e77]: 
+        - generic [ref=f135e79]:
+          - generic [ref=f135e80]: cometa_2
+          - text: Administrator
+        - button "Change avatar" [ref=f135e81] [cursor=pointer]:
+          - img "Avatar electrician" [ref=f135e82]
+    - generic [ref=f135e92]:
+      - generic [ref=f135e93]: 
+      - generic [ref=f135e95]:
+        - generic [ref=f135e96]: 
+        - text: Pro plan reactivated
+      - heading "Welcome back to the Pro plan! 🎉" [level=1] [ref=f135e97]
+      - paragraph [ref=f135e98]: Plata a fost procesată cu succes. Ai acum acces complet la toate funcțiile ElectricalVPF ERP.
+      - generic [ref=f135e99]:
+        - button " Invoice unavailable" [disabled] [ref=f135e100]:
+          - generic [ref=f135e101]: 
+          - generic [ref=f135e102]: Invoice unavailable
+        - link " Go to Dashboard" [ref=f135e103] [cursor=pointer]:
+          - /url: dashboard.html
+          - generic [ref=f135e104]: 
+          - generic [ref=f135e105]: Go to Dashboard

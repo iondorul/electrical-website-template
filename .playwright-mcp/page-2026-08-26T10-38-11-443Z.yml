@@ -1,0 +1,110 @@
+- generic [active] [ref=f287e1]:
+  - generic [ref=f287e2]:
+    - complementary [ref=f287e3]:
+      - generic [ref=f287e4]:
+        - generic [ref=f287e6]:
+          - generic [ref=f287e7]: 
+          - generic [ref=f287e8]:
+            - text: Electrical
+            - strong [ref=f287e9]: VPF
+        - button "" [ref=f287e10] [cursor=pointer]
+      - navigation [ref=f287e12]:
+        - list [ref=f287e13]:
+          - listitem [ref=f287e14]:
+            - link " Dashboard" [ref=f287e15] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f287e16]: 
+              - generic [ref=f287e17]: Dashboard
+          - listitem [ref=f287e18]:
+            - link " Clients" [ref=f287e19] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f287e20]: 
+              - generic [ref=f287e21]: Clients
+          - listitem [ref=f287e22]:
+            - link " Projects" [ref=f287e23] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f287e24]: 
+              - generic [ref=f287e25]: Projects
+          - listitem [ref=f287e26]:
+            - link " Estimating" [ref=f287e27] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f287e28]: 
+              - generic [ref=f287e29]: Estimating
+          - listitem [ref=f287e30]:
+            - link " Quotes" [ref=f287e31] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f287e32]: 
+              - generic [ref=f287e33]: Quotes
+          - listitem [ref=f287e34]:
+            - link " Invoices" [ref=f287e35] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f287e36]: 
+              - generic [ref=f287e37]: Invoices
+          - listitem [ref=f287e38]:
+            - link " Materials" [ref=f287e39] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f287e40]: 
+              - generic [ref=f287e41]: Materials
+          - listitem [ref=f287e42]:
+            - link " Reports" [ref=f287e43] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f287e44]: 
+              - generic [ref=f287e45]: Reports
+          - listitem [ref=f287e46]:
+            - link " Settings" [ref=f287e47] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f287e48]: 
+              - generic [ref=f287e49]: Settings
+      - button " Logout" [ref=f287e51] [cursor=pointer]:
+        - generic [ref=f287e52]: 
+        - text: Logout
+    - main [ref=f287e53]:
+      - generic [ref=f287e55]:
+        - heading "Invoices Management" [level=4] [ref=f287e57]
+        - generic [ref=f287e58]:
+          - generic [ref=f287e59]:
+            - button "English " [ref=f287e60] [cursor=pointer]:
+              - generic [ref=f287e68]: English
+              - generic [ref=f287e69]: 
+            - text: 
+          - link "Settings" [ref=f287e70] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f287e71]: 
+          - button "Logout" [ref=f287e73] [cursor=pointer]:
+            - generic [ref=f287e74]: 
+          - generic [ref=f287e76]:
+            - generic [ref=f287e77]: "--"
+            - text: "--"
+          - button "Change avatar" [ref=f287e78] [cursor=pointer]:
+            - generic [ref=f287e79]: 
+      - generic [ref=f287e80]:
+        - generic [ref=f287e83]:
+          - generic [ref=f287e85]:
+            - generic [ref=f287e87]:
+              - generic [ref=f287e88]: 
+              - textbox "Search by invoice number, client or project..." [ref=f287e90]
+            - combobox [ref=f287e92]:
+              - option "Draft" [selected]
+              - option "Issued"
+              - option "Partially Paid"
+              - option "Paid"
+              - option "Overdue"
+              - option "Canceled"
+          - button " Delete All" [ref=f287e94] [cursor=pointer]:
+            - generic [ref=f287e95]: 
+            - generic [ref=f287e96]: Delete All
+        - table [ref=f287e100]:
+          - rowgroup [ref=f287e101]:
+            - row [ref=f287e102]:
+              - columnheader "Invoice Number" [ref=f287e103]
+              - columnheader "Client & Project" [ref=f287e104]
+              - columnheader "Issue Date" [ref=f287e105]
+              - columnheader "Due Date" [ref=f287e106]
+              - columnheader "Total Net" [ref=f287e107]
+              - columnheader "Total Gross" [ref=f287e108]
+              - columnheader "Status" [ref=f287e109]
+              - columnheader "Actions" [ref=f287e110]
+          - rowgroup [ref=f287e111]:
+            - row [ref=f287e112]:
+              - cell "Se încarcă facturile..." [ref=f287e113]
+  - text:   

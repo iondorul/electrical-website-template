@@ -16,7 +16,7 @@ const Utils = {
     );
   },
 
-  formatCurrency(amount, currency = "EUR", locale = "ro-RO") {
+  formatCurrency(amount, currency = "EUR", locale = typeof getCurrentLocaleCode === "function" ? getCurrentLocaleCode() : "ro-RO") {
     const numericAmount = Number(amount) || 0;
     return new Intl.NumberFormat(locale, {
       style: "currency",
@@ -25,7 +25,7 @@ const Utils = {
     }).format(numericAmount);
   },
 
-  formatDate(dateString, locale = "ro-RO") {
+  formatDate(dateString, locale = typeof getCurrentLocaleCode === "function" ? getCurrentLocaleCode() : "ro-RO") {
     if (!dateString) return "-";
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return "-";

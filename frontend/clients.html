@@ -21,7 +21,7 @@
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
 
-<body data-page-title="Clients Management">
+<body data-page-title="Clients Management" data-page-title-key="clients.pageTitle">
 
     <div class="erp-wrapper">
 
@@ -48,6 +48,7 @@
                                         <i class="fas fa-search"></i>
                                     </span>
                                     <input type="text" id="searchInput" class="form-control border-start-0 ps-0"
+                                        data-i18n-placeholder="clients.searchPlaceholder"
                                         placeholder="Căutare după nume, companie, email sau telefon...">
                                 </div>
                             </div>
@@ -56,7 +57,7 @@
                             <div class="col-12 col-md-auto text-end">
                                 <button class="btn btn-primary fw-semibold px-4" id="btnOpenAddModal"
                                     data-bs-toggle="modal" data-bs-target="#clientModal">
-                                    <i class="fas fa-plus-circle me-2"></i> Adaugă Client
+                                    <i class="fas fa-plus-circle me-2"></i> <span data-i18n="clients.addClient">Adaugă Client</span>
                                 </button>
                             </div>
                         </div>
@@ -70,11 +71,11 @@
                             <table class="table table-hover align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Nume / Companie</th>
-                                        <th>Contact (Email / Tel)</th>
-                                        <th>Oraș / Adresă</th>
-                                        <th>Status</th>
-                                        <th class="text-end pe-4">Acțiuni</th>
+                                        <th data-i18n="clients.table.nameCompany">Nume / Companie</th>
+                                        <th data-i18n="clients.table.contact">Contact (Email / Tel)</th>
+                                        <th data-i18n="clients.table.cityAddress">Oraș / Adresă</th>
+                                        <th data-i18n="common.status">Status</th>
+                                        <th class="text-end pe-4" data-i18n="common.actions">Acțiuni</th>
                                     </tr>
                                 </thead>
                                 <tbody id="clientsTableBody">
@@ -86,16 +87,16 @@
                         <!-- LOADING SPINNER STATE -->
                         <div id="tableSpinner" class="text-center py-5">
                             <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Se încarcă...</span>
+                                <span class="visually-hidden" data-i18n="common.loading">Se încarcă...</span>
                             </div>
-                            <p class="text-muted mt-2 mb-0">Se încarcă lista de clienți...</p>
+                            <p class="text-muted mt-2 mb-0" data-i18n="clients.loadingList">Se încarcă lista de clienți...</p>
                         </div>
 
                         <!-- EMPTY STATE -->
                         <div id="tableEmptyState" class="text-center py-5 d-none">
                             <i class="fas fa-users-slash fa-3x text-muted mb-3"></i>
-                            <h5 class="fw-semibold text-secondary">Nu s-a găsit niciun client</h5>
-                            <p class="text-muted mb-0">Încearcă alt termen de căutare sau adaugă un client nou.</p>
+                            <h5 class="fw-semibold text-secondary" data-i18n="clients.emptyTitle">Nu s-a găsit niciun client</h5>
+                            <p class="text-muted mb-0" data-i18n="clients.emptyDesc">Încearcă alt termen de căutare sau adaugă un client nou.</p>
                         </div>
                     </div>
 
@@ -122,44 +123,44 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="clientModalLabel">Adaugă Client Nou</h5>
+                    <h5 class="modal-title fw-bold" id="clientModalLabel" data-i18n="clients.addNew">Adaugă Client Nou</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="clientForm">
                     <div class="modal-body">
                         <input type="hidden" id="clientId">
                         <div class="mb-3">
-                            <label for="clientName" class="form-label fw-semibold">Nume complet / Persoană de contact
+                            <label for="clientName" class="form-label fw-semibold" data-i18n="clients.fullName">Nume complet / Persoană de contact
                                 *</label>
                             <input type="text" class="form-control" id="clientName" required
-                                placeholder="ex. Popescu Ion">
+                                data-i18n-placeholder="clients.fullNamePlaceholder" placeholder="ex. Popescu Ion">
                         </div>
                         <div class="mb-3">
-                            <label for="clientCompany" class="form-label fw-semibold">Denumire Companie
+                            <label for="clientCompany" class="form-label fw-semibold" data-i18n="clients.companyName">Denumire Companie
                                 (opțional)</label>
                             <input type="text" class="form-control" id="clientCompany"
-                                placeholder="ex. S.C. Electro-Tech S.R.L.">
+                                data-i18n-placeholder="clients.companyNamePlaceholder" placeholder="ex. S.C. Electro-Tech S.R.L.">
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-6">
-                                <label for="clientEmail" class="form-label fw-semibold">Email *</label>
+                                <label for="clientEmail" class="form-label fw-semibold" data-i18n="clients.emailRequired">Email *</label>
                                 <input type="email" class="form-control" id="clientEmail" required
-                                    placeholder="nume@domeniu.ro">
+                                    data-i18n-placeholder="clients.emailPlaceholder" placeholder="nume@domeniu.ro">
                             </div>
                             <div class="col-6">
-                                <label for="clientPhone" class="form-label fw-semibold">Telefon *</label>
+                                <label for="clientPhone" class="form-label fw-semibold" data-i18n="clients.phoneRequired">Telefon *</label>
                                 <input type="text" class="form-control" id="clientPhone" required
-                                    placeholder="07xxxxxxxx">
+                                    data-i18n-placeholder="clients.phonePlaceholder" placeholder="07xxxxxxxx">
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="clientCity" class="form-label fw-semibold">Oraș / Județ</label>
-                            <input type="text" class="form-control" id="clientCity" placeholder="ex. Sibiu, SB">
+                            <label for="clientCity" class="form-label fw-semibold" data-i18n="clients.cityCounty">Oraș / Județ</label>
+                            <input type="text" class="form-control" id="clientCity" data-i18n-placeholder="clients.cityCountyPlaceholder" placeholder="ex. Sibiu, SB">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Anulează</button>
-                        <button type="submit" class="btn btn-primary fw-semibold" id="btnSaveClient">Salvează
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
+                        <button type="submit" class="btn btn-primary fw-semibold" id="btnSaveClient" data-i18n="clients.saveClient">Salvează
                             Client</button>
                     </div>
                 </form>
@@ -173,12 +174,12 @@
             <div class="modal-content text-center p-3">
                 <div class="modal-body">
                     <i class="fas fa-exclamation-triangle text-danger fa-3x mb-3"></i>
-                    <h5 class="fw-bold mb-2">Ștergi acest client?</h5>
-                    <p class="text-muted small mb-0">Această acțiune nu poate fi anulată.</p>
+                    <h5 class="fw-bold mb-2" data-i18n="clients.deleteConfirmTitle">Ștergi acest client?</h5>
+                    <p class="text-muted small mb-0" data-i18n="common.actionCannotBeUndone">Această acțiune nu poate fi anulată.</p>
                 </div>
                 <div class="d-flex justify-content-center gap-2 mt-2">
-                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="btn btn-danger btn-sm px-3" id="btnConfirmDelete">Da, șterge</button>
+                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
+                    <button type="button" class="btn btn-danger btn-sm px-3" id="btnConfirmDelete" data-i18n="common.yesDelete">Da, șterge</button>
                 </div>
             </div>
         </div>
@@ -206,6 +207,7 @@
     <script src="js/utils.js"></script>
     <script src="js/toast.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/shell.js"></script>
 
     <!-- Module Specific JS -->

@@ -41,18 +41,25 @@ document.addEventListener("DOMContentLoaded", () => {
   loadClientsDropdown();
   fetchProjects();
 
+  // La schimbarea de limbă: re-randează cu datele curente (pagină/căutare),
+  // reutilizând exact fluxul existent — fără logică nouă.
+  document.addEventListener("erp:locale-changed", () => {
+    loadClientsDropdown();
+    fetchProjects();
+  });
+
   // --- LOAD CLIENTS DROPDOWN ---
   async function loadClientsDropdown() {
     try {
       const clients = await API.get("/clients");
-      inputClient.innerHTML = '<option value="">Selectează Client...</option>';
+      inputClient.innerHTML = `<option value="">${t("projects.selectClient", "Selectează Client...")}</option>`;
       clients.forEach((c) => {
         const name = Utils.escapeHtml(c.contact_person || c.company_name);
-        const company = Utils.escapeHtml(c.company_name || "Persoană Fizică");
+        const company = Utils.escapeHtml(c.company_name || t("projects.individualPerson", "Persoană Fizică"));
         inputClient.innerHTML += `<option value="${c.id}">${name} (${company})</option>`;
       });
     } catch (err) {
-      Toast.show(err.message || "Eroare la încărcarea clienților.", "danger");
+      Toast.show(err.message || t("projects.loadClientsError", "Eroare la încărcarea clienților."), "danger");
     }
   }
 
@@ -82,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderPagination(total);
     } catch (err) {
       Toast.show(
-        err.message || "Eroare la încărcarea listei de proiecte.",
+        err.message || t("projects.loadError", "Eroare la încărcarea listei de proiecte."),
         "danger",
       );
     } finally {
@@ -114,19 +121,19 @@ document.addEventListener("DOMContentLoaded", () => {
     tableEmptyState.classList.add("d-none");
 
     const statusBadges = {
-      draft: '<span class="badge bg-secondary">Draft</span>',
-      planned: '<span class="badge bg-info text-dark">Planificat</span>',
-      in_progress: '<span class="badge bg-warning text-dark">În Lucru</span>',
-      on_hold: '<span class="badge bg-dark">În Așteptare</span>',
-      completed: '<span class="badge bg-success">Finalizat</span>',
-      cancelled: '<span class="badge bg-danger">Anulat</span>',
+      draft: `<span class="badge bg-secondary">${t("projects.status.draft", "Draft")}</span>`,
+      planned: `<span class="badge bg-info text-dark">${t("projects.status.planned", "Planificat")}</span>`,
+      in_progress: `<span class="badge bg-warning text-dark">${t("projects.status.in_progress", "În Lucru")}</span>`,
+      on_hold: `<span class="badge bg-dark">${t("projects.status.on_hold", "În Așteptare")}</span>`,
+      completed: `<span class="badge bg-success">${t("projects.status.completed", "Finalizat")}</span>`,
+      cancelled: `<span class="badge bg-danger">${t("projects.status.cancelled", "Anulat")}</span>`,
     };
 
     filteredProjects.forEach((p) => {
       const tr = document.createElement("tr");
       const projectId = p.id;
       const formattedValue = parseFloat(p.estimated_value || 0).toLocaleString(
-        "ro-RO",
+        getCurrentLocaleCode(),
         { minimumFractionDigits: 2 },
       );
 
@@ -192,7 +199,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         projectModal.hide();
         Toast.show(
-          isEdit ? "Proiect actualizat cu succes!" : "Proiect creat cu succes!",
+          isEdit
+            ? t("projects.updated", "Proiect actualizat cu succes!")
+            : t("projects.created", "Proiect creat cu succes!"),
           "success",
         );
         fetchProjects();
@@ -210,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         await API.delete(`/projects/${selectedProjectId}`);
         deleteModal.hide();
-        Toast.show("Proiectul a fost arhivat cu succes.", "warning");
+        Toast.show(t("projects.archived", "Proiectul a fost arhivat cu succes."), "warning");
         fetchProjects();
       } catch (err) {
         Toast.show(err.message, "danger");
@@ -222,14 +231,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function validateProjectForm(data) {
     if (!data.project_name || data.project_name.length < 3) {
       Toast.show(
-        "Numele proiectului trebuie să conțină cel puțin 3 caractere!",
+        t("projects.nameTooShort", "Numele proiectului trebuie să conțină cel puțin 3 caractere!"),
         "danger",
       );
       return false;
     }
 
     if (!data.client_id || isNaN(data.client_id)) {
-      Toast.show("Vă rugăm să selectați un client valid!", "danger");
+      Toast.show(t("projects.invalidClient", "Vă rugăm să selectați un client valid!"), "danger");
       return false;
     }
 
@@ -242,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
       projectForm.reset();
       inputId.value = "";
       document.getElementById("projectModalLabel").textContent =
-        "Adaugă Proiect Nou";
+        t("projects.addNew", "Adaugă Proiect Nou");
 
       inputStartDate.value = "";
       inputEndDate.value = "";
@@ -269,7 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
       : "";
 
     document.getElementById("projectModalLabel").textContent =
-      "Editează Proiect";
+      t("projects.editProject", "Editează Proiect");
     projectModal.show();
   }
 
@@ -289,7 +298,11 @@ document.addEventListener("DOMContentLoaded", () => {
       currentPage * CONFIG.DEFAULT_PAGE_LIMIT,
       totalItems,
     );
-    paginationInfo.textContent = `Afișare ${startItem} - ${endItem} din ${totalItems} proiecte`;
+    paginationInfo.textContent = t(
+      "projects.paginationInfo",
+      `Afișare ${startItem} - ${endItem} din ${totalItems} proiecte`,
+      { start: startItem, end: endItem, total: totalItems },
+    );
 
     if (totalPages <= 1) return;
 

@@ -21,7 +21,7 @@
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
 
-<body data-page-title="Estimating Management">
+<body data-page-title="Estimating Management" data-page-title-key="estimating.pageTitle">
 
     <div class="erp-wrapper">
 
@@ -48,14 +48,14 @@
                                         <i class="fas fa-search"></i>
                                     </span>
                                     <input type="text" id="searchInput" class="form-control border-start-0 ps-0"
-                                        placeholder="Căutare după cod, titlu sau client...">
+                                        data-i18n-placeholder="estimating.searchPlaceholder" placeholder="Căutare după cod, titlu sau client...">
                                 </div>
                             </div>
 
                             <!-- Add Estimate Button -->
                             <div class="col-12 col-md-auto text-end">
                                 <button class="btn btn-primary fw-semibold px-4" id="btnOpenCreateModal">
-                                    <i class="fas fa-plus-circle me-2"></i> Adaugă Deviz
+                                    <i class="fas fa-plus-circle me-2"></i> <span data-i18n="estimating.addEstimate">Adaugă Deviz</span>
                                 </button>
                             </div>
                         </div>
@@ -69,17 +69,17 @@
                             <table class="table table-hover align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="ps-4">Cod / Titlu</th>
-                                        <th>Client & Proiect</th>
-                                        <th>Status</th>
-                                        <th>Total Ore</th>
-                                        <th>Valoare Est.</th>
-                                        <th class="text-end pe-4">Acțiuni</th>
+                                        <th class="ps-4" data-i18n="estimating.table.codeTitle">Cod / Titlu</th>
+                                        <th data-i18n="estimating.table.clientProject">Client & Proiect</th>
+                                        <th data-i18n="common.status">Status</th>
+                                        <th data-i18n="estimating.table.totalHours">Total Ore</th>
+                                        <th data-i18n="projects.table.estimatedValue">Valoare Est.</th>
+                                        <th class="text-end pe-4" data-i18n="common.actions">Acțiuni</th>
                                     </tr>
                                 </thead>
                                 <tbody id="estimatesTableBody">
                                     <tr>
-                                        <td colspan="6" class="text-center py-4 text-muted">Se încarcă devizele...</td>
+                                        <td colspan="6" class="text-center py-4 text-muted" data-i18n="estimating.loadingList">Se încarcă devizele...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -101,7 +101,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="modalTitle">Deviz Nou</h5>
+                    <h5 class="modal-title fw-bold" id="modalTitle" data-i18n="estimating.newEstimate">Deviz Nou</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -110,33 +110,33 @@
 
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold" for="estTitle">Titlu Deviz *</label>
+                                <label class="form-label fw-bold" for="estTitle" data-i18n="estimating.estimateTitle">Titlu Deviz *</label>
                                 <input type="text" id="estTitle" class="form-control"
-                                    placeholder="ex: Deviz Instalație Electrice Vila">
-                                <div class="invalid-feedback">Titlul devizului este obligatoriu.</div>
+                                    data-i18n-placeholder="estimating.estimateTitlePlaceholder" placeholder="ex: Deviz Instalație Electrice Vila">
+                                <div class="invalid-feedback" data-i18n="estimating.titleRequired">Titlul devizului este obligatoriu.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold" for="estClient">Client *</label>
+                                <label class="form-label fw-bold" for="estClient" data-i18n="projects.clientRequired">Client *</label>
                                 <select id="estClient" class="form-select">
-                                    <option value="">Selectează client...</option>
+                                    <option value="" data-i18n="estimating.selectClient">Selectează client...</option>
                                 </select>
-                                <div class="invalid-feedback">Selectarea clientului este obligatorie.</div>
+                                <div class="invalid-feedback" data-i18n="estimating.clientRequiredFeedback">Selectarea clientului este obligatorie.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold" for="estProject">Proiect (Opțional)</label>
+                                <label class="form-label fw-bold" for="estProject" data-i18n="estimating.projectOptional">Proiect (Opțional)</label>
                                 <select id="estProject" class="form-select">
-                                    <option value="">Fără proiect asociat</option>
+                                    <option value="" data-i18n="estimating.noAssociatedProject">Fără proiect asociat</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold" for="estStatus">Status</label>
+                                <label class="form-label fw-bold" for="estStatus" data-i18n="common.status">Status</label>
                                 <select id="estStatus" class="form-select">
-                                    <option value="draft">Ciornă (Draft)</option>
-                                    <option value="planned">Planificat</option>
-                                    <option value="in_progress">În Lucru</option>
-                                    <option value="on_hold">În Așteptare</option>
-                                    <option value="completed">Finalizat</option>
-                                    <option value="cancelled">Anulat</option>
+                                    <option value="draft" data-i18n="estimating.status.draft">Ciornă (Draft)</option>
+                                    <option value="planned" data-i18n="projects.status.planned">Planificat</option>
+                                    <option value="in_progress" data-i18n="projects.status.in_progress">În Lucru</option>
+                                    <option value="on_hold" data-i18n="projects.status.on_hold">În Așteptare</option>
+                                    <option value="completed" data-i18n="projects.status.completed">Finalizat</option>
+                                    <option value="cancelled" data-i18n="projects.status.cancelled">Anulat</option>
                                 </select>
                             </div>
                         </div>
@@ -145,9 +145,9 @@
 
                         <!-- LISTA DE LINII / ITEMS -->
                         <div class="d-flex align-items-center justify-content-between mb-2">
-                            <h6 class="fw-bold mb-0">Linii Deviz (Materiale / Manoperă)</h6>
+                            <h6 class="fw-bold mb-0" data-i18n="estimating.lineItems">Linii Deviz (Materiale / Manoperă)</h6>
                             <button type="button" class="btn btn-sm btn-outline-primary" id="btnAddItem">
-                                <i class="fas fa-plus me-1"></i> Adaugă Linie
+                                <i class="fas fa-plus me-1"></i> <span data-i18n="estimating.addLine">Adaugă Linie</span>
                             </button>
                         </div>
 
@@ -155,13 +155,13 @@
                             <table class="table table-sm table-bordered align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th style="width: 15%;">Tip</th>
-                                        <th style="width: 30%;">Descriere *</th>
-                                        <th style="width: 12%;">Cant. *</th>
-                                        <th style="width: 10%;">UM</th>
-                                        <th style="width: 13%;">Cost U. *</th>
-                                        <th style="width: 10%;">Adaos (%)</th>
-                                        <th style="width: 10%;">Total</th>
+                                        <th style="width: 15%;" data-i18n="estimating.itemTable.type">Tip</th>
+                                        <th style="width: 30%;" data-i18n="estimating.itemTable.description">Descriere *</th>
+                                        <th style="width: 12%;" data-i18n="estimating.itemTable.qty">Cant. *</th>
+                                        <th style="width: 10%;" data-i18n="estimating.itemTable.unit">UM</th>
+                                        <th style="width: 13%;" data-i18n="estimating.itemTable.unitCost">Cost U. *</th>
+                                        <th style="width: 10%;" data-i18n="estimating.itemTable.markup">Adaos (%)</th>
+                                        <th style="width: 10%;" data-i18n="estimating.itemTable.total">Total</th>
                                         <th style="width: 5%;"></th>
                                     </tr>
                                 </thead>
@@ -174,21 +174,21 @@
                         <!-- TOTALURI GENERALE -->
                         <div class="card bg-light border-0 p-3 mb-3">
                             <div class="d-flex justify-content-between align-items-center">
-                                <span class="fw-bold">TOTAL GENERAL DEVIZ:</span>
+                                <span class="fw-bold" data-i18n="estimating.grandTotal">TOTAL GENERAL DEVIZ:</span>
                                 <span class="fs-4 fw-bold text-primary" id="modalGrandTotal">0,00 EUR</span>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold" for="estNotes">Note / Observații</label>
+                            <label class="form-label fw-bold" for="estNotes" data-i18n="estimating.notes">Note / Observații</label>
                             <textarea id="estNotes" class="form-control" rows="2"
-                                placeholder="Mențiuni speciale pentru ofertare..."></textarea>
+                                data-i18n-placeholder="estimating.notesPlaceholder" placeholder="Mențiuni speciale pentru ofertare..."></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="btn btn-primary fw-semibold px-4" id="btnSaveEstimate">Salvează
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
+                    <button type="button" class="btn btn-primary fw-semibold px-4" id="btnSaveEstimate" data-i18n="estimating.saveEstimate">Salvează
                         Deviz</button>
                 </div>
             </div>
@@ -201,13 +201,13 @@
             <div class="modal-content text-center p-3">
                 <div class="modal-body">
                     <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
-                    <h5 class="fw-bold mb-2">Arhivezi devizul?</h5>
-                    <p class="text-muted small mb-0">Acțiunea va trece devizul în starea inactivă.</p>
+                    <h5 class="fw-bold mb-2" data-i18n="estimating.archiveConfirmTitle">Arhivezi devizul?</h5>
+                    <p class="text-muted small mb-0" data-i18n="estimating.archiveConfirmDesc">Acțiunea va trece devizul în starea inactivă.</p>
                     <input type="hidden" id="deleteEstimateId">
                 </div>
                 <div class="d-flex justify-content-center gap-2 mt-2">
-                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="btn btn-danger btn-sm px-3" id="btnConfirmDelete">Da,
+                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
+                    <button type="button" class="btn btn-danger btn-sm px-3" id="btnConfirmDelete" data-i18n="projects.yesArchive">Da,
                         arhivează</button>
                 </div>
             </div>
@@ -236,6 +236,7 @@
     <script src="js/utils.js"></script>
     <script src="js/toast.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/shell.js"></script>
 
     <!-- Module Specific JS -->

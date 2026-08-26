@@ -240,6 +240,77 @@ body {
     border-color: #fecaca;
 }
 
+/* Language Selector (header) — reutilizează .header-logout-btn ca bază
+   (pill, border, hover), doar conținutul intern (steag/nume/chevron) e nou.
+   Steagurile sunt SVG inline (vezi i18n.js) — emoji Unicode nu se randează
+   consistent ca iconițe de steag pe toate SO/browsere. */
+.lang-flag-icon {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 20px;
+    height: 14px;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.08);
+}
+
+.lang-flag-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.lang-switcher-caret {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    margin-left: 2px;
+}
+
+.lang-switcher-menu {
+    min-width: 200px;
+    padding: 6px;
+    border-radius: 10px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+}
+
+.lang-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #334155;
+    text-align: left;
+}
+
+.lang-option:hover {
+    background: #f1f5f9;
+}
+
+.lang-option.active {
+    background: #e8edff;
+    color: #3b5bfd;
+    font-weight: 600;
+}
+
+.lang-option-check {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: #3b5bfd;
+}
+
+@media (max-width: 576px) {
+    .lang-switcher-label {
+        display: none;
+    }
+}
+
 .header-settings-btn:hover {
     background-color: #fff7ed;
     color: #ff6b00;

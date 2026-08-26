@@ -5,21 +5,28 @@
     </div>
 
     <div class="header-user d-flex align-items-center">
+        <div class="dropdown lang-switcher me-2">
+            <button type="button" class="header-logout-btn lang-switcher-btn" id="langSwitcherBtn"
+                data-bs-toggle="dropdown" aria-expanded="false" data-i18n-title="header.language" title="Limbă / Language"></button>
+            <ul class="dropdown-menu lang-switcher-menu" id="langSwitcherMenu" aria-labelledby="langSwitcherBtn"></ul>
+        </div>
         <a href="settings.html" class="header-logout-btn header-settings-btn me-2" id="headerSettingsBtn"
-            title="Setări" aria-label="Setări" style="text-decoration: none;">
+            data-i18n-title="header.settings" data-i18n-aria-label="header.settings" title="Setări" aria-label="Setări" style="text-decoration: none;">
             <i class="fas fa-gear"></i>
-            <span>Setări</span>
+            <span data-i18n="header.settings">Setări</span>
         </a>
-        <button type="button" class="header-logout-btn me-3" id="headerLogoutBtn" title="Logout" aria-label="Logout">
+        <button type="button" class="header-logout-btn me-3" id="headerLogoutBtn"
+            data-i18n-title="header.logout" data-i18n-aria-label="header.logout" title="Logout" aria-label="Logout">
             <i class="fas fa-sign-out-alt"></i>
-            <span>Logout</span>
+            <span data-i18n="header.logout">Logout</span>
         </button>
         <div class="user-info text-end me-3">
             <span class="user-name d-block fw-bold" id="shellUserName">--</span>
             <small class="user-role text-muted" id="shellUserRole">--</small>
         </div>
         <button type="button" class="user-avatar" id="headerAvatarBtn" data-bs-toggle="modal"
-            data-bs-target="#avatarPickerModal" title="Schimbă avatarul" aria-label="Schimbă avatarul">
+            data-bs-target="#avatarPickerModal" data-i18n-title="header.changeAvatar" data-i18n-aria-label="header.changeAvatar"
+            title="Schimbă avatarul" aria-label="Schimbă avatarul">
             <i class="fas fa-user-shield"></i>
         </button>
     </div>
@@ -31,7 +38,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Alege avatarul</h5>
+                <h5 class="modal-title" data-i18n="header.chooseAvatar">Alege avatarul</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

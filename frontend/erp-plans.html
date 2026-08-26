@@ -24,7 +24,7 @@
     <link href="css/erp-plans.css" rel="stylesheet">
 </head>
 
-<body data-page-title="Planuri &amp; Abonament">
+<body data-page-title="Planuri &amp; Abonament" data-page-title-key="plans.pageTitle">
 
     <div class="erp-wrapper">
 
@@ -47,12 +47,13 @@
                     </span>
                     <div class="d-flex align-items-center justify-content-center gap-3 erp-plans-title-row">
                         <a href="settings.html#billing" class="erp-plans-back-icon" title="Înapoi la Abonament & Plăți"
-                            aria-label="Înapoi la Abonament & Plăți">
+                            aria-label="Înapoi la Abonament & Plăți" data-i18n-title="plans.backToBilling"
+                            data-i18n-aria-label="plans.backToBilling">
                             <i class="fas fa-arrow-left"></i>
                         </a>
-                        <h2 class="erp-plans-title">Planuri &amp; Abonament</h2>
+                        <h2 class="erp-plans-title" data-i18n="plans.title">Planuri &amp; Abonament</h2>
                     </div>
-                    <p class="erp-plans-subtitle">
+                    <p class="erp-plans-subtitle" data-i18n="plans.subtitle">
                         Alege planul potrivit pentru firma ta. Poți face upgrade oricând, fără angajament.
                     </p>
                 </div>
@@ -65,50 +66,51 @@
                             <div class="erp-plan-name">Free</div>
                             <div class="erp-plan-price">
                                 <span class="erp-plan-amount">€0</span>
-                                <span class="erp-plan-period">/lună</span>
+                                <span class="erp-plan-period" data-i18n="plans.free.period">/lună</span>
                             </div>
-                            <p class="erp-plan-desc">Pentru a testa ERP-ul cu volum redus de activitate.</p>
+                            <p class="erp-plan-desc" data-i18n="plans.free.desc">Pentru a testa ERP-ul cu volum redus de activitate.</p>
 
-                            <span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true" id="freePlanCta">Plan
+                            <span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true" id="freePlanCta"
+                                data-i18n="plans.free.currentPlan">Plan
                                 curent</span>
                             <div class="alert alert-danger d-none small py-2 px-3" id="freeCtaError" role="alert">
                             </div>
 
                             <ul class="erp-plan-features">
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>1 companie, 1 utilizator</span>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.free.features.companyUser">1 companie, 1 utilizator</span>
                                 </li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>2 clienți</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.free.features.clients2">2 clienți</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>2 proiecte active</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.free.features.projects2">2 proiecte active</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>5 estimări/lună</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.free.features.estimates5">5 estimări/lună</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>2 oferte/lună</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.free.features.quotes2">2 oferte/lună</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>1 raport/lună</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.free.features.reports1">1 raport/lună</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>CRM de bază</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.free.features.crmBasic">CRM de bază</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Proiecte de bază</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.free.features.projectsBasic">Proiecte de bază</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Materiale limitate</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.free.features.materialsLimited">Materiale limitate</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>PDF cu watermark
+                                            class="fas fa-check"></i></span><span data-i18n="plans.free.features.pdfWatermark">PDF cu watermark
                                         ElectricalVPF</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Istoric limitat</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.free.features.historyLimited">Istoric limitat</span></li>
                                 <li class="erp-feature excluded"><span class="erp-feature-icon"><i
-                                            class="fas fa-lock"></i></span><span>Facturare</span></li>
+                                            class="fas fa-lock"></i></span><span data-i18n="plans.free.features.invoicing">Facturare</span></li>
                                 <li class="erp-feature excluded"><span class="erp-feature-icon"><i
-                                            class="fas fa-lock"></i></span><span>Analytics avansat</span></li>
+                                            class="fas fa-lock"></i></span><span data-i18n="plans.free.features.analyticsAdvanced">Analytics avansat</span></li>
                                 <li class="erp-feature excluded"><span class="erp-feature-icon"><i
-                                            class="fas fa-lock"></i></span><span>Export date</span></li>
+                                            class="fas fa-lock"></i></span><span data-i18n="plans.free.features.exportData">Export date</span></li>
                                 <li class="erp-feature excluded"><span class="erp-feature-icon"><i
-                                            class="fas fa-lock"></i></span><span>Funcții AI</span></li>
+                                            class="fas fa-lock"></i></span><span data-i18n="plans.free.features.aiFeatures">Funcții AI</span></li>
                                 <li class="erp-feature excluded"><span class="erp-feature-icon"><i
-                                            class="fas fa-lock"></i></span><span>Automatizări</span></li>
+                                            class="fas fa-lock"></i></span><span data-i18n="plans.free.features.automations">Automatizări</span></li>
                             </ul>
                         </div>
                     </div>
@@ -116,72 +118,76 @@
                     <!-- PRO PLAN -->
                     <div class="col-lg-5 col-md-8">
                         <div class="erp-plan-card erp-plan-card-pro">
-                            <span class="erp-plan-badge">Recomandat</span>
+                            <span class="erp-plan-badge" data-i18n="plans.pro.badge">Recomandat</span>
                             <div class="erp-plan-name">Pro</div>
 
                             <div class="erp-billing-toggle" id="billingToggleContainer">
-                                <span class="erp-billing-toggle-label active" id="billingLabelMonthly">Lunar</span>
+                                <span class="erp-billing-toggle-label active" id="billingLabelMonthly"
+                                    data-i18n="plans.pro.billingToggle.monthly">Lunar</span>
                                 <button type="button" class="erp-billing-switch" id="billingIntervalSwitch"
                                     role="switch" aria-checked="false"
-                                    aria-label="Comută între facturare lunară și anuală">
+                                    aria-label="Comută între facturare lunară și anuală"
+                                    data-i18n-aria-label="plans.pro.billingToggle.ariaLabel">
                                     <span class="erp-billing-switch-thumb"></span>
                                 </button>
-                                <span class="erp-billing-toggle-label" id="billingLabelYearly">Anual</span>
+                                <span class="erp-billing-toggle-label" id="billingLabelYearly"
+                                    data-i18n="plans.pro.billingToggle.yearly">Anual</span>
                             </div>
 
                             <div class="erp-plan-price">
                                 <span class="erp-plan-amount" id="proPlanAmount">€14.90</span>
                                 <span class="erp-plan-period" id="proPlanPeriod">/lună</span>
                             </div>
-                            <div class="erp-plan-discount-badge d-none" id="proPlanDiscountBadge">Economisești 20% cu
+                            <div class="erp-plan-discount-badge d-none" id="proPlanDiscountBadge"
+                                data-i18n="plans.pro.discountBadge">Economisești 20% cu
                                 plata anuală</div>
-                            <p class="erp-plan-desc">Pentru firme care vor control complet asupra activității.</p>
+                            <p class="erp-plan-desc" data-i18n="plans.pro.desc">Pentru firme care vor control complet asupra activității.</p>
 
                             <a href="erp-upgrade.html?interval=month" class="erp-plan-cta erp-plan-cta-solid"
-                                id="proPlanCta">Upgrade la Pro</a>
+                                id="proPlanCta" data-i18n="plans.pro.upgradeAction">Upgrade la Pro</a>
 
                             <ul class="erp-plan-features">
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Utilizatori multipli</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.multiUser">Utilizatori multipli</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Clienți nelimitați</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.clientsUnlimited">Clienți nelimitați</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Proiecte nelimitate</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.projectsUnlimited">Proiecte nelimitate</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Estimări nelimitate</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.estimatesUnlimited">Estimări nelimitate</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Rapoarte nelimitate</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.reportsUnlimited">Rapoarte nelimitate</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>CRM complet</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.crmFull">CRM complet</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Project management complet</span>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.pmFull">Project management complet</span>
                                 </li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Materiale/produse
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.materialsUnlimited">Materiale/produse
                                         nelimitate</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>PDF profesional, fără
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.pdfPro">PDF profesional, fără
                                         watermark</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Facturare completă</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.invoicingFull">Facturare completă</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Analytics financiar (profit / cost
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.analyticsFinancial">Analytics financiar (profit / cost
                                         / revenue)</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Export Excel/CSV</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.exportExcel">Export Excel/CSV</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Istoric și audit complet</span>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.historyAudit">Istoric și audit complet</span>
                                 </li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Backup/export date</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.backup">Backup/export date</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>AI (funcții asistate)</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.ai">AI (funcții asistate)</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Automatizări</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.automations">Automatizări</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Document management</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.docManagement">Document management</span></li>
                                 <li class="erp-feature included"><span class="erp-feature-icon"><i
-                                            class="fas fa-check"></i></span><span>Suport prioritar</span></li>
+                                            class="fas fa-check"></i></span><span data-i18n="plans.pro.features.prioritySupport">Suport prioritar</span></li>
                             </ul>
                         </div>
                     </div>
@@ -193,7 +199,7 @@
                      ce include acum coloana "plan"). -->
                 <div class="mt-4 erp-plans-back-row">
                     <a href="settings.html#billing" class="erp-plan-cta erp-plan-cta-outline">
-                        <i class="fas fa-arrow-left me-2"></i>Înapoi la Abonament &amp; Plăți
+                        <i class="fas fa-arrow-left me-2"></i><span data-i18n="plans.backToBilling">Înapoi la Abonament &amp; Plăți</span>
                     </a>
                     <div class="erp-plans-status d-none" id="erpPlanStatus"></div>
                 </div>
@@ -210,35 +216,35 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold">
-                        <i class="fas fa-triangle-exclamation text-warning me-2"></i>Treci la planul Free?
+                        <i class="fas fa-triangle-exclamation text-warning me-2"></i><span data-i18n="plans.downgradeModal.title">Treci la planul Free?</span>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="mb-3">
+                    <p class="mb-3" data-i18n="plans.downgradeModal.intro">
                         Dacă treci la Free, vei pierde imediat accesul la funcțiile exclusive Pro:
                     </p>
                     <ul class="mb-3">
-                        <li>Utilizatori multipli — rămâi la 1 utilizator</li>
-                        <li>Clienți nelimitați — limitat la 2 clienți</li>
-                        <li>Proiecte nelimitate — limitat la 2 proiecte active</li>
-                        <li>Estimări și oferte nelimitate — limitat la 5 estimări / 2 oferte pe lună</li>
-                        <li>Facturare completă — dezactivată</li>
-                        <li>Analytics financiar avansat — dezactivat</li>
-                        <li>Export Excel/CSV — dezactivat</li>
-                        <li>Funcții AI și automatizări — dezactivate</li>
-                        <li>PDF profesional fără watermark — revine la watermark ElectricalVPF</li>
+                        <li data-i18n="plans.downgradeModal.items.multiUser">Utilizatori multipli — rămâi la 1 utilizator</li>
+                        <li data-i18n="plans.downgradeModal.items.clients">Clienți nelimitați — limitat la 2 clienți</li>
+                        <li data-i18n="plans.downgradeModal.items.projects">Proiecte nelimitate — limitat la 2 proiecte active</li>
+                        <li data-i18n="plans.downgradeModal.items.estimatesQuotes">Estimări și oferte nelimitate — limitat la 5 estimări / 2 oferte pe lună</li>
+                        <li data-i18n="plans.downgradeModal.items.invoicing">Facturare completă — dezactivată</li>
+                        <li data-i18n="plans.downgradeModal.items.analytics">Analytics financiar avansat — dezactivat</li>
+                        <li data-i18n="plans.downgradeModal.items.export">Export Excel/CSV — dezactivat</li>
+                        <li data-i18n="plans.downgradeModal.items.ai">Funcții AI și automatizări — dezactivate</li>
+                        <li data-i18n="plans.downgradeModal.items.pdf">PDF profesional fără watermark — revine la watermark ElectricalVPF</li>
                     </ul>
                     <p class="text-muted small mb-0" id="downgradeAutoText">
                         <i class="fas fa-circle-info me-1"></i>
-                        Planul Free a fost activat cu succes, dar păstrezi beneficiile planului Pro
-                        până la expirarea perioadei curente plătite.
+                        <span data-i18n="plans.downgradeModal.autoText">Planul Free a fost activat cu succes, dar păstrezi beneficiile planului Pro
+                        până la expirarea perioadei curente plătite.</span>
                     </p>
                     <div class="alert alert-danger d-none small mt-3 mb-0" id="downgradeError" role="alert"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Renunță</button>
-                    <button type="button" class="btn btn-primary" id="btnConfirmDowngrade">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" data-i18n="plans.downgradeModal.cancel">Renunță</button>
+                    <button type="button" class="btn btn-primary" id="btnConfirmDowngrade" data-i18n="plans.downgradeModal.confirm">
                         Confirmă Downgrade
                     </button>
                 </div>
@@ -260,17 +266,17 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold">
-                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i>Confirmă trecerea la plata
-                        lunară
+                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i><span data-i18n="plans.switchMonthlyModal.title">Confirmă trecerea la plata
+                        lunară</span>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="mb-3">
+                    <p class="mb-3" data-i18n="plans.switchMonthlyModal.body1">
                         Nu vei fi taxat acum. Confirmarea schimbă doar direcția de facturare —
                         planul tău trece pe lunar, fără nicio taxare suplimentară în acest moment.
                     </p>
-                    <p class="text-muted small mb-0">
+                    <p class="text-muted small mb-0" data-i18n="plans.switchMonthlyModal.body2">
                         De la reînnoirea următoare, vei plăti €14.90/lună în loc de €143.04/an.
                         Noua dată de reînnoire va fi actualizată pe card după confirmare.
                     </p>
@@ -279,8 +285,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="erp-plan-cta erp-plan-cta-outline"
-                        data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmSwitchToMonthly">
+                        data-bs-dismiss="modal" data-i18n="plans.switchMonthlyModal.cancel">Anulează</button>
+                    <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmSwitchToMonthly"
+                        data-i18n="plans.switchMonthlyModal.confirm">
                         Confirmă trecerea la lunar
                     </button>
                 </div>
@@ -308,17 +315,17 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold">
-                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i>Confirmă trecerea la plata
-                        anuală
+                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i><span data-i18n="plans.switchYearlyModal.title">Confirmă trecerea la plata
+                        anuală</span>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="mb-3">
+                    <p class="mb-3" data-i18n="plans.switchYearlyModal.body1">
                         Nu vei fi taxat acum. Confirmarea schimbă doar direcția de facturare —
                         planul tău trece pe anual, fără nicio taxare suplimentară în acest moment.
                     </p>
-                    <p class="text-muted small mb-0">
+                    <p class="text-muted small mb-0" data-i18n="plans.switchYearlyModal.body2">
                         De la reînnoirea următoare, vei plăti €143.04/an (economisești 20%) în loc
                         de €14.90/lună. Noua dată de reînnoire va fi actualizată pe card după
                         confirmare.
@@ -328,8 +335,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="erp-plan-cta erp-plan-cta-outline"
-                        data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmSwitchToYearly">
+                        data-bs-dismiss="modal" data-i18n="plans.switchYearlyModal.cancel">Anulează</button>
+                    <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmSwitchToYearly"
+                        data-i18n="plans.switchYearlyModal.confirm">
                         Confirmă trecerea la anual
                     </button>
                 </div>
@@ -355,7 +363,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold">
-                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i>Reînnoiește acum
+                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i><span data-i18n="plans.renewNowModal.title">Reînnoiește acum</span>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -364,14 +372,14 @@
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="1m" checked>
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label">1 lună</span>
+                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.1m">1 lună</span>
                                 <span class="erp-renew-period-price">€14.90</span>
                             </span>
                         </label>
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="6m">
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label">6 luni</span>
+                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.6m">6 luni</span>
                                 <span class="erp-renew-period-price">€80.46<span
                                         class="erp-renew-period-discount">-10%</span></span>
                             </span>
@@ -379,7 +387,7 @@
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="1y">
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label">1 an</span>
+                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.1y">1 an</span>
                                 <span class="erp-renew-period-price">€143.04<span
                                         class="erp-renew-period-discount">-20%</span></span>
                             </span>
@@ -387,7 +395,7 @@
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="3y">
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label">3 ani</span>
+                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.3y">3 ani</span>
                                 <span class="erp-renew-period-price">€375.48<span
                                         class="erp-renew-period-discount">-30%</span></span>
                             </span>
@@ -395,8 +403,8 @@
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="5y">
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label">5 ani<span
-                                        class="erp-renew-period-best-tag">Cel mai avantajos</span></span>
+                                <span class="erp-renew-period-label"><span data-i18n="plans.renewNowModal.periods.5y">5 ani</span><span
+                                        class="erp-renew-period-best-tag" data-i18n="plans.renewNowModal.bestTag">Cel mai avantajos</span></span>
                                 <span class="erp-renew-period-price">€536.40<span
                                         class="erp-renew-period-discount">-40%</span></span>
                             </span>
@@ -407,8 +415,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="erp-plan-cta erp-plan-cta-outline"
-                        data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmRenewNow">
+                        data-bs-dismiss="modal" data-i18n="plans.renewNowModal.cancel">Anulează</button>
+                    <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmRenewNow"
+                        data-i18n="plans.renewNowModal.confirm">
                         Continuă la plată
                     </button>
                 </div>
@@ -424,12 +433,13 @@
     <script src="js/api.js"></script>
 
     <!-- Shell JS (Global Auth & Layout Loader — include auth guard + apel /auth/me) -->
+    <script src="js/i18n.js"></script>
     <script src="js/shell.js"></script>
 
     <!-- Plan status: folosește userul deja încărcat de shell.js (event erp:user-loaded), fără alt apel API -->
     <script>
         function formatPeriodEndDate(iso) {
-            return new Date(iso).toLocaleDateString("ro-RO", {
+            return new Date(iso).toLocaleDateString(getCurrentLocaleCode(), {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
@@ -443,11 +453,11 @@
         // identic cu valorile din backend — dacă se schimbă acolo, schimbă și
         // aici.
         const RENEWAL_PERIODS_DISPLAY = {
-            "1m": { months: 1, label: "1 lună" },
-            "6m": { months: 6, label: "6 luni" },
-            "1y": { months: 12, label: "1 an" },
-            "3y": { months: 36, label: "3 ani" },
-            "5y": { months: 60, label: "5 ani" },
+            "1m": { months: 1, labelKey: "plans.renewNowModal.periods.1m", label: "1 lună" },
+            "6m": { months: 6, labelKey: "plans.renewNowModal.periods.6m", label: "6 luni" },
+            "1y": { months: 12, labelKey: "plans.renewNowModal.periods.1y", label: "1 an" },
+            "3y": { months: 36, labelKey: "plans.renewNowModal.periods.3y", label: "3 ani" },
+            "5y": { months: 60, labelKey: "plans.renewNowModal.periods.5y", label: "5 ani" },
         };
 
         // Identic algoritmic cu ramura "month" din addBillingInterval()
@@ -481,9 +491,14 @@
             const newDate = formatPeriodEndDate(
                 addMonthsUTC(new Date(realCurrentPeriodEnd), period.months),
             );
-            noteEl.textContent =
-                `Acces Pro activ până la ${formatPeriodEndDate(realCurrentPeriodEnd)}. ` +
-                `Se adaugă ${period.label} — noul acces se va întinde până la ${newDate}.`;
+            noteEl.textContent = t("plans.renewNowModal.note",
+                `Acces Pro activ până la ${formatPeriodEndDate(realCurrentPeriodEnd)}. Se adaugă ${period.label} — noul acces se va întinde până la ${newDate}.`,
+                {
+                    current: formatPeriodEndDate(realCurrentPeriodEnd),
+                    period: t(period.labelKey, period.label),
+                    newDate,
+                },
+            );
         }
 
         // Starea reală a abonamentului (din /stripe/subscription-status), reținută
@@ -493,6 +508,11 @@
         let realPaymentFailedAt = null;
         let realBillingInterval = null; // 'month' | 'year' | null
         let isProUser = false;
+        // Cache al userului din ultimul erp:user-loaded — reutilizat de
+        // erp:locale-changed pentru a retraduce #erpPlanStatus/butonul
+        // "Downgrade la Free", ambele randate o singură dată prin innerHTML/
+        // outerHTML (deci fără data-i18n în DOM după construire).
+        let plansPageUser = null;
 
         // Randare unică a #proPlanCtaSlot, apelată atât imediat după ce fetch-ul
         // /stripe/subscription-status populează stările "real*" de mai sus, cât și
@@ -527,12 +547,12 @@
                     proCtaSlot.outerHTML =
                         '<button type="button" class="erp-plan-cta erp-plan-cta-solid" ' +
                         'data-action="switch-yearly" id="proPlanCtaSlot" data-bs-toggle="modal" ' +
-                        'data-bs-target="#switchToYearlyConfirmModal">Trece la plata anuală</button>';
+                        `data-bs-target="#switchToYearlyConfirmModal">${t("plans.pro.switchToYearlyCta", "Trece la plata anuală")}</button>`;
                 } else {
                     proCtaSlot.outerHTML =
                         '<button type="button" class="erp-plan-cta erp-plan-cta-solid" ' +
                         'data-action="switch-monthly" id="proPlanCtaSlot" data-bs-toggle="modal" ' +
-                        'data-bs-target="#switchToMonthlyConfirmModal">Trece la plata lunară</button>';
+                        `data-bs-target="#switchToMonthlyConfirmModal">${t("plans.pro.switchToMonthlyCta", "Trece la plata lunară")}</button>`;
                 }
                 return;
             }
@@ -540,7 +560,7 @@
             if (realDowngradeScheduled) {
                 proCtaSlot.outerHTML =
                     '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true" ' +
-                    'id="proPlanCtaSlot">Plan curent</span>';
+                    `id="proPlanCtaSlot">${t("plans.pro.currentPlan", "Plan curent")}</span>`;
                 return;
             }
 
@@ -552,7 +572,7 @@
             proCtaSlot.outerHTML =
                 '<button type="button" class="erp-plan-cta erp-plan-cta-outline" ' +
                 'data-action="renew-now" id="proPlanCtaSlot" data-bs-toggle="modal" ' +
-                'data-bs-target="#renewNowConfirmModal">Reînnoiește acum</button>';
+                `data-bs-target="#renewNowConfirmModal">${t("plans.pro.renewNowCta", "Reînnoiește acum")}</button>`;
         }
 
         // Randare unică a #proPlanDateInfo — extrasă din erp:user-loaded (unde
@@ -567,10 +587,10 @@
             const formattedProDate = formatPeriodEndDate(currentPeriodEnd);
             if (downgradeScheduled) {
                 proDateInfoEl.innerHTML =
-                    `<i class="far fa-clock me-1"></i>Expiră la data de ${formattedProDate}`;
+                    `<i class="far fa-clock me-1"></i>${t("plans.pro.expiresOn", `Expiră la data de ${formattedProDate}`, { date: formattedProDate })}`;
             } else if (!paymentFailedAt) {
                 proDateInfoEl.innerHTML =
-                    `<i class="far fa-clock me-1"></i>Reînnoire la data de ${formattedProDate}`;
+                    `<i class="far fa-clock me-1"></i>${t("plans.pro.renewsOn", `Reînnoire la data de ${formattedProDate}`, { date: formattedProDate })}`;
             }
         }
 
@@ -583,14 +603,14 @@
 
             const originalText = btn.textContent;
             btn.disabled = true;
-            btn.textContent = "Se procesează...";
+            btn.textContent = t("plans.processing", "Se procesează...");
 
             try {
                 const response = await API.post("/stripe/schedule-downgrade", {});
                 if (!response || !response.success) {
                     throw new Error(
                         (response && response.error) ||
-                        "Nu s-a putut programa downgrade-ul.",
+                        t("plans.downgradeModal.errorDefault", "Nu s-a putut programa downgrade-ul."),
                     );
                 }
 
@@ -615,7 +635,7 @@
                 if (errorEl) {
                     errorEl.textContent =
                         err.message ||
-                        "Nu s-a putut programa downgrade-ul. Încearcă din nou.";
+                        t("plans.downgradeModal.errorRetry", "Nu s-a putut programa downgrade-ul. Încearcă din nou.");
                     errorEl.classList.remove("d-none");
                 }
                 btn.disabled = false;
@@ -642,14 +662,14 @@
 
             const originalText = btn.textContent;
             btn.disabled = true;
-            btn.textContent = "Se procesează...";
+            btn.textContent = t("plans.processing", "Se procesează...");
 
             try {
                 const response = await API.post("/stripe/switch-to-yearly", {});
                 if (!response || !response.success) {
                     throw new Error(
                         (response && response.error) ||
-                        "Nu s-a putut procesa trecerea la plata anuală.",
+                        t("plans.switchYearlyModal.errorDefault", "Nu s-a putut procesa trecerea la plata anuală."),
                     );
                 }
 
@@ -682,7 +702,9 @@
                     if (labelMonthlyEl) labelMonthlyEl.classList.toggle("active", !isYearly);
                     if (labelYearlyEl) labelYearlyEl.classList.toggle("active", isYearly);
                     if (amountEl) amountEl.textContent = isYearly ? "€143.04" : "€14.90";
-                    if (periodEl) periodEl.textContent = isYearly ? "/an" : "/lună";
+                    if (periodEl) periodEl.textContent = isYearly
+                        ? t("plans.pro.periodYearly", "/an")
+                        : t("plans.pro.period", "/lună");
                     if (discountEl) discountEl.classList.toggle("d-none", !isYearly);
 
                     renderProDateInfo(realCurrentPeriodEnd, realDowngradeScheduled, realPaymentFailedAt);
@@ -693,7 +715,7 @@
                 if (errorEl) {
                     errorEl.textContent =
                         err.message ||
-                        "Nu s-a putut procesa trecerea la plata anuală. Încearcă din nou.";
+                        t("plans.switchYearlyModal.errorRetry", "Nu s-a putut procesa trecerea la plata anuală. Încearcă din nou.");
                     errorEl.classList.remove("d-none");
                 }
             } finally {
@@ -720,14 +742,14 @@
 
             const originalText = btn.textContent;
             btn.disabled = true;
-            btn.textContent = "Se procesează...";
+            btn.textContent = t("plans.processing", "Se procesează...");
 
             try {
                 const response = await API.post("/stripe/switch-to-monthly", {});
                 if (!response || !response.success) {
                     throw new Error(
                         (response && response.error) ||
-                        "Nu s-a putut procesa trecerea la plata lunară.",
+                        t("plans.switchMonthlyModal.errorDefault", "Nu s-a putut procesa trecerea la plata lunară."),
                     );
                 }
 
@@ -757,7 +779,9 @@
                     if (labelMonthlyEl) labelMonthlyEl.classList.toggle("active", !isYearly);
                     if (labelYearlyEl) labelYearlyEl.classList.toggle("active", isYearly);
                     if (amountEl) amountEl.textContent = isYearly ? "€143.04" : "€14.90";
-                    if (periodEl) periodEl.textContent = isYearly ? "/an" : "/lună";
+                    if (periodEl) periodEl.textContent = isYearly
+                        ? t("plans.pro.periodYearly", "/an")
+                        : t("plans.pro.period", "/lună");
                     if (discountEl) discountEl.classList.toggle("d-none", !isYearly);
 
                     renderProDateInfo(realCurrentPeriodEnd, realDowngradeScheduled, realPaymentFailedAt);
@@ -768,7 +792,7 @@
                 if (errorEl) {
                     errorEl.textContent =
                         err.message ||
-                        "Nu s-a putut procesa trecerea la plata lunară. Încearcă din nou.";
+                        t("plans.switchMonthlyModal.errorRetry", "Nu s-a putut procesa trecerea la plata lunară. Încearcă din nou.");
                     errorEl.classList.remove("d-none");
                 }
             } finally {
@@ -799,7 +823,7 @@
 
             const originalText = btn.textContent;
             btn.disabled = true;
-            btn.textContent = "Se pregătește plata...";
+            btn.textContent = t("plans.preparingPayment", "Se pregătește plata...");
 
             try {
                 const period = getSelectedRenewPeriod();
@@ -807,7 +831,7 @@
                 if (!response || !response.url) {
                     throw new Error(
                         (response && response.error) ||
-                        "Nu s-a putut procesa reînnoirea.",
+                        t("plans.renewNowModal.errorDefault", "Nu s-a putut procesa reînnoirea."),
                     );
                 }
 
@@ -819,7 +843,7 @@
                 if (errorEl) {
                     errorEl.textContent =
                         err.message ||
-                        "Nu s-a putut procesa reînnoirea. Încearcă din nou.";
+                        t("plans.renewNowModal.errorRetry", "Nu s-a putut procesa reînnoirea. Încearcă din nou.");
                     errorEl.classList.remove("d-none");
                 }
             }
@@ -873,14 +897,21 @@
             if (!statusEl) return;
             const user = e.detail;
             if (!user) return;
+            plansPageUser = user;
 
             const planLabel = user.plan === "pro" ? "Pro" : "Free";
 
             statusEl.classList.remove("d-none");
             statusEl.innerHTML = `
-                Autentificat ca <strong>${user.full_name || user.email}</strong> —
-                <span class="badge-current-plan"><i class="fas fa-circle-info"></i> Plan: ${planLabel}</span>
+                ${t("plans.authenticatedAs", "Autentificat ca")} <strong>${user.full_name || user.email}</strong> —
+                <span class="badge-current-plan"><i class="fas fa-circle-info"></i> ${t("plans.planLabel", "Plan")}: ${planLabel}</span>
             `;
+
+            // Textul static din HTML pentru "/lună" e presupus RO — retradus aici
+            // pentru orice user (Pro sau Free), o singură dată, indiferent dacă
+            // ramura Pro anuală de mai jos îl suprascrie ulterior cu "/an".
+            const initialPeriodEl = document.getElementById("proPlanPeriod");
+            if (initialPeriodEl) initialPeriodEl.textContent = t("plans.pro.period", "/lună");
 
             // Dacă userul e deja pe Pro, butonul de upgrade devine etichetă inertă,
             // simetric cu "Plan curent" de pe cardul Free — iar cardul Free arată
@@ -896,7 +927,7 @@
                 if (proCta) {
                     proCta.outerHTML =
                         '<div class="erp-plan-date-info mb-1" id="proPlanDateInfo"></div>' +
-                        '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true" id="proPlanCtaSlot">Plan curent</span>' +
+                        `<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true" id="proPlanCtaSlot">${t("plans.pro.currentPlan", "Plan curent")}</span>` +
                         '<div class="alert alert-danger d-none small py-2 px-3 mt-2" id="proCtaError" role="alert"></div>';
                 }
 
@@ -910,7 +941,7 @@
                         '<div class="erp-plan-date-info mb-1" style="visibility: hidden;" aria-hidden="true">' +
                         '<i class="far fa-clock me-1"></i>&nbsp;</div>' +
                         '<button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnDowngradeToFree" ' +
-                        'data-bs-toggle="modal" data-bs-target="#downgradeConfirmModal">Downgrade la Free</button>';
+                        `data-bs-toggle="modal" data-bs-target="#downgradeConfirmModal">${t("plans.free.downgradeToFree", "Downgrade la Free")}</button>`;
                 }
 
                 // Data reală de expirare + starea downgrade_scheduled — un singur apel,
@@ -963,10 +994,13 @@
                         const amountEl = document.getElementById("proPlanAmount");
                         const periodEl = document.getElementById("proPlanPeriod");
                         if (amountEl) amountEl.textContent = "€143.04";
-                        if (periodEl) periodEl.textContent = "/an";
+                        if (periodEl) periodEl.textContent = t("plans.pro.periodYearly", "/an");
 
                         const discountEl = document.getElementById("proPlanDiscountBadge");
                         if (discountEl) discountEl.classList.remove("d-none");
+                    } else {
+                        const periodEl = document.getElementById("proPlanPeriod");
+                        if (periodEl) periodEl.textContent = t("plans.pro.period", "/lună");
                     }
 
                     // Data lângă "Plan curent": reînnoire dacă abonamentul e activ,
@@ -979,11 +1013,13 @@
 
                     if (downgradeTextEl && currentPeriodEnd) {
                         const formatted = formatPeriodEndDate(currentPeriodEnd);
-                        downgradeTextEl.innerHTML = `
-                            <i class="fas fa-circle-info me-1"></i>
-                            Planul Free a fost activat cu succes, dar păstrezi beneficiile
-                            planului Pro până la <strong>${formatted}</strong>.
-                        `;
+                        downgradeTextEl.innerHTML =
+                            `<i class="fas fa-circle-info me-1"></i>` +
+                            t(
+                                "plans.downgradeModal.autoTextDated",
+                                `Planul Free a fost activat cu succes, dar păstrezi beneficiile planului Pro până la <strong>${formatted}</strong>.`,
+                                { date: `<strong>${formatted}</strong>` },
+                            );
                     }
                 } catch (err) {
                     console.error(
@@ -1012,10 +1048,10 @@
                             const formatted = formatPeriodEndDate(currentPeriodEnd);
                             freeCta.outerHTML =
                                 '<div class="erp-plan-date-info mb-1">' +
-                                `<i class="far fa-clock me-1"></i>PRO valabil până la ${formatted}` +
+                                `<i class="far fa-clock me-1"></i>${t("plans.pro.proValidUntil", `PRO valabil până la ${formatted}`, { date: formatted })}` +
                                 '</div>' +
                                 '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true" ' +
-                                'id="freePlanCta">Plan curent</span>';
+                                `id="freePlanCta">${t("plans.free.currentPlan", "Plan curent")}</span>`;
                         }
                     }
                 } catch (err) {
@@ -1055,7 +1091,9 @@
 
                 const price = nextIsYearly ? PRO_PRICE_YEARLY : PRO_PRICE_MONTHLY;
                 amountEl.textContent = price.amount;
-                periodEl.textContent = price.period;
+                periodEl.textContent = nextIsYearly
+                    ? t("plans.pro.periodYearly", price.period)
+                    : t("plans.pro.period", price.period);
 
                 // Mesajul de discount urmează simplu ce interval e afișat, indiferent
                 // de starea reală — la fel pentru toți userii. Niciun avertisment
@@ -1094,7 +1132,7 @@
                         : baseDate;
                     const formatted = formatPeriodEndDate(displayDate);
                     proDateInfoEl.innerHTML =
-                        `<i class="far fa-clock me-1"></i>Reînnoire la data de ${formatted}`;
+                        `<i class="far fa-clock me-1"></i>${t("plans.pro.renewsOn", `Reînnoire la data de ${formatted}`, { date: formatted })}`;
                 }
 
                 // CTA-ul e o simplă comparație "ce arată toggle-ul acum" vs. "care e
@@ -1105,6 +1143,65 @@
                 }
             });
         }
+
+        // Retraduce fragmentele randate dinamic prin outerHTML/innerHTML (CTA-uri,
+        // texte cu dată interpolată) — acestea nu mai au data-i18n în DOM după
+        // (re)construire, deci translateStaticPage() nu le poate atinge. Reutilizează
+        // starea "real*" deja în memorie (din ultimul fetch /stripe/subscription-status),
+        // fără niciun apel API nou.
+        document.addEventListener("erp:locale-changed", () => {
+            if (plansPageUser) {
+                const statusEl = document.getElementById("erpPlanStatus");
+                if (statusEl && !statusEl.classList.contains("d-none")) {
+                    const planLabel = plansPageUser.plan === "pro" ? "Pro" : "Free";
+                    statusEl.innerHTML = `
+                        ${t("plans.authenticatedAs", "Autentificat ca")} <strong>${plansPageUser.full_name || plansPageUser.email}</strong> —
+                        <span class="badge-current-plan"><i class="fas fa-circle-info"></i> ${t("plans.planLabel", "Plan")}: ${planLabel}</span>
+                    `;
+                }
+            }
+
+            const downgradeBtn = document.getElementById("btnDowngradeToFree");
+            if (downgradeBtn) {
+                downgradeBtn.textContent = t("plans.free.downgradeToFree", "Downgrade la Free");
+            }
+
+            const periodEl = document.getElementById("proPlanPeriod");
+            if (periodEl) {
+                const isYearlyNow = document.getElementById("billingIntervalSwitch")?.getAttribute("aria-checked") === "true";
+                periodEl.textContent = isYearlyNow
+                    ? t("plans.pro.periodYearly", "/an")
+                    : t("plans.pro.period", "/lună");
+            }
+
+            if (isProUser) {
+                renderProCtaSlot(realBillingInterval === "year");
+                renderProDateInfo(realCurrentPeriodEnd, realDowngradeScheduled, realPaymentFailedAt);
+
+                const downgradeTextEl = document.getElementById("downgradeAutoText");
+                if (downgradeTextEl && realCurrentPeriodEnd) {
+                    const formatted = formatPeriodEndDate(realCurrentPeriodEnd);
+                    downgradeTextEl.innerHTML =
+                        `<i class="fas fa-circle-info me-1"></i>` +
+                        t(
+                            "plans.downgradeModal.autoTextDated",
+                            `Planul Free a fost activat cu succes, dar păstrezi beneficiile planului Pro până la <strong>${formatted}</strong>.`,
+                            { date: `<strong>${formatted}</strong>` },
+                        );
+                }
+            } else if (realDowngradeScheduled && realCurrentPeriodEnd) {
+                const freeCta = document.getElementById("freePlanCta");
+                if (freeCta) {
+                    const formatted = formatPeriodEndDate(realCurrentPeriodEnd);
+                    freeCta.outerHTML =
+                        '<div class="erp-plan-date-info mb-1">' +
+                        `<i class="far fa-clock me-1"></i>${t("plans.pro.proValidUntil", `PRO valabil până la ${formatted}`, { date: formatted })}` +
+                        '</div>' +
+                        '<span class="erp-plan-cta erp-plan-cta-outline" aria-disabled="true" ' +
+                        `id="freePlanCta">${t("plans.free.currentPlan", "Plan curent")}</span>`;
+                }
+            }
+        });
     </script>
 </body>
 

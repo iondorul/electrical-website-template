@@ -1,0 +1,135 @@
+- generic [active] [ref=f38e1]:
+  - generic [ref=f38e2]:
+    - complementary [ref=f38e3]:
+      - generic [ref=f38e4]:
+        - generic [ref=f38e6]:
+          - generic [ref=f38e7]: 
+          - generic [ref=f38e8]:
+            - text: Electrical
+            - strong [ref=f38e9]: VPF
+        - button "" [ref=f38e10] [cursor=pointer]
+      - navigation [ref=f38e12]:
+        - list [ref=f38e13]:
+          - listitem [ref=f38e14]:
+            - link " Dashboard" [ref=f38e15] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f38e16]: 
+              - generic [ref=f38e17]: Dashboard
+          - listitem [ref=f38e18]:
+            - link " Clients" [ref=f38e19] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f38e20]: 
+              - generic [ref=f38e21]: Clients
+          - listitem [ref=f38e22]:
+            - link " Projects" [ref=f38e23] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f38e24]: 
+              - generic [ref=f38e25]: Projects
+          - listitem [ref=f38e26]:
+            - link " Estimating" [ref=f38e27] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f38e28]: 
+              - generic [ref=f38e29]: Estimating
+          - listitem [ref=f38e30]:
+            - link " Quotes" [ref=f38e31] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f38e32]: 
+              - generic [ref=f38e33]: Quotes
+          - listitem [ref=f38e34]:
+            - link " Invoices" [ref=f38e35] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f38e36]: 
+              - generic [ref=f38e37]: Invoices
+          - listitem [ref=f38e38]:
+            - link " Materials" [ref=f38e39] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f38e40]: 
+              - generic [ref=f38e41]: Materials
+          - listitem [ref=f38e42]:
+            - link " Reports" [ref=f38e43] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f38e44]: 
+              - generic [ref=f38e45]: Reports
+          - listitem [ref=f38e46]:
+            - link " Settings" [ref=f38e47] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f38e48]: 
+              - generic [ref=f38e49]: Settings
+      - button " Logout" [ref=f38e51] [cursor=pointer]:
+        - generic [ref=f38e52]: 
+        - text: Logout
+    - main [ref=f38e53]:
+      - generic [ref=f38e55]:
+        - heading "Reports" [level=4] [ref=f38e57]
+        - generic [ref=f38e58]:
+          - generic [ref=f38e59]:
+            - button "English " [ref=f38e60] [cursor=pointer]:
+              - generic [ref=f38e68]: English
+              - generic [ref=f38e69]: 
+            - text: 
+          - link "Settings" [ref=f38e70] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f38e71]: 
+          - button "Logout" [ref=f38e73] [cursor=pointer]:
+            - generic [ref=f38e74]: 
+          - generic [ref=f38e76]:
+            - generic [ref=f38e77]: "--"
+            - text: "--"
+          - button "Change avatar" [ref=f38e78] [cursor=pointer]:
+            - generic [ref=f38e79]: 
+      - generic [ref=f38e80]:
+        - generic [ref=f38e83]:
+          - generic [ref=f38e84]:
+            - generic [ref=f38e85]: Period
+            - combobox [ref=f38e86]:
+              - option "Current month" [selected]
+              - option "Current quarter"
+              - option "Current year"
+              - option "All history"
+              - option "Custom"
+          - generic [ref=f38e87]:
+            - generic [ref=f38e88]: Client
+            - combobox [ref=f38e89]:
+              - option "All clients" [selected]
+          - generic [ref=f38e90]:
+            - generic [ref=f38e91]: Projects
+            - combobox [ref=f38e92]:
+              - option "All projects" [selected]
+          - generic [ref=f38e93]:
+            - button "" [ref=f38e94] [cursor=pointer]
+            - button " Generate Report" [ref=f38e96] [cursor=pointer]:
+              - generic [ref=f38e97]: 
+              - generic [ref=f38e98]: Generate Report
+        - tablist [ref=f38e99]:
+          - button " Financial" [ref=f38e100] [cursor=pointer]:
+            - generic [ref=f38e101]: 
+            - generic [ref=f38e102]: Financial
+          - button " Projects" [ref=f38e103] [cursor=pointer]:
+            - generic [ref=f38e104]: 
+            - generic [ref=f38e105]: Projects
+          - button " Materials" [ref=f38e106] [cursor=pointer]:
+            - generic [ref=f38e107]: 
+            - generic [ref=f38e108]: Materials
+          - button " Clients" [ref=f38e109] [cursor=pointer]:
+            - generic [ref=f38e110]: 
+            - generic [ref=f38e111]: Clients
+          - button "📁 Archive" [ref=f38e112] [cursor=pointer]:
+            - text: 📁
+            - generic [ref=f38e113]: Archive
+        - generic [ref=f38e114]:
+          - generic [ref=f38e115]:
+            - generic [ref=f38e118]:
+              - generic [ref=f38e119]: Invoiced
+              - heading "-" [level=4] [ref=f38e120]
+            - generic [ref=f38e123]:
+              - generic [ref=f38e124]: Paid
+              - heading "-" [level=4] [ref=f38e125]
+            - generic [ref=f38e128]:
+              - generic [ref=f38e129]: Outstanding
+              - heading "-" [level=4] [ref=f38e130]
+            - generic [ref=f38e133]:
+              - generic [ref=f38e134]: Overdue
+              - heading "-" [level=4] [ref=f38e135]
+          - heading "Invoiced vs. Collected (by month)" [level=6] [ref=f38e138]
+        - text:  
+  - text: 

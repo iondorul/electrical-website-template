@@ -1,0 +1,37 @@
+- generic [ref=f113e7]:
+  - generic [ref=f113e8]:
+    - generic [ref=f113e9]: 
+    - heading "ElectricalVPF ERP" [level=1] [ref=f113e11]
+    - paragraph [ref=f113e12]: Electrical Estimating • CRM • Projects • Invoicing
+  - generic [ref=f113e13]:
+    - generic [ref=f113e14]: 🆓 Free Plan Available | Upgrade anytime
+    - generic [ref=f113e16]:
+      - generic [ref=f113e17]: Email Address
+      - generic [ref=f113e18]:
+        - generic [ref=f113e19]: 
+        - textbox "Email Address" [ref=f113e21]:
+          - /placeholder: office@electricalvpf.com
+    - generic [ref=f113e22]:
+      - generic [ref=f113e23]: Password
+      - generic [ref=f113e24]:
+        - generic [ref=f113e25]: 
+        - textbox "Password" [ref=f113e27]:
+          - /placeholder: Enter your password
+        - button "" [ref=f113e28] [cursor=pointer]
+    - generic [ref=f113e30]:
+      - generic [ref=f113e31]:
+        - checkbox "Remember me" [ref=f113e32]
+        - generic [ref=f113e33]: Remember me
+      - link "Forgot password?" [ref=f113e34] [cursor=pointer]:
+        - /url: forgot-password.html
+    - button " Sign In" [ref=f113e36] [cursor=pointer]:
+      - generic [ref=f113e37]:
+        - generic [ref=f113e38]: 
+        - text: Sign In
+    - generic [ref=f113e39]:
+      - text: Nu ai cont?
+      - link "Înregistrează-te" [ref=f113e40] [cursor=pointer]:
+        - /url: register.html
+  - generic [ref=f113e41]:
+    - paragraph [ref=f113e42]: © 2026 ElectricalVPF ERP
+    - text: Powered by ElectricalVPF

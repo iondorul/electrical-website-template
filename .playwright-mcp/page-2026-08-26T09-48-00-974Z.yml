@@ -1,0 +1,251 @@
+- generic [ref=f158e1]:
+  - generic [ref=f158e2]:
+    - complementary [ref=f158e3]:
+      - generic [ref=f158e4]:
+        - generic [ref=f158e5]:
+          - generic [ref=f158e6]:
+            - generic [ref=f158e7]: 
+            - generic [ref=f158e8]:
+              - text: Electrical
+              - strong [ref=f158e9]: VPF
+          - link " PRO PLAN" [ref=f158e10] [cursor=pointer]:
+            - /url: settings.html#billing
+            - generic [ref=f158e11]: 
+            - generic [ref=f158e12]: PRO PLAN
+        - button "" [ref=f158e13] [cursor=pointer]
+      - navigation [ref=f158e15]:
+        - list [ref=f158e16]:
+          - listitem [ref=f158e17]:
+            - link " Dashboard" [ref=f158e18] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f158e19]: 
+              - generic [ref=f158e20]: Dashboard
+          - listitem [ref=f158e21]:
+            - link " Clients" [ref=f158e22] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f158e23]: 
+              - generic [ref=f158e24]: Clients
+          - listitem [ref=f158e25]:
+            - link " Projects" [ref=f158e26] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f158e27]: 
+              - generic [ref=f158e28]: Projects
+          - listitem [ref=f158e29]:
+            - link " Estimating" [ref=f158e30] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f158e31]: 
+              - generic [ref=f158e32]: Estimating
+          - listitem [ref=f158e33]:
+            - link " Quotes" [ref=f158e34] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f158e35]: 
+              - generic [ref=f158e36]: Quotes
+          - listitem [ref=f158e37]:
+            - link " Invoices" [ref=f158e38] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f158e39]: 
+              - generic [ref=f158e40]: Invoices
+          - listitem [ref=f158e41]:
+            - link " Materials" [ref=f158e42] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f158e43]: 
+              - generic [ref=f158e44]: Materials
+          - listitem [ref=f158e45]:
+            - link " Reports" [ref=f158e46] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f158e47]: 
+              - generic [ref=f158e48]: Reports
+          - listitem [ref=f158e49]:
+            - link " Settings" [ref=f158e50] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f158e51]: 
+              - generic [ref=f158e52]: Settings
+      - button " Logout" [ref=f158e54] [cursor=pointer]:
+        - generic [ref=f158e55]: 
+        - text: Logout
+    - main [ref=f158e56]:
+      - generic [ref=f158e58]:
+        - heading "Settings" [level=4] [ref=f158e60]
+        - generic [ref=f158e61]:
+          - generic [ref=f158e62]:
+            - button "English " [ref=f158e63] [cursor=pointer]:
+              - generic [ref=f158e71]: English
+              - generic [ref=f158e72]: 
+            - text: 
+          - link "Settings" [ref=f158e73] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f158e74]: 
+          - button "Logout" [ref=f158e76] [cursor=pointer]:
+            - generic [ref=f158e77]: 
+          - generic [ref=f158e79]:
+            - generic [ref=f158e80]: cometa_2
+            - text: Administrator
+          - button "Change avatar" [ref=f158e81] [cursor=pointer]:
+            - img "Avatar electrician" [ref=f158e82]
+  - dialog [active] [ref=f158e92]:
+    - generic [ref=f158e93]:
+      - generic [ref=f158e94]:
+        - heading " Settings" [level=5] [ref=f158e95]:
+          - generic [ref=f158e96]: 
+          - text: Settings
+        - button "Close" [ref=f158e97] [cursor=pointer]
+      - generic [ref=f158e98]:
+        - navigation [ref=f158e99]:
+          - generic [ref=f158e100] [cursor=pointer]:
+            - generic [ref=f158e101]: 
+            - generic [ref=f158e102]: Company Details
+          - generic [ref=f158e103] [cursor=pointer]:
+            - generic [ref=f158e104]: 
+            - generic [ref=f158e105]: Account & Security
+          - generic [ref=f158e106] [cursor=pointer]:
+            - generic [ref=f158e107]: 
+            - generic [ref=f158e108]: Subscription & Billing
+          - generic [ref=f158e109] [cursor=pointer]:
+            - generic [ref=f158e110]: 
+            - generic [ref=f158e111]: Privacy
+        - generic [ref=f158e112]:
+          - heading "Subscription & Billing" [level=5] [ref=f158e113]
+          - paragraph [ref=f158e114]: Details about your current plan and subscription billing.
+          - generic [ref=f158e117]:
+            - link " Pro Plan" [ref=f158e118] [cursor=pointer]:
+              - /url: erp-plans.html
+              - generic [ref=f158e119]: 
+              - generic [ref=f158e120]: Pro Plan
+            - generic [ref=f158e121]: The subscription renews on June 24, 2039
+            - generic [ref=f158e122]: The subscription renews automatically every month.
+            - link " Manage subscription" [ref=f158e123] [cursor=pointer]:
+              - /url: erp-plans.html
+              - generic [ref=f158e124]: 
+              - text: Manage subscription
+          - generic [ref=f158e125]:
+            - generic [ref=f158e126]: Subscription Invoice History
+            - generic [ref=f158e127]:
+              - generic [ref=f158e128]:
+                - generic [ref=f158e129]: August 26, 2026
+                - generic [ref=f158e130]: Reînnoire anticipată ElectricalVPF Pro — 1 lună
+              - generic [ref=f158e131]:
+                - generic [ref=f158e132]:
+                  - generic [ref=f158e133]: 14.90 EUR
+                  - generic [ref=f158e134]: Paid
+                - link "" [ref=f158e135] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WOHRrZkh3aERza21hMW1wTXhiQ2JyR1lRZjJJS3pFLDE3ODI3ODQ4MA02003bRm9sPQ?s=ap
+            - generic [ref=f158e137]:
+              - generic [ref=f158e138]:
+                - generic [ref=f158e139]: August 24, 2026
+                - generic [ref=f158e140]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f158e141]:
+                - generic [ref=f158e142]:
+                  - generic [ref=f158e143]: 143.04 EUR
+                  - generic [ref=f158e144]: Paid
+                - link "" [ref=f158e145] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WOERnYmdTSmkwQ2lHR3oxQlAwY0ZVZUhDWjdrNElvLDE3ODI3ODQ4MA0200HqMETCTA?s=ap
+            - generic [ref=f158e147]:
+              - generic [ref=f158e148]:
+                - generic [ref=f158e149]: August 24, 2026
+                - generic [ref=f158e150]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f158e151]:
+                - generic [ref=f158e152]:
+                  - generic [ref=f158e153]: 143.04 EUR
+                  - generic [ref=f158e154]: Paid
+                - link "" [ref=f158e155] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WOERmekN5WllsRUM0bWVhOTEyS3FxZ0hNZG9pbTRvLDE3ODI3ODQ4MA0200dGPglyE3?s=ap
+            - generic [ref=f158e157]:
+              - generic [ref=f158e158]:
+                - generic [ref=f158e159]: August 24, 2026
+                - generic [ref=f158e160]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f158e161]:
+                - generic [ref=f158e162]:
+                  - generic [ref=f158e163]: 143.04 EUR
+                  - generic [ref=f158e164]: Paid
+                - link "" [ref=f158e165] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WOEQ4TUhzVkEwb0ltcDhMRldOb0h0cVJoR2F4eHROLDE3ODI3ODQ4MA0200dkVW80Uo?s=ap
+            - generic [ref=f158e167]:
+              - generic [ref=f158e168]:
+                - generic [ref=f158e169]: August 24, 2026
+                - generic [ref=f158e170]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f158e171]:
+                - generic [ref=f158e172]:
+                  - generic [ref=f158e173]: 143.04 EUR
+                  - generic [ref=f158e174]: Paid
+                - link "" [ref=f158e175] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WOEQ0MXd0Z3ZsVXRkQTNYdHNhcUpsRUlrNFNQWmIxLDE3ODI3ODQ4MA0200oa79Cfcf?s=ap
+            - generic [ref=f158e177]:
+              - generic [ref=f158e178]:
+                - generic [ref=f158e179]: August 21, 2026
+                - generic [ref=f158e180]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f158e181]:
+                - generic [ref=f158e182]:
+                  - generic [ref=f158e183]: 143.04 EUR
+                  - generic [ref=f158e184]: Paid
+                - link "" [ref=f158e185] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzdFUEhMVGsyYXFTT1cwblpKVTc4c1pnRm44YkxxLDE3ODI3ODQ4MA02000za6lVVI?s=ap
+            - generic [ref=f158e187]:
+              - generic [ref=f158e188]:
+                - generic [ref=f158e189]: August 21, 2026
+                - generic [ref=f158e190]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f158e191]:
+                - generic [ref=f158e192]:
+                  - generic [ref=f158e193]: 143.04 EUR
+                  - generic [ref=f158e194]: Paid
+                - link "" [ref=f158e195] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzdEdXo2ejc2RFl0UFZTTXNBM0h2OUk2TzloOGdTLDE3ODI3ODQ4MA0200nYTlZqFg?s=ap
+            - generic [ref=f158e197]:
+              - generic [ref=f158e198]:
+                - generic [ref=f158e199]: August 21, 2026
+                - generic [ref=f158e200]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f158e201]:
+                - generic [ref=f158e202]:
+                  - generic [ref=f158e203]: 143.04 EUR
+                  - generic [ref=f158e204]: Paid
+                - link "" [ref=f158e205] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzdDMTRJTVJ6RGhuMVBBaXBkZGdOc2gwV2xQTXp5LDE3ODI3ODQ4MA0200GdOVBW2Q?s=ap
+            - generic [ref=f158e207]:
+              - generic [ref=f158e208]:
+                - generic [ref=f158e209]: August 21, 2026
+                - generic [ref=f158e210]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f158e211]:
+                - generic [ref=f158e212]:
+                  - generic [ref=f158e213]: 143.04 EUR
+                  - generic [ref=f158e214]: Paid
+                - link "" [ref=f158e215] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzZNOUgwemZDbGJDSW5RcDVpdHJRUTZHNkRmajZNLDE3ODI3ODQ4MA0200akJNUZ8b?s=ap
+            - generic [ref=f158e217]:
+              - generic [ref=f158e218]:
+                - generic [ref=f158e219]: August 21, 2026
+                - generic [ref=f158e220]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f158e221]:
+                - generic [ref=f158e222]:
+                  - generic [ref=f158e223]: 143.04 EUR
+                  - generic [ref=f158e224]: Paid
+                - link "" [ref=f158e225] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzZIZm5iVHRaenhBOFdVUjBBOTY4dVRuZ1dVdFFXLDE3ODI3ODQ4MA02007Y3yFZj0?s=ap
+            - generic [ref=f158e227]:
+              - generic [ref=f158e228]:
+                - generic [ref=f158e229]: August 21, 2026
+                - generic [ref=f158e230]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f158e231]:
+                - generic [ref=f158e232]:
+                  - generic [ref=f158e233]: 143.04 EUR
+                  - generic [ref=f158e234]: Paid
+                - link "" [ref=f158e235] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzR5TXJodUk2U1c2ZlI2TFRCRFhQS3lpMkhzSGtBLDE3ODI3ODQ4MA020038z8m1YO?s=ap
+            - generic [ref=f158e237]:
+              - generic [ref=f158e238]:
+                - generic [ref=f158e239]: August 21, 2026
+                - generic [ref=f158e240]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f158e241]:
+                - generic [ref=f158e242]:
+                  - generic [ref=f158e243]: 143.04 EUR
+                  - generic [ref=f158e244]: Paid
+                - link "" [ref=f158e245] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzRQU0NoYzVZdFZWU0tHS3c0cXNnQ1lBSVQ1UERkLDE3ODI3ODQ4MA02002WZEXJ69?s=ap
+            - generic [ref=f158e247]:
+              - generic [ref=f158e248]:
+                - generic [ref=f158e249]: August 19, 2026
+                - generic [ref=f158e250]: 1 × ElectricalVPF Pro (at €14.90 / month)
+              - generic [ref=f158e251]:
+                - generic [ref=f158e252]:
+                  - generic [ref=f158e253]: 14.90 EUR
+                  - generic [ref=f158e254]: Paid
+                - link "" [ref=f158e255] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNktRZ3lLSkJwWXRwUGd0OTY1NFJjTWxScGhPSTRZLDE3ODI3ODQ4MA0200EV4ReQwt?s=ap

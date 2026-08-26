@@ -46,32 +46,36 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (btnDeleteAll) {
     btnDeleteAll.addEventListener("click", async () => {
       const confirmed = confirm(
-        "Sigur dorești să ștergi TOATE materialele? Această acțiune este ireversibilă!",
+        t("materials.deleteAllConfirm", "Sigur dorești să ștergi TOATE materialele? Această acțiune este ireversibilă!"),
       );
       if (!confirmed) return;
 
       try {
         const response = await API.delete("/materials/all");
         if (response && response.success) {
-          Toast.show("Toate materialele au fost șterse cu succes.", "success");
+          Toast.show(t("materials.allDeleted", "Toate materialele au fost șterse cu succes."), "success");
           currentPage = 1;
           loadMaterials();
         } else {
           const msg =
             response && response.message
               ? response.message
-              : "Nu s-au putut șterge materialele.";
+              : t("materials.deleteAllFailed", "Nu s-au putut șterge materialele.");
           Toast.show(msg, "danger");
         }
       } catch (err) {
         console.error("Eroare la ștergerea totală a materialelor:", err);
-        Toast.show("Eroare de rețea la ștergerea materialelor.", "danger");
+        Toast.show(t("materials.deleteAllNetworkError", "Eroare de rețea la ștergerea materialelor."), "danger");
       }
     });
   }
 
   // Încărcare inițială
   await loadMaterials();
+
+  // La schimbarea de limbă: re-randează cu datele curente — reutilizează
+  // fluxul existent, fără logică nouă.
+  document.addEventListener("erp:locale-changed", loadMaterials);
 
   // Căutare debounced
   if (searchInput) {
@@ -97,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function loadMaterials() {
     try {
       if (tableBody) {
-        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">Se încarcă materialele...</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">${t("materials.loadingList", "Se încarcă materialele...")}</td></tr>`;
       }
 
       const queryParams = new URLSearchParams({
@@ -114,14 +118,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         renderPagination(response.pagination);
       } else {
         if (tableBody) {
-          tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">Nu s-au putut încărca materialele.</td></tr>`;
+          tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">${t("materials.loadFailed", "Nu s-au putut încărca materialele.")}</td></tr>`;
         }
       }
     } catch (err) {
       console.error("Eroare la încărcare materiale:", err);
-      Toast.show("Eroare de rețea la încărcarea materialelor.", "danger");
+      Toast.show(t("materials.networkLoadError", "Eroare de rețea la încărcarea materialelor."), "danger");
       if (tableBody) {
-        tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">Eroare de rețea.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">${t("common.networkError", "Eroare de rețea.")}</td></tr>`;
       }
     }
   }
@@ -130,7 +134,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!tableBody) return;
 
     if (!materials || materials.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">Nu există materiale înregistrate.</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">${t("materials.noMaterials", "Nu există materiale înregistrate.")}</td></tr>`;
       return;
     }
 
@@ -149,10 +153,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${Utils.formatCurrency(mat.unit_price)}</td>
                 <td class="fw-bold ${parseFloat(mat.stock_quantity) <= 0 ? "text-danger" : ""}">${mat.stock_quantity}</td>
                 <td class="text-end pe-4">
-                    <button type="button" class="btn btn-sm btn-outline-primary me-1 btn-edit" data-id="${mat.id}" title="Editare">
+                    <button type="button" class="btn btn-sm btn-outline-primary me-1 btn-edit" data-id="${mat.id}" title="${t("common.edit", "Editare")}">
                         <i class="fas fa-pen"></i>
                     </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="${mat.id}" title="Șterge">
+                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="${mat.id}" title="${t("common.delete", "Șterge")}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
@@ -187,7 +191,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (id) {
       // Mod editare — încarcă datele existente
       document.getElementById("materialModalTitle").textContent =
-        "Editare Material";
+        t("materials.editMaterial", "Editare Material");
       try {
         const response = await API.get(`/materials/${id}`);
         if (response && response.success) {
@@ -231,18 +235,18 @@ document.addEventListener("DOMContentLoaded", async () => {
           document.getElementById("materialMinStock").value =
             mat.min_stock || "";
         } else {
-          Toast.show("Nu s-au putut prelua datele materialului.", "danger");
+          Toast.show(t("materials.fetchFailed", "Nu s-au putut prelua datele materialului."), "danger");
           return;
         }
       } catch (err) {
         console.error("Eroare la deschiderea editării:", err);
-        Toast.show("Eroare de rețea la încărcarea materialului.", "danger");
+        Toast.show(t("materials.loadNetworkError", "Eroare de rețea la încărcarea materialului."), "danger");
         return;
       }
     } else {
       // Mod adăugare
       document.getElementById("materialModalTitle").textContent =
-        "Adaugă Material";
+        t("materials.addMaterial", "Adaugă Material");
     }
 
     if (materialModalInstance) materialModalInstance.show();
@@ -261,7 +265,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!name || !category || !unit_of_measure) {
       Toast.show(
-        "Denumire, categorie și unitate de măsură sunt obligatorii.",
+        t("materials.requiredFieldsMissing", "Denumire, categorie și unitate de măsură sunt obligatorii."),
         "danger",
       );
       return;
@@ -291,7 +295,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (response && response.success) {
         Toast.show(
-          id ? "Material actualizat cu succes." : "Material adăugat cu succes.",
+          id
+            ? t("materials.updated", "Material actualizat cu succes.")
+            : t("materials.created", "Material adăugat cu succes."),
           "success",
         );
         if (materialModalInstance) materialModalInstance.hide();
@@ -300,34 +306,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         const msg =
           response && response.message
             ? response.message
-            : "Nu s-a putut salva materialul.";
+            : t("materials.saveFailed", "Nu s-a putut salva materialul.");
         Toast.show(msg, "danger");
       }
     } catch (err) {
       console.error("Eroare la salvarea materialului:", err);
-      Toast.show("Eroare de rețea la salvarea materialului.", "danger");
+      Toast.show(t("materials.saveNetworkError", "Eroare de rețea la salvarea materialului."), "danger");
     }
   }
 
   async function deleteMaterial(id) {
-    const confirmed = confirm("Sigur dorești să ștergi acest material?");
+    const confirmed = confirm(t("materials.deleteConfirm", "Sigur dorești să ștergi acest material?"));
     if (!confirmed) return;
 
     try {
       const response = await API.delete(`/materials/${id}`);
       if (response && response.success) {
-        Toast.show("Material șters cu succes.", "success");
+        Toast.show(t("materials.deleted", "Material șters cu succes."), "success");
         loadMaterials();
       } else {
         const msg =
           response && response.message
             ? response.message
-            : "Nu s-a putut șterge materialul.";
+            : t("materials.deleteFailed", "Nu s-a putut șterge materialul.");
         Toast.show(msg, "danger");
       }
     } catch (err) {
       console.error("Eroare la ștergerea materialului:", err);
-      Toast.show("Eroare de rețea la ștergerea materialului.", "danger");
+      Toast.show(t("materials.deleteNetworkError", "Eroare de rețea la ștergerea materialului."), "danger");
     }
   }
 
@@ -344,7 +350,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     html += `
       <li class="page-item ${page === 1 ? "disabled" : ""}">
-        <button class="page-link" data-page="${page - 1}">Înapoi</button>
+        <button class="page-link" data-page="${page - 1}">${t("common.back", "Înapoi")}</button>
       </li>
     `;
 
@@ -358,7 +364,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     html += `
       <li class="page-item ${page === totalPages ? "disabled" : ""}">
-        <button class="page-link" data-page="${page + 1}">Înainte</button>
+        <button class="page-link" data-page="${page + 1}">${t("common.next", "Înainte")}</button>
       </li>
     `;
 

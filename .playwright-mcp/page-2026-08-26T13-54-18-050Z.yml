@@ -1,0 +1,93 @@
+- generic [ref=f125e2]:
+  - complementary [ref=f125e3]:
+    - generic [ref=f125e4]:
+      - generic [ref=f125e6]:
+        - generic [ref=f125e7]: 
+        - generic [ref=f125e8]:
+          - text: Electrical
+          - strong [ref=f125e9]: VPF
+      - button "" [ref=f125e10] [cursor=pointer]
+    - navigation [ref=f125e12]:
+      - list [ref=f125e13]:
+        - listitem [ref=f125e14]:
+          - link " Dashboard" [ref=f125e15] [cursor=pointer]:
+            - /url: dashboard.html
+            - generic [ref=f125e16]: 
+            - generic [ref=f125e17]: Dashboard
+        - listitem [ref=f125e18]:
+          - link " Clients" [ref=f125e19] [cursor=pointer]:
+            - /url: clients.html
+            - generic [ref=f125e20]: 
+            - generic [ref=f125e21]: Clients
+        - listitem [ref=f125e22]:
+          - link " Projects" [ref=f125e23] [cursor=pointer]:
+            - /url: projects.html
+            - generic [ref=f125e24]: 
+            - generic [ref=f125e25]: Projects
+        - listitem [ref=f125e26]:
+          - link " Estimating" [ref=f125e27] [cursor=pointer]:
+            - /url: estimating.html
+            - generic [ref=f125e28]: 
+            - generic [ref=f125e29]: Estimating
+        - listitem [ref=f125e30]:
+          - link " Quotes" [ref=f125e31] [cursor=pointer]:
+            - /url: quotes.html
+            - generic [ref=f125e32]: 
+            - generic [ref=f125e33]: Quotes
+        - listitem [ref=f125e34]:
+          - link " Invoices" [ref=f125e35] [cursor=pointer]:
+            - /url: invoices.html
+            - generic [ref=f125e36]: 
+            - generic [ref=f125e37]: Invoices
+        - listitem [ref=f125e38]:
+          - link " Materials" [ref=f125e39] [cursor=pointer]:
+            - /url: materials.html
+            - generic [ref=f125e40]: 
+            - generic [ref=f125e41]: Materials
+        - listitem [ref=f125e42]:
+          - link " Reports" [ref=f125e43] [cursor=pointer]:
+            - /url: reports.html
+            - generic [ref=f125e44]: 
+            - generic [ref=f125e45]: Reports
+        - listitem [ref=f125e46]:
+          - link " Settings" [ref=f125e47] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f125e48]: 
+            - generic [ref=f125e49]: Settings
+    - button " Logout" [ref=f125e51] [cursor=pointer]:
+      - generic [ref=f125e52]: 
+      - text: Logout
+  - main [ref=f125e53]:
+    - generic [ref=f125e55]:
+      - heading "Payment Successful" [level=4] [ref=f125e57]
+      - generic [ref=f125e58]:
+        - generic [ref=f125e59]:
+          - button "English " [ref=f125e60] [cursor=pointer]:
+            - generic [ref=f125e68]: English
+            - generic [ref=f125e69]: 
+          - text: 
+        - link "Settings" [ref=f125e70] [cursor=pointer]:
+          - /url: settings.html
+          - generic [ref=f125e71]: 
+        - button "Logout" [ref=f125e73] [cursor=pointer]:
+          - generic [ref=f125e74]: 
+        - generic [ref=f125e76]:
+          - generic [ref=f125e77]: "--"
+          - text: "--"
+        - button "Change avatar" [ref=f125e78] [cursor=pointer]:
+          - generic [ref=f125e79]: 
+    - generic [ref=f125e81]:
+      - generic [ref=f125e82]: 
+      - generic [ref=f125e84]:
+        - generic [ref=f125e85]: 
+        - generic [ref=f125e86]: Pro plan activated
+      - heading "Congratulations! You've switched to the Pro plan 🎉" [level=1] [ref=f125e87]
+      - paragraph [ref=f125e88]: Your payment was processed successfully. You now have full access to all ElectricalVPF ERP features.
+      - generic [ref=f125e89]:
+        - button " View Invoice" [disabled] [ref=f125e90]:
+          - generic [ref=f125e91]: 
+          - generic [ref=f125e92]: View Invoice
+        - link " Go to Dashboard" [ref=f125e93] [cursor=pointer]:
+          - /url: dashboard.html
+          - generic [ref=f125e94]: 
+          - generic [ref=f125e95]: Go to Dashboard

@@ -85,12 +85,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   // încarcă doar la accesare, la fel ca celelalte tab-uri.
   await loadActiveTab();
 
+  // La schimbarea de limbă: re-randează tab-ul activ + opțiunile de client/
+  // proiect cu datele curente — reutilizează fluxurile existente.
+  document.addEventListener("erp:locale-changed", () => {
+    loadClientOptions();
+    loadProjectOptions();
+    loadActiveTab();
+  });
+
   async function loadClientOptions() {
     try {
       const clients = await API.get("/clients");
       const list = Array.isArray(clients) ? clients : clients.data || [];
       filterClient.innerHTML =
-        `<option value="">Toți clienții</option>` +
+        `<option value="">${t("reports.allClients", "Toți clienții")}</option>` +
         list
           .map(
             (c) =>
@@ -107,7 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const projects = await API.get("/projects");
       const list = Array.isArray(projects) ? projects : projects.data || [];
       filterProject.innerHTML =
-        `<option value="">Toate proiectele</option>` +
+        `<option value="">${t("reports.allProjects", "Toate proiectele")}</option>` +
         list
           .map(
             (p) =>
@@ -183,7 +191,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await API.get(`/reports/financial?${buildQuery()}`);
       if (!response || !response.success) {
-        Toast.show("Nu s-au putut încărca datele financiare.", "danger");
+        Toast.show(t("reports.financialLoadFailed", "Nu s-au putut încărca datele financiare."), "danger");
         return;
       }
       const { summary, timeseries } = response.data;
@@ -200,7 +208,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderFinancialChart(timeseries);
     } catch (err) {
       console.error("Eroare la încărcarea raportului financiar:", err);
-      Toast.show("Eroare de rețea la încărcarea raportului.", "danger");
+      Toast.show(t("reports.reportNetworkError", "Eroare de rețea la încărcarea raportului."), "danger");
     }
   }
 
@@ -235,12 +243,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         labels,
         datasets: [
           {
-            label: "Facturat",
+            label: t("reports.invoiced", "Facturat"),
             data: invoicedData,
             backgroundColor: "#0d6efd",
           },
           {
-            label: "Încasat",
+            label: t("reports.collected", "Încasat"),
             data: paidData,
             backgroundColor: "#198754",
           },
@@ -255,16 +263,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadProjects() {
     const tbody = document.getElementById("projectsTableBody");
-    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">Se încarcă...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">${t("common.loading", "Se încarcă...")}</td></tr>`;
     try {
       const response = await API.get(`/reports/projects?${buildQuery()}`);
       if (!response || !response.success) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">Eroare la încărcare.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">${t("reports.loadError", "Eroare la încărcare.")}</td></tr>`;
         return;
       }
       const rows = response.data;
       if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">Niciun proiect găsit.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">${t("reports.noProjectFound", "Niciun proiect găsit.")}</td></tr>`;
         return;
       }
       tbody.innerHTML = rows
@@ -289,18 +297,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         .join("");
     } catch (err) {
       console.error("Eroare la încărcarea raportului de proiecte:", err);
-      tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">Eroare de rețea.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">${t("common.networkError", "Eroare de rețea.")}</td></tr>`;
     }
   }
 
   function projectStatusBadge(status) {
     const map = {
-      draft: ["secondary", "Draft"],
-      planned: ["info text-dark", "Planificat"],
-      in_progress: ["warning text-dark", "În Lucru"],
-      on_hold: ["dark", "În Așteptare"],
-      completed: ["success", "Finalizat"],
-      cancelled: ["danger", "Anulat"],
+      draft: ["secondary", t("estimating.status.draft", "Draft")],
+      planned: ["info text-dark", t("projects.status.planned", "Planificat")],
+      in_progress: ["warning text-dark", t("projects.status.in_progress", "În Lucru")],
+      on_hold: ["dark", t("projects.status.on_hold", "În Așteptare")],
+      completed: ["success", t("projects.status.completed", "Finalizat")],
+      cancelled: ["danger", t("projects.status.cancelled", "Anulat")],
     };
     const [cls, label] = map[status] || ["secondary", status];
     return `<span class="badge bg-${cls}">${label}</span>`;
@@ -308,7 +316,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadMaterials() {
     const tbody = document.getElementById("materialsTableBody");
-    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">Se încarcă...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">${t("common.loading", "Se încarcă...")}</td></tr>`;
     try {
       const { from, to } = getDateRange();
       const params = new URLSearchParams();
@@ -317,12 +325,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const response = await API.get(`/reports/materials?${params.toString()}`);
       if (!response || !response.success) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger py-4">Eroare la încărcare.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger py-4">${t("reports.loadError", "Eroare la încărcare.")}</td></tr>`;
         return;
       }
       const rows = response.data;
       if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">Niciun material găsit.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">${t("reports.noMaterialFound", "Niciun material găsit.")}</td></tr>`;
         return;
       }
       tbody.innerHTML = rows
@@ -337,7 +345,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <td>${Utils.formatCurrency(m.planned_usage_cost)}</td>
           <td>${parseFloat(m.stock_quantity).toFixed(2)} ${Utils.escapeHtml(m.unit_of_measure || "")}</td>
           <td class="pe-4">
-            ${m.low_stock ? '<span class="badge bg-danger">Stoc Redus</span>' : '<span class="badge bg-success">OK</span>'}
+            ${m.low_stock ? `<span class="badge bg-danger">${t("reports.lowStock", "Stoc Redus")}</span>` : '<span class="badge bg-success">OK</span>'}
           </td>
         </tr>
       `,
@@ -345,13 +353,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         .join("");
     } catch (err) {
       console.error("Eroare la încărcarea raportului de materiale:", err);
-      tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger py-4">Eroare de rețea.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger py-4">${t("common.networkError", "Eroare de rețea.")}</td></tr>`;
     }
   }
 
   async function loadClientsReport() {
     const tbody = document.getElementById("clientsReportTableBody");
-    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">Se încarcă...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">${t("common.loading", "Se încarcă...")}</td></tr>`;
     try {
       const { from, to } = getDateRange();
       const params = new URLSearchParams();
@@ -360,12 +368,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const response = await API.get(`/reports/clients?${params.toString()}`);
       if (!response || !response.success) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Eroare la încărcare.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">${t("reports.loadError", "Eroare la încărcare.")}</td></tr>`;
         return;
       }
       const rows = response.data;
       if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Niciun client găsit.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">${t("reports.noClientFound", "Niciun client găsit.")}</td></tr>`;
         return;
       }
       tbody.innerHTML = rows
@@ -384,7 +392,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .join("");
     } catch (err) {
       console.error("Eroare la încărcarea raportului de clienți:", err);
-      tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Eroare de rețea.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">${t("common.networkError", "Eroare de rețea.")}</td></tr>`;
     }
   }
 
@@ -393,7 +401,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function generateReport() {
     const originalHtml = btnGenerateReport.innerHTML;
     btnGenerateReport.disabled = true;
-    btnGenerateReport.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Se generează...`;
+    btnGenerateReport.innerHTML = `<span class="spinner-border spinner-border-sm"></span> ${t("reports.generating", "Se generează...")}`;
 
     try {
       const { from, to } = getDateRange();
@@ -408,21 +416,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       const response = await API.post("/reports/generate-pdf", payload);
       if (!response || !response.success) {
         Toast.show(
-          (response && response.message) || "Nu s-a putut genera raportul.",
+          (response && response.message) || t("reports.generateFailed", "Nu s-a putut genera raportul."),
           "danger",
         );
         return;
       }
 
       Toast.show(
-        `Raport ${response.data.report_number} generat și arhivat cu succes.`,
+        t(
+          "reports.generatedAndArchived",
+          `Raport ${response.data.report_number} generat și arhivat cu succes.`,
+          { number: response.data.report_number },
+        ),
         "success",
       );
       await openReport(response.data.id);
       await loadArchive();
     } catch (err) {
       console.error("Eroare la generarea raportului:", err);
-      Toast.show(err.message || "Eroare de rețea la generare.", "danger");
+      Toast.show(err.message || t("reports.generateNetworkError", "Eroare de rețea la generare."), "danger");
     } finally {
       setGenerateReportDisabled(activeTab === "archive");
       btnGenerateReport.innerHTML = originalHtml;
@@ -437,7 +449,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
     if (!response.ok) {
       const data = await response.json().catch(() => ({}));
-      throw new Error(data.message || "Nu s-a putut prelua raportul.");
+      throw new Error(data.message || t("reports.fetchFailed", "Nu s-a putut prelua raportul."));
     }
     const disposition = response.headers.get("Content-Disposition") || "";
     const match = disposition.match(/filename="(.+)"/);
@@ -453,7 +465,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.open(url, "_blank");
     } catch (err) {
       console.error("Eroare la deschiderea raportului:", err);
-      Toast.show(err.message || "Eroare la deschiderea raportului.", "danger");
+      Toast.show(err.message || t("reports.openFailed", "Eroare la deschiderea raportului."), "danger");
     }
   }
 
@@ -475,7 +487,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       };
     } catch (err) {
       console.error("Eroare la printarea raportului:", err);
-      Toast.show(err.message || "Eroare la printarea raportului.", "danger");
+      Toast.show(err.message || t("reports.printFailed", "Eroare la printarea raportului."), "danger");
     }
   }
 
@@ -492,20 +504,32 @@ document.addEventListener("DOMContentLoaded", async () => {
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     } catch (err) {
       console.error("Eroare la descărcarea raportului:", err);
-      Toast.show(err.message || "Eroare la descărcarea raportului.", "danger");
+      Toast.show(err.message || t("reports.downloadFailed", "Eroare la descărcarea raportului."), "danger");
     }
   }
 
   function formatArchivePeriod(filters) {
-    if (!filters) return "Tot istoricul";
+    if (!filters) return t("reports.periodOptions.all", "Tot istoricul");
     if (filters.from && filters.to) {
       return `${Utils.formatDate(filters.from)} - ${Utils.formatDate(filters.to)}`;
     }
-    return "Tot istoricul";
+    return t("reports.periodOptions.all", "Tot istoricul");
+  }
+
+  // Etichetă de tip raport — tipul se afișa BRUT (r.report_type, fără nicio
+  // traducere existentă). Culoarea (TYPE_BADGE) rămâne neatinsă.
+  function reportTypeLabel(type) {
+    const labels = {
+      financial: t("reports.tabs.financial", "Financial"),
+      projects: t("nav.projects", "Projects"),
+      materials: t("nav.materials", "Materials"),
+      clients: t("nav.clients", "Clients"),
+    };
+    return labels[type] || type;
   }
 
   async function loadArchive() {
-    archiveTableBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">Se încarcă...</td></tr>`;
+    archiveTableBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">${t("common.loading", "Se încarcă...")}</td></tr>`;
     try {
       const params = new URLSearchParams();
       if (archiveSearch.value.trim()) params.set("search", archiveSearch.value.trim());
@@ -513,7 +537,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const response = await API.get(`/reports/history?${params.toString()}`);
       if (!response || !response.success) {
-        archiveTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger py-4">Eroare la încărcare.</td></tr>`;
+        archiveTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger py-4">${t("reports.loadError", "Eroare la încărcare.")}</td></tr>`;
         return;
       }
 
@@ -521,14 +545,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderArchiveRows();
     } catch (err) {
       console.error("Eroare la încărcarea arhivei:", err);
-      archiveTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger py-4">Eroare de rețea.</td></tr>`;
+      archiveTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger py-4">${t("common.networkError", "Eroare de rețea.")}</td></tr>`;
     }
   }
 
   function renderArchiveRows() {
     const rows = lastArchiveRows;
     if (!rows.length) {
-      archiveTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">Niciun raport generat încă.</td></tr>`;
+      archiveTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">${t("reports.noReportsYet", "Niciun raport generat încă.")}</td></tr>`;
       return;
     }
 
@@ -542,22 +566,22 @@ document.addEventListener("DOMContentLoaded", async () => {
           <strong class="d-block">${Utils.escapeHtml(r.report_name)}</strong>
           <small class="text-muted">${Utils.escapeHtml(r.report_number)}</small>
         </td>
-        <td><span class="badge bg-${TYPE_BADGE[r.report_type] || "secondary"}">${Utils.escapeHtml(r.report_type)}</span></td>
+        <td><span class="badge bg-${TYPE_BADGE[r.report_type] || "secondary"}">${Utils.escapeHtml(reportTypeLabel(r.report_type))}</span></td>
         <td>${formatArchivePeriod(r.filters_json)}</td>
-        <td>${new Date(r.generated_at).toLocaleString("ro-RO")}</td>
+        <td>${new Date(r.generated_at).toLocaleString(getCurrentLocaleCode())}</td>
         <td class="text-end pe-4">
-          <button type="button" class="btn btn-sm btn-outline-info me-1 btn-archive-view" data-id="${r.id}" title="Vizualizare">
+          <button type="button" class="btn btn-sm btn-outline-info me-1 btn-archive-view" data-id="${r.id}" title="${t("quotes.viewAction", "Vizualizare")}">
             <i class="fas fa-eye"></i>
           </button>
-          <button type="button" class="btn btn-sm btn-outline-secondary me-1 btn-archive-print" data-id="${r.id}" title="Printare">
+          <button type="button" class="btn btn-sm btn-outline-secondary me-1 btn-archive-print" data-id="${r.id}" title="${t("reports.printAction", "Printare")}">
             <i class="fas fa-print"></i>
           </button>
-          <button type="button" class="btn btn-sm btn-outline-primary ${canDelete ? "me-1" : ""} btn-archive-download" data-id="${r.id}" title="Descărcare">
+          <button type="button" class="btn btn-sm btn-outline-primary ${canDelete ? "me-1" : ""} btn-archive-download" data-id="${r.id}" title="${t("reports.downloadAction", "Descărcare")}">
             <i class="fas fa-download"></i>
           </button>
           ${
             canDelete
-              ? `<button type="button" class="btn btn-sm btn-outline-danger btn-archive-delete" data-id="${r.id}" title="Șterge">
+              ? `<button type="button" class="btn btn-sm btn-outline-danger btn-archive-delete" data-id="${r.id}" title="${t("common.delete", "Șterge")}">
                   <i class="fas fa-trash-alt"></i>
                 </button>`
               : ""
@@ -595,7 +619,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await API.delete(`/reports/history/${reportIdPendingDelete}`);
       if (response && response.success) {
-        Toast.show(response.message || "Raportul a fost șters.", "success");
+        Toast.show(response.message || t("reports.reportDeleted", "Raportul a fost șters."), "success");
         if (deleteReportModalInstance) deleteReportModalInstance.hide();
         lastArchiveRows = lastArchiveRows.filter(
           (r) => String(r.id) !== String(reportIdPendingDelete),
@@ -603,13 +627,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         renderArchiveRows();
       } else {
         Toast.show(
-          (response && response.message) || "Nu s-a putut șterge raportul.",
+          (response && response.message) || t("reports.deleteFailed", "Nu s-a putut șterge raportul."),
           "danger",
         );
       }
     } catch (err) {
       console.error("Eroare la ștergerea raportului:", err);
-      Toast.show(err.message || "Eroare de rețea la ștergere.", "danger");
+      Toast.show(err.message || t("reports.deleteNetworkError", "Eroare de rețea la ștergere."), "danger");
     } finally {
       reportIdPendingDelete = null;
       btnConfirmDeleteReport.disabled = false;

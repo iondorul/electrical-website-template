@@ -16,7 +16,7 @@
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
 
-<body data-page-title="Materials Management">
+<body data-page-title="Materials Management" data-page-title-key="materials.pageTitle">
 
     <div class="erp-wrapper">
 
@@ -40,18 +40,18 @@
                                                 <i class="fas fa-search"></i>
                                             </span>
                                             <input type="text" id="searchInput" class="form-control border-start-0 ps-0"
-                                                placeholder="Căutare după cod sau denumire...">
+                                                data-i18n-placeholder="materials.searchPlaceholder" placeholder="Căutare după cod sau denumire...">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-5">
                                         <select id="categoryFilter" class="form-select">
-                                            <option value="">Toate Categoriile</option>
-                                            <option value="Cabluri">Cabluri</option>
-                                            <option value="Tablouri">Tablouri</option>
-                                            <option value="Aparataj">Aparataj</option>
-                                            <option value="Siguranțe">Siguranțe</option>
-                                            <option value="Iluminat">Iluminat</option>
-                                            <option value="Altele">Altele</option>
+                                            <option value="" data-i18n="materials.allCategories">Toate Categoriile</option>
+                                            <option value="Cabluri" data-i18n="materials.category.cabluri">Cabluri</option>
+                                            <option value="Tablouri" data-i18n="materials.category.tablouri">Tablouri</option>
+                                            <option value="Aparataj" data-i18n="materials.category.aparataj">Aparataj</option>
+                                            <option value="Siguranțe" data-i18n="materials.category.siguranțe">Siguranțe</option>
+                                            <option value="Iluminat" data-i18n="materials.category.iluminat">Iluminat</option>
+                                            <option value="Altele" data-i18n="materials.category.altele">Altele</option>
                                         </select>
                                     </div>
                                 </div>
@@ -60,11 +60,11 @@
                             <div class="col-12 col-md-auto text-md-end d-flex gap-2 justify-content-md-end">
                                 <button type="button" id="btnAddMaterial"
                                     class="btn btn-primary d-inline-flex align-items-center gap-2">
-                                    <i class="fas fa-plus"></i> Adaugă Material
+                                    <i class="fas fa-plus"></i> <span data-i18n="materials.addMaterial">Adaugă Material</span>
                                 </button>
                                 <button type="button" id="btnDeleteAllMaterials"
                                     class="btn btn-danger d-inline-flex align-items-center gap-2">
-                                    <i class="fas fa-trash-alt"></i> Șterge Tot
+                                    <i class="fas fa-trash-alt"></i> <span data-i18n="quotes.deleteAll">Șterge Tot</span>
                                 </button>
                             </div>
 
@@ -79,18 +79,18 @@
                             <table class="table table-hover align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="ps-4">Cod</th>
-                                        <th>Denumire</th>
-                                        <th>Categorie</th>
-                                        <th>UM</th>
-                                        <th>Preț Unitar</th>
-                                        <th>Stoc</th>
-                                        <th class="text-end pe-4">Acțiuni</th>
+                                        <th class="ps-4" data-i18n="materials.table.code">Cod</th>
+                                        <th data-i18n="materials.table.name">Denumire</th>
+                                        <th data-i18n="materials.table.category">Categorie</th>
+                                        <th data-i18n="estimating.itemTable.unit">UM</th>
+                                        <th data-i18n="materials.table.unitPrice">Preț Unitar</th>
+                                        <th data-i18n="materials.table.stock">Stoc</th>
+                                        <th class="text-end pe-4" data-i18n="common.actions">Acțiuni</th>
                                     </tr>
                                 </thead>
                                 <tbody id="materialsTableBody">
                                     <tr>
-                                        <td colspan="7" class="text-center py-4 text-muted">Se încarcă materialele...
+                                        <td colspan="7" class="text-center py-4 text-muted" data-i18n="materials.loadingList">Se încarcă materialele...
                                         </td>
                                     </tr>
                                 </tbody>
@@ -112,34 +112,34 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="materialModalTitle">Adaugă Material</h5>
+                    <h5 class="modal-title fw-bold" id="materialModalTitle" data-i18n="materials.addMaterial">Adaugă Material</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="materialId">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label">Cod Articol (SKU)</label>
+                            <label class="form-label" data-i18n="materials.itemCode">Cod Articol (SKU)</label>
                             <input type="text" id="materialItemCode" class="form-control" placeholder="ex: CBL-3X2.5">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Categorie *</label>
+                            <label class="form-label" data-i18n="materials.categoryRequired">Categorie *</label>
                             <select id="materialCategory" class="form-select">
-                                <option value="Cabluri">Cabluri</option>
-                                <option value="Tablouri">Tablouri</option>
-                                <option value="Aparataj">Aparataj</option>
-                                <option value="Siguranțe">Siguranțe</option>
-                                <option value="Iluminat">Iluminat</option>
-                                <option value="Altele">Altele</option>
+                                <option value="Cabluri" data-i18n="materials.category.cabluri">Cabluri</option>
+                                <option value="Tablouri" data-i18n="materials.category.tablouri">Tablouri</option>
+                                <option value="Aparataj" data-i18n="materials.category.aparataj">Aparataj</option>
+                                <option value="Siguranțe" data-i18n="materials.category.siguranțe">Siguranțe</option>
+                                <option value="Iluminat" data-i18n="materials.category.iluminat">Iluminat</option>
+                                <option value="Altele" data-i18n="materials.category.altele">Altele</option>
                             </select>
                         </div>
                         <div class="col-12">
-                            <label class="form-label">Denumire *</label>
+                            <label class="form-label" data-i18n="materials.nameRequired">Denumire *</label>
                             <input type="text" id="materialName" class="form-control"
-                                placeholder="ex: Cablu CYABY 3x2.5mm">
+                                data-i18n-placeholder="materials.namePlaceholder" placeholder="ex: Cablu CYABY 3x2.5mm">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Unitate de Măsură *</label>
+                            <label class="form-label" data-i18n="materials.unitRequired">Unitate de Măsură *</label>
                             <select id="materialUnit" class="form-select">
                                 <option value="buc">buc (bucată)</option>
                                 <option value="m">m (metru)</option>
@@ -153,30 +153,30 @@
                                 <option value="l">l (litru)</option>
                                 <option value="mp">mp (metru pătrat)</option>
                                 <option value="h">h (oră manoperă)</option>
-                                <option value="__custom__">Altă unitate...</option>
+                                <option value="__custom__" data-i18n="materials.otherUnit">Altă unitate...</option>
                             </select>
                             <input type="text" id="materialUnitCustom" class="form-control mt-2 d-none"
-                                placeholder="Introdu unitatea personalizată">
+                                data-i18n-placeholder="materials.customUnitPlaceholder" placeholder="Introdu unitatea personalizată">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Preț Unitar (EUR)</label>
+                            <label class="form-label" data-i18n="materials.unitPriceEur">Preț Unitar (EUR)</label>
                             <input type="number" id="materialPrice" class="form-control" step="0.01" min="0">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Stoc Disponibil</label>
+                            <label class="form-label" data-i18n="materials.availableStock">Stoc Disponibil</label>
                             <input type="number" id="materialStock" class="form-control" step="0.001" min="0">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Prag Stoc Redus</label>
+                            <label class="form-label" data-i18n="materials.lowStockThreshold">Prag Stoc Redus</label>
                             <input type="number" id="materialMinStock" class="form-control" step="0.001" min="0"
                                 placeholder="ex. 10">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
                     <button type="button" class="btn btn-primary" id="btnSaveMaterial">
-                        <i class="fas fa-save me-1"></i> Salvează
+                        <i class="fas fa-save me-1"></i> <span data-i18n="common.save">Salvează</span>
                     </button>
                 </div>
             </div>
@@ -201,6 +201,7 @@
     <script src="js/utils.js"></script>
     <script src="js/toast.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/shell.js"></script>
 
     <script src="js/materials.js"></script>

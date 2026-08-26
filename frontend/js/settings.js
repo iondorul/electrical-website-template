@@ -12,16 +12,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (!navEl || !contentEl || !modalEl) return;
 
+  // Fiecare tab randează text tradus SINCRON, înainte de orice apel API
+  // propriu (spre deosebire de dashboard.js, unde traducerea așteaptă oricum
+  // un răspuns real de la backend) — fără acest await, primul randare ar
+  // putea prinde dicționarele încă neîncărcate și ar afișa scurt fallback-ul
+  // românesc chiar și cu limba pe English (confirmat empiric).
+  if (window.i18nReady) await window.i18nReady;
+
   const tabs = window.SettingsTabs || [];
   let activeTabId = tabs.length ? tabs[0].id : null;
 
   function renderNav() {
     navEl.innerHTML = tabs
       .map(
-        (t) => `
-          <div class="settings-nav-item ${t.id === activeTabId ? "active" : ""}" data-tab="${t.id}">
-            <i class="fas ${t.icon}"></i>
-            <span>${t.label}</span>
+        (tab) => `
+          <div class="settings-nav-item ${tab.id === activeTabId ? "active" : ""}" data-tab="${tab.id}">
+            <i class="fas ${tab.icon}"></i>
+            <span>${tab.labelKey ? t(tab.labelKey, tab.label) : tab.label}</span>
           </div>
         `,
       )
@@ -31,6 +38,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       el.addEventListener("click", () => switchTab(el.dataset.tab));
     });
   }
+
+  // La schimbarea de limbă: retraduce etichetele din sidebar și re-randează
+  // tab-ul activ (fiecare tab își reconstruiește propriul markup din
+  // template(), care apelează t() — același mecanism ca la comutarea inițială
+  // de tab, doar declanșat de un eveniment diferit).
+  document.addEventListener("erp:locale-changed", () => {
+    renderNav();
+    if (activeTabId) {
+      contentEl.dataset.loaded = "";
+      switchTab(activeTabId);
+    }
+  });
 
   async function switchTab(tabId) {
     if (tabId === activeTabId && contentEl.dataset.loaded === tabId) return;

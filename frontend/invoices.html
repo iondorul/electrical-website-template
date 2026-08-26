@@ -21,7 +21,7 @@
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
 
-<body data-page-title="Invoices Management">
+<body data-page-title="Invoices Management" data-page-title-key="invoices.pageTitle">
 
     <div class="erp-wrapper">
 
@@ -50,17 +50,17 @@
                                                 <i class="fas fa-search"></i>
                                             </span>
                                             <input type="text" id="searchInput" class="form-control border-start-0 ps-0"
-                                                placeholder="Căutare după număr factură, client sau proiect...">
+                                                data-i18n-placeholder="invoices.searchPlaceholder" placeholder="Căutare după număr factură, client sau proiect...">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-5">
                                         <select id="statusFilter" class="form-select">
-                                            <option value="draft">Ciornă (Draft)</option>
-                                            <option value="issued">Emisă (Issued)</option>
-                                            <option value="partially_paid">Plătită Parțial</option>
-                                            <option value="paid">Plătită (Paid)</option>
-                                            <option value="overdue">Restantă (Overdue)</option>
-                                            <option value="canceled">Anulată (Canceled)</option>
+                                            <option value="draft" data-i18n="estimating.status.draft">Ciornă (Draft)</option>
+                                            <option value="issued" data-i18n="invoices.status.issued">Emisă (Issued)</option>
+                                            <option value="partially_paid" data-i18n="invoices.status.partially_paid">Plătită Parțial</option>
+                                            <option value="paid" data-i18n="invoices.status.paid">Plătită (Paid)</option>
+                                            <option value="overdue" data-i18n="invoices.status.overdue">Restantă (Overdue)</option>
+                                            <option value="canceled" data-i18n="quotes.status.canceled">Anulată (Canceled)</option>
                                         </select>
                                     </div>
                                 </div>
@@ -69,7 +69,7 @@
                             <div class="col-12 col-md-auto text-md-end">
                                 <button type="button" id="btnDeleteAllInvoices"
                                     class="btn btn-danger d-inline-flex align-items-center gap-2">
-                                    <i class="fas fa-trash-alt"></i> Șterge Tot
+                                    <i class="fas fa-trash-alt"></i> <span data-i18n="quotes.deleteAll">Șterge Tot</span>
                                 </button>
                             </div>
 
@@ -84,19 +84,19 @@
                             <table class="table table-hover align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="ps-4">Număr Factură</th>
-                                        <th>Client & Proiect</th>
-                                        <th>Data Emiterii</th>
-                                        <th>Scadență</th>
-                                        <th>Total Net</th>
-                                        <th>Total Brut</th>
-                                        <th>Status</th>
-                                        <th class="text-end pe-4">Acțiuni</th>
+                                        <th class="ps-4" data-i18n="invoices.table.invoiceNumber">Număr Factură</th>
+                                        <th data-i18n="estimating.table.clientProject">Client & Proiect</th>
+                                        <th data-i18n="quotes.table.issueDate">Data Emiterii</th>
+                                        <th data-i18n="invoices.table.dueDate">Scadență</th>
+                                        <th data-i18n="quotes.table.totalNet">Total Net</th>
+                                        <th data-i18n="quotes.table.totalGross">Total Brut</th>
+                                        <th data-i18n="common.status">Status</th>
+                                        <th class="text-end pe-4" data-i18n="common.actions">Acțiuni</th>
                                     </tr>
                                 </thead>
                                 <tbody id="invoicesTableBody">
                                     <tr>
-                                        <td colspan="8" class="text-center py-4 text-muted">Se încarcă facturile...</td>
+                                        <td colspan="8" class="text-center py-4 text-muted" data-i18n="invoices.loadingList">Se încarcă facturile...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -118,14 +118,14 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="viewModalTitle">Detalii Factură</h5>
+                    <h5 class="modal-title fw-bold" id="viewModalTitle" data-i18n="invoices.invoiceDetails">Detalii Factură</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="viewModalBody">
                     <!-- Populated dynamically by JS -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Închide</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.close">Închide</button>
                 </div>
             </div>
         </div>
@@ -136,45 +136,45 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="editModalTitle">Editare Factură</h5>
+                    <h5 class="modal-title fw-bold" id="editModalTitle" data-i18n="invoices.editInvoice">Editare Factură</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="editInvoiceId">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label">Status</label>
+                            <label class="form-label" data-i18n="common.status">Status</label>
                             <select id="editStatus" class="form-select">
-                                <option value="draft">Ciornă (Draft)</option>
-                                <option value="issued">Emisă (Issued)</option>
-                                <option value="partially_paid">Plătită Parțial</option>
-                                <option value="paid">Plătită (Paid)</option>
-                                <option value="overdue">Restantă (Overdue)</option>
-                                <option value="canceled">Anulată (Canceled)</option>
+                                <option value="draft" data-i18n="estimating.status.draft">Ciornă (Draft)</option>
+                                <option value="issued" data-i18n="invoices.status.issued">Emisă (Issued)</option>
+                                <option value="partially_paid" data-i18n="invoices.status.partially_paid">Plătită Parțial</option>
+                                <option value="paid" data-i18n="invoices.status.paid">Plătită (Paid)</option>
+                                <option value="overdue" data-i18n="invoices.status.overdue">Restantă (Overdue)</option>
+                                <option value="canceled" data-i18n="quotes.status.canceled">Anulată (Canceled)</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">TVA (%)</label>
+                            <label class="form-label" data-i18n="invoices.vatPercent">TVA (%)</label>
                             <input type="number" id="editVatRate" class="form-control" step="0.01" min="0">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Data Emiterii</label>
+                            <label class="form-label" data-i18n="quotes.table.issueDate">Data Emiterii</label>
                             <input type="date" id="editIssueDate" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Scadență</label>
+                            <label class="form-label" data-i18n="invoices.table.dueDate">Scadență</label>
                             <input type="date" id="editDueDate" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Discount (valoare)</label>
+                            <label class="form-label" data-i18n="invoices.discountValue">Discount (valoare)</label>
                             <input type="number" id="editDiscount" class="form-control" step="0.01" min="0">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
                     <button type="button" class="btn btn-primary" id="btnSaveEditInvoice">
-                        <i class="fas fa-save me-1"></i> Salvează
+                        <i class="fas fa-save me-1"></i> <span data-i18n="common.save">Salvează</span>
                     </button>
                 </div>
             </div>
@@ -186,35 +186,35 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Trimite Factura pe Email</h5>
+                    <h5 class="modal-title fw-bold" data-i18n="invoices.sendEmailTitle">Trimite Factura pe Email</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="sendEmailInvoiceId">
                     <div class="mb-3">
-                        <label class="form-label">Nume Client</label>
+                        <label class="form-label" data-i18n="invoices.clientName">Nume Client</label>
                         <input type="text" id="sendEmailClientName" class="form-control" readonly>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Companie</label>
+                        <label class="form-label" data-i18n="invoices.companyLabel">Companie</label>
                         <input type="text" id="sendEmailClientCompany" class="form-control" readonly>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Număr Factură</label>
+                        <label class="form-label" data-i18n="invoices.table.invoiceNumber">Număr Factură</label>
                         <input type="text" id="sendEmailInvoiceNumber" class="form-control" readonly>
                     </div>
                     <div class="mb-1">
-                        <label class="form-label">Email Destinatar</label>
-                        <input type="email" id="sendEmailRecipient" class="form-control" placeholder="nume@exemplu.com">
-                        <div class="invalid-feedback" id="sendEmailRecipientError">
+                        <label class="form-label" data-i18n="invoices.recipientEmail">Email Destinatar</label>
+                        <input type="email" id="sendEmailRecipient" class="form-control" data-i18n-placeholder="invoices.recipientEmailPlaceholder" placeholder="nume@exemplu.com">
+                        <div class="invalid-feedback" id="sendEmailRecipientError" data-i18n="invoices.invalidEmailFeedback">
                             Introduceți o adresă de email validă.
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
                     <button type="button" class="btn btn-success" id="btnConfirmSendInvoiceEmail">
-                        <i class="fas fa-paper-plane me-1"></i> Trimite
+                        <i class="fas fa-paper-plane me-1"></i> <span data-i18n="invoices.send">Trimite</span>
                     </button>
                 </div>
             </div>
@@ -226,56 +226,56 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Înregistrează Plată</h5>
+                    <h5 class="modal-title fw-bold" data-i18n="invoices.recordPayment">Înregistrează Plată</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="paymentInvoiceId">
                     <div class="d-flex justify-content-between mb-3 p-2 bg-light rounded">
                         <div>
-                            <small class="text-muted d-block">Total factură</small>
+                            <small class="text-muted d-block" data-i18n="invoices.invoiceTotal">Total factură</small>
                             <strong id="paymentTotalGross">-</strong>
                         </div>
                         <div class="text-end">
-                            <small class="text-muted d-block">Rest de plată</small>
+                            <small class="text-muted d-block" data-i18n="invoices.remainingBalance">Rest de plată</small>
                             <strong id="paymentRemaining" class="text-danger">-</strong>
                         </div>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label">Sumă *</label>
+                            <label class="form-label" data-i18n="invoices.amountRequired">Sumă *</label>
                             <input type="number" id="paymentAmount" class="form-control" step="0.01" min="0.01">
-                            <div class="invalid-feedback" id="paymentAmountError">
+                            <div class="invalid-feedback" id="paymentAmountError" data-i18n="invoices.invalidAmountFeedback">
                                 Introduceți o sumă validă, mai mare decât 0.
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Data plății</label>
+                            <label class="form-label" data-i18n="invoices.paymentDate">Data plății</label>
                             <input type="date" id="paymentDate" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Metodă</label>
+                            <label class="form-label" data-i18n="invoices.method">Metodă</label>
                             <select id="paymentMethod" class="form-select">
-                                <option value="bank_transfer">Transfer Bancar</option>
-                                <option value="cash">Numerar</option>
-                                <option value="card">Card</option>
-                                <option value="other">Altă metodă</option>
+                                <option value="bank_transfer" data-i18n="invoices.paymentMethod.bankTransfer">Transfer Bancar</option>
+                                <option value="cash" data-i18n="invoices.paymentMethod.cash">Numerar</option>
+                                <option value="card" data-i18n="invoices.paymentMethod.card">Card</option>
+                                <option value="other" data-i18n="invoices.paymentMethod.other">Altă metodă</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Nr. Referință</label>
-                            <input type="text" id="paymentReference" class="form-control" placeholder="opțional">
+                            <label class="form-label" data-i18n="invoices.referenceNumber">Nr. Referință</label>
+                            <input type="text" id="paymentReference" class="form-control" data-i18n-placeholder="invoices.optional" placeholder="opțional">
                         </div>
                         <div class="col-12">
-                            <label class="form-label">Note</label>
+                            <label class="form-label" data-i18n="estimating.notes">Note</label>
                             <textarea id="paymentNotes" class="form-control" rows="2"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
                     <button type="button" class="btn btn-success" id="btnConfirmRecordPayment">
-                        <i class="fas fa-money-bill-wave me-1"></i> Înregistrează
+                        <i class="fas fa-money-bill-wave me-1"></i> <span data-i18n="invoices.registerAction">Înregistrează</span>
                     </button>
                 </div>
             </div>
@@ -304,6 +304,7 @@
     <script src="js/utils.js"></script>
     <script src="js/toast.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/shell.js"></script>
 
     <!-- Module Specific JS -->

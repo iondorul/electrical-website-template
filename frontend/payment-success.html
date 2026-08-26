@@ -24,7 +24,7 @@
     <link href="css/payment-success.css" rel="stylesheet">
 </head>
 
-<body data-page-title="Plată reușită">
+<body data-page-title="Plată reușită" data-page-title-key="paymentSuccess.pageTitle">
 
     <div class="erp-wrapper">
 
@@ -64,7 +64,7 @@
 
                     <span class="success-plan-badge" id="successPlanBadge">
                         <i class="fas fa-bolt"></i>
-                        Plan Pro activat
+                        <span id="successPlanBadgeText">Plan Pro activat</span>
                     </span>
 
                     <h1 class="success-title" id="successTitle">Felicitări! Ai trecut la planul Pro 🎉</h1>
@@ -81,7 +81,7 @@
                         </button>
                         <a href="dashboard.html" class="success-btn success-btn-solid">
                             <i class="fas fa-gauge-high"></i>
-                            Mergi la Dashboard
+                            <span data-i18n="paymentSuccess.goToDashboard">Mergi la Dashboard</span>
                         </a>
                     </div>
 
@@ -103,6 +103,7 @@
     <script src="js/api.js"></script>
 
     <!-- Shell JS (Global Auth & Layout Loader — include auth guard + apel /auth/me) -->
+    <script src="js/i18n.js"></script>
     <script src="js/shell.js"></script>
 
     <!-- Fix race condition confirmată live, cu plată reală: shell.js face
@@ -165,15 +166,64 @@
             return lastDate;
         }
 
+        // Textul implicit (Free→Pro) e setat explicit prin t(), nu prin
+        // data-i18n static — un data-i18n ar intra în conflict cu
+        // translateStaticPage() (declanșat de erp:shell-ready, care fetch-uiește
+        // sidebar/topbar și rulează de obicei DUPĂ acest DOMContentLoaded) și cu
+        // renderRenewNowSuccessMessage()/renderGracePeriodUpgradeSuccessMessage()
+        // de mai jos — aceeași cauză ca bug-ul confirmat live pe butonul de
+        // factură (vezi comentariul din blocul de mai jos).
+        async function renderDefaultSuccessMessage() {
+            if (window.i18nReady) await window.i18nReady;
+
+            const params = new URLSearchParams(window.location.search);
+            const type = params.get("type");
+            if (type === "renew-now" || type === "grace-period-upgrade") return;
+
+            const badgeTextEl = document.getElementById("successPlanBadgeText");
+            const titleEl = document.getElementById("successTitle");
+            const descEl = document.getElementById("successDesc");
+
+            if (badgeTextEl) badgeTextEl.textContent = t("paymentSuccess.badgeDefault", "Plan Pro activat");
+            if (titleEl) titleEl.textContent = t("paymentSuccess.titleDefault", "Felicitări! Ai trecut la planul Pro 🎉");
+            if (descEl) descEl.textContent = t("paymentSuccess.descDefault", "Plata a fost procesată cu succes. Ai acum acces complet la toate funcțiile ElectricalVPF ERP.");
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             waitForPlanUpgrade(6, 1500);
+            renderDefaultSuccessMessage();
         });
+        document.addEventListener("erp:locale-changed", renderDefaultSuccessMessage);
     </script>
 
     <!-- Vezi Factura: preia session_id din URL (setat de Stripe la redirect), apelează
          GET /api/stripe/invoice/:sessionId, deschide factura într-un tab nou -->
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        // btnInvoiceText nu are data-i18n static (eliminat deliberat): textul
+        // implicit diferă în funcție de prezența session_id, deci e mereu setat
+        // explicit prin t() aici — un data-i18n static ar intra în conflict cu
+        // translateStaticPage() (declanșat mai târziu de erp:shell-ready) și ar
+        // rescrie orice stare dinamică deja setată (bug confirmat live: butonul
+        // rămânea "View Invoice" în loc de "Invoice unavailable" fără session_id).
+        function renderInvoiceButtonIdleState() {
+            const btnInvoice = document.getElementById("btnViewInvoice");
+            const btnInvoiceText = document.getElementById("btnViewInvoiceText");
+            if (!btnInvoice || !btnInvoiceText) return;
+
+            const params = new URLSearchParams(window.location.search);
+            const sessionId = params.get("session_id");
+
+            if (!sessionId) {
+                btnInvoice.disabled = true;
+                btnInvoiceText.textContent = t("paymentSuccess.invoiceUnavailable", "Factura indisponibilă");
+            } else {
+                btnInvoiceText.textContent = t("paymentSuccess.viewInvoice", "Vezi Factura");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            if (window.i18nReady) await window.i18nReady;
+
             const params = new URLSearchParams(window.location.search);
             const sessionId = params.get("session_id");
 
@@ -182,11 +232,9 @@
             const errorEl = document.getElementById("invoiceError");
             if (!btnInvoice) return;
 
-            if (!sessionId) {
-                btnInvoice.disabled = true;
-                btnInvoiceText.textContent = "Factura indisponibilă";
-                return;
-            }
+            renderInvoiceButtonIdleState();
+
+            if (!sessionId) return;
 
             btnInvoice.addEventListener("click", async () => {
                 errorEl.classList.add("d-none");
@@ -194,7 +242,7 @@
 
                 const originalText = btnInvoiceText.textContent;
                 btnInvoice.disabled = true;
-                btnInvoiceText.textContent = "Se încarcă...";
+                btnInvoiceText.textContent = t("paymentSuccess.loading", "Se încarcă...");
 
                 try {
                     const response = await API.get(
@@ -202,7 +250,7 @@
                     );
 
                     if (!response || !response.url) {
-                        throw new Error("Factura nu este încă disponibilă.");
+                        throw new Error(t("paymentSuccess.invoiceNotReady", "Factura nu este încă disponibilă."));
                     }
 
                     window.open(response.url, "_blank", "noopener");
@@ -210,7 +258,7 @@
                     console.error("Eroare la preluarea facturii:", err);
                     errorEl.textContent =
                         (err && err.message) ||
-                        "Nu s-a putut deschide factura. Încearcă din nou.";
+                        t("paymentSuccess.invoiceOpenError", "Nu s-a putut deschide factura. Încearcă din nou.");
                     errorEl.classList.remove("d-none");
                 } finally {
                     btnInvoice.disabled = false;
@@ -218,6 +266,8 @@
                 }
             });
         });
+
+        document.addEventListener("erp:locale-changed", renderInvoiceButtonIdleState);
     </script>
 
     <!-- Mesaj diferit pentru "Reînnoiește acum" (vezi erp-plans.html →
@@ -230,7 +280,9 @@
          plății; dacă webhook-ul n-a apucat încă, omitem grațios propoziția
          cu data, fără să blocăm restul mesajului. -->
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
+        async function renderRenewNowSuccessMessage() {
+            if (window.i18nReady) await window.i18nReady;
+
             const params = new URLSearchParams(window.location.search);
             if (params.get("type") !== "renew-now") return;
 
@@ -239,30 +291,33 @@
             const descEl = document.getElementById("successDesc");
 
             if (badgeEl) {
-                badgeEl.innerHTML = '<i class="fas fa-calendar-plus"></i> Reînnoire confirmată';
+                badgeEl.innerHTML = `<i class="fas fa-calendar-plus"></i> ${t("paymentSuccess.renewNow.badge", "Reînnoire confirmată")}`;
             }
             if (titleEl) {
-                titleEl.textContent = "Reînnoirea anticipată a fost confirmată! 🎉";
+                titleEl.textContent = t("paymentSuccess.renewNow.title", "Reînnoirea anticipată a fost confirmată! 🎉");
             }
 
             // Text neutru la interval — renewNow e adaptiv (lunar/anual), deci
             // fallback-ul (folosit doar dacă /subscription-status eșuează sau
             // webhook-ul n-a apucat încă să scrie noua dată) nu poate presupune
             // "o lună" fix.
-            let renewalText = "abonamentul tău Pro a fost extins.";
+            let renewalText = t("paymentSuccess.renewNow.extendedFallback", "abonamentul tău Pro a fost extins.");
             const currentPeriodEnd = await fetchRenewalDateWithRetry(4, 1500);
             if (currentPeriodEnd) {
                 const formatted = new Date(currentPeriodEnd).toLocaleDateString(
-                    "ro-RO",
+                    getCurrentLocaleCode(),
                     { day: "numeric", month: "long", year: "numeric" },
                 );
-                renewalText = `noua ta dată de reînnoire este ${formatted}.`;
+                renewalText = t("paymentSuccess.renewNow.newDateText", `noua ta dată de reînnoire este ${formatted}.`, { date: formatted });
             }
 
             if (descEl) {
-                descEl.textContent = `Plata a fost procesată cu succes — ${renewalText}`;
+                descEl.textContent = t("paymentSuccess.renewNow.desc", `Plata a fost procesată cu succes — ${renewalText}`, { renewalText });
             }
-        });
+        }
+
+        document.addEventListener("DOMContentLoaded", renderRenewNowSuccessMessage);
+        document.addEventListener("erp:locale-changed", renderRenewNowSuccessMessage);
     </script>
 
     <!-- Mesaj diferit pentru "Upgrade la Pro" apăsat în grace period (downgrade
@@ -273,7 +328,9 @@
          plan='pro' până acum; data afișată vine din același
          /stripe/subscription-status ca la renew-now mai sus. -->
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
+        async function renderGracePeriodUpgradeSuccessMessage() {
+            if (window.i18nReady) await window.i18nReady;
+
             const params = new URLSearchParams(window.location.search);
             if (params.get("type") !== "grace-period-upgrade") return;
 
@@ -282,28 +339,33 @@
             const descEl = document.getElementById("successDesc");
 
             if (badgeEl) {
-                badgeEl.innerHTML = '<i class="fas fa-crown"></i> Plan Pro reactivat';
+                badgeEl.innerHTML = `<i class="fas fa-crown"></i> ${t("paymentSuccess.gracePeriodUpgrade.badge", "Plan Pro reactivat")}`;
             }
             if (titleEl) {
-                titleEl.textContent = "Bine ai revenit pe planul Pro! 🎉";
+                titleEl.textContent = t("paymentSuccess.gracePeriodUpgrade.title", "Bine ai revenit pe planul Pro! 🎉");
             }
 
-            let renewalText = "abonamentul tău Pro este activ.";
+            let renewalText = t("paymentSuccess.gracePeriodUpgrade.activeFallback", "abonamentul tău Pro este activ.");
             const currentPeriodEnd = await fetchRenewalDateWithRetry(4, 1500);
             if (currentPeriodEnd) {
                 const formatted = new Date(currentPeriodEnd).toLocaleDateString(
-                    "ro-RO",
+                    getCurrentLocaleCode(),
                     { day: "numeric", month: "long", year: "numeric" },
                 );
-                renewalText = `abonamentul tău Pro este activ până la ${formatted}.`;
+                renewalText = t("paymentSuccess.gracePeriodUpgrade.activeUntilText", `abonamentul tău Pro este activ până la ${formatted}.`, { date: formatted });
             }
 
             if (descEl) {
-                descEl.textContent =
-                    `Plata a fost procesată cu succes — downgrade-ul programat a fost anulat, ` +
-                    renewalText;
+                descEl.textContent = t(
+                    "paymentSuccess.gracePeriodUpgrade.desc",
+                    `Plata a fost procesată cu succes — downgrade-ul programat a fost anulat, ${renewalText}`,
+                    { renewalText },
+                );
             }
-        });
+        }
+
+        document.addEventListener("DOMContentLoaded", renderGracePeriodUpgradeSuccessMessage);
+        document.addEventListener("erp:locale-changed", renderGracePeriodUpgradeSuccessMessage);
     </script>
 </body>
 

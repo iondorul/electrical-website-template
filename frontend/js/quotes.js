@@ -36,6 +36,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Încărcare inițială date
   await loadQuotes();
 
+  // La schimbarea de limbă: re-randează cu datele curente — reutilizează
+  // fluxul existent, fără logică nouă.
+  document.addEventListener("erp:locale-changed", loadQuotes);
+
   // Event Căutare Debounced
   if (searchInput) {
     searchInput.addEventListener(
@@ -92,9 +96,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // --- FUNCȚII CRUD & UI ---
 
+  // Etichetă de status — statusul se afișa BRUT (q.status.toUpperCase(), fără
+  // nicio traducere existentă), spre deosebire de projects.js. getStatusBadgeColor
+  // de mai jos rămâne neatinsă (culoare, nu text) — doar eticheta e nouă.
+  function getStatusLabel(status) {
+    const labels = {
+      draft: t("estimating.status.draft", "Ciornă (Draft)"),
+      sent: t("quotes.status.sent", "Trimisă (Sent)"),
+      approved: t("quotes.status.approved", "Aprobată (Approved)"),
+      rejected: t("quotes.status.rejected", "Respinsă (Rejected)"),
+      expired: t("quotes.status.expired", "Expirată (Expired)"),
+      canceled: t("quotes.status.canceled", "Anulată (Canceled)"),
+    };
+    return (labels[status] || status).toUpperCase();
+  }
+
   async function loadQuotes() {
     try {
-      tableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">Se încarcă ofertele...</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">${t("quotes.loadingList", "Se încarcă ofertele...")}</td></tr>`;
 
       const queryParams = new URLSearchParams({
         page: currentPage,
@@ -109,18 +128,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         renderTable(response.data || response.items || []);
         renderPagination(response.pagination);
       } else {
-        tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">Nu s-au putut încărca datele.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">${t("estimating.loadDataFailed", "Nu s-au putut încărca datele.")}</td></tr>`;
       }
     } catch (err) {
       console.error("Eroare la încărcare oferte:", err);
-      Toast.show("Eroare de rețea la încărcarea ofertelor.", "danger");
-      tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">Eroare de rețea.</td></tr>`;
+      Toast.show(t("quotes.networkLoadError", "Eroare de rețea la încărcarea ofertelor."), "danger");
+      tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">${t("common.networkError", "Eroare de rețea.")}</td></tr>`;
     }
   }
 
   function renderTable(quotes) {
     if (!quotes || quotes.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">Nu există oferte înregistrate.</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">${t("quotes.noQuotes", "Nu există oferte înregistrate.")}</td></tr>`;
       return;
     }
 
@@ -133,29 +152,29 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </td>
                 <td>
                     <span class="d-block fw-bold">${Utils.escapeHtml(q.client_name || "-")}</span>
-                    <small class="text-muted">${Utils.escapeHtml(q.project_name || "Fără proiect")}</small>
+                    <small class="text-muted">${Utils.escapeHtml(q.project_name || t("estimating.noProject", "Fără proiect"))}</small>
                 </td>
                 <td>${Utils.formatDate ? Utils.formatDate(q.issue_date) : q.issue_date}</td>
                 <td>${Utils.formatDate ? Utils.formatDate(q.valid_until) : q.valid_until}</td>
                 <td>${Utils.formatCurrency(q.total_net)}</td>
                 <td class="fw-bold">${Utils.formatCurrency(q.total_gross)}</td>
-                <td><span class="badge bg-${getStatusBadgeColor(q.status)}">${Utils.escapeHtml(q.status.toUpperCase())}</span></td>
+                <td><span class="badge bg-${getStatusBadgeColor(q.status)}">${Utils.escapeHtml(getStatusLabel(q.status))}</span></td>
                 <td class="text-end pe-4">
                     <div class="d-inline-flex align-items-center gap-1">
                         ${
                           q.status === "approved"
-                            ? `<button type="button" class="btn btn-sm btn-outline-success me-1 btn-invoice d-inline-flex align-items-center gap-1" data-id="${q.id}" title="Facturează">
-                                <i class="fas fa-file-invoice-dollar"></i> Facturează
+                            ? `<button type="button" class="btn btn-sm btn-outline-success me-1 btn-invoice d-inline-flex align-items-center gap-1" data-id="${q.id}" title="${t("quotes.invoiceAction", "Facturează")}">
+                                <i class="fas fa-file-invoice-dollar"></i> ${t("quotes.invoiceAction", "Facturează")}
                               </button>`
                             : ``
                         }
-                        <button type="button" class="btn btn-sm btn-outline-info btn-view d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" data-id="${q.id}" title="Vizualizare">
+                        <button type="button" class="btn btn-sm btn-outline-info btn-view d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" data-id="${q.id}" title="${t("quotes.viewAction", "Vizualizare")}">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-primary btn-status d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" data-id="${q.id}" data-status="${q.status}" title="Schimbă Status">
+                        <button type="button" class="btn btn-sm btn-outline-primary btn-status d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" data-id="${q.id}" data-status="${q.status}" title="${t("quotes.changeStatusAction", "Schimbă Status")}">
                             <i class="fas fa-tasks"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-danger btn-delete d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" data-id="${q.id}" title="Arhivare">
+                        <button type="button" class="btn btn-sm btn-outline-danger btn-delete d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" data-id="${q.id}" title="${t("estimating.archiveTitle", "Arhivare")}">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -186,14 +205,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function loadApprovedEstimates() {
     const selectEl = document.getElementById("selectEstimateId");
     try {
-      selectEl.innerHTML = `<option value="">Se încarcă devizele aprobate...</option>`;
+      selectEl.innerHTML = `<option value="">${t("quotes.loadingApprovedEstimates", "Se încarcă devizele aprobate...")}</option>`;
       const response = await API.get("/estimates?status=completed");
 
       if (response && response.success) {
         const estimatesList = response.data || [];
         if (estimatesList.length > 0) {
           selectEl.innerHTML =
-            `<option value="">Selectează devizul aprobat...</option>` +
+            `<option value="">${t("quotes.selectApprovedEstimateOption", "Selectează devizul aprobat...")}</option>` +
             estimatesList
               .map(
                 (e) =>
@@ -208,14 +227,14 @@ document.addEventListener("DOMContentLoaded", async () => {
               )
               .join("");
         } else {
-          selectEl.innerHTML = `<option value="">Nu există devize aprobate disponibile</option>`;
+          selectEl.innerHTML = `<option value="">${t("quotes.noApprovedEstimates", "Nu există devize aprobate disponibile")}</option>`;
         }
       } else {
-        selectEl.innerHTML = `<option value="">Nu s-au putut încărca devizele</option>`;
+        selectEl.innerHTML = `<option value="">${t("quotes.couldNotLoadEstimates", "Nu s-au putut încărca devizele")}</option>`;
       }
     } catch (err) {
       console.error("Eroare încărcare devize aprobate:", err);
-      selectEl.innerHTML = `<option value="">Eroare de rețea</option>`;
+      selectEl.innerHTML = `<option value="">${t("common.networkError", "Eroare de rețea")}</option>`;
     }
   }
 
@@ -235,7 +254,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!isValid) {
       Toast.show(
-        "Completează câmpurile obligatorii marcate cu roșu.",
+        t("quotes.fillRequiredFields", "Completează câmpurile obligatorii marcate cu roșu."),
         "danger",
       );
       return;
@@ -255,18 +274,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       const response = await API.post("/quotes", payload);
 
       if (response && response.success) {
-        Toast.show("Ofertă generată cu succes!", "success");
+        Toast.show(t("quotes.generated", "Ofertă generată cu succes!"), "success");
         convertModalInstance.hide();
         await loadQuotes();
       } else {
-        let errorMessage = response.message || "Eroare la generarea ofertei.";
+        let errorMessage = response.message || t("quotes.generateFailed", "Eroare la generarea ofertei.");
 
         if (
           errorMessage.includes("already been created") ||
           errorMessage.includes("QUOTE_ALREADY_EXISTS")
         ) {
-          errorMessage =
-            "Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz.";
+          errorMessage = t(
+            "quotes.alreadyExists",
+            "Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz.",
+          );
           Toast.show(errorMessage, "orange");
         } else {
           Toast.show(errorMessage, "danger");
@@ -275,7 +296,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (err) {
       console.error("Eroare generare ofertă:", err);
 
-      let errorMessage = "Eroare de rețea la generarea ofertei.";
+      let errorMessage = t("quotes.generateNetworkError", "Eroare de rețea la generarea ofertei.");
       let toastType = "danger";
       const rawError = err.message || "";
 
@@ -283,18 +304,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         rawError.includes("already been created") ||
         rawError.includes("QUOTE_ALREADY_EXISTS")
       ) {
-        errorMessage =
-          "Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz.";
+        errorMessage = t(
+          "quotes.alreadyExists",
+          "Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz.",
+        );
         toastType = "orange";
       } else if (rawError.includes("ESTIMATE_NOT_FOUND")) {
-        errorMessage = "Devizul selectat nu mai există sau a fost dezactivat.";
+        errorMessage = t("quotes.estimateNotFound", "Devizul selectat nu mai există sau a fost dezactivat.");
         toastType = "orange";
       } else if (
         rawError.includes("Finalizat") ||
         rawError.includes("completed")
       ) {
-        errorMessage =
-          "Devizul trebuie să fie în starea Finalizat înainte de a putea genera oferta comercială.";
+        errorMessage = t(
+          "quotes.estimateMustBeCompleted",
+          "Devizul trebuie să fie în starea Finalizat înainte de a putea genera oferta comercială.",
+        );
         toastType = "orange";
       }
 
@@ -309,15 +334,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (response && response.success) {
-        Toast.show("Factură generată cu succes din ofertă!", "success");
+        Toast.show(t("quotes.invoiceGenerated", "Factură generată cu succes din ofertă!"), "success");
       } else {
-        let msg = response.message || "Eroare la generarea facturii.";
+        let msg = response.message || t("quotes.invoiceGenerateFailed", "Eroare la generarea facturii.");
         let toastType = "danger";
         if (
           msg.includes("already been created") ||
           msg.includes("INVOICE_ALREADY_EXISTS")
         ) {
-          msg = "Există deja o factură generată pentru această ofertă.";
+          msg = t("quotes.invoiceAlreadyExists", "Există deja o factură generată pentru această ofertă.");
           toastType = "orange";
         }
         Toast.show(msg, toastType);
@@ -326,13 +351,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Eroare generare factură:", err);
       const rawError = err.message || "";
 
-      let msg = "Eroare de rețea la generarea facturii.";
+      let msg = t("quotes.invoiceGenerateNetworkError", "Eroare de rețea la generarea facturii.");
       let toastType = "danger";
       if (
         rawError.includes("already been created") ||
         rawError.includes("INVOICE_ALREADY_EXISTS")
       ) {
-        msg = "Există deja o factură generată pentru această ofertă.";
+        msg = t("quotes.invoiceAlreadyExists", "Există deja o factură generată pentru această ofertă.");
         toastType = "orange";
       } else if (rawError) {
         msg = `${rawError}`;
@@ -348,7 +373,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (
       !confirm(
-        "Ești absolut sigur, tată? Ștergi toate ofertele și articolele din baza de date!",
+        t(
+          "quotes.deleteAllConfirm",
+          "Ești absolut sigur, tată? Ștergi toate ofertele și articolele din baza de date!",
+        ),
       )
     ) {
       return;
@@ -358,17 +386,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       const response = await API.delete("/quotes/delete-all");
 
       if (response && response.success) {
-        Toast.show("Toate ofertele au fost șterse cu succes.", "success");
+        Toast.show(t("quotes.allDeleted", "Toate ofertele au fost șterse cu succes."), "success");
         setTimeout(() => location.reload(), 1000);
       } else {
         Toast.show(
-          response.message || "Eroare la ștergerea ofertelor.",
+          response.message || t("quotes.deleteAllFailed", "Eroare la ștergerea ofertelor."),
           "danger",
         );
       }
     } catch (error) {
       console.error("Eroare:", error);
-      Toast.show("Eroare de conexiune la server.", "danger");
+      Toast.show(t("quotes.connectionError", "Eroare de conexiune la server."), "danger");
     }
   });
 
@@ -378,18 +406,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const allowedTransitions = {
       draft: [
-        { value: "sent", label: "Trimisă (Sent)" },
-        { value: "canceled", label: "Anulată (Canceled)" },
+        { value: "sent", label: t("quotes.status.sent", "Trimisă (Sent)") },
+        { value: "canceled", label: t("quotes.status.canceled", "Anulată (Canceled)") },
       ],
       sent: [
-        { value: "approved", label: "Aprobată (Approved)" },
-        { value: "rejected", label: "Respinsă (Rejected)" },
-        { value: "expired", label: "Expirată (Expired)" },
-        { value: "canceled", label: "Anulată (Canceled)" },
+        { value: "approved", label: t("quotes.status.approved", "Aprobată (Approved)") },
+        { value: "rejected", label: t("quotes.status.rejected", "Respinsă (Rejected)") },
+        { value: "expired", label: t("quotes.status.expired", "Expirată (Expired)") },
+        { value: "canceled", label: t("quotes.status.canceled", "Anulată (Canceled)") },
       ],
-      approved: [{ value: "canceled", label: "Anulată (Canceled)" }],
-      rejected: [{ value: "draft", label: "Ciornă / Modifică (Draft)" }],
-      expired: [{ value: "draft", label: "Ciornă / Modifică (Draft)" }],
+      approved: [{ value: "canceled", label: t("quotes.status.canceled", "Anulată (Canceled)") }],
+      rejected: [{ value: "draft", label: t("quotes.status.draftModify", "Ciornă / Modifică (Draft)") }],
+      expired: [{ value: "draft", label: t("quotes.status.draftModify", "Ciornă / Modifică (Draft)") }],
       canceled: [],
     };
 
@@ -398,7 +426,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (options.length === 0) {
       Toast.show(
-        "Această ofertă este într-un status final și nu mai poate fi modificată.",
+        t("quotes.finalStatusNoChange", "Această ofertă este într-un status final și nu mai poate fi modificată."),
         "orange",
       );
       return;
@@ -424,18 +452,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       const response = await API.put(`/quotes/${id}/status`, { status });
 
       if (response && response.success) {
-        Toast.show("Status actualizat cu succes!", "success");
+        Toast.show(t("quotes.statusUpdated", "Status actualizat cu succes!"), "success");
         statusModalInstance.hide();
         await loadQuotes();
       } else {
         Toast.show(
-          response.message || "Eroare la actualizarea statusului.",
+          response.message || t("quotes.statusUpdateFailed", "Eroare la actualizarea statusului."),
           "danger",
         );
       }
     } catch (err) {
       console.error("Eroare status:", err);
-      Toast.show("Eroare de rețea la schimbarea statusului.", "danger");
+      Toast.show(t("quotes.statusUpdateNetworkError", "Eroare de rețea la schimbarea statusului."), "danger");
     }
   }
 
@@ -444,8 +472,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       const response = await API.get(`/quotes/${id}`);
       if (response && response.success) {
         const q = response.data;
-        document.getElementById("viewModalTitle").textContent =
-          `Detalii Ofertă: ${q.quote_number}`;
+        document.getElementById("viewModalTitle").textContent = t(
+          "quotes.quoteDetailsWithNumber",
+          `Detalii Ofertă: ${q.quote_number}`,
+          { number: q.quote_number },
+        );
 
         let itemsHtml = "";
         if (q.items && q.items.length > 0) {
@@ -453,12 +484,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             <table class="table table-sm table-bordered mt-3 align-middle">
               <thead class="table-light">
                 <tr>
-                  <th>Categorie</th>
-                  <th>Descriere</th>
-                  <th>Cant.</th>
-                  <th>UM</th>
-                  <th>Preț U.</th>
-                  <th>Total</th>
+                  <th>${t("quotes.itemTable.category", "Categorie")}</th>
+                  <th>${t("estimating.itemTable.description", "Descriere")}</th>
+                  <th>${t("quotes.itemTable.qty", "Cant.")}</th>
+                  <th>${t("estimating.itemTable.unit", "UM")}</th>
+                  <th>${t("quotes.itemTable.unitPrice", "Preț U.")}</th>
+                  <th>${t("estimating.itemTable.total", "Total")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -483,35 +514,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         document.getElementById("viewModalBody").innerHTML = `
           <div class="row g-2 mb-3">
-            <div class="col-md-6"><strong>Client:</strong> ${Utils.escapeHtml(q.client_name || "-")}</div>
-            <div class="col-md-6"><strong>Proiect:</strong> ${Utils.escapeHtml(q.project_name || "-")}</div>
-            <div class="col-md-6"><strong>Data Emiterii:</strong> ${Utils.formatDate ? Utils.formatDate(q.issue_date) : q.issue_date}</div>
-            <div class="col-md-6"><strong>Valabilitate:</strong> ${Utils.formatDate ? Utils.formatDate(q.valid_until) : q.valid_until}</div>
+            <div class="col-md-6"><strong>${t("dashboard.table.client", "Client")}:</strong> ${Utils.escapeHtml(q.client_name || "-")}</div>
+            <div class="col-md-6"><strong>${t("quotes.projectLabel", "Proiect")}:</strong> ${Utils.escapeHtml(q.project_name || "-")}</div>
+            <div class="col-md-6"><strong>${t("quotes.table.issueDate", "Data Emiterii")}:</strong> ${Utils.formatDate ? Utils.formatDate(q.issue_date) : q.issue_date}</div>
+            <div class="col-md-6"><strong>${t("quotes.table.validUntil", "Valabilitate")}:</strong> ${Utils.formatDate ? Utils.formatDate(q.valid_until) : q.valid_until}</div>
           </div>
           <div class="card bg-light p-3 border-0 mb-2">
             <div class="d-flex justify-content-between mb-1">
-              <span>Subtotal Materials:</span>
+              <span>${t("quotes.subtotalMaterials", "Subtotal Materials")}:</span>
               <span>${Utils.formatCurrency(q.subtotal_materials)}</span>
             </div>
             <div class="d-flex justify-content-between mb-1">
-              <span>Subtotal Labor:</span>
+              <span>${t("quotes.subtotalLabor", "Subtotal Labor")}:</span>
               <span>${Utils.formatCurrency(q.subtotal_labor)}</span>
             </div>
             <div class="d-flex justify-content-between mb-1">
-              <span>Discount:</span>
+              <span>${t("quotes.discount", "Discount")}:</span>
               <span>${Utils.formatCurrency(q.discount_amount)}</span>
             </div>
             <div class="d-flex justify-content-between mb-1">
-              <span>Total Net:</span>
+              <span>${t("quotes.table.totalNet", "Total Net")}:</span>
               <span>${Utils.formatCurrency(q.total_net)}</span>
             </div>
             <div class="d-flex justify-content-between mb-1">
-              <span>TVA (${q.vat_rate}%):</span>
+              <span>${t("quotes.vatWithRate", "TVA ({{rate}}%)", { rate: q.vat_rate })}:</span>
               <span>${Utils.formatCurrency(q.vat_amount)}</span>
             </div>
             <hr class="my-2">
             <div class="d-flex justify-content-between fs-5 fw-bold text-primary">
-              <span>TOTAL BRUT OFERTĂ:</span>
+              <span>${t("quotes.totalGrossQuote", "TOTAL BRUT OFERTĂ:")}</span>
               <span>${Utils.formatCurrency(q.total_gross)}</span>
             </div>
           </div>
@@ -520,10 +551,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         viewModalInstance.show();
       } else {
-        Toast.show("Nu s-au putut prelua detaliile ofertei.", "danger");
+        Toast.show(t("quotes.detailsFetchFailed", "Nu s-au putut prelua detaliile ofertei."), "danger");
       }
     } catch (err) {
-      Toast.show("Eroare de rețea la încărcarea ofertei.", "danger");
+      Toast.show(t("quotes.detailsNetworkError", "Eroare de rețea la încărcarea ofertei."), "danger");
     }
   }
 
@@ -536,17 +567,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await API.delete(`/quotes/${id}`);
       if (response && response.success) {
-        Toast.show("Ofertă arhivată cu succes!", "success");
+        Toast.show(t("quotes.archived", "Ofertă arhivată cu succes!"), "success");
         deleteModalInstance.hide();
         await loadQuotes();
       } else {
         Toast.show(
-          response.message || "Eroare la arhivarea ofertei.",
+          response.message || t("quotes.archiveFailed", "Eroare la arhivarea ofertei."),
           "danger",
         );
       }
     } catch (err) {
-      Toast.show("Eroare de rețea la arhivarea ofertei.", "danger");
+      Toast.show(t("quotes.archiveNetworkError", "Eroare de rețea la arhivarea ofertei."), "danger");
     }
   }
 
@@ -561,7 +592,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     html += `
       <li class="page-item ${page === 1 ? "disabled" : ""}">
-        <button class="page-link" data-page="${page - 1}">Înapoi</button>
+        <button class="page-link" data-page="${page - 1}">${t("common.back", "Înapoi")}</button>
       </li>
     `;
 
@@ -575,7 +606,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     html += `
       <li class="page-item ${page === totalPages ? "disabled" : ""}">
-        <button class="page-link" data-page="${page + 1}">Înainte</button>
+        <button class="page-link" data-page="${page + 1}">${t("common.next", "Înainte")}</button>
       </li>
     `;
 

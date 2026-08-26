@@ -21,7 +21,7 @@
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
 
-<body data-page-title="Quotes Management">
+<body data-page-title="Quotes Management" data-page-title-key="quotes.pageTitle">
 
     <div class="erp-wrapper">
 
@@ -50,18 +50,18 @@
                                                 <i class="fas fa-search"></i>
                                             </span>
                                             <input type="text" id="searchInput" class="form-control border-start-0 ps-0"
-                                                placeholder="Căutare după număr ofertă, client sau proiect...">
+                                                data-i18n-placeholder="quotes.searchPlaceholder" placeholder="Căutare după număr ofertă, client sau proiect...">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-5">
                                         <select id="statusFilter" class="form-select">
-                                            <option value="">Toate Statusurile</option>
-                                            <option value="draft">Ciornă (Draft)</option>
-                                            <option value="sent">Trimisă (Sent)</option>
-                                            <option value="approved">Aprobată (Approved)</option>
-                                            <option value="rejected">Respinsă (Rejected)</option>
-                                            <option value="expired">Expirată (Expired)</option>
-                                            <option value="canceled">Anulată (Canceled)</option>
+                                            <option value="" data-i18n="quotes.allStatuses">Toate Statusurile</option>
+                                            <option value="draft" data-i18n="estimating.status.draft">Ciornă (Draft)</option>
+                                            <option value="sent" data-i18n="quotes.status.sent">Trimisă (Sent)</option>
+                                            <option value="approved" data-i18n="quotes.status.approved">Aprobată (Approved)</option>
+                                            <option value="rejected" data-i18n="quotes.status.rejected">Respinsă (Rejected)</option>
+                                            <option value="expired" data-i18n="quotes.status.expired">Expirată (Expired)</option>
+                                            <option value="canceled" data-i18n="quotes.status.canceled">Anulată (Canceled)</option>
                                         </select>
                                     </div>
                                 </div>
@@ -70,10 +70,10 @@
                             <!-- Convert from Estimate Button -->
                             <div class="col-12 col-md-auto text-end">
                                 <button class="btn btn-danger fw-semibold px-4 me-2" id="btnDeleteAllQuotes">
-                                    <i class="fas fa-trash-alt me-2"></i> Șterge Tot
+                                    <i class="fas fa-trash-alt me-2"></i> <span data-i18n="quotes.deleteAll">Șterge Tot</span>
                                 </button>
                                 <button class="btn btn-primary fw-semibold px-4" id="btnOpenConvertModal">
-                                    <i class="fas fa-file-invoice-dollar me-2"></i> Generare din Deviz
+                                    <i class="fas fa-file-invoice-dollar me-2"></i> <span data-i18n="quotes.generateFromEstimate">Generare din Deviz</span>
                                 </button>
                             </div>
                         </div>
@@ -87,19 +87,19 @@
                             <table class="table table-hover align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="ps-4">Număr Ofertă</th>
-                                        <th>Client & Proiect</th>
-                                        <th>Data Emiterii</th>
-                                        <th>Valabilitate</th>
-                                        <th>Total Net</th>
-                                        <th>Total Brut</th>
-                                        <th>Status</th>
-                                        <th class="text-end pe-4">Acțiuni</th>
+                                        <th class="ps-4" data-i18n="quotes.table.quoteNumber">Număr Ofertă</th>
+                                        <th data-i18n="estimating.table.clientProject">Client & Proiect</th>
+                                        <th data-i18n="quotes.table.issueDate">Data Emiterii</th>
+                                        <th data-i18n="quotes.table.validUntil">Valabilitate</th>
+                                        <th data-i18n="quotes.table.totalNet">Total Net</th>
+                                        <th data-i18n="quotes.table.totalGross">Total Brut</th>
+                                        <th data-i18n="common.status">Status</th>
+                                        <th class="text-end pe-4" data-i18n="common.actions">Acțiuni</th>
                                     </tr>
                                 </thead>
                                 <tbody id="quotesTableBody">
                                     <tr>
-                                        <td colspan="8" class="text-center py-4 text-muted">Se încarcă ofertele...</td>
+                                        <td colspan="8" class="text-center py-4 text-muted" data-i18n="quotes.loadingList">Se încarcă ofertele...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -121,50 +121,50 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Generează Ofertă Comercială</h5>
+                    <h5 class="modal-title fw-bold" data-i18n="quotes.generateQuote">Generează Ofertă Comercială</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="convertQuoteForm" novalidate>
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold" for="selectEstimateId">Selectează Devizul Aprobat
+                                <label class="form-label fw-bold" for="selectEstimateId" data-i18n="quotes.selectApprovedEstimate">Selectează Devizul Aprobat
                                     *</label>
                                 <select id="selectEstimateId" class="form-select" required>
-                                    <option value="">Se încarcă devizele aprobate...</option>
+                                    <option value="" data-i18n="quotes.loadingApprovedEstimates">Se încarcă devizele aprobate...</option>
                                 </select>
-                                <div class="invalid-feedback">Selectarea unui deviz aprobat este obligatorie.</div>
+                                <div class="invalid-feedback" data-i18n="quotes.approvedEstimateRequired">Selectarea unui deviz aprobat este obligatorie.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold" for="inputValidUntil">Valabilă Până La *</label>
+                                <label class="form-label fw-bold" for="inputValidUntil" data-i18n="quotes.validUntilLabel">Valabilă Până La *</label>
                                 <input type="date" id="inputValidUntil" class="form-control" required>
-                                <div class="invalid-feedback">Data de valabilitate este obligatorie.</div>
+                                <div class="invalid-feedback" data-i18n="quotes.validUntilRequired">Data de valabilitate este obligatorie.</div>
                             </div>
                         </div>
 
                         <div class="form-check form-switch mb-3">
                             <input class="form-check-input" type="checkbox" id="checkShowMaterials">
-                            <label class="form-check-label fw-semibold" for="checkShowMaterials">
+                            <label class="form-check-label fw-semibold" for="checkShowMaterials" data-i18n="quotes.showMaterialsBreakdown">
                                 Afișează detalierea materialelor pe oferta trimisă clientului
                             </label>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold" for="inputTerms">Termeni și Condiții Comerciale</label>
+                            <label class="form-label fw-bold" for="inputTerms" data-i18n="quotes.termsLabel">Termeni și Condiții Comerciale</label>
                             <textarea id="inputTerms" class="form-control" rows="3"
-                                placeholder="ex: Valabilitate ofertă 30 zile. Condiții de plată: 30% avans..."></textarea>
+                                data-i18n-placeholder="quotes.termsPlaceholder" placeholder="ex: Valabilitate ofertă 30 zile. Condiții de plată: 30% avans..."></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold" for="inputNotes">Note / Observații Interne</label>
+                            <label class="form-label fw-bold" for="inputNotes" data-i18n="quotes.internalNotesLabel">Note / Observații Interne</label>
                             <textarea id="inputNotes" class="form-control" rows="2"
-                                placeholder="Observații interne pentru echipa de vânzări..."></textarea>
+                                data-i18n-placeholder="quotes.internalNotesPlaceholder" placeholder="Observații interne pentru echipa de vânzări..."></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="btn btn-primary fw-semibold px-4" id="btnSubmitConvert">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
+                    <button type="button" class="btn btn-primary fw-semibold px-4" id="btnSubmitConvert" data-i18n="quotes.generateQuoteBtn">
                         Generează Ofertă
                     </button>
                 </div>
@@ -177,21 +177,21 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Actualizare Status Ofertă</h5>
+                    <h5 class="modal-title fw-bold" data-i18n="quotes.updateStatus">Actualizare Status Ofertă</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="statusForm">
                         <input type="hidden" id="statusQuoteId">
                         <div class="mb-3">
-                            <label class="form-label fw-bold" for="selectNextStatus">Selectează Noul Status *</label>
+                            <label class="form-label fw-bold" for="selectNextStatus" data-i18n="quotes.selectNewStatus">Selectează Noul Status *</label>
                             <select id="selectNextStatus" class="form-select" required></select>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="btn btn-primary fw-semibold px-4" id="btnSaveStatus">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
+                    <button type="button" class="btn btn-primary fw-semibold px-4" id="btnSaveStatus" data-i18n="quotes.applyStatus">
                         Aplica Status
                     </button>
                 </div>
@@ -204,14 +204,14 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="viewModalTitle">Detalii Ofertă</h5>
+                    <h5 class="modal-title fw-bold" id="viewModalTitle" data-i18n="quotes.quoteDetails">Detalii Ofertă</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="viewModalBody">
                     <!-- Populated dynamically by JS -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Închide</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.close">Închide</button>
                 </div>
             </div>
         </div>
@@ -223,13 +223,13 @@
             <div class="modal-content text-center p-3">
                 <div class="modal-body">
                     <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
-                    <h5 class="fw-bold mb-2">Arhivezi oferta?</h5>
-                    <p class="text-muted small mb-0">Acțiunea va trece oferta în starea inactivă.</p>
+                    <h5 class="fw-bold mb-2" data-i18n="quotes.archiveConfirmTitle">Arhivezi oferta?</h5>
+                    <p class="text-muted small mb-0" data-i18n="quotes.archiveConfirmDesc">Acțiunea va trece oferta în starea inactivă.</p>
                     <input type="hidden" id="deleteQuoteId">
                 </div>
                 <div class="d-flex justify-content-center gap-2 mt-2">
-                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="btn btn-danger btn-sm px-3" id="btnConfirmDelete">
+                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
+                    <button type="button" class="btn btn-danger btn-sm px-3" id="btnConfirmDelete" data-i18n="projects.yesArchive">
                         Da, arhivează
                     </button>
                 </div>
@@ -259,6 +259,7 @@
     <script src="js/utils.js"></script>
     <script src="js/toast.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/shell.js"></script>
 
     <!-- Module Specific JS -->

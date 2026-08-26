@@ -1,0 +1,190 @@
+- generic [ref=f115e2]:
+  - complementary [ref=f115e3]:
+    - generic [ref=f115e4]:
+      - generic [ref=f115e5]:
+        - generic [ref=f115e6]:
+          - generic [ref=f115e7]: 
+          - generic [ref=f115e8]:
+            - text: Electrical
+            - strong [ref=f115e9]: VPF
+        - link " PRO PLAN" [ref=f115e10] [cursor=pointer]:
+          - /url: settings.html#billing
+          - generic [ref=f115e11]: 
+          - generic [ref=f115e12]: PRO PLAN
+      - button "" [ref=f115e13] [cursor=pointer]
+    - navigation [ref=f115e15]:
+      - list [ref=f115e16]:
+        - listitem [ref=f115e17]:
+          - link " Dashboard" [ref=f115e18] [cursor=pointer]:
+            - /url: dashboard.html
+            - generic [ref=f115e19]: 
+            - generic [ref=f115e20]: Dashboard
+        - listitem [ref=f115e21]:
+          - link " Clienți" [ref=f115e22] [cursor=pointer]:
+            - /url: clients.html
+            - generic [ref=f115e23]: 
+            - generic [ref=f115e24]: Clienți
+        - listitem [ref=f115e25]:
+          - link " Proiecte" [ref=f115e26] [cursor=pointer]:
+            - /url: projects.html
+            - generic [ref=f115e27]: 
+            - generic [ref=f115e28]: Proiecte
+        - listitem [ref=f115e29]:
+          - link " Estimări" [ref=f115e30] [cursor=pointer]:
+            - /url: estimating.html
+            - generic [ref=f115e31]: 
+            - generic [ref=f115e32]: Estimări
+        - listitem [ref=f115e33]:
+          - link " Oferte" [ref=f115e34] [cursor=pointer]:
+            - /url: quotes.html
+            - generic [ref=f115e35]: 
+            - generic [ref=f115e36]: Oferte
+        - listitem [ref=f115e37]:
+          - link " Facturi" [ref=f115e38] [cursor=pointer]:
+            - /url: invoices.html
+            - generic [ref=f115e39]: 
+            - generic [ref=f115e40]: Facturi
+        - listitem [ref=f115e41]:
+          - link " Materiale" [ref=f115e42] [cursor=pointer]:
+            - /url: materials.html
+            - generic [ref=f115e43]: 
+            - generic [ref=f115e44]: Materiale
+        - listitem [ref=f115e45]:
+          - link " Rapoarte" [ref=f115e46] [cursor=pointer]:
+            - /url: reports.html
+            - generic [ref=f115e47]: 
+            - generic [ref=f115e48]: Rapoarte
+        - listitem [ref=f115e49]:
+          - link " Setări" [ref=f115e50] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f115e51]: 
+            - generic [ref=f115e52]: Setări
+    - button " Logout" [ref=f115e54] [cursor=pointer]:
+      - generic [ref=f115e55]: 
+      - text: Logout
+  - main [ref=f115e56]:
+    - generic [ref=f115e58]:
+      - heading "Prezentare Generală" [level=4] [ref=f115e60]
+      - generic [ref=f115e61]:
+        - generic [ref=f115e62]:
+          - button "Română " [expanded] [active] [ref=f115e63] [cursor=pointer]:
+            - generic [ref=f115e69]: Română
+            - generic [ref=f115e70]: 
+          - list "Română " [ref=f115e71]:
+            - listitem [ref=f115e72]:
+              - button "Română " [ref=f115e73] [cursor=pointer]:
+                - generic [ref=f115e79]: Română
+                - generic [ref=f115e80]: 
+            - listitem [ref=f115e81]:
+              - button "English" [ref=f115e82] [cursor=pointer]
+            - listitem [ref=f115e91]:
+              - button "Українська" [ref=f115e92] [cursor=pointer]
+            - listitem [ref=f115e98]:
+              - button "Türkçe" [ref=f115e99] [cursor=pointer]
+            - listitem [ref=f115e107]:
+              - button "Polski" [ref=f115e108] [cursor=pointer]
+            - listitem [ref=f115e114]:
+              - button "Русский" [ref=f115e115] [cursor=pointer]
+            - listitem [ref=f115e122]:
+              - button "Italiano" [ref=f115e123] [cursor=pointer]
+            - listitem [ref=f115e130]:
+              - button "Nederlands" [ref=f115e131] [cursor=pointer]
+            - listitem [ref=f115e138]:
+              - button "Norsk" [ref=f115e139] [cursor=pointer]
+        - link "Setări" [ref=f115e148] [cursor=pointer]:
+          - /url: settings.html
+          - generic [ref=f115e149]: 
+        - button "Logout" [ref=f115e151] [cursor=pointer]:
+          - generic [ref=f115e152]: 
+        - generic [ref=f115e154]:
+          - generic [ref=f115e155]: cometa_2
+          - text: Administrator
+        - button "Schimbă avatarul" [ref=f115e156] [cursor=pointer]:
+          - img "Avatar electrician" [ref=f115e157]
+    - generic [ref=f115e166]:
+      - generic [ref=f115e168]:
+        - generic [ref=f115e169]:
+          - heading [level=2] [ref=f115e170]:
+            - img "Avatar electrician" [ref=f115e172]
+            - text: Bine ai revenit, cometa_2!
+          - paragraph [ref=f115e181]: ElectricalVPF ERP — Prezentare generală a sistemului pentru azi.
+        - generic [ref=f115e182]:
+          - generic [ref=f115e183]: 
+          - text: Sistem Activ
+      - generic [ref=f115e184]:
+        - generic [ref=f115e186]:
+          - generic [ref=f115e187]: 
+          - generic [ref=f115e189]:
+            - text: Clienți
+            - heading "125" [level=3] [ref=f115e190]
+        - generic [ref=f115e192]:
+          - generic [ref=f115e193]: 
+          - generic [ref=f115e195]:
+            - text: Proiecte
+            - heading "24" [level=3] [ref=f115e196]
+        - generic [ref=f115e198]:
+          - generic [ref=f115e199]: 
+          - generic [ref=f115e201]:
+            - text: Oferte Deschise
+            - heading "12" [level=3] [ref=f115e202]
+        - generic [ref=f115e204]:
+          - generic [ref=f115e205]: 
+          - generic [ref=f115e207]:
+            - text: Facturi
+            - heading "38" [level=3] [ref=f115e208]
+        - generic [ref=f115e210]:
+          - generic [ref=f115e211]: 
+          - generic [ref=f115e213]:
+            - text: Venituri
+            - heading "€24,560" [level=3] [ref=f115e214]
+      - generic [ref=f115e215]:
+        - generic [ref=f115e217]:
+          - generic [ref=f115e218]:
+            - heading " Proiecte Recente" [level=5] [ref=f115e219]:
+              - generic [ref=f115e220]: 
+              - text: Proiecte Recente
+            - link "Vezi Tot" [ref=f115e221] [cursor=pointer]:
+              - /url: projects.html
+          - table [ref=f115e224]:
+            - rowgroup [ref=f115e225]:
+              - row [ref=f115e226]:
+                - columnheader "Nume Proiect" [ref=f115e227]
+                - columnheader "Client" [ref=f115e228]
+                - columnheader "Status" [ref=f115e229]
+                - columnheader "Valoare" [ref=f115e230]
+            - rowgroup [ref=f115e231]:
+              - row [ref=f115e232]:
+                - cell "Instalație Rezidențială Vila Sibiu" [ref=f115e233]
+                - cell "Ion Popescu" [ref=f115e234]
+                - cell "În Lucru" [ref=f115e235]
+                - cell "€4,200" [ref=f115e237]
+              - row [ref=f115e238]:
+                - cell "Tablou Electric Industrial Transilvania" [ref=f115e239]
+                - cell "S.C. Electra S.R.L." [ref=f115e240]
+                - cell "Finalizat" [ref=f115e241]
+                - cell "€12,800" [ref=f115e243]
+              - row [ref=f115e244]:
+                - cell "Sistem Iluminat LED Depozit" [ref=f115e245]
+                - cell "Logistics Park" [ref=f115e246]
+                - cell "Planificare" [ref=f115e247]
+                - cell "€3,500" [ref=f115e249]
+        - generic [ref=f115e251]:
+          - heading " Activitate Sistem" [level=5] [ref=f115e253]:
+            - generic [ref=f115e254]: 
+            - text: Activitate Sistem
+          - list [ref=f115e256]:
+            - listitem [ref=f115e257]:
+              - generic [ref=f115e258]:
+                - generic [ref=f115e259]: New Quote Generated
+                - generic [ref=f115e260]: 10 mins ago
+              - paragraph [ref=f115e261]: "Quote #Q-2026-089 was sent to client S.C. Electra S.R.L."
+            - listitem [ref=f115e262]:
+              - generic [ref=f115e263]:
+                - generic [ref=f115e264]: Invoice Paid
+                - generic [ref=f115e265]: 2 hours ago
+              - paragraph [ref=f115e266]: "Invoice #INV-1042 (€1,250) marked as paid."
+            - listitem [ref=f115e267]:
+              - generic [ref=f115e268]:
+                - generic [ref=f115e269]: New Client Added
+                - generic [ref=f115e270]: Yesterday
+              - paragraph [ref=f115e271]: Client "Mihai Ionescu" was registered in CRM.

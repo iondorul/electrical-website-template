@@ -12,6 +12,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadComponent("shellTopbar", "components/topbar.html"),
   ]);
 
+  // Semnalează altor module (ex. i18n.js) că topbar-ul/sidebar-ul există acum
+  // în DOM — shell.js nu știe nimic despre ce ascultă acest eveniment.
+  document.dispatchEvent(new CustomEvent("erp:shell-ready"));
+
   // 3. SET ACTIVE MENU ITEM
   const currentPage =
     window.location.pathname.split("/").pop() || "dashboard.html";
@@ -22,13 +26,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     activeLink.classList.add("active");
   }
 
-  // 4. SET DYNAMIC PAGE TITLE FROM <body data-page-title="...">
-  const pageTitleEl = document.getElementById("shellPageTitle");
-  if (pageTitleEl) {
-    const customTitle =
-      document.body.getAttribute("data-page-title") || "Overview";
-    pageTitleEl.textContent = customTitle;
-  }
+  // 4. SET DYNAMIC PAGE TITLE FROM <body data-page-title-key="..."> (cheie de
+  // traducere) cu fallback pe data-page-title="..." (text brut, dacă pagina nu
+  // a primit încă o cheie i18n). Re-tradus și la schimbarea de limbă mai jos.
+  renderPageTitle();
 
   // 5. SET USER INFO IN TOPBAR (dinamic, din userul autentificat)
   loadCurrentUser();
@@ -78,18 +79,37 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // Badge-ul de plan din sidebar (sub logo) — citește planul direct din
-// evenimentul erp:user-loaded, emis mai jos de loadCurrentUser().
-document.addEventListener("erp:user-loaded", (e) => {
+// evenimentul erp:user-loaded, emis mai jos de loadCurrentUser(). Extras
+// într-o funcție numită ca să poată fi re-apelat și la erp:locale-changed
+// (fără asta, badge-ul ar rămâne în limba de la ultimul erp:user-loaded).
+function renderPlanBadge(plan) {
   const badgeEl = document.getElementById("sidebarPlanBadge");
   if (!badgeEl) return;
 
-  const isPro = e.detail && e.detail.plan === "pro";
+  const isPro = plan === "pro";
 
   badgeEl.className = `plan-badge ${isPro ? "plan-badge-pro" : "plan-badge-free"}`;
   badgeEl.innerHTML = isPro
-    ? '<i class="fas fa-crown plan-badge-icon"></i><span>PRO PLAN</span>'
-    : "<span>FREE PLAN</span>";
+    ? `<i class="fas fa-crown plan-badge-icon"></i><span>${t("nav.proPlan", "PRO PLAN")}</span>`
+    : `<span>${t("nav.freePlan", "FREE PLAN")}</span>`;
+}
+
+document.addEventListener("erp:user-loaded", (e) => {
+  renderPlanBadge(e.detail && e.detail.plan);
 });
+
+document.addEventListener("erp:locale-changed", () => {
+  if (lastLoadedUser) renderPlanBadge(lastLoadedUser.plan);
+  renderPageTitle();
+});
+
+function renderPageTitle() {
+  const pageTitleEl = document.getElementById("shellPageTitle");
+  if (!pageTitleEl) return;
+  const fallbackText = document.body.getAttribute("data-page-title") || "Overview";
+  const key = document.body.getAttribute("data-page-title-key");
+  pageTitleEl.textContent = key ? t(key, fallbackText) : fallbackText;
+}
 
 // Iconița din header (lângă nume/rol) — reflectă avatarul ales, dacă există.
 // Fără avatar_id (user care nu a deschis niciodată galeria), rămâne iconița
@@ -175,7 +195,7 @@ async function saveAvatarChoice(avatarId) {
   try {
     const response = await API.put("/auth/avatar", { avatar_id: avatarId });
     if (!response || !response.success) {
-      throw new Error((response && response.message) || "Nu s-a putut salva avatarul.");
+      throw new Error((response && response.message) || t("header.avatarSaveFailed", "Nu s-a putut salva avatarul."));
     }
 
     applyAvatarToHeader(avatarId);
@@ -194,7 +214,7 @@ async function saveAvatarChoice(avatarId) {
   } catch (err) {
     console.error("Eroare la salvarea avatarului:", err);
     if (errorEl) {
-      errorEl.textContent = err.message || "Eroare de rețea la salvarea avatarului.";
+      errorEl.textContent = err.message || t("common.networkError", "Eroare de rețea. Încearcă din nou.");
       errorEl.classList.remove("d-none");
     }
   }
@@ -258,10 +278,10 @@ async function loadCurrentUser() {
 
     const user = response.data;
     if (userNameEl) {
-      userNameEl.textContent = user.full_name || user.email || "Utilizator";
+      userNameEl.textContent = user.full_name || user.email || t("header.defaultUserName", "Utilizator");
     }
     if (userRoleEl) {
-      userRoleEl.textContent = user.role || "Administrator";
+      userRoleEl.textContent = user.role || t("header.defaultUserRole", "Administrator");
     }
     lastLoadedUser = user;
 

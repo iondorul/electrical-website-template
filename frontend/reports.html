@@ -22,7 +22,7 @@
     <link href="css/reports.css" rel="stylesheet">
 </head>
 
-<body data-page-title="Reports">
+<body data-page-title="Reports" data-page-title-key="nav.reports">
 
     <div class="erp-wrapper">
 
@@ -43,42 +43,42 @@
                     <div class="card-body p-3">
                         <div class="row g-3 align-items-end">
                             <div class="col-6 col-md-2">
-                                <label class="form-label small fw-semibold mb-1">Perioadă</label>
+                                <label class="form-label small fw-semibold mb-1" data-i18n="reports.period">Perioadă</label>
                                 <select id="periodPreset" class="form-select form-select-sm">
-                                    <option value="month">Luna curentă</option>
-                                    <option value="quarter">Trimestrul curent</option>
-                                    <option value="year">Anul curent</option>
-                                    <option value="all">Tot istoricul</option>
-                                    <option value="custom">Personalizat</option>
+                                    <option value="month" data-i18n="reports.periodOptions.month">Luna curentă</option>
+                                    <option value="quarter" data-i18n="reports.periodOptions.quarter">Trimestrul curent</option>
+                                    <option value="year" data-i18n="reports.periodOptions.year">Anul curent</option>
+                                    <option value="all" data-i18n="reports.periodOptions.all">Tot istoricul</option>
+                                    <option value="custom" data-i18n="reports.periodOptions.custom">Personalizat</option>
                                 </select>
                             </div>
                             <div class="col-6 col-md-2 custom-date-field d-none">
-                                <label class="form-label small fw-semibold mb-1">De la</label>
+                                <label class="form-label small fw-semibold mb-1" data-i18n="reports.from">De la</label>
                                 <input type="date" id="dateFrom" class="form-control form-control-sm">
                             </div>
                             <div class="col-6 col-md-2 custom-date-field d-none">
-                                <label class="form-label small fw-semibold mb-1">Până la</label>
+                                <label class="form-label small fw-semibold mb-1" data-i18n="reports.to">Până la</label>
                                 <input type="date" id="dateTo" class="form-control form-control-sm">
                             </div>
                             <div class="col-6 col-md-3">
-                                <label class="form-label small fw-semibold mb-1">Client</label>
+                                <label class="form-label small fw-semibold mb-1" data-i18n="dashboard.table.client">Client</label>
                                 <select id="filterClient" class="form-select form-select-sm">
-                                    <option value="">Toți clienții</option>
+                                    <option value="" data-i18n="reports.allClients">Toți clienții</option>
                                 </select>
                             </div>
                             <div class="col-6 col-md-3">
-                                <label class="form-label small fw-semibold mb-1">Proiect</label>
+                                <label class="form-label small fw-semibold mb-1" data-i18n="nav.projects">Proiect</label>
                                 <select id="filterProject" class="form-select form-select-sm">
-                                    <option value="">Toate proiectele</option>
+                                    <option value="" data-i18n="reports.allProjects">Toate proiectele</option>
                                 </select>
                             </div>
                             <div class="col-12 col-md-auto d-flex gap-2">
                                 <button type="button" id="btnGenerate" class="reports-btn reports-btn-icon"
-                                    title="Reîncarcă datele afișate pe ecran">
+                                    data-i18n-title="reports.reloadDataTitle" title="Reîncarcă datele afișate pe ecran">
                                     <i class="fas fa-arrows-rotate"></i>
                                 </button>
                                 <button type="button" id="btnGenerateReport" class="reports-btn reports-btn-primary">
-                                    <i class="fas fa-file-pdf"></i> Generate Report
+                                    <i class="fas fa-file-pdf"></i> <span data-i18n="reports.generateReport">Generate Report</span>
                                 </button>
                             </div>
                         </div>
@@ -89,27 +89,27 @@
                 <ul class="nav nav-tabs mb-3" id="reportsTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" data-tab="financial" type="button">
-                            <i class="fas fa-sack-dollar me-1"></i> Financial
+                            <i class="fas fa-sack-dollar me-1"></i> <span data-i18n="reports.tabs.financial">Financial</span>
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" data-tab="projects" type="button">
-                            <i class="fas fa-folder-open me-1"></i> Projects
+                            <i class="fas fa-folder-open me-1"></i> <span data-i18n="nav.projects">Projects</span>
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" data-tab="materials" type="button">
-                            <i class="fas fa-boxes-stacked me-1"></i> Materials
+                            <i class="fas fa-boxes-stacked me-1"></i> <span data-i18n="nav.materials">Materials</span>
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" data-tab="clients" type="button">
-                            <i class="fas fa-users me-1"></i> Clients
+                            <i class="fas fa-users me-1"></i> <span data-i18n="nav.clients">Clients</span>
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" data-tab="archive" type="button">
-                            📁 Archive
+                            📁 <span data-i18n="reports.tabs.archive">Archive</span>
                         </button>
                     </li>
                 </ul>
@@ -120,7 +120,7 @@
                         <div class="col-6 col-lg-3">
                             <div class="card content-card h-100">
                                 <div class="card-body">
-                                    <small class="text-muted d-block mb-1">Invoiced</small>
+                                    <small class="text-muted d-block mb-1" data-i18n="reports.invoiced">Invoiced</small>
                                     <h4 class="fw-bold mb-0" id="statInvoiced">-</h4>
                                 </div>
                             </div>
@@ -128,7 +128,7 @@
                         <div class="col-6 col-lg-3">
                             <div class="card content-card h-100">
                                 <div class="card-body">
-                                    <small class="text-muted d-block mb-1">Paid</small>
+                                    <small class="text-muted d-block mb-1" data-i18n="settings.billing.paid">Paid</small>
                                     <h4 class="fw-bold mb-0 text-success" id="statPaid">-</h4>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@
                         <div class="col-6 col-lg-3">
                             <div class="card content-card h-100">
                                 <div class="card-body">
-                                    <small class="text-muted d-block mb-1">Outstanding</small>
+                                    <small class="text-muted d-block mb-1" data-i18n="reports.outstanding">Outstanding</small>
                                     <h4 class="fw-bold mb-0 text-warning" id="statOutstanding">-</h4>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@
                         <div class="col-6 col-lg-3">
                             <div class="card content-card h-100">
                                 <div class="card-body">
-                                    <small class="text-muted d-block mb-1">Overdue</small>
+                                    <small class="text-muted d-block mb-1" data-i18n="invoices.status.overdue">Overdue</small>
                                     <h4 class="fw-bold mb-0 text-danger" id="statOverdue">-</h4>
                                 </div>
                             </div>
@@ -152,9 +152,9 @@
                     </div>
                     <div class="card content-card">
                         <div class="card-body">
-                            <h6 class="fw-semibold mb-3">Facturat vs. Încasat (pe lună)</h6>
+                            <h6 class="fw-semibold mb-3" data-i18n="reports.invoicedVsCollected">Facturat vs. Încasat (pe lună)</h6>
                             <canvas id="financialChart" height="90"></canvas>
-                            <div id="financialChartEmpty" class="text-center text-muted py-5 d-none">
+                            <div id="financialChartEmpty" class="text-center text-muted py-5 d-none" data-i18n="reports.noDataForPeriod">
                                 Nu există date pentru perioada selectată.
                             </div>
                         </div>
@@ -169,17 +169,17 @@
                                 <table class="table table-hover align-middle mb-0">
                                     <thead class="table-light">
                                         <tr>
-                                            <th class="ps-4">Proiect</th>
-                                            <th>Client</th>
-                                            <th>Status</th>
-                                            <th>Valoare</th>
-                                            <th>Cost Materiale</th>
-                                            <th>Cost Labor</th>
-                                            <th class="pe-4">Profit</th>
+                                            <th class="ps-4" data-i18n="nav.projects">Proiect</th>
+                                            <th data-i18n="dashboard.table.client">Client</th>
+                                            <th data-i18n="common.status">Status</th>
+                                            <th data-i18n="dashboard.table.value">Valoare</th>
+                                            <th data-i18n="reports.materialsCost">Cost Materiale</th>
+                                            <th data-i18n="reports.laborCost">Cost Labor</th>
+                                            <th class="pe-4" data-i18n="reports.profit">Profit</th>
                                         </tr>
                                     </thead>
                                     <tbody id="projectsTableBody">
-                                        <tr><td colspan="7" class="text-center text-muted py-4">Apasă Generează.</td></tr>
+                                        <tr><td colspan="7" class="text-center text-muted py-4" data-i18n="reports.pressGenerate">Apasă Generează.</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -187,9 +187,9 @@
                     </div>
                     <p class="text-muted small mt-2">
                         <i class="fas fa-circle-info me-1"></i>
-                        Cost materiale/labor și profit provin din estimarea asociată proiectului (cea mai recentă
+                        <span data-i18n="reports.projectsFootnote">Cost materiale/labor și profit provin din estimarea asociată proiectului (cea mai recentă
                         aprobată) — pot diferi de costul final dacă oferta a fost modificată ulterior.
-                        „N/A” = proiect fără estimare asociată.
+                        „N/A” = proiect fără estimare asociată.</span>
                     </p>
                 </div>
 
@@ -201,15 +201,15 @@
                                 <table class="table table-hover align-middle mb-0">
                                     <thead class="table-light">
                                         <tr>
-                                            <th class="ps-4">Material</th>
-                                            <th>Consum Planificat</th>
-                                            <th>Cost Planificat</th>
-                                            <th>Stoc Curent</th>
-                                            <th class="pe-4">Status Stoc</th>
+                                            <th class="ps-4" data-i18n="materials.table.name">Material</th>
+                                            <th data-i18n="reports.plannedConsumption">Consum Planificat</th>
+                                            <th data-i18n="reports.plannedCost">Cost Planificat</th>
+                                            <th data-i18n="reports.currentStock">Stoc Curent</th>
+                                            <th class="pe-4" data-i18n="reports.stockStatus">Status Stoc</th>
                                         </tr>
                                     </thead>
                                     <tbody id="materialsTableBody">
-                                        <tr><td colspan="5" class="text-center text-muted py-4">Apasă Generează.</td></tr>
+                                        <tr><td colspan="5" class="text-center text-muted py-4" data-i18n="reports.pressGenerate">Apasă Generează.</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -217,8 +217,8 @@
                     </div>
                     <p class="text-muted small mt-2">
                         <i class="fas fa-circle-info me-1"></i>
-                        „Consum planificat” provine din liniile de estimare (estimate_items) — facturile nu
-                        păstrează legătura directă cu materialul, deci nu reflectă consum real livrat.
+                        <span data-i18n="reports.materialsFootnote">„Consum planificat” provine din liniile de estimare (estimate_items) — facturile nu
+                        păstrează legătura directă cu materialul, deci nu reflectă consum real livrat.</span>
                     </p>
                 </div>
 
@@ -230,16 +230,16 @@
                                 <table class="table table-hover align-middle mb-0">
                                     <thead class="table-light">
                                         <tr>
-                                            <th class="ps-4">Client</th>
-                                            <th>Nr. Proiecte</th>
-                                            <th>Valoare Proiecte</th>
-                                            <th>Facturat</th>
-                                            <th>Încasat</th>
-                                            <th class="pe-4">Outstanding</th>
+                                            <th class="ps-4" data-i18n="dashboard.table.client">Client</th>
+                                            <th data-i18n="reports.projectsCount">Nr. Proiecte</th>
+                                            <th data-i18n="reports.projectsValue">Valoare Proiecte</th>
+                                            <th data-i18n="reports.invoiced">Facturat</th>
+                                            <th data-i18n="reports.collected">Încasat</th>
+                                            <th class="pe-4" data-i18n="reports.outstanding">Outstanding</th>
                                         </tr>
                                     </thead>
                                     <tbody id="clientsReportTableBody">
-                                        <tr><td colspan="6" class="text-center text-muted py-4">Apasă Generează.</td></tr>
+                                        <tr><td colspan="6" class="text-center text-muted py-4" data-i18n="reports.pressGenerate">Apasă Generează.</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -252,32 +252,32 @@
                     <div class="card content-card">
                         <div class="card-body">
                             <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-                                <h6 class="fw-semibold mb-0">Report Archive</h6>
+                                <h6 class="fw-semibold mb-0" data-i18n="reports.reportArchive">Report Archive</h6>
                                 <div class="d-flex gap-2">
                                     <select id="archiveTypeFilter" class="form-select form-select-sm" style="width: auto;">
-                                        <option value="">Toate tipurile</option>
-                                        <option value="financial">Financial</option>
-                                        <option value="projects">Projects</option>
-                                        <option value="materials">Materials</option>
-                                        <option value="clients">Clients</option>
+                                        <option value="" data-i18n="reports.allTypes">Toate tipurile</option>
+                                        <option value="financial" data-i18n="reports.tabs.financial">Financial</option>
+                                        <option value="projects" data-i18n="nav.projects">Projects</option>
+                                        <option value="materials" data-i18n="nav.materials">Materials</option>
+                                        <option value="clients" data-i18n="nav.clients">Clients</option>
                                     </select>
                                     <input type="text" id="archiveSearch" class="form-control form-control-sm"
-                                        style="width: 220px;" placeholder="Caută după nume raport...">
+                                        style="width: 220px;" data-i18n-placeholder="reports.searchReportPlaceholder" placeholder="Caută după nume raport...">
                                 </div>
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle mb-0">
                                     <thead class="table-light">
                                         <tr>
-                                            <th class="ps-4">Nume Raport</th>
-                                            <th>Tip</th>
-                                            <th>Perioadă</th>
-                                            <th>Generat la</th>
-                                            <th class="text-end pe-4">Acțiuni</th>
+                                            <th class="ps-4" data-i18n="reports.reportName">Nume Raport</th>
+                                            <th data-i18n="reports.type">Tip</th>
+                                            <th data-i18n="reports.period">Perioadă</th>
+                                            <th data-i18n="reports.generatedAt">Generat la</th>
+                                            <th class="text-end pe-4" data-i18n="common.actions">Acțiuni</th>
                                         </tr>
                                     </thead>
                                     <tbody id="archiveTableBody">
-                                        <tr><td colspan="5" class="text-center text-muted py-4">Se încarcă...</td></tr>
+                                        <tr><td colspan="5" class="text-center text-muted py-4" data-i18n="common.loading">Se încarcă...</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -297,12 +297,12 @@
             <div class="modal-content text-center p-3">
                 <div class="modal-body">
                     <i class="fas fa-triangle-exclamation text-danger fa-3x mb-3"></i>
-                    <h5 class="fw-bold mb-2">Delete report?</h5>
-                    <p class="text-muted small mb-0">This report will be permanently deleted.</p>
+                    <h5 class="fw-bold mb-2" data-i18n="reports.deleteReportTitle">Delete report?</h5>
+                    <p class="text-muted small mb-0" data-i18n="reports.deleteReportDesc">This report will be permanently deleted.</p>
                 </div>
                 <div class="d-flex justify-content-center gap-2 mt-2">
-                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger btn-sm px-3" id="btnConfirmDeleteReport">Delete</button>
+                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal" data-i18n="common.cancel">Cancel</button>
+                    <button type="button" class="btn btn-danger btn-sm px-3" id="btnConfirmDeleteReport" data-i18n="common.delete">Delete</button>
                 </div>
             </div>
         </div>
@@ -318,6 +318,7 @@
     <script src="js/utils.js"></script>
     <script src="js/toast.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/shell.js"></script>
 
     <!-- Module Specific JS -->

@@ -24,7 +24,7 @@
     <link href="css/erp-plans.css" rel="stylesheet">
 </head>
 
-<body data-page-title="Upgrade la Pro">
+<body data-page-title="Upgrade la Pro" data-page-title-key="upgrade.pageTitle">
 
     <div class="erp-wrapper">
 
@@ -48,9 +48,9 @@
                                 <i class="fas fa-rocket"></i>
                             </div>
 
-                            <h1 class="erp-upgrade-title">Upgrade la planul Pro</h1>
+                            <h1 class="erp-upgrade-title" data-i18n="upgrade.title">Upgrade la planul Pro</h1>
 
-                            <p class="erp-upgrade-desc">
+                            <p class="erp-upgrade-desc" data-i18n="upgrade.desc">
                                 Trece la Pro în siguranță, prin Stripe — card bancar, factură automată și
                                 acces instant la toate funcțiile ERP.
                             </p>
@@ -60,7 +60,7 @@
                                  de mai jos. Ascuns până la primul calcul reușit (evită un "flash" cu date greșite). -->
                             <div class="erp-upgrade-plan-info d-none" id="upgradePlanInfo">
                                 <div class="erp-upgrade-plan-row">
-                                    <span>Plan ales</span>
+                                    <span data-i18n="upgrade.chosenPlan">Plan ales</span>
                                     <strong id="upgradePlanChosenLabel"></strong>
                                 </div>
                                 <p class="erp-upgrade-plan-note" id="upgradePlanNote"></p>
@@ -70,7 +70,7 @@
                             <button type="button" id="btnStartCheckout" class="erp-plan-cta erp-plan-cta-solid"
                                 style="cursor: pointer;">
                                 <i class="fas fa-credit-card me-2" id="btnStartCheckoutIcon"></i>
-                                <span id="btnStartCheckoutText">Continuă la plată</span>
+                                <span id="btnStartCheckoutText" data-i18n="upgrade.continueToPayment">Continuă la plată</span>
                             </button>
 
                             <div class="alert alert-danger d-none mt-3 mb-0" id="checkoutError" role="alert"></div>
@@ -82,7 +82,7 @@
 
                             <div class="mt-4">
                                 <a href="erp-plans.html" class="erp-plan-cta erp-plan-cta-outline">
-                                    <i class="fas fa-arrow-left me-2"></i>Înapoi la planuri
+                                    <i class="fas fa-arrow-left me-2"></i><span data-i18n="upgrade.backToPlans">Înapoi la planuri</span>
                                 </a>
                             </div>
 
@@ -108,7 +108,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold">
-                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i>Reînnoiește acum
+                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i><span data-i18n="plans.renewNowModal.title">Reînnoiește acum</span>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -117,14 +117,14 @@
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="1m" checked>
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label">1 lună</span>
+                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.1m">1 lună</span>
                                 <span class="erp-renew-period-price">€14.90</span>
                             </span>
                         </label>
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="6m">
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label">6 luni</span>
+                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.6m">6 luni</span>
                                 <span class="erp-renew-period-price">€80.46<span
                                         class="erp-renew-period-discount">-10%</span></span>
                             </span>
@@ -132,7 +132,7 @@
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="1y">
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label">1 an</span>
+                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.1y">1 an</span>
                                 <span class="erp-renew-period-price">€143.04<span
                                         class="erp-renew-period-discount">-20%</span></span>
                             </span>
@@ -140,7 +140,7 @@
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="3y">
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label">3 ani</span>
+                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.3y">3 ani</span>
                                 <span class="erp-renew-period-price">€375.48<span
                                         class="erp-renew-period-discount">-30%</span></span>
                             </span>
@@ -148,8 +148,8 @@
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="5y">
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label">5 ani<span
-                                        class="erp-renew-period-best-tag">Cel mai avantajos</span></span>
+                                <span class="erp-renew-period-label"><span data-i18n="plans.renewNowModal.periods.5y">5 ani</span><span
+                                        class="erp-renew-period-best-tag" data-i18n="plans.renewNowModal.bestTag">Cel mai avantajos</span></span>
                                 <span class="erp-renew-period-price">€536.40<span
                                         class="erp-renew-period-discount">-40%</span></span>
                             </span>
@@ -160,8 +160,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="erp-plan-cta erp-plan-cta-outline"
-                        data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmRenewNow">
+                        data-bs-dismiss="modal" data-i18n="plans.renewNowModal.cancel">Anulează</button>
+                    <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmRenewNow"
+                        data-i18n="plans.renewNowModal.confirm">
                         Continuă la plată
                     </button>
                 </div>
@@ -177,6 +178,7 @@
     <script src="js/api.js"></script>
 
     <!-- Shell JS (Global Auth & Layout Loader — include auth guard + apel /auth/me) -->
+    <script src="js/i18n.js"></script>
     <script src="js/shell.js"></script>
 
     <!-- Plan ales — afișează intervalul (Lunar/Anual) și explică exact ce se
@@ -208,7 +210,7 @@
         }
 
         function formatDateRo(date) {
-            return date.toLocaleDateString("ro-RO", {
+            return date.toLocaleDateString(getCurrentLocaleCode(), {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
@@ -227,11 +229,11 @@
         // data brută Stripe) — aceeași bază ca și computeExtendedPeriodEnd()
         // din backend.
         const RENEWAL_PERIODS_DISPLAY = {
-            "1m": { months: 1, label: "1 lună" },
-            "6m": { months: 6, label: "6 luni" },
-            "1y": { months: 12, label: "1 an" },
-            "3y": { months: 36, label: "3 ani" },
-            "5y": { months: 60, label: "5 ani" },
+            "1m": { months: 1, labelKey: "plans.renewNowModal.periods.1m", label: "1 lună" },
+            "6m": { months: 6, labelKey: "plans.renewNowModal.periods.6m", label: "6 luni" },
+            "1y": { months: 12, labelKey: "plans.renewNowModal.periods.1y", label: "1 an" },
+            "3y": { months: 36, labelKey: "plans.renewNowModal.periods.3y", label: "3 ani" },
+            "5y": { months: 60, labelKey: "plans.renewNowModal.periods.5y", label: "5 ani" },
         };
 
         function addMonthsUTC(date, months) {
@@ -260,9 +262,11 @@
             const newDate = formatDateRo(
                 addMonthsUTC(new Date(gracePeriodCurrentEnd), period.months),
             );
-            noteEl.textContent =
-                `Ai deja acces Pro plătit până la ${formatDateRo(new Date(gracePeriodCurrentEnd))}. ` +
-                `Se adaugă ${period.label} — noul acces se va întinde până la ${newDate}.`;
+            const current = formatDateRo(new Date(gracePeriodCurrentEnd));
+            noteEl.textContent = t("upgrade.renewModalNote",
+                `Ai deja acces Pro plătit până la ${current}. Se adaugă ${period.label} — noul acces se va întinde până la ${newDate}.`,
+                { current, period: t(period.labelKey, period.label), newDate },
+            );
         }
 
         const renewNowModalEl = document.getElementById("renewNowConfirmModal");
@@ -275,7 +279,7 @@
             }
         });
 
-        document.addEventListener("DOMContentLoaded", async () => {
+        async function renderChosenPlanInfo() {
             const infoEl = document.getElementById("upgradePlanInfo");
             const chosenLabelEl = document.getElementById("upgradePlanChosenLabel");
             const noteEl = document.getElementById("upgradePlanNote");
@@ -305,9 +309,14 @@
                 }
 
                 const isYearly = interval === "year";
-                const priceLabel = isYearly ? "€143.04/an" : "€14.90/lună";
-                const intervalLabel = isYearly ? "Anual" : "Lunar";
-                const addedLabel = isYearly ? "1 an" : "1 lună";
+                const priceLabel = isYearly
+                    ? `€143.04${t("plans.pro.periodYearly", "/an")}`
+                    : `€14.90${t("plans.pro.period", "/lună")}`;
+                const intervalLabel = isYearly
+                    ? t("plans.pro.billingToggle.yearly", "Anual")
+                    : t("plans.pro.billingToggle.monthly", "Lunar");
+                const addedLabelKey = isYearly ? "plans.renewNowModal.periods.1y" : "plans.renewNowModal.periods.1m";
+                const addedLabel = t(addedLabelKey, isYearly ? "1 an" : "1 lună");
 
                 chosenLabelEl.textContent = `${intervalLabel} — ${priceLabel}`;
 
@@ -316,38 +325,66 @@
 
                 if (hasExistingPeriod) {
                     const formattedPaidUntil = formatDateRo(baseDate);
-                    noteEl.innerHTML =
-                        `Ai deja acces Pro plătit până la <strong>${formattedPaidUntil}</strong>. ` +
-                        `Această plată adaugă <strong>${addedLabel}</strong> — noul acces se va ` +
-                        `întinde până la <strong>${formattedNewDate}</strong>.`;
+                    noteEl.innerHTML = t(
+                        "upgrade.alreadyPaidNote",
+                        `Ai deja acces Pro plătit până la <strong>${formattedPaidUntil}</strong>. Această plată adaugă <strong>${addedLabel}</strong> — noul acces se va întinde până la <strong>${formattedNewDate}</strong>.`,
+                        {
+                            paidUntil: `<strong>${formattedPaidUntil}</strong>`,
+                            added: `<strong>${addedLabel}</strong>`,
+                            newDate: `<strong>${formattedNewDate}</strong>`,
+                        },
+                    );
                 } else {
-                    noteEl.innerHTML =
-                        `La confirmare, se adaugă <strong>${addedLabel}</strong> de acces Pro, ` +
-                        `cu reînnoire la <strong>${formattedNewDate}</strong>.`;
+                    noteEl.innerHTML = t(
+                        "upgrade.freshAccessNote",
+                        `La confirmare, se adaugă <strong>${addedLabel}</strong> de acces Pro, cu reînnoire la <strong>${formattedNewDate}</strong>.`,
+                        {
+                            added: `<strong>${addedLabel}</strong>`,
+                            newDate: `<strong>${formattedNewDate}</strong>`,
+                        },
+                    );
                 }
 
                 infoEl.classList.remove("d-none");
             } catch (err) {
                 console.error("Eroare la pregătirea previzualizării planului ales:", err);
             }
-        });
+        }
+
+        document.addEventListener("DOMContentLoaded", renderChosenPlanInfo);
+        // Re-randare la schimbarea limbii — panoul e construit prin innerHTML,
+        // deci nu păstrează niciun data-i18n; re-fetch-ul /stripe/subscription-status
+        // e minor (identic cu pattern-ul erp:locale-changed din celelalte module).
+        document.addEventListener("erp:locale-changed", renderChosenPlanInfo);
     </script>
 
     <!-- Plan status: folosește userul deja încărcat de shell.js (event erp:user-loaded), fără alt apel API -->
     <script>
-        document.addEventListener("erp:user-loaded", (e) => {
+        let lastLoadedUpgradeUser = null;
+
+        function renderUpgradePlanStatus(user) {
             const statusEl = document.getElementById("erpPlanStatus");
-            if (!statusEl) return;
-            const user = e.detail;
-            if (!user) return;
+            if (!statusEl || !user) return;
 
             const planLabel = user.plan === "pro" ? "Pro" : "Free";
 
             statusEl.classList.remove("d-none");
             statusEl.innerHTML = `
-                Autentificat ca <strong>${user.full_name || user.email}</strong> —
-                <span class="badge-current-plan"><i class="fas fa-circle-info"></i> Plan: ${planLabel}</span>
+                ${t("plans.authenticatedAs", "Autentificat ca")} <strong>${user.full_name || user.email}</strong> —
+                <span class="badge-current-plan"><i class="fas fa-circle-info"></i> ${t("plans.planLabel", "Plan")}: ${planLabel}</span>
             `;
+        }
+
+        document.addEventListener("erp:user-loaded", (e) => {
+            if (!e.detail) return;
+            lastLoadedUpgradeUser = e.detail;
+            renderUpgradePlanStatus(lastLoadedUpgradeUser);
+        });
+
+        // Randat o singură dată prin innerHTML (fără data-i18n în DOM), deci nu
+        // se retraduce singur — reutilizează userul cache-uit, fără apel API nou.
+        document.addEventListener("erp:locale-changed", () => {
+            if (lastLoadedUpgradeUser) renderUpgradePlanStatus(lastLoadedUpgradeUser);
         });
     </script>
 
@@ -378,7 +415,7 @@
                 btn.disabled = true;
                 btnIcon.classList.remove("fa-credit-card");
                 btnIcon.classList.add("fa-spinner", "fa-spin");
-                btnText.textContent = "Se pregătește plata...";
+                btnText.textContent = t("plans.preparingPayment", "Se pregătește plata...");
 
                 try {
                     const params = new URLSearchParams(window.location.search);
@@ -392,7 +429,7 @@
                     if (!response || !response.url) {
                         throw new Error(
                             (response && response.error) ||
-                            "Răspuns invalid de la server (lipsește URL-ul de plată).",
+                            t("upgrade.errorInvalidResponse", "Răspuns invalid de la server (lipsește URL-ul de plată)."),
                         );
                     }
 
@@ -401,13 +438,13 @@
                     console.error("Eroare la inițierea plății Stripe:", err);
                     errorEl.textContent =
                         (err && err.message) ||
-                        "Nu s-a putut iniția plata. Încearcă din nou sau contactează suportul.";
+                        t("upgrade.errorGeneric", "Nu s-a putut iniția plata. Încearcă din nou sau contactează suportul.");
                     errorEl.classList.remove("d-none");
 
                     btn.disabled = false;
                     btnIcon.classList.remove("fa-spinner", "fa-spin");
                     btnIcon.classList.add("fa-credit-card");
-                    btnText.textContent = "Continuă la plată";
+                    btnText.textContent = t("upgrade.continueToPayment", "Continuă la plată");
                 }
             });
         });
@@ -429,7 +466,7 @@
 
             const originalText = btn.textContent;
             btn.disabled = true;
-            btn.textContent = "Se pregătește plata...";
+            btn.textContent = t("plans.preparingPayment", "Se pregătește plata...");
 
             try {
                 const period = getSelectedRenewPeriod();
@@ -444,7 +481,7 @@
                 if (!response || !response.url) {
                     throw new Error(
                         (response && response.error) ||
-                        "Răspuns invalid de la server (lipsește URL-ul de plată).",
+                        t("upgrade.errorInvalidResponse", "Răspuns invalid de la server (lipsește URL-ul de plată)."),
                     );
                 }
 
@@ -456,7 +493,7 @@
                 if (errorEl) {
                     errorEl.textContent =
                         (err && err.message) ||
-                        "Nu s-a putut iniția plata. Încearcă din nou sau contactează suportul.";
+                        t("upgrade.errorGeneric", "Nu s-a putut iniția plata. Încearcă din nou sau contactează suportul.");
                     errorEl.classList.remove("d-none");
                 }
             }

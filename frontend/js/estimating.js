@@ -32,6 +32,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadSelectOptions();
   await loadMaterialsCache();
 
+  // La schimbarea de limbă: re-randează tabelul + opțiunile select cu datele
+  // curente, reutilizând fluxurile existente — fără logică nouă.
+  document.addEventListener("erp:locale-changed", () => {
+    loadEstimates();
+    loadSelectOptions();
+  });
+
   // Event Căutare
   if (searchInput) {
     searchInput.addEventListener(
@@ -50,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     ?.addEventListener("click", async () => {
       resetForm();
       await loadSelectOptions();
-      document.getElementById("modalTitle").textContent = "Deviz Nou";
+      document.getElementById("modalTitle").textContent = t("estimating.newEstimate", "Deviz Nou");
       addItemRow();
       modalInstance.show();
     });
@@ -81,7 +88,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadEstimates() {
     try {
-      tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">Se încarcă devizele...</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">${t("estimating.loadingList", "Se încarcă devizele...")}</td></tr>`;
 
       const queryParams = new URLSearchParams({
         page: currentPage,
@@ -95,18 +102,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         renderTable(response.data || []);
         renderPagination(response.pagination);
       } else {
-        tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Nu s-au putut încărca datele.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">${t("estimating.loadDataFailed", "Nu s-au putut încărca datele.")}</td></tr>`;
       }
     } catch (err) {
       console.error("Eroare la încărcare:", err);
-      Toast.show("Eroare de rețea la încărcarea devizelor.", "danger");
-      tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Eroare de rețea.</td></tr>`;
+      Toast.show(t("estimating.networkLoadError", "Eroare de rețea la încărcarea devizelor."), "danger");
+      tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">${t("common.networkError", "Eroare de rețea.")}</td></tr>`;
     }
+  }
+
+  // Etichetă de status — necesară deoarece azi statusul se afișa BRUT
+  // (Utils.escapeHtml(est.status), fără nicio traducere existentă), spre
+  // deosebire de projects.js care are deja o mapare completă. getStatusBadgeColor
+  // de mai jos rămâne neatinsă (culoare, nu text) — doar eticheta e nouă.
+  function getStatusLabel(status) {
+    const labels = {
+      draft: t("estimating.status.draft", "Ciornă (Draft)"),
+      planned: t("projects.status.planned", "Planificat"),
+      in_progress: t("projects.status.in_progress", "În Lucru"),
+      on_hold: t("projects.status.on_hold", "În Așteptare"),
+      completed: t("projects.status.completed", "Finalizat"),
+      cancelled: t("projects.status.cancelled", "Anulat"),
+    };
+    return labels[status] || status;
   }
 
   function renderTable(estimates) {
     if (!estimates || estimates.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Nu există devize înregistrate.</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">${t("estimating.noEstimates", "Nu există devize înregistrate.")}</td></tr>`;
       return;
     }
 
@@ -120,16 +143,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </td>
                 <td>
                     <span class="d-block fw-bold">${Utils.escapeHtml(est.client_name || "-")}</span>
-                    <small class="text-muted">${Utils.escapeHtml(est.project_name || "Fără proiect")}</small>
+                    <small class="text-muted">${Utils.escapeHtml(est.project_name || t("estimating.noProject", "Fără proiect"))}</small>
                 </td>
-                <td><span class="badge bg-${getStatusBadgeColor(est.status)}">${Utils.escapeHtml(est.status)}</span></td>
+                <td><span class="badge bg-${getStatusBadgeColor(est.status)}">${Utils.escapeHtml(getStatusLabel(est.status))}</span></td>
                 <td>${parseFloat(est.total_labor_hours || 0).toFixed(1)} h</td>
                 <td class="fw-bold">${Utils.formatCurrency(est.grand_total)}</td>
                 <td class="text-end pe-4">
-                    <button type="button" class="btn btn-sm btn-outline-primary me-1 btn-edit" data-id="${est.id}" title="Editare">
+                    <button type="button" class="btn btn-sm btn-outline-primary me-1 btn-edit" data-id="${est.id}" title="${t("common.edit", "Editare")}">
                         <i class="fas fa-pen"></i>
                     </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="${est.id}" title="Arhivare">
+                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="${est.id}" title="${t("estimating.archiveTitle", "Arhivare")}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
@@ -151,15 +174,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     tr.innerHTML = `
             <td>
                 <select class="form-select form-select-sm item-type">
-                    <option value="material" ${item.item_type === "material" ? "selected" : ""}>Material</option>
-                    <option value="labor" ${item.item_type === "labor" ? "selected" : ""}>Manoperă</option>
-                    <option value="equipment" ${item.item_type === "equipment" ? "selected" : ""}>Echipament</option>
-                    <option value="service" ${item.item_type === "service" ? "selected" : ""}>Serviciu</option>
-                    <option value="consumable" ${item.item_type === "consumable" ? "selected" : ""}>Consumabil</option>
+                    <option value="material" ${item.item_type === "material" ? "selected" : ""}>${t("estimating.itemType.material", "Material")}</option>
+                    <option value="labor" ${item.item_type === "labor" ? "selected" : ""}>${t("estimating.itemType.labor", "Manoperă")}</option>
+                    <option value="equipment" ${item.item_type === "equipment" ? "selected" : ""}>${t("estimating.itemType.equipment", "Echipament")}</option>
+                    <option value="service" ${item.item_type === "service" ? "selected" : ""}>${t("estimating.itemType.service", "Serviciu")}</option>
+                    <option value="consumable" ${item.item_type === "consumable" ? "selected" : ""}>${t("estimating.itemType.consumable", "Consumabil")}</option>
                 </select>
             </td>
             <td>
-                <input type="text" class="form-control form-control-sm item-desc" list="materialsDatalist" value="${Utils.escapeHtml(item.description || "")}" placeholder="Descriere linie...">
+                <input type="text" class="form-control form-control-sm item-desc" list="materialsDatalist" value="${Utils.escapeHtml(item.description || "")}" placeholder="${t("estimating.lineDescPlaceholder", "Descriere linie...")}">
             </td>
             <td>
                 <input type="number" class="form-control form-control-sm item-qty" value="${item.quantity || 1}" step="0.1" min="0.1">
@@ -281,7 +304,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const rows = document.querySelectorAll("#estimateItemsBody tr");
     if (rows.length === 0) {
-      Toast.show("Devizul trebuie să conțină cel puțin o linie.", "warning");
+      Toast.show(t("estimating.needAtLeastOneLine", "Devizul trebuie să conțină cel puțin o linie."), "warning");
       isValid = false;
     }
 
@@ -308,7 +331,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!isValid) {
       Toast.show(
-        "Te rugăm să completezi câmpurile marcate cu roșu.",
+        t("estimating.fillRequiredFields", "Te rugăm să completezi câmpurile marcate cu roșu."),
         "warning",
       );
     }
@@ -359,21 +382,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (response && response.success) {
         Toast.show(
           id
-            ? "Estimare actualizată cu succes!"
-            : "Estimare salvată cu succes!",
+            ? t("estimating.updated", "Estimare actualizată cu succes!")
+            : t("estimating.created", "Estimare salvată cu succes!"),
           "success",
         );
         modalInstance.hide();
         await loadEstimates();
       } else {
         Toast.show(
-          response.message || "Eroare la salvarea devizului.",
+          response.message || t("estimating.saveFailed", "Eroare la salvarea devizului."),
           "danger",
         );
       }
     } catch (err) {
       console.error("Eroare salvare:", err);
-      Toast.show("Eroare de rețea la salvarea devizului.", "danger");
+      Toast.show(t("estimating.saveNetworkError", "Eroare de rețea la salvarea devizului."), "danger");
     }
   }
 
@@ -398,13 +421,13 @@ document.addEventListener("DOMContentLoaded", async () => {
           addItemRow();
         }
 
-        document.getElementById("modalTitle").textContent = "Editare Deviz";
+        document.getElementById("modalTitle").textContent = t("estimating.editEstimate", "Editare Deviz");
         modalInstance.show();
       } else {
-        Toast.show("Eroare la preluarea datelor devizului.", "danger");
+        Toast.show(t("estimating.fetchFailed", "Eroare la preluarea datelor devizului."), "danger");
       }
     } catch (err) {
-      Toast.show("Eroare de rețea la încărcarea devizului.", "danger");
+      Toast.show(t("estimating.loadNetworkError", "Eroare de rețea la încărcarea devizului."), "danger");
     }
   }
 
@@ -417,17 +440,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await API.delete(`/estimates/${id}`);
       if (response && response.success) {
-        Toast.show("Estimare arhivată cu succes!", "warning");
+        Toast.show(t("estimating.archived", "Estimare arhivată cu succes!"), "warning");
         deleteModalInstance.hide();
         await loadEstimates();
       } else {
         Toast.show(
-          response.message || "Eroare la arhivarea devizului.",
+          response.message || t("estimating.archiveFailed", "Eroare la arhivarea devizului."),
           "danger",
         );
       }
     } catch (err) {
-      Toast.show("Eroare de rețea la arhivarea devizului.", "danger");
+      Toast.show(t("estimating.archiveNetworkError", "Eroare de rețea la arhivarea devizului."), "danger");
     }
   }
 
@@ -446,7 +469,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (clientsList.length > 0) {
           clientSelect.innerHTML =
-            `<option value="">Selectează client...</option>` +
+            `<option value="">${t("estimating.selectClient", "Selectează client...")}</option>` +
             clientsList
               .map(
                 (c) =>
@@ -454,12 +477,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                     c.company_name ||
                       c.client_name ||
                       c.contact_person ||
-                      "Client #" + c.id,
+                      t("estimating.clientHashLabel", "Client #{{id}}", { id: c.id }),
                   )}</option>`,
               )
               .join("");
         } else {
-          clientSelect.innerHTML = `<option value="">Niciun client găsit</option>`;
+          clientSelect.innerHTML = `<option value="">${t("estimating.noClientFound", "Niciun client găsit")}</option>`;
         }
       }
 
@@ -470,12 +493,12 @@ document.addEventListener("DOMContentLoaded", async () => {
           : projectsRes.data || projectsRes.projects || [];
 
         projectSelect.innerHTML =
-          `<option value="">Fără proiect asociat</option>` +
+          `<option value="">${t("estimating.noAssociatedProject", "Fără proiect asociat")}</option>` +
           projectsList
             .map(
               (p) =>
                 `<option value="${p.id}">${Utils.escapeHtml(
-                  p.project_name || p.name || "Proiect #" + p.id,
+                  p.project_name || p.name || t("estimating.projectHashLabel", "Proiect #{{id}}", { id: p.id }),
                 )}</option>`,
             )
             .join("");
@@ -521,7 +544,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     html += `
             <li class="page-item ${page === 1 ? "disabled" : ""}">
-                <button class="page-link" data-page="${page - 1}">Înapoi</button>
+                <button class="page-link" data-page="${page - 1}">${t("common.back", "Înapoi")}</button>
             </li>
         `;
 
@@ -535,7 +558,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     html += `
             <li class="page-item ${page === totalPages ? "disabled" : ""}">
-                <button class="page-link" data-page="${page + 1}">Înainte</button>
+                <button class="page-link" data-page="${page + 1}">${t("common.next", "Înainte")}</button>
             </li>
         `;
 
