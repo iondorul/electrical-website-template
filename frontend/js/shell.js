@@ -91,6 +91,127 @@ document.addEventListener("erp:user-loaded", (e) => {
     : "<span>FREE PLAN</span>";
 });
 
+// Iconița din header (lângă nume/rol) — reflectă avatarul ales, dacă există.
+// Fără avatar_id (user care nu a deschis niciodată galeria), rămâne iconița
+// implicită fa-user-shield din topbar.html, neatinsă.
+document.addEventListener("erp:user-loaded", (e) => {
+  const avatarId = e.detail && e.detail.avatar_id;
+  if (avatarId) {
+    applyAvatarToHeader(avatarId);
+  }
+});
+
+// --- AVATAR UTILIZATOR (galerie iconițe electrician) ---
+
+// Galerie fixă de 10 avatare tematice, randate ca SVG inline (fără upload de
+// fișiere, fără imagini/CDN nou) — id-ul persistă în users.avatar_id (vezi
+// authController.js, VALID_AVATAR_IDS trebuie să rămână identică cu lista de
+// id-uri de mai jos). Stil geometric/flat: cap + cască de protecție + siluetă
+// păr pe variantele "feminine", paletă discretă (fundaluri pastelate).
+const AVATAR_CATALOG = [
+  { id: "e1", gender: "m", bg: "#e2e8f0", hat: "#f97316", skin: "#f3c9a0" },
+  { id: "e2", gender: "f", bg: "#dbeafe", hat: "#facc15", skin: "#e7b58a" },
+  { id: "e3", gender: "m", bg: "#fee2e2", hat: "#0ea5e9", skin: "#c98a5b" },
+  { id: "e4", gender: "f", bg: "#ede9fe", hat: "#f97316", skin: "#f3c9a0" },
+  { id: "e5", gender: "m", bg: "#dcfce7", hat: "#facc15", skin: "#a9673f" },
+  { id: "e6", gender: "f", bg: "#fef3c7", hat: "#0ea5e9", skin: "#e7b58a" },
+  { id: "e7", gender: "m", bg: "#e0f2fe", hat: "#f97316", skin: "#c98a5b" },
+  { id: "e8", gender: "f", bg: "#fce7f3", hat: "#facc15", skin: "#f3c9a0" },
+  { id: "e9", gender: "m", bg: "#f1f5f9", hat: "#0ea5e9", skin: "#a9673f" },
+  { id: "e10", gender: "f", bg: "#ecfeff", hat: "#f97316", skin: "#e7b58a" },
+];
+
+// Ținut la nivel de modul ca să putem re-emite erp:user-loaded (cu avatar_id
+// proaspăt) după o salvare reușită, fără reload și fără un al doilea eveniment.
+let lastLoadedUser = null;
+
+function renderAvatarSvg(avatarId) {
+  const cfg = AVATAR_CATALOG.find((a) => a.id === avatarId);
+  if (!cfg) return "";
+  const isFemale = cfg.gender === "f";
+  // Păr desenat în două straturi, ca să rămână vizibil clar la dimensiune mică:
+  // șuvițe laterale (peste marginea capului) + breton peste frunte, sub cască.
+  const hairSide = isFemale
+    ? `<ellipse cx="19.5" cy="33" rx="3.5" ry="8" fill="#3f2a1d"/><ellipse cx="44.5" cy="33" rx="3.5" ry="8" fill="#3f2a1d"/>`
+    : "";
+  const hairFringe = isFemale
+    ? `<path d="M22 22a10 10 0 0 1 20 0v3H22v-3z" fill="#3f2a1d"/>`
+    : "";
+  return `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Avatar electrician">
+    <circle cx="32" cy="32" r="32" fill="${cfg.bg}"/>
+    <path d="M16 54c0-9 7-15 16-15s16 6 16 15v2H16v-2z" fill="#475569"/>
+    ${hairSide}
+    <circle cx="32" cy="29" r="10" fill="${cfg.skin}"/>
+    ${hairFringe}
+    <path d="M21 25a11 11 0 0 1 22 0v1H21v-1z" fill="${cfg.hat}"/>
+    <rect x="19" y="25" width="26" height="4" rx="2" fill="${cfg.hat}"/>
+  </svg>`;
+}
+
+function applyAvatarToHeader(avatarId) {
+  const btn = document.getElementById("headerAvatarBtn");
+  if (btn && avatarId) {
+    btn.innerHTML = renderAvatarSvg(avatarId);
+  }
+}
+
+function renderAvatarGallery(selectedId) {
+  const grid = document.getElementById("avatarGalleryGrid");
+  if (!grid) return;
+  grid.innerHTML = AVATAR_CATALOG.map(
+    (cfg) => `
+      <label class="avatar-option">
+        <input type="radio" name="avatarChoice" class="avatar-option-input" value="${cfg.id}" ${cfg.id === selectedId ? "checked" : ""}>
+        <span class="avatar-option-circle">${renderAvatarSvg(cfg.id)}</span>
+      </label>
+    `,
+  ).join("");
+}
+
+async function saveAvatarChoice(avatarId) {
+  const errorEl = document.getElementById("avatarPickerError");
+  if (errorEl) errorEl.classList.add("d-none");
+
+  try {
+    const response = await API.put("/auth/avatar", { avatar_id: avatarId });
+    if (!response || !response.success) {
+      throw new Error((response && response.message) || "Nu s-a putut salva avatarul.");
+    }
+
+    applyAvatarToHeader(avatarId);
+
+    // Re-emite erp:user-loaded cu avatar_id proaspăt, ca paginile care ascultă
+    // acest eveniment (ex. dashboard.js, banner-ul "Welcome back") să se
+    // sincronizeze fără reload — reutilizează evenimentul existent.
+    if (lastLoadedUser) {
+      lastLoadedUser = { ...lastLoadedUser, avatar_id: avatarId };
+      document.dispatchEvent(new CustomEvent("erp:user-loaded", { detail: lastLoadedUser }));
+    }
+
+    const modalEl = document.getElementById("avatarPickerModal");
+    const modalInstance = modalEl && bootstrap.Modal.getInstance(modalEl);
+    if (modalInstance) modalInstance.hide();
+  } catch (err) {
+    console.error("Eroare la salvarea avatarului:", err);
+    if (errorEl) {
+      errorEl.textContent = err.message || "Eroare de rețea la salvarea avatarului.";
+      errorEl.classList.remove("d-none");
+    }
+  }
+}
+
+document.addEventListener("show.bs.modal", (e) => {
+  if (e.target && e.target.id === "avatarPickerModal") {
+    renderAvatarGallery(lastLoadedUser && lastLoadedUser.avatar_id);
+  }
+});
+
+document.addEventListener("change", (e) => {
+  if (e.target && e.target.classList.contains("avatar-option-input")) {
+    saveAvatarChoice(e.target.value);
+  }
+});
+
 // --- HELPER FUNCTIONS ---
 
 async function loadComponent(containerId, componentPath) {
@@ -142,6 +263,8 @@ async function loadCurrentUser() {
     if (userRoleEl) {
       userRoleEl.textContent = user.role || "Administrator";
     }
+    lastLoadedUser = user;
+
     // Permite paginilor individuale (ex. dashboard.html) să personalizeze
     // conținut propriu pe baza userului autentificat, fără un nou apel API.
     document.dispatchEvent(new CustomEvent("erp:user-loaded", { detail: user }));

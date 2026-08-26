@@ -7,5 +7,11 @@ document.addEventListener("erp:user-loaded", (event) => {
   if (!welcomeTitleEl || !user) return;
 
   const firstName = (user.full_name || "").trim().split(" ")[0] || user.email;
-  welcomeTitleEl.textContent = `👤 Welcome back, ${firstName}!`;
+  // Avatarul reflectă alegerea din galeria deschisă în header (shell.js) —
+  // needitabil aici, doar afișare. Fără avatar ales, păstrează emoji-ul
+  // implicit de dinainte, comportament neschimbat.
+  const avatarHtml = user.avatar_id
+    ? `<span class="welcome-avatar">${renderAvatarSvg(user.avatar_id)}</span>`
+    : "👤";
+  welcomeTitleEl.innerHTML = `${avatarHtml} Welcome back, ${firstName}!`;
 });

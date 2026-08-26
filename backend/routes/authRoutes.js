@@ -12,6 +12,7 @@ router.post("/reset-password", authController.resetPassword);
 
 router.get("/me", authenticateToken, authController.getMe);
 router.put("/profile", authenticateToken, authController.updateProfile);
+router.put("/avatar", authenticateToken, authController.updateAvatar);
 router.put("/password", authenticateToken, authController.changePassword);
 
 module.exports = router;

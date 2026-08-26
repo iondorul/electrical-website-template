@@ -18,8 +18,26 @@
             <span class="user-name d-block fw-bold" id="shellUserName">--</span>
             <small class="user-role text-muted" id="shellUserRole">--</small>
         </div>
-        <div class="user-avatar">
+        <button type="button" class="user-avatar" id="headerAvatarBtn" data-bs-toggle="modal"
+            data-bs-target="#avatarPickerModal" title="Schimbă avatarul" aria-label="Schimbă avatarul">
             <i class="fas fa-user-shield"></i>
-        </div>
+        </button>
     </div>
 </header>
+
+<!-- Galerie de avatare tematice (electrician) — deschisă din iconița de mai
+     sus, disponibilă pe orice pagină ERP (topbar.html e inclus peste tot). -->
+<div class="modal fade" id="avatarPickerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alege avatarul</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="avatar-gallery-grid" id="avatarGalleryGrid"></div>
+                <div class="alert alert-danger d-none small mt-3 mb-0" id="avatarPickerError" role="alert"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -256,6 +256,84 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.user-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
+}
+
+.user-avatar svg {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+/* Avatar din banner-ul "Welcome back" (dashboard.js) — needitabil, doar
+   afișare, reflectă alegerea din galeria deschisă în header. */
+.welcome-avatar {
+    display: inline-flex;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.welcome-avatar svg {
+    display: block;
+    width: 26px;
+    height: 26px;
+}
+
+/* Galeria de avatare (modal deschis din iconița de header, vezi shell.js) —
+   grid 5/rând, spațiere generoasă și uniformă (Slack/Discord/GitHub style).
+   Inelul de selecție = border + shadow discret, culoarea de accent deja
+   folosită în restul aplicației (#ff6b00), nu un element nou de design. */
+.avatar-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 480px) {
+    .avatar-gallery-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.avatar-option {
+    display: block;
+    cursor: pointer;
+}
+
+.avatar-option-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.avatar-option-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    overflow: hidden;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.avatar-option:hover .avatar-option-circle {
+    transform: scale(1.04);
+}
+
+.avatar-option-input:checked + .avatar-option-circle {
+    border-color: #ff6b00;
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
 }
 
 .content-body {

@@ -92,7 +92,7 @@ exports.register = async (req, res) => {
 exports.getMe = async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT id, full_name, email, phone, role, plan FROM users WHERE id = $1",
+      "SELECT id, full_name, email, phone, role, plan, avatar_id FROM users WHERE id = $1",
       [req.user.id],
     );
 
@@ -122,6 +122,36 @@ exports.updateProfile = async (req, res) => {
       `UPDATE users SET full_name = $1, phone = $2 WHERE id = $3
        RETURNING id, full_name, email, phone`,
       [full_name.trim(), phone ? phone.trim() : null, req.user.id],
+    );
+
+    res.json({ success: true, data: result.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+// Galerie fixă de avatare tematice (electricieni, vezi AVATAR_CATALOG în
+// frontend/js/shell.js) — validare server-side pe o listă fixă, userul nu
+// poate seta o valoare arbitrară (nu e upload de fișiere).
+const VALID_AVATAR_IDS = [
+  "e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8", "e9", "e10",
+];
+
+exports.updateAvatar = async (req, res) => {
+  try {
+    const { avatar_id } = req.body;
+
+    if (!avatar_id || !VALID_AVATAR_IDS.includes(avatar_id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Avatar invalid.",
+      });
+    }
+
+    const result = await pool.query(
+      "UPDATE users SET avatar_id = $1 WHERE id = $2 RETURNING id, avatar_id",
+      [avatar_id, req.user.id],
     );
 
     res.json({ success: true, data: result.rows[0] });
