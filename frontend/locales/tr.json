@@ -17,7 +17,8 @@
     "requiredField": "Bu alan zorunludur.",
     "status": "Durum",
     "actionCannotBeUndone": "Bu işlem geri alınamaz.",
-    "yesDelete": "Evet, sil"
+    "yesDelete": "Evet, sil",
+    "serverError": "Bir sunucu hatası oluştu. Lütfen tekrar deneyin."
   },
   "nav": {
     "dashboard": "Panel",
@@ -42,7 +43,8 @@
     "language": "Dil",
     "defaultUserName": "Kullanıcı",
     "defaultUserRole": "Yönetici",
-    "avatarSaveFailed": "Avatar kaydedilemedi."
+    "avatarSaveFailed": "Avatar kaydedilemedi.",
+    "invalidAvatar": "Geçersiz avatar."
   },
   "dashboard": {
     "pageTitle": "Genel Bakış",
@@ -103,7 +105,9 @@
       "passwordMismatchToast": "Yeni şifre ve onayı eşleşmiyor.",
       "passwordChanged": "Şifre başarıyla değiştirildi.",
       "passwordChangeFailed": "Şifre değiştirilemedi.",
-      "twoFactorSoon": "İki faktörlü kimlik doğrulama yakında kullanıma sunulacak."
+      "twoFactorSoon": "İki faktörlü kimlik doğrulama yakında kullanıma sunulacak.",
+      "userNotFound": "Kullanıcı bulunamadı.",
+      "currentPasswordIncorrect": "Mevcut şifre yanlış."
     },
     "company": {
       "title": "Şirket Bilgileri",
@@ -123,7 +127,8 @@
       "email": "E-posta",
       "loadError": "Ayarlar yüklenirken ağ hatası oluştu.",
       "saved": "Şirket bilgileri başarıyla kaydedildi.",
-      "saveFailed": "Bilgiler kaydedilemedi."
+      "saveFailed": "Bilgiler kaydedilemedi.",
+      "nameRequired": "Şirket adı zorunludur."
     },
     "privacy": {
       "title": "Gizlilik",
@@ -205,7 +210,11 @@
     "paginationInfo": {
       "one": "{{total}} müşteriden {{start}} - {{end}} arası gösteriliyor",
       "other": "{{total}} müşteriden {{start}} - {{end}} arası gösteriliyor"
-    }
+    },
+    "emailAlreadyExists": "Bu e-posta adresi başka bir müşteri tarafından zaten kullanılıyor.",
+    "notFound": "Müşteri bulunamadı.",
+    "saveFailed": "Müşteri kaydedilemedi.",
+    "deleteFailed": "Müşteri silinemedi."
   },
   "projects": {
     "pageTitle": "Proje Yönetimi",
@@ -260,7 +269,11 @@
       "medium": "Orta",
       "high": "Yüksek",
       "urgent": "Acil"
-    }
+    },
+    "notFound": "Proje bulunamadı.",
+    "nameAndClientRequired": "Proje adı ve müşteri zorunludur.",
+    "saveFailed": "Proje kaydedilemedi.",
+    "deleteFailed": "Proje arşivlenemedi."
   },
   "estimating": {
     "pageTitle": "Keşif Yönetimi",
@@ -327,7 +340,15 @@
     "archiveNetworkError": "Keşif arşivlenirken ağ hatası oluştu.",
     "clientHashLabel": "Müşteri #{{id}}",
     "noClientFound": "Müşteri bulunamadı",
-    "projectHashLabel": "Proje #{{id}}"
+    "projectHashLabel": "Proje #{{id}}",
+    "invalidClient": "Seçilen müşteri geçersiz.",
+    "invalidStatus": "Seçilen durum geçersiz.",
+    "itemDescriptionRequired": "#{{index}} numaralı satırın açıklaması zorunludur.",
+    "itemQuantityInvalid": "#{{index}} numaralı satırın miktarı 0'dan büyük olmalıdır.",
+    "itemUnitCostInvalid": "#{{index}} numaralı satırın birim maliyeti negatif olamaz.",
+    "itemMarginInvalid": "#{{index}} numaralı satırın kâr marjı negatif olamaz.",
+    "updateNotFound": "Keşif bulunamadı veya güncelleme başarısız oldu.",
+    "alreadyArchived": "Keşif bulunamadı veya zaten arşivlenmiş."
   },
   "quotes": {
     "pageTitle": "Teklif Yönetimi",
@@ -412,7 +433,11 @@
     "detailsNetworkError": "Teklif yüklenirken ağ hatası oluştu.",
     "archived": "Teklif başarıyla arşivlendi!",
     "archiveFailed": "Teklif arşivlenirken hata oluştu.",
-    "archiveNetworkError": "Teklif arşivlenirken ağ hatası oluştu."
+    "archiveNetworkError": "Teklif arşivlenirken ağ hatası oluştu.",
+    "notFound": "Teklif bulunamadı.",
+    "invalidStatusTransition": "İstenen durum geçişine iş akışı tarafından izin verilmiyor.",
+    "quoteNotFoundForInvoice": "Seçilen teklif artık mevcut değil veya devre dışı bırakılmış.",
+    "quoteMustBeApproved": "Fatura oluşturulmadan önce teklifin Onaylanmış olması gerekir."
   },
   "invoices": {
     "pageTitle": "Fatura Yönetimi",
@@ -483,7 +508,14 @@
     "detailsFetchFailed": "Fatura detayları alınamadı.",
     "updated": "Fatura başarıyla güncellendi.",
     "updateFailed": "Fatura güncellenemedi.",
-    "saveNetworkError": "Fatura kaydedilirken ağ hatası oluştu."
+    "saveNetworkError": "Fatura kaydedilirken ağ hatası oluştu.",
+    "notFound": "Fatura bulunamadı.",
+    "canceledCannotSend": "İptal edilmiş bir fatura müşteriye gönderilemez.",
+    "smtpNotConfigured": "E-posta gönderimi yapılandırılmamış.",
+    "canceledLocked": "İptal edilmiş bir fatura artık değiştirilemez. Gerekirse yeni bir fatura düzenleyin.",
+    "paidToDraftForbidden": "Ödenmiş bir fatura Taslak durumuna geri dönemez.",
+    "invalidEmailProvided": "Sağlanan e-posta adresi geçerli değil.",
+    "sentSuccessToEmail": "Fatura {{email}} adresine gönderildi."
   },
   "materials": {
     "pageTitle": "Malzeme Yönetimi",
@@ -534,7 +566,9 @@
     "deleteConfirm": "Bu malzemeyi silmek istediğinizden emin misiniz?",
     "deleted": "Malzeme başarıyla silindi.",
     "deleteFailed": "Malzeme silinemedi.",
-    "deleteNetworkError": "Malzeme silinirken ağ hatası oluştu."
+    "deleteNetworkError": "Malzeme silinirken ağ hatası oluştu.",
+    "notFound": "Malzeme bulunamadı.",
+    "codeAlreadyExists": "Bu kodla hesabınız için zaten bir malzeme mevcut."
   },
   "reports": {
     "period": "Dönem",
@@ -600,7 +634,10 @@
     "downloadAction": "İndir",
     "reportDeleted": "Rapor silindi.",
     "deleteFailed": "Rapor silinemedi.",
-    "deleteNetworkError": "Silinirken ağ hatası oluştu."
+    "deleteNetworkError": "Silinirken ağ hatası oluştu.",
+    "invalidType": "Seçilen rapor türü geçersiz.",
+    "notFound": "Rapor bulunamadı.",
+    "deleteForbidden": "Yalnızca Yönetici rolüne sahip kullanıcılar arşivden rapor silebilir."
   },
   "plans": {
     "pageTitle": "Planlar ve Abonelik",

@@ -1,4 +1,5 @@
 const projectService = require("../services/projectService");
+const { Errors } = require("../constants");
 
 exports.getProjects = async (req, res) => {
   try {
@@ -6,7 +7,11 @@ exports.getProjects = async (req, res) => {
     res.json(result);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Eroare la preluarea proiectelor." });
+    res.status(500).json({
+      success: false,
+      error: Errors.SERVER_ERROR,
+      message: "Error retrieving projects.",
+    });
   }
 };
 
@@ -17,20 +22,30 @@ exports.getProjectById = async (req, res) => {
       req.params.id,
     );
     if (!project)
-      return res.status(404).json({ message: "Proiectul nu a fost găsit." });
+      return res.status(404).json({
+        success: false,
+        error: Errors.PROJECT_NOT_FOUND,
+        message: "Project not found.",
+      });
     res.json(project);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Eroare la preluarea proiectului." });
+    res.status(500).json({
+      success: false,
+      error: Errors.SERVER_ERROR,
+      message: "Error retrieving project.",
+    });
   }
 };
 
 exports.createProject = async (req, res) => {
   try {
     if (!req.body.project_name || !req.body.client_id) {
-      return res
-        .status(400)
-        .json({ message: "Numele proiectului și clientul sunt obligatorii." });
+      return res.status(400).json({
+        success: false,
+        error: Errors.PROJECT_NAME_AND_CLIENT_REQUIRED,
+        message: "Project name and client are required.",
+      });
     }
     const newProject = await projectService.createProject(
       req.user.id,
@@ -39,9 +54,11 @@ exports.createProject = async (req, res) => {
     res.status(201).json(newProject);
   } catch (err) {
     console.error(err);
-    res
-      .status(500)
-      .json({ message: err.message || "Eroare la crearea proiectului." });
+    res.status(500).json({
+      success: false,
+      error: Errors.SERVER_ERROR,
+      message: err.message || "Error creating project.",
+    });
   }
 };
 
@@ -53,15 +70,19 @@ exports.updateProject = async (req, res) => {
       req.body,
     );
     if (!updated)
-      return res
-        .status(404)
-        .json({ message: "Proiectul nu a fost găsit sau a fost șters." });
+      return res.status(404).json({
+        success: false,
+        error: Errors.PROJECT_NOT_FOUND,
+        message: "Project not found or has been deleted.",
+      });
     res.json(updated);
   } catch (err) {
     console.error(err);
-    res
-      .status(500)
-      .json({ message: err.message || "Eroare la actualizarea proiectului." });
+    res.status(500).json({
+      success: false,
+      error: Errors.SERVER_ERROR,
+      message: err.message || "Error updating project.",
+    });
   }
 };
 
@@ -72,10 +93,21 @@ exports.deleteProject = async (req, res) => {
       req.params.id,
     );
     if (!deleted)
-      return res.status(404).json({ message: "Proiectul nu a fost găsit." });
-    res.json({ message: "Proiectul a fost arhivat cu succes." });
+      return res.status(404).json({
+        success: false,
+        error: Errors.PROJECT_NOT_FOUND,
+        message: "Project not found.",
+      });
+    res.json({
+      success: true,
+      message: "Project archived successfully.",
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Eroare la ștergerea proiectului." });
+    res.status(500).json({
+      success: false,
+      error: Errors.SERVER_ERROR,
+      message: "Error deleting project.",
+    });
   }
 };

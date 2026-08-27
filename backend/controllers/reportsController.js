@@ -268,7 +268,8 @@ class ReportsController {
 
       return res.status(200).json({
         success: true,
-        message: "Raportul a fost șters cu succes.",
+        code: Errors.REPORT_DELETED,
+        message: "Report deleted successfully.",
       });
     } catch (error) {
       return res.status(500).json({

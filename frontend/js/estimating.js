@@ -23,6 +23,55 @@ document.addEventListener("DOMContentLoaded", async () => {
     deleteModalInstance = new bootstrap.Modal(deleteModalEl);
   }
 
+  // Mapare cod → cheie de traducere (+ interpolare index linie unde e cazul)
+  // pentru răspunsurile /estimates (backend trimite `error`/`code`, NICIODATĂ
+  // text hardcodat de afișat direct — vezi estimateController.js/errors.js).
+  function mapEstimatingCode(code, data) {
+    const itemIndex = data && data.itemIndex;
+    switch (code) {
+      case "ESTIMATE_TITLE_REQUIRED":
+        return t("estimating.titleRequired", "Titlul devizului este obligatoriu.");
+      case "ESTIMATE_INVALID_CLIENT":
+        return t("estimating.invalidClient", "Clientul selectat este invalid.");
+      case "ESTIMATE_INVALID_STATUS":
+        return t("estimating.invalidStatus", "Statusul selectat este invalid.");
+      case "ESTIMATE_NO_ITEMS":
+        return t("estimating.needAtLeastOneLine", "Devizul trebuie să conțină cel puțin o linie.");
+      case "ESTIMATE_ITEM_DESCRIPTION_REQUIRED":
+        return t(
+          "estimating.itemDescriptionRequired",
+          "Descrierea liniei #{{index}} este obligatorie.",
+          { index: itemIndex },
+        );
+      case "ESTIMATE_ITEM_QUANTITY_INVALID":
+        return t(
+          "estimating.itemQuantityInvalid",
+          "Cantitatea liniei #{{index}} trebuie să fie mai mare decât 0.",
+          { index: itemIndex },
+        );
+      case "ESTIMATE_ITEM_UNIT_COST_INVALID":
+        return t(
+          "estimating.itemUnitCostInvalid",
+          "Costul unitar al liniei #{{index}} nu poate fi negativ.",
+          { index: itemIndex },
+        );
+      case "ESTIMATE_ITEM_MARGIN_INVALID":
+        return t(
+          "estimating.itemMarginInvalid",
+          "Adaosul liniei #{{index}} nu poate fi negativ.",
+          { index: itemIndex },
+        );
+      case "ESTIMATE_UPDATE_NOT_FOUND":
+        return t("estimating.updateNotFound", "Devizul nu a fost găsit sau actualizarea a eșuat.");
+      case "ESTIMATE_ALREADY_ARCHIVED":
+        return t("estimating.alreadyArchived", "Devizul nu a fost găsit sau este deja arhivat.");
+      case "SERVER_ERROR":
+        return t("common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+      default:
+        return null;
+    }
+  }
+
   // Încărcare inițială date și opțiuni select
   await loadEstimates();
   await loadSelectOptions();
@@ -390,13 +439,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         await loadEstimates();
       } else {
         Toast.show(
-          response.message || t("estimating.saveFailed", "Eroare la salvarea devizului."),
+          mapEstimatingCode(response.code, response.data) || t("estimating.saveFailed", "Eroare la salvarea devizului."),
           "danger",
         );
       }
     } catch (err) {
       console.error("Eroare salvare:", err);
-      Toast.show(t("estimating.saveNetworkError", "Eroare de rețea la salvarea devizului."), "danger");
+      Toast.show(
+        mapEstimatingCode(err.code, err.data) || t("estimating.saveNetworkError", "Eroare de rețea la salvarea devizului."),
+        "danger",
+      );
     }
   }
 
@@ -445,12 +497,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         await loadEstimates();
       } else {
         Toast.show(
-          response.message || t("estimating.archiveFailed", "Eroare la arhivarea devizului."),
+          mapEstimatingCode(response.code) || t("estimating.archiveFailed", "Eroare la arhivarea devizului."),
           "danger",
         );
       }
     } catch (err) {
-      Toast.show(t("estimating.archiveNetworkError", "Eroare de rețea la arhivarea devizului."), "danger");
+      Toast.show(
+        mapEstimatingCode(err.code) || t("estimating.archiveNetworkError", "Eroare de rețea la arhivarea devizului."),
+        "danger",
+      );
     }
   }
 

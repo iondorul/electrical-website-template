@@ -17,7 +17,8 @@
     "requiredField": "To pole jest wymagane.",
     "status": "Status",
     "actionCannotBeUndone": "Tej czynności nie można cofnąć.",
-    "yesDelete": "Tak, usuń"
+    "yesDelete": "Tak, usuń",
+    "serverError": "Wystąpił błąd serwera. Spróbuj ponownie."
   },
   "nav": {
     "dashboard": "Panel",
@@ -42,7 +43,8 @@
     "language": "Język",
     "defaultUserName": "Użytkownik",
     "defaultUserRole": "Administrator",
-    "avatarSaveFailed": "Nie udało się zapisać awatara."
+    "avatarSaveFailed": "Nie udało się zapisać awatara.",
+    "invalidAvatar": "Nieprawidłowy awatar."
   },
   "dashboard": {
     "pageTitle": "Przegląd",
@@ -103,7 +105,9 @@
       "passwordMismatchToast": "Nowe hasło i jego potwierdzenie nie są zgodne.",
       "passwordChanged": "Hasło zostało pomyślnie zmienione.",
       "passwordChangeFailed": "Nie udało się zmienić hasła.",
-      "twoFactorSoon": "Uwierzytelnianie dwuskładnikowe będzie wkrótce dostępne."
+      "twoFactorSoon": "Uwierzytelnianie dwuskładnikowe będzie wkrótce dostępne.",
+      "userNotFound": "Użytkownik nie został znaleziony.",
+      "currentPasswordIncorrect": "Obecne hasło jest nieprawidłowe."
     },
     "company": {
       "title": "Dane firmy",
@@ -123,7 +127,8 @@
       "email": "E-mail",
       "loadError": "Błąd sieci podczas ładowania ustawień.",
       "saved": "Dane firmy zostały pomyślnie zapisane.",
-      "saveFailed": "Nie udało się zapisać danych."
+      "saveFailed": "Nie udało się zapisać danych.",
+      "nameRequired": "Nazwa firmy jest wymagana."
     },
     "privacy": {
       "title": "Prywatność",
@@ -207,7 +212,11 @@
       "few": "Wyświetlono {{start}}–{{end}} z {{total}} klientów",
       "many": "Wyświetlono {{start}}–{{end}} z {{total}} klientów",
       "other": "Wyświetlono {{start}}–{{end}} z {{total}} klientów"
-    }
+    },
+    "emailAlreadyExists": "Ten adres e-mail jest już używany przez innego klienta.",
+    "notFound": "Klient nie został znaleziony.",
+    "saveFailed": "Nie udało się zapisać klienta.",
+    "deleteFailed": "Nie udało się usunąć klienta."
   },
   "projects": {
     "pageTitle": "Zarządzanie projektami",
@@ -264,7 +273,11 @@
       "medium": "Średni",
       "high": "Wysoki",
       "urgent": "Pilny"
-    }
+    },
+    "notFound": "Projekt nie został znaleziony.",
+    "nameAndClientRequired": "Nazwa projektu i klient są wymagane.",
+    "saveFailed": "Nie udało się zapisać projektu.",
+    "deleteFailed": "Nie udało się zarchiwizować projektu."
   },
   "estimating": {
     "pageTitle": "Zarządzanie kosztorysami",
@@ -331,7 +344,15 @@
     "archiveNetworkError": "Błąd sieci podczas archiwizowania kosztorysu.",
     "clientHashLabel": "Klient #{{id}}",
     "noClientFound": "Nie znaleziono klienta",
-    "projectHashLabel": "Projekt #{{id}}"
+    "projectHashLabel": "Projekt #{{id}}",
+    "invalidClient": "Wybrany klient jest nieprawidłowy.",
+    "invalidStatus": "Wybrany status jest nieprawidłowy.",
+    "itemDescriptionRequired": "Opis linii #{{index}} jest wymagany.",
+    "itemQuantityInvalid": "Ilość w linii #{{index}} musi być większa niż 0.",
+    "itemUnitCostInvalid": "Koszt jednostkowy linii #{{index}} nie może być ujemny.",
+    "itemMarginInvalid": "Marża linii #{{index}} nie może być ujemna.",
+    "updateNotFound": "Kosztorys nie został znaleziony lub aktualizacja się nie powiodła.",
+    "alreadyArchived": "Kosztorys nie został znaleziony lub jest już zarchiwizowany."
   },
   "quotes": {
     "pageTitle": "Zarządzanie ofertami",
@@ -416,7 +437,11 @@
     "detailsNetworkError": "Błąd sieci podczas ładowania oferty.",
     "archived": "Oferta została pomyślnie zarchiwizowana!",
     "archiveFailed": "Błąd podczas archiwizowania oferty.",
-    "archiveNetworkError": "Błąd sieci podczas archiwizowania oferty."
+    "archiveNetworkError": "Błąd sieci podczas archiwizowania oferty.",
+    "notFound": "Oferta nie została znaleziona.",
+    "invalidStatusTransition": "Żądane przejście statusu nie jest dozwolone przez proces.",
+    "quoteNotFoundForInvoice": "Wybrana oferta już nie istnieje lub została dezaktywowana.",
+    "quoteMustBeApproved": "Oferta musi mieć status Zatwierdzona, zanim będzie można wygenerować fakturę."
   },
   "invoices": {
     "pageTitle": "Zarządzanie fakturami",
@@ -487,7 +512,14 @@
     "detailsFetchFailed": "Nie udało się pobrać szczegółów faktury.",
     "updated": "Faktura została pomyślnie zaktualizowana.",
     "updateFailed": "Nie udało się zaktualizować faktury.",
-    "saveNetworkError": "Błąd sieci podczas zapisywania faktury."
+    "saveNetworkError": "Błąd sieci podczas zapisywania faktury.",
+    "notFound": "Faktura nie została znaleziona.",
+    "canceledCannotSend": "Anulowana faktura nie może zostać wysłana do klienta.",
+    "smtpNotConfigured": "Wysyłanie e-maili nie jest skonfigurowane.",
+    "canceledLocked": "Anulowanej faktury nie można już modyfikować. W razie potrzeby wystaw nową fakturę.",
+    "paidToDraftForbidden": "Opłacona faktura nie może wrócić do statusu Szkic.",
+    "invalidEmailProvided": "Podany adres e-mail jest nieprawidłowy.",
+    "sentSuccessToEmail": "Faktura została wysłana na adres {{email}}."
   },
   "materials": {
     "pageTitle": "Zarządzanie materiałami",
@@ -538,7 +570,9 @@
     "deleteConfirm": "Czy na pewno chcesz usunąć ten materiał?",
     "deleted": "Materiał został pomyślnie usunięty.",
     "deleteFailed": "Nie udało się usunąć materiału.",
-    "deleteNetworkError": "Błąd sieci podczas usuwania materiału."
+    "deleteNetworkError": "Błąd sieci podczas usuwania materiału.",
+    "notFound": "Materiał nie został znaleziony.",
+    "codeAlreadyExists": "Materiał z tym kodem już istnieje na Twoim koncie."
   },
   "reports": {
     "period": "Okres",
@@ -604,7 +638,10 @@
     "downloadAction": "Pobierz",
     "reportDeleted": "Raport został usunięty.",
     "deleteFailed": "Nie udało się usunąć raportu.",
-    "deleteNetworkError": "Błąd sieci podczas usuwania."
+    "deleteNetworkError": "Błąd sieci podczas usuwania.",
+    "invalidType": "Wybrany typ raportu jest nieprawidłowy.",
+    "notFound": "Raport nie został znaleziony.",
+    "deleteForbidden": "Tylko użytkownicy z rolą Administratora mogą usuwać raporty z archiwum."
   },
   "plans": {
     "pageTitle": "Plany i subskrypcja",

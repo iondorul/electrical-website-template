@@ -1,0 +1,128 @@
+- generic [active] [ref=f122e1]:
+  - generic [ref=f122e2]:
+    - complementary [ref=f122e3]:
+      - generic [ref=f122e4]:
+        - generic [ref=f122e5]:
+          - generic [ref=f122e6]:
+            - generic [ref=f122e7]: 
+            - generic [ref=f122e8]:
+              - text: Electrical
+              - strong [ref=f122e9]: VPF
+          - link " PRO PLAN" [ref=f122e10] [cursor=pointer]:
+            - /url: settings.html#billing
+            - generic [ref=f122e11]: 
+            - generic [ref=f122e12]: PRO PLAN
+        - button "" [ref=f122e13] [cursor=pointer]
+      - navigation [ref=f122e15]:
+        - list [ref=f122e16]:
+          - listitem [ref=f122e17]:
+            - link " Panel" [ref=f122e18] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f122e19]: 
+              - generic [ref=f122e20]: Panel
+          - listitem [ref=f122e21]:
+            - link " Müşteriler" [ref=f122e22] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f122e23]: 
+              - generic [ref=f122e24]: Müşteriler
+          - listitem [ref=f122e25]:
+            - link " Projeler" [ref=f122e26] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f122e27]: 
+              - generic [ref=f122e28]: Projeler
+          - listitem [ref=f122e29]:
+            - link " Keşifler" [ref=f122e30] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f122e31]: 
+              - generic [ref=f122e32]: Keşifler
+          - listitem [ref=f122e33]:
+            - link " Teklifler" [ref=f122e34] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f122e35]: 
+              - generic [ref=f122e36]: Teklifler
+          - listitem [ref=f122e37]:
+            - link " Faturalar" [ref=f122e38] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f122e39]: 
+              - generic [ref=f122e40]: Faturalar
+          - listitem [ref=f122e41]:
+            - link " Malzemeler" [ref=f122e42] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f122e43]: 
+              - generic [ref=f122e44]: Malzemeler
+          - listitem [ref=f122e45]:
+            - link " Raporlar" [ref=f122e46] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f122e47]: 
+              - generic [ref=f122e48]: Raporlar
+          - listitem [ref=f122e49]:
+            - link " Ayarlar" [ref=f122e50] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f122e51]: 
+              - generic [ref=f122e52]: Ayarlar
+      - button " Çıkış Yap" [ref=f122e54] [cursor=pointer]:
+        - generic [ref=f122e55]: 
+        - text: Çıkış Yap
+    - main [ref=f122e56]:
+      - generic [ref=f122e58]:
+        - heading "Malzeme Yönetimi" [level=4] [ref=f122e60]
+        - generic [ref=f122e61]:
+          - generic [ref=f122e62]:
+            - button "Türkçe " [ref=f122e63] [cursor=pointer]:
+              - generic [ref=f122e70]: Türkçe
+              - generic [ref=f122e71]: 
+            - text: 
+          - link "Ayarlar" [ref=f122e72] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f122e73]: 
+          - button "Çıkış Yap" [ref=f122e75] [cursor=pointer]:
+            - generic [ref=f122e76]: 
+          - generic [ref=f122e78]:
+            - generic [ref=f122e79]: cometa_2
+            - text: Administrator
+          - button "Avatarı değiştir" [ref=f122e80] [cursor=pointer]:
+            - img "Avatar electrician" [ref=f122e81]
+      - generic [ref=f122e90]:
+        - generic [ref=f122e93]:
+          - generic [ref=f122e95]:
+            - generic [ref=f122e97]:
+              - generic [ref=f122e98]: 
+              - textbox "Koda veya ada göre ara..." [ref=f122e100]
+            - combobox [ref=f122e102]:
+              - option "Tüm Kategoriler" [selected]
+              - option "Kablolar"
+              - option "Panolar"
+              - option "Cihazlar"
+              - option "Sigortalar"
+              - option "Aydınlatma"
+              - option "Diğer"
+          - generic [ref=f122e103]:
+            - button "+ Malzeme Ekle" [ref=f122e104] [cursor=pointer]:
+              - generic [ref=f122e105]: +
+              - generic [ref=f122e106]: Malzeme Ekle
+            - button " Tümünü Sil" [ref=f122e107] [cursor=pointer]:
+              - generic [ref=f122e108]: 
+              - generic [ref=f122e109]: Tümünü Sil
+        - table [ref=f122e113]:
+          - rowgroup [ref=f122e114]:
+            - row [ref=f122e115]:
+              - columnheader "Kod" [ref=f122e116]
+              - columnheader "Ad" [ref=f122e117]
+              - columnheader "Kategori" [ref=f122e118]
+              - columnheader "Birim" [ref=f122e119]
+              - columnheader "Birim Fiyat" [ref=f122e120]
+              - columnheader "Stok" [ref=f122e121]
+              - columnheader "İşlemler" [ref=f122e122]
+          - rowgroup [ref=f122e123]:
+            - row [ref=f122e124]:
+              - cell "Cablu4mm" [ref=f122e125]
+              - cell [ref=f122e126]:
+                - strong [ref=f122e127]: Cablu Draka 4mm
+              - cell "Cabluri" [ref=f122e128]
+              - cell "ml" [ref=f122e130]
+              - cell "€100,00" [ref=f122e131]
+              - cell "45.000" [ref=f122e132]
+              - cell [ref=f122e133]:
+                - button "" [ref=f122e134] [cursor=pointer]
+                - button "" [ref=f122e136] [cursor=pointer]
+  - text: 

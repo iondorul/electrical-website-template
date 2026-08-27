@@ -3,6 +3,33 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentSearch = "";
   let currentStatus = "";
 
+  // Mapare cod → cheie de traducere pentru răspunsurile /invoices (backend
+  // trimite `error`/`code`, NICIODATĂ text hardcodat de afișat direct — vezi
+  // invoiceController.js/errors.js). NU acoperă /invoices/:id/payments
+  // (PaymentController) — flux exclus explicit din acest task.
+  function mapInvoicesCode(code) {
+    switch (code) {
+      case "INVOICE_NOT_FOUND":
+        return t("invoices.notFound", "Factura nu a fost găsită.");
+      case "INVOICE_CANCELED_CANNOT_SEND":
+        return t("invoices.canceledCannotSend", "O factură anulată nu poate fi trimisă către client.");
+      case "INVOICE_NO_CLIENT_EMAIL":
+        return t("invoices.noClientEmail", "The client has no email on file");
+      case "SMTP_NOT_CONFIGURED":
+        return t("invoices.smtpNotConfigured", "Trimiterea de email nu este configurată.");
+      case "INVOICE_CANCELED_LOCKED":
+        return t("invoices.canceledLocked", "O factură anulată nu mai poate fi modificată. Emite o factură nouă dacă e nevoie.");
+      case "INVOICE_PAID_TO_DRAFT_FORBIDDEN":
+        return t("invoices.paidToDraftForbidden", "O factură plătită nu poate reveni la statusul Ciornă (Draft).");
+      case "MISSING_REQUIRED_FIELDS":
+        return t("invoices.invalidEmailProvided", "Adresa de email furnizată nu este validă.");
+      case "SERVER_ERROR":
+        return t("common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+      default:
+        return null;
+    }
+  }
+
   const btnDeleteAll = document.getElementById("btnDeleteAllInvoices");
   if (btnDeleteAll) {
     btnDeleteAll.addEventListener("click", async () => {
@@ -23,10 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           currentPage = 1;
           loadInvoices();
         } else {
-          const msg =
-            response && response.message
-              ? response.message
-              : t("invoices.deleteAllFailed", "Nu s-au putut șterge facturile.");
+          const msg = mapInvoicesCode(response && response.code) || t("invoices.deleteAllFailed", "Nu s-au putut șterge facturile.");
           if (typeof Toast !== "undefined") {
             Toast.show(msg, "danger");
           } else {
@@ -35,10 +59,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       } catch (err) {
         console.error("Eroare la ștergerea totală a facturilor:", err);
+        const msg = mapInvoicesCode(err.code) || t("invoices.deleteAllNetworkError", "Eroare de rețea la ștergerea facturilor.");
         if (typeof Toast !== "undefined") {
-          Toast.show(t("invoices.deleteAllNetworkError", "Eroare de rețea la ștergerea facturilor."), "danger");
+          Toast.show(msg, "danger");
         } else {
-          alert(t("common.networkError", "Eroare de rețea."));
+          alert(msg);
         }
       }
     });
@@ -431,21 +456,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await API.post(`/invoices/${id}/send`, { email });
       if (response && response.success) {
+        const sentToEmail = response.data && response.data.sent_to_email;
         Toast.show(
-          response.message || t("invoices.sentSuccess", "Factura a fost trimisă cu succes."),
+          sentToEmail
+            ? t("invoices.sentSuccessToEmail", "Factura a fost trimisă la {{email}}.", { email: sentToEmail })
+            : t("invoices.sentSuccess", "Factura a fost trimisă cu succes."),
           "success",
         );
         if (sendEmailModalInstance) sendEmailModalInstance.hide();
         loadInvoices();
       } else {
         Toast.show(
-          (response && response.message) || t("invoices.sendFailed", "Nu s-a putut trimite factura."),
+          mapInvoicesCode(response && response.code) || (response && response.message) || t("invoices.sendFailed", "Nu s-a putut trimite factura."),
           "danger",
         );
       }
     } catch (err) {
       console.error("Eroare la trimiterea facturii:", err);
-      Toast.show(err.message || t("invoices.sendNetworkError", "Eroare de rețea la trimitere."), "danger");
+      Toast.show(
+        mapInvoicesCode(err.code) || t("invoices.sendNetworkError", "Eroare de rețea la trimitere."),
+        "danger",
+      );
     } finally {
       btnConfirmSendEmail.disabled = false;
       btnConfirmSendEmail.innerHTML = originalHtml;
@@ -603,15 +634,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (editModalInstance) editModalInstance.hide();
         loadInvoices();
       } else {
-        const msg =
-          response && response.message
-            ? response.message
-            : t("invoices.updateFailed", "Nu s-a putut actualiza factura.");
+        const msg = mapInvoicesCode(response && response.code) || t("invoices.updateFailed", "Nu s-a putut actualiza factura.");
         Toast.show(msg, "danger");
       }
     } catch (err) {
       console.error("Eroare la salvarea facturii:", err);
-      const msg = err.message || t("invoices.saveNetworkError", "Eroare de rețea la salvarea facturii.");
+      const msg = mapInvoicesCode(err.code) || t("invoices.saveNetworkError", "Eroare de rețea la salvarea facturii.");
       Toast.show(msg, "danger");
     }
   }

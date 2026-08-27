@@ -18,6 +18,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   let lastArchiveRows = [];
   let reportIdPendingDelete = null;
 
+  // Mapare cod → cheie de traducere pentru răspunsurile /reports (backend
+  // trimite `error`/`code`, NICIODATĂ text hardcodat de afișat direct — vezi
+  // reportsController.js/errors.js).
+  function mapReportsCode(code) {
+    switch (code) {
+      case "INVALID_REPORT_TYPE":
+        return t("reports.invalidType", "Tipul de raport selectat este invalid.");
+      case "REPORT_NOT_FOUND":
+        return t("reports.notFound", "Raportul nu a fost găsit.");
+      case "REPORT_DELETE_FORBIDDEN":
+        return t("reports.deleteForbidden", "Doar utilizatorii cu rol de Administrator pot șterge rapoarte din arhivă.");
+      case "SERVER_ERROR":
+        return t("common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+      default:
+        return null;
+    }
+  }
+
   const TYPE_BADGE = {
     financial: "primary",
     projects: "info text-dark",
@@ -416,7 +434,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const response = await API.post("/reports/generate-pdf", payload);
       if (!response || !response.success) {
         Toast.show(
-          (response && response.message) || t("reports.generateFailed", "Nu s-a putut genera raportul."),
+          mapReportsCode(response && response.code) || t("reports.generateFailed", "Nu s-a putut genera raportul."),
           "danger",
         );
         return;
@@ -434,7 +452,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       await loadArchive();
     } catch (err) {
       console.error("Eroare la generarea raportului:", err);
-      Toast.show(err.message || t("reports.generateNetworkError", "Eroare de rețea la generare."), "danger");
+      Toast.show(
+        mapReportsCode(err.code) || t("reports.generateNetworkError", "Eroare de rețea la generare."),
+        "danger",
+      );
     } finally {
       setGenerateReportDisabled(activeTab === "archive");
       btnGenerateReport.innerHTML = originalHtml;
@@ -449,7 +470,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
     if (!response.ok) {
       const data = await response.json().catch(() => ({}));
-      throw new Error(data.message || t("reports.fetchFailed", "Nu s-a putut prelua raportul."));
+      const fetchError = new Error(
+        mapReportsCode(data.code || data.error) || t("reports.fetchFailed", "Nu s-a putut prelua raportul."),
+      );
+      fetchError.code = data.code || data.error || null;
+      throw fetchError;
     }
     const disposition = response.headers.get("Content-Disposition") || "";
     const match = disposition.match(/filename="(.+)"/);
@@ -619,7 +644,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await API.delete(`/reports/history/${reportIdPendingDelete}`);
       if (response && response.success) {
-        Toast.show(response.message || t("reports.reportDeleted", "Raportul a fost șters."), "success");
+        Toast.show(t("reports.reportDeleted", "Raportul a fost șters."), "success");
         if (deleteReportModalInstance) deleteReportModalInstance.hide();
         lastArchiveRows = lastArchiveRows.filter(
           (r) => String(r.id) !== String(reportIdPendingDelete),
@@ -627,13 +652,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         renderArchiveRows();
       } else {
         Toast.show(
-          (response && response.message) || t("reports.deleteFailed", "Nu s-a putut șterge raportul."),
+          mapReportsCode(response && response.code) || t("reports.deleteFailed", "Nu s-a putut șterge raportul."),
           "danger",
         );
       }
     } catch (err) {
       console.error("Eroare la ștergerea raportului:", err);
-      Toast.show(err.message || t("reports.deleteNetworkError", "Eroare de rețea la ștergere."), "danger");
+      Toast.show(
+        mapReportsCode(err.code) || t("reports.deleteNetworkError", "Eroare de rețea la ștergere."),
+        "danger",
+      );
     } finally {
       reportIdPendingDelete = null;
       btnConfirmDeleteReport.disabled = false;

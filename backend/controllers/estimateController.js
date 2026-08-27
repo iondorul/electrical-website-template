@@ -1,4 +1,5 @@
 const EstimateService = require("../services/estimateService");
+const { Errors } = require("../constants");
 
 const ALLOWED_STATUSES = [
   "draft",
@@ -23,7 +24,8 @@ class EstimateController {
       console.error("Error in EstimateController.getAll:", err);
       return res.status(500).json({
         success: false,
-        message: "Eroare de server la preluarea devizelor.",
+        error: Errors.SERVER_ERROR,
+        message: "Server error while retrieving estimates.",
       });
     }
   }
@@ -35,9 +37,11 @@ class EstimateController {
       const estimate = await EstimateService.getEstimateById(id, userId);
 
       if (!estimate) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Devizul nu a fost găsit." });
+        return res.status(404).json({
+          success: false,
+          error: Errors.ESTIMATE_NOT_FOUND,
+          message: "Estimate not found.",
+        });
       }
 
       return res.status(200).json({ success: true, data: estimate });
@@ -45,7 +49,8 @@ class EstimateController {
       console.error("Error in EstimateController.getById:", err);
       return res.status(500).json({
         success: false,
-        message: "Eroare de server la preluarea devizului.",
+        error: Errors.SERVER_ERROR,
+        message: "Server error while retrieving the estimate.",
       });
     }
   }
@@ -58,27 +63,32 @@ class EstimateController {
       if (!title || typeof title !== "string" || title.trim() === "") {
         return res.status(400).json({
           success: false,
-          message: "Titlul devizului este obligatoriu.",
+          error: Errors.ESTIMATE_TITLE_REQUIRED,
+          message: "Estimate title is required.",
         });
       }
 
       if (!client_id || isNaN(parseInt(client_id, 10))) {
-        return res
-          .status(400)
-          .json({ success: false, message: "Clientul selectat este invalid." });
+        return res.status(400).json({
+          success: false,
+          error: Errors.ESTIMATE_INVALID_CLIENT,
+          message: "The selected client is invalid.",
+        });
       }
 
       if (status && !ALLOWED_STATUSES.includes(status)) {
         return res.status(400).json({
           success: false,
-          message: `Status invalid. Valori permise: ${ALLOWED_STATUSES.join(", ")}`,
+          error: Errors.ESTIMATE_INVALID_STATUS,
+          message: `Invalid status. Allowed values: ${ALLOWED_STATUSES.join(", ")}`,
         });
       }
 
       if (!Array.isArray(items) || items.length === 0) {
         return res.status(400).json({
           success: false,
-          message: "Devizul trebuie să conțină cel puțin o linie.",
+          error: Errors.ESTIMATE_NO_ITEMS,
+          message: "The estimate must contain at least one line.",
         });
       }
 
@@ -86,25 +96,33 @@ class EstimateController {
         if (!item.description || item.description.trim() === "") {
           return res.status(400).json({
             success: false,
-            message: `Descrierea liniei #${idx + 1} este obligatorie.`,
+            error: Errors.ESTIMATE_ITEM_DESCRIPTION_REQUIRED,
+            message: `Description of line #${idx + 1} is required.`,
+            data: { itemIndex: idx + 1 },
           });
         }
         if (parseFloat(item.quantity) <= 0) {
           return res.status(400).json({
             success: false,
-            message: `Cantitatea liniei #${idx + 1} trebuie să fie mai mare decât 0.`,
+            error: Errors.ESTIMATE_ITEM_QUANTITY_INVALID,
+            message: `Quantity of line #${idx + 1} must be greater than 0.`,
+            data: { itemIndex: idx + 1 },
           });
         }
         if (parseFloat(item.unit_cost) < 0) {
           return res.status(400).json({
             success: false,
-            message: `Costul unitar al liniei #${idx + 1} nu poate fi negativ.`,
+            error: Errors.ESTIMATE_ITEM_UNIT_COST_INVALID,
+            message: `Unit cost of line #${idx + 1} cannot be negative.`,
+            data: { itemIndex: idx + 1 },
           });
         }
         if (parseFloat(item.margin_percent) < 0) {
           return res.status(400).json({
             success: false,
-            message: `Adaosul liniei #${idx + 1} nu poate fi negativ.`,
+            error: Errors.ESTIMATE_ITEM_MARGIN_INVALID,
+            message: `Margin of line #${idx + 1} cannot be negative.`,
+            data: { itemIndex: idx + 1 },
           });
         }
       }
@@ -115,14 +133,15 @@ class EstimateController {
       );
       return res.status(201).json({
         success: true,
-        message: "Estimare salvată cu succes!",
+        message: "Estimate saved successfully!",
         data: newEstimate,
       });
     } catch (err) {
       console.error("Error in EstimateController.create:", err);
       return res.status(500).json({
         success: false,
-        message: "Eroare de server la salvarea devizului.",
+        error: Errors.SERVER_ERROR,
+        message: "Server error while saving the estimate.",
       });
     }
   }
@@ -136,27 +155,32 @@ class EstimateController {
       if (!title || typeof title !== "string" || title.trim() === "") {
         return res.status(400).json({
           success: false,
-          message: "Titlul devizului este obligatoriu.",
+          error: Errors.ESTIMATE_TITLE_REQUIRED,
+          message: "Estimate title is required.",
         });
       }
 
       if (!client_id || isNaN(parseInt(client_id, 10))) {
-        return res
-          .status(400)
-          .json({ success: false, message: "Clientul selectat este invalid." });
+        return res.status(400).json({
+          success: false,
+          error: Errors.ESTIMATE_INVALID_CLIENT,
+          message: "The selected client is invalid.",
+        });
       }
 
       if (status && !ALLOWED_STATUSES.includes(status)) {
         return res.status(400).json({
           success: false,
-          message: `Status invalid. Valori permise: ${ALLOWED_STATUSES.join(", ")}`,
+          error: Errors.ESTIMATE_INVALID_STATUS,
+          message: `Invalid status. Allowed values: ${ALLOWED_STATUSES.join(", ")}`,
         });
       }
 
       if (!Array.isArray(items) || items.length === 0) {
         return res.status(400).json({
           success: false,
-          message: "Devizul trebuie să conțină cel puțin o linie.",
+          error: Errors.ESTIMATE_NO_ITEMS,
+          message: "The estimate must contain at least one line.",
         });
       }
 
@@ -164,25 +188,33 @@ class EstimateController {
         if (!item.description || item.description.trim() === "") {
           return res.status(400).json({
             success: false,
-            message: `Descrierea liniei #${idx + 1} este obligatorie.`,
+            error: Errors.ESTIMATE_ITEM_DESCRIPTION_REQUIRED,
+            message: `Description of line #${idx + 1} is required.`,
+            data: { itemIndex: idx + 1 },
           });
         }
         if (parseFloat(item.quantity) <= 0) {
           return res.status(400).json({
             success: false,
-            message: `Cantitatea liniei #${idx + 1} trebuie să fie mai mare decât 0.`,
+            error: Errors.ESTIMATE_ITEM_QUANTITY_INVALID,
+            message: `Quantity of line #${idx + 1} must be greater than 0.`,
+            data: { itemIndex: idx + 1 },
           });
         }
         if (parseFloat(item.unit_cost) < 0) {
           return res.status(400).json({
             success: false,
-            message: `Costul unitar al liniei #${idx + 1} nu poate fi negativ.`,
+            error: Errors.ESTIMATE_ITEM_UNIT_COST_INVALID,
+            message: `Unit cost of line #${idx + 1} cannot be negative.`,
+            data: { itemIndex: idx + 1 },
           });
         }
         if (parseFloat(item.margin_percent) < 0) {
           return res.status(400).json({
             success: false,
-            message: `Adaosul liniei #${idx + 1} nu poate fi negativ.`,
+            error: Errors.ESTIMATE_ITEM_MARGIN_INVALID,
+            message: `Margin of line #${idx + 1} cannot be negative.`,
+            data: { itemIndex: idx + 1 },
           });
         }
       }
@@ -196,20 +228,22 @@ class EstimateController {
       if (!updatedEstimate) {
         return res.status(404).json({
           success: false,
-          message: "Devizul nu a fost găsit sau actualizarea a eșuat.",
+          error: Errors.ESTIMATE_UPDATE_NOT_FOUND,
+          message: "Estimate not found or the update failed.",
         });
       }
 
       return res.status(200).json({
         success: true,
-        message: "Estimare actualizată cu succes!",
+        message: "Estimate updated successfully!",
         data: updatedEstimate,
       });
     } catch (err) {
       console.error("Error in EstimateController.update:", err);
       return res.status(500).json({
         success: false,
-        message: "Eroare de server la actualizarea devizului.",
+        error: Errors.SERVER_ERROR,
+        message: "Server error while updating the estimate.",
       });
     }
   }
@@ -223,18 +257,21 @@ class EstimateController {
       if (!deleted) {
         return res.status(404).json({
           success: false,
-          message: "Devizul nu a fost găsit sau este deja arhivat.",
+          error: Errors.ESTIMATE_ALREADY_ARCHIVED,
+          message: "Estimate not found or already archived.",
         });
       }
 
-      return res
-        .status(200)
-        .json({ success: true, message: "Estimare arhivată cu succes!" });
+      return res.status(200).json({
+        success: true,
+        message: "Estimate archived successfully!",
+      });
     } catch (err) {
       console.error("Error in EstimateController.delete:", err);
       return res.status(500).json({
         success: false,
-        message: "Eroare de server la arhivarea devizului.",
+        error: Errors.SERVER_ERROR,
+        message: "Server error while archiving the estimate.",
       });
     }
   }

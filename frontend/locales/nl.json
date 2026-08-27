@@ -17,7 +17,8 @@
     "requiredField": "Dit veld is verplicht.",
     "status": "Status",
     "actionCannotBeUndone": "Deze actie kan niet ongedaan worden gemaakt.",
-    "yesDelete": "Ja, verwijderen"
+    "yesDelete": "Ja, verwijderen",
+    "serverError": "Er is een serverfout opgetreden. Probeer het opnieuw."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -42,7 +43,8 @@
     "language": "Taal",
     "defaultUserName": "Gebruiker",
     "defaultUserRole": "Beheerder",
-    "avatarSaveFailed": "Avatar kon niet worden opgeslagen."
+    "avatarSaveFailed": "Avatar kon niet worden opgeslagen.",
+    "invalidAvatar": "Ongeldige avatar."
   },
   "dashboard": {
     "pageTitle": "Overzicht",
@@ -103,7 +105,9 @@
       "passwordMismatchToast": "Het nieuwe wachtwoord en de bevestiging komen niet overeen.",
       "passwordChanged": "Wachtwoord succesvol gewijzigd.",
       "passwordChangeFailed": "Wachtwoord kon niet worden gewijzigd.",
-      "twoFactorSoon": "Tweefactorauthenticatie komt binnenkort beschikbaar."
+      "twoFactorSoon": "Tweefactorauthenticatie komt binnenkort beschikbaar.",
+      "userNotFound": "Gebruiker niet gevonden.",
+      "currentPasswordIncorrect": "Huidig wachtwoord is onjuist."
     },
     "company": {
       "title": "Bedrijfsgegevens",
@@ -123,7 +127,8 @@
       "email": "E-mail",
       "loadError": "Netwerkfout bij het laden van de instellingen.",
       "saved": "Bedrijfsgegevens succesvol opgeslagen.",
-      "saveFailed": "Gegevens konden niet worden opgeslagen."
+      "saveFailed": "Gegevens konden niet worden opgeslagen.",
+      "nameRequired": "Bedrijfsnaam is verplicht."
     },
     "privacy": {
       "title": "Privacy",
@@ -205,7 +210,11 @@
     "paginationInfo": {
       "one": "Weergave {{start}} - {{end}} van {{total}} klant",
       "other": "Weergave {{start}} - {{end}} van {{total}} klanten"
-    }
+    },
+    "emailAlreadyExists": "Dit e-mailadres wordt al gebruikt door een andere klant.",
+    "notFound": "Klant niet gevonden.",
+    "saveFailed": "Kan de klant niet opslaan.",
+    "deleteFailed": "Kan de klant niet verwijderen."
   },
   "projects": {
     "pageTitle": "Projectbeheer",
@@ -260,7 +269,11 @@
       "medium": "Gemiddeld",
       "high": "Hoog",
       "urgent": "Urgent"
-    }
+    },
+    "notFound": "Project niet gevonden.",
+    "nameAndClientRequired": "Projectnaam en klant zijn verplicht.",
+    "saveFailed": "Kan het project niet opslaan.",
+    "deleteFailed": "Kan het project niet archiveren."
   },
   "estimating": {
     "pageTitle": "Begrotingsbeheer",
@@ -327,7 +340,15 @@
     "archiveNetworkError": "Netwerkfout bij het archiveren van de begroting.",
     "clientHashLabel": "Klant #{{id}}",
     "noClientFound": "Geen klant gevonden",
-    "projectHashLabel": "Project #{{id}}"
+    "projectHashLabel": "Project #{{id}}",
+    "invalidClient": "De geselecteerde klant is ongeldig.",
+    "invalidStatus": "De geselecteerde status is ongeldig.",
+    "itemDescriptionRequired": "Omschrijving van regel #{{index}} is verplicht.",
+    "itemQuantityInvalid": "Hoeveelheid van regel #{{index}} moet groter zijn dan 0.",
+    "itemUnitCostInvalid": "Eenheidsprijs van regel #{{index}} mag niet negatief zijn.",
+    "itemMarginInvalid": "Marge van regel #{{index}} mag niet negatief zijn.",
+    "updateNotFound": "Schatting niet gevonden of bijwerken is mislukt.",
+    "alreadyArchived": "Schatting niet gevonden of al gearchiveerd."
   },
   "quotes": {
     "pageTitle": "Offertebeheer",
@@ -412,7 +433,11 @@
     "detailsNetworkError": "Netwerkfout bij het laden van de offerte.",
     "archived": "Offerte succesvol gearchiveerd!",
     "archiveFailed": "Fout bij het archiveren van de offerte.",
-    "archiveNetworkError": "Netwerkfout bij het archiveren van de offerte."
+    "archiveNetworkError": "Netwerkfout bij het archiveren van de offerte.",
+    "notFound": "Offerte niet gevonden.",
+    "invalidStatusTransition": "De gevraagde statusovergang is niet toegestaan door de workflow.",
+    "quoteNotFoundForInvoice": "De geselecteerde offerte bestaat niet meer of is gedeactiveerd.",
+    "quoteMustBeApproved": "De offerte moet Goedgekeurd zijn voordat een factuur kan worden gegenereerd."
   },
   "invoices": {
     "pageTitle": "Factuurbeheer",
@@ -483,7 +508,14 @@
     "detailsFetchFailed": "De factuurdetails konden niet worden opgehaald.",
     "updated": "Factuur succesvol bijgewerkt.",
     "updateFailed": "Factuur kon niet worden bijgewerkt.",
-    "saveNetworkError": "Netwerkfout bij het opslaan van de factuur."
+    "saveNetworkError": "Netwerkfout bij het opslaan van de factuur.",
+    "notFound": "Factuur niet gevonden.",
+    "canceledCannotSend": "Een geannuleerde factuur kan niet naar de klant worden verzonden.",
+    "smtpNotConfigured": "E-mailverzending is niet geconfigureerd.",
+    "canceledLocked": "Een geannuleerde factuur kan niet meer worden gewijzigd. Maak indien nodig een nieuwe factuur aan.",
+    "paidToDraftForbidden": "Een betaalde factuur kan niet terugkeren naar de status Concept.",
+    "invalidEmailProvided": "Het opgegeven e-mailadres is niet geldig.",
+    "sentSuccessToEmail": "Factuur verzonden naar {{email}}."
   },
   "materials": {
     "pageTitle": "Materiaalbeheer",
@@ -534,7 +566,9 @@
     "deleteConfirm": "Weet je zeker dat je dit materiaal wilt verwijderen?",
     "deleted": "Materiaal succesvol verwijderd.",
     "deleteFailed": "Materiaal kon niet worden verwijderd.",
-    "deleteNetworkError": "Netwerkfout bij het verwijderen van het materiaal."
+    "deleteNetworkError": "Netwerkfout bij het verwijderen van het materiaal.",
+    "notFound": "Materiaal niet gevonden.",
+    "codeAlreadyExists": "Er bestaat al een materiaal met deze code voor jouw account."
   },
   "reports": {
     "period": "Periode",
@@ -600,7 +634,10 @@
     "downloadAction": "Downloaden",
     "reportDeleted": "Het rapport is verwijderd.",
     "deleteFailed": "Rapport kon niet worden verwijderd.",
-    "deleteNetworkError": "Netwerkfout bij het verwijderen."
+    "deleteNetworkError": "Netwerkfout bij het verwijderen.",
+    "invalidType": "Het geselecteerde rapporttype is ongeldig.",
+    "notFound": "Rapport niet gevonden.",
+    "deleteForbidden": "Alleen gebruikers met de rol Beheerder kunnen rapporten uit het archief verwijderen."
   },
   "plans": {
     "pageTitle": "Plannen en abonnement",

@@ -17,7 +17,8 @@
     "requiredField": "Questo campo è obbligatorio.",
     "status": "Stato",
     "actionCannotBeUndone": "Questa azione non può essere annullata.",
-    "yesDelete": "Sì, elimina"
+    "yesDelete": "Sì, elimina",
+    "serverError": "Si è verificato un errore del server. Riprova."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -42,7 +43,8 @@
     "language": "Lingua",
     "defaultUserName": "Utente",
     "defaultUserRole": "Amministratore",
-    "avatarSaveFailed": "Impossibile salvare l'avatar."
+    "avatarSaveFailed": "Impossibile salvare l'avatar.",
+    "invalidAvatar": "Avatar non valido."
   },
   "dashboard": {
     "pageTitle": "Panoramica",
@@ -103,7 +105,9 @@
       "passwordMismatchToast": "La nuova password e la conferma non coincidono.",
       "passwordChanged": "Password cambiata con successo.",
       "passwordChangeFailed": "Impossibile cambiare la password.",
-      "twoFactorSoon": "L'autenticazione a due fattori sarà presto disponibile."
+      "twoFactorSoon": "L'autenticazione a due fattori sarà presto disponibile.",
+      "userNotFound": "Utente non trovato.",
+      "currentPasswordIncorrect": "La password attuale non è corretta."
     },
     "company": {
       "title": "Dati aziendali",
@@ -123,7 +127,8 @@
       "email": "Email",
       "loadError": "Errore di rete durante il caricamento delle impostazioni.",
       "saved": "Dati aziendali salvati con successo.",
-      "saveFailed": "Impossibile salvare i dati."
+      "saveFailed": "Impossibile salvare i dati.",
+      "nameRequired": "Il nome dell'azienda è obbligatorio."
     },
     "privacy": {
       "title": "Privacy",
@@ -205,7 +210,11 @@
     "paginationInfo": {
       "one": "Visualizzazione {{start}} - {{end}} di {{total}} cliente",
       "other": "Visualizzazione {{start}} - {{end}} di {{total}} clienti"
-    }
+    },
+    "emailAlreadyExists": "Questo indirizzo email è già utilizzato da un altro cliente.",
+    "notFound": "Cliente non trovato.",
+    "saveFailed": "Impossibile salvare il cliente.",
+    "deleteFailed": "Impossibile eliminare il cliente."
   },
   "projects": {
     "pageTitle": "Gestione progetti",
@@ -260,7 +269,11 @@
       "medium": "Media",
       "high": "Alta",
       "urgent": "Urgente"
-    }
+    },
+    "notFound": "Progetto non trovato.",
+    "nameAndClientRequired": "Il nome del progetto e il cliente sono obbligatori.",
+    "saveFailed": "Impossibile salvare il progetto.",
+    "deleteFailed": "Impossibile archiviare il progetto."
   },
   "estimating": {
     "pageTitle": "Gestione preventivi",
@@ -327,7 +340,15 @@
     "archiveNetworkError": "Errore di rete durante l'archiviazione del preventivo.",
     "clientHashLabel": "Cliente #{{id}}",
     "noClientFound": "Nessun cliente trovato",
-    "projectHashLabel": "Progetto #{{id}}"
+    "projectHashLabel": "Progetto #{{id}}",
+    "invalidClient": "Il cliente selezionato non è valido.",
+    "invalidStatus": "Lo stato selezionato non è valido.",
+    "itemDescriptionRequired": "La descrizione della riga #{{index}} è obbligatoria.",
+    "itemQuantityInvalid": "La quantità della riga #{{index}} deve essere maggiore di 0.",
+    "itemUnitCostInvalid": "Il costo unitario della riga #{{index}} non può essere negativo.",
+    "itemMarginInvalid": "Il margine della riga #{{index}} non può essere negativo.",
+    "updateNotFound": "Preventivo non trovato o aggiornamento non riuscito.",
+    "alreadyArchived": "Preventivo non trovato o già archiviato."
   },
   "quotes": {
     "pageTitle": "Gestione offerte",
@@ -412,7 +433,11 @@
     "detailsNetworkError": "Errore di rete durante il caricamento dell'offerta.",
     "archived": "Offerta archiviata con successo!",
     "archiveFailed": "Errore durante l'archiviazione dell'offerta.",
-    "archiveNetworkError": "Errore di rete durante l'archiviazione dell'offerta."
+    "archiveNetworkError": "Errore di rete durante l'archiviazione dell'offerta.",
+    "notFound": "Offerta non trovata.",
+    "invalidStatusTransition": "La transizione di stato richiesta non è consentita dal flusso di lavoro.",
+    "quoteNotFoundForInvoice": "L'offerta selezionata non esiste più o è stata disattivata.",
+    "quoteMustBeApproved": "L'offerta deve essere Approvata prima di poter generare la fattura."
   },
   "invoices": {
     "pageTitle": "Gestione fatture",
@@ -483,7 +508,14 @@
     "detailsFetchFailed": "Impossibile recuperare i dettagli della fattura.",
     "updated": "Fattura aggiornata con successo.",
     "updateFailed": "Impossibile aggiornare la fattura.",
-    "saveNetworkError": "Errore di rete durante il salvataggio della fattura."
+    "saveNetworkError": "Errore di rete durante il salvataggio della fattura.",
+    "notFound": "Fattura non trovata.",
+    "canceledCannotSend": "Una fattura annullata non può essere inviata al cliente.",
+    "smtpNotConfigured": "L'invio di email non è configurato.",
+    "canceledLocked": "Una fattura annullata non può più essere modificata. Emetti una nuova fattura se necessario.",
+    "paidToDraftForbidden": "Una fattura pagata non può tornare allo stato Bozza.",
+    "invalidEmailProvided": "L'indirizzo email fornito non è valido.",
+    "sentSuccessToEmail": "Fattura inviata a {{email}}."
   },
   "materials": {
     "pageTitle": "Gestione materiali",
@@ -534,7 +566,9 @@
     "deleteConfirm": "Sei sicuro di voler eliminare questo materiale?",
     "deleted": "Materiale eliminato con successo.",
     "deleteFailed": "Impossibile eliminare il materiale.",
-    "deleteNetworkError": "Errore di rete durante l'eliminazione del materiale."
+    "deleteNetworkError": "Errore di rete durante l'eliminazione del materiale.",
+    "notFound": "Materiale non trovato.",
+    "codeAlreadyExists": "Esiste già un materiale con questo codice per il tuo account."
   },
   "reports": {
     "period": "Periodo",
@@ -600,7 +634,10 @@
     "downloadAction": "Scarica",
     "reportDeleted": "Il report è stato eliminato.",
     "deleteFailed": "Impossibile eliminare il report.",
-    "deleteNetworkError": "Errore di rete durante l'eliminazione."
+    "deleteNetworkError": "Errore di rete durante l'eliminazione.",
+    "invalidType": "Il tipo di report selezionato non è valido.",
+    "notFound": "Report non trovato.",
+    "deleteForbidden": "Solo gli utenti con ruolo Amministratore possono eliminare i report dall'archivio."
   },
   "plans": {
     "pageTitle": "Piani e abbonamento",

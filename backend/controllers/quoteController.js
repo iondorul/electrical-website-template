@@ -151,9 +151,11 @@ class QuoteController {
           .json({ success: false, error: Errors.QUOTE_NOT_FOUND });
       }
 
-      return res
-        .status(200)
-        .json({ success: true, message: "Quote soft deleted successfully" });
+      return res.status(200).json({
+        success: true,
+        code: Errors.QUOTE_DELETED,
+        message: "Quote soft deleted successfully",
+      });
     } catch (error) {
       return res.status(500).json({
         success: false,
@@ -169,7 +171,8 @@ class QuoteController {
 
       return res.status(200).json({
         success: true,
-        message: "Toate ofertele au fost șterse cu succes.",
+        code: Errors.ALL_QUOTES_DELETED,
+        message: "All quotes deleted successfully.",
       });
     } catch (error) {
       return res.status(500).json({

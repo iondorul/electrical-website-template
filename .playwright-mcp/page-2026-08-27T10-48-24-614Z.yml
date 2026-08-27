@@ -1,0 +1,156 @@
+- generic [ref=f118e1]:
+  - generic [ref=f118e2]:
+    - complementary [ref=f118e3]:
+      - generic [ref=f118e4]:
+        - generic [ref=f118e5]:
+          - generic [ref=f118e6]:
+            - generic [ref=f118e7]: 
+            - generic [ref=f118e8]:
+              - text: Electrical
+              - strong [ref=f118e9]: VPF
+          - link " PRO PLAN" [ref=f118e10] [cursor=pointer]:
+            - /url: settings.html#billing
+            - generic [ref=f118e11]: 
+            - generic [ref=f118e12]: PRO PLAN
+        - button "" [ref=f118e13] [cursor=pointer]
+      - navigation [ref=f118e15]:
+        - list [ref=f118e16]:
+          - listitem [ref=f118e17]:
+            - link " Dashboard" [ref=f118e18] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f118e19]: 
+              - generic [ref=f118e20]: Dashboard
+          - listitem [ref=f118e21]:
+            - link " Clients" [ref=f118e22] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f118e23]: 
+              - generic [ref=f118e24]: Clients
+          - listitem [ref=f118e25]:
+            - link " Projects" [ref=f118e26] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f118e27]: 
+              - generic [ref=f118e28]: Projects
+          - listitem [ref=f118e29]:
+            - link " Estimating" [ref=f118e30] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f118e31]: 
+              - generic [ref=f118e32]: Estimating
+          - listitem [ref=f118e33]:
+            - link " Quotes" [ref=f118e34] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f118e35]: 
+              - generic [ref=f118e36]: Quotes
+          - listitem [ref=f118e37]:
+            - link " Invoices" [ref=f118e38] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f118e39]: 
+              - generic [ref=f118e40]: Invoices
+          - listitem [ref=f118e41]:
+            - link " Materials" [ref=f118e42] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f118e43]: 
+              - generic [ref=f118e44]: Materials
+          - listitem [ref=f118e45]:
+            - link " Reports" [ref=f118e46] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f118e47]: 
+              - generic [ref=f118e48]: Reports
+          - listitem [ref=f118e49]:
+            - link " Settings" [ref=f118e50] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f118e51]: 
+              - generic [ref=f118e52]: Settings
+      - button " Logout" [ref=f118e54] [cursor=pointer]:
+        - generic [ref=f118e55]: 
+        - text: Logout
+    - main [ref=f118e56]:
+      - generic [ref=f118e58]:
+        - heading "Clients Management" [level=4] [ref=f118e60]
+        - generic [ref=f118e61]:
+          - generic [ref=f118e62]:
+            - button "English " [ref=f118e63] [cursor=pointer]:
+              - generic [ref=f118e71]: English
+              - generic [ref=f118e72]: 
+            - text: 
+          - link "Settings" [ref=f118e73] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f118e74]: 
+          - button "Logout" [ref=f118e76] [cursor=pointer]:
+            - generic [ref=f118e77]: 
+          - generic [ref=f118e79]:
+            - generic [ref=f118e80]: cometa_2
+            - text: Administrator
+          - button "Change avatar" [ref=f118e81] [cursor=pointer]:
+            - img "Avatar electrician" [ref=f118e82]
+      - generic [ref=f118e91]:
+        - generic [ref=f118e94]:
+          - generic [ref=f118e96]:
+            - generic [ref=f118e97]: 
+            - textbox "Search by name, company, email or phone..." [ref=f118e99]
+          - button " Add Client" [ref=f118e101] [cursor=pointer]:
+            - generic [ref=f118e102]: 
+            - text: Add Client
+        - generic [ref=f118e103]:
+          - generic [ref=f118e104]:
+            - table [ref=f118e106]:
+              - rowgroup [ref=f118e107]:
+                - row [ref=f118e108]:
+                  - columnheader "Name / Company" [ref=f118e109]
+                  - columnheader "Contact (Email / Phone)" [ref=f118e110]
+                  - columnheader "City / Address" [ref=f118e111]
+                  - columnheader "Status" [ref=f118e112]
+                  - columnheader "Actions" [ref=f118e113]
+              - rowgroup [ref=f118e114]:
+                - row [ref=f118e115]:
+                  - cell "Liudmiel Marinar SC ELECTROM SA" [ref=f118e116]:
+                    - generic [ref=f118e117]: Liudmiel Marinar
+                    - text: SC ELECTROM SA
+                  - cell " electrom@yahoo.com  0735946077" [ref=f118e118]:
+                    - generic [ref=f118e119]:
+                      - generic [ref=f118e120]: 
+                      - text: electrom@yahoo.com
+                    - generic [ref=f118e121]:
+                      - generic [ref=f118e122]: 
+                      - text: "0735946077"
+                  - cell "Victoria" [ref=f118e123]
+                  - cell "Active" [ref=f118e124]
+                  - cell [ref=f118e126]:
+                    - button "" [ref=f118e127] [cursor=pointer]
+                    - button "" [ref=f118e129] [cursor=pointer]
+            - text: 
+          - generic [ref=f118e131]:
+            - generic [ref=f118e132]: Showing 1 - 1 of 1 client
+            - navigation:
+              - list
+  - dialog [active] [ref=f118e133]:
+    - generic [ref=f118e134]:
+      - generic [ref=f118e135]:
+        - heading "Add New Client" [level=5] [ref=f118e136]
+        - button "Close" [ref=f118e137] [cursor=pointer]
+      - generic [ref=f118e138]:
+        - generic [ref=f118e139]:
+          - generic [ref=f118e140]:
+            - generic [ref=f118e141]: Full name / Contact person *
+            - textbox "Full name / Contact person *" [ref=f118e142]:
+              - /placeholder: e.g. John Smith
+          - generic [ref=f118e143]:
+            - generic [ref=f118e144]: Company name (optional)
+            - textbox "Company name (optional)" [ref=f118e145]:
+              - /placeholder: e.g. Electro-Tech Ltd.
+          - generic [ref=f118e146]:
+            - generic [ref=f118e147]:
+              - generic [ref=f118e148]: Email *
+              - textbox "Email *" [ref=f118e149]:
+                - /placeholder: name@domain.com
+            - generic [ref=f118e150]:
+              - generic [ref=f118e151]: Phone *
+              - textbox "Phone *" [ref=f118e152]:
+                - /placeholder: 07xxxxxxxx
+          - generic [ref=f118e153]:
+            - generic [ref=f118e154]: City / County
+            - textbox "City / County" [ref=f118e155]:
+              - /placeholder: e.g. Sibiu, SB
+        - generic [ref=f118e156]:
+          - button "Cancel" [ref=f118e157] [cursor=pointer]
+          - button "Save Client" [ref=f118e158] [cursor=pointer]
+  - text: 

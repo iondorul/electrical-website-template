@@ -1,4 +1,5 @@
 const pool = require("../config/db");
+const { Errors } = require("../constants");
 
 exports.createClient = async (req, res) => {
   try {
@@ -13,8 +14,9 @@ exports.createClient = async (req, res) => {
 
     if (existingClient.rows.length > 0) {
       return res.status(400).json({
-        message:
-          "Această adresă de email este deja utilizată de un alt client. Vă rugăm să introduceți o altă adresă de email.",
+        success: false,
+        error: Errors.CLIENT_EMAIL_ALREADY_EXISTS,
+        message: "This email address is already used by another client.",
       });
     }
 
@@ -32,12 +34,15 @@ exports.createClient = async (req, res) => {
     // Prindem și eroarea de constrângere UNIQUE din PostgreSQL (cod 23505)
     if (err.code === "23505") {
       return res.status(400).json({
-        message:
-          "Această adresă de email este deja înregistrată. Vă rugăm să folosiți un email unic.",
+        success: false,
+        error: Errors.CLIENT_EMAIL_ALREADY_EXISTS,
+        message: "This email address is already registered.",
       });
     }
     res.status(500).json({
-      message: err.message || "A apărut o eroare la salvarea clientului.",
+      success: false,
+      error: Errors.SERVER_ERROR,
+      message: err.message || "An error occurred while saving the client.",
     });
   }
 };
@@ -154,7 +159,9 @@ exports.getClients = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({
-      error: err.message,
+      success: false,
+      error: Errors.SERVER_ERROR,
+      message: err.message,
     });
   }
 };
@@ -183,6 +190,8 @@ exports.updateClient = async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({
+        success: false,
+        error: Errors.CLIENT_NOT_FOUND,
         message: "Client not found.",
       });
     }
@@ -192,7 +201,9 @@ exports.updateClient = async (req, res) => {
     console.error(err);
 
     res.status(500).json({
-      error: err.message,
+      success: false,
+      error: Errors.SERVER_ERROR,
+      message: err.message,
     });
   }
 };
@@ -215,11 +226,14 @@ exports.deleteClient = async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({
+        success: false,
+        error: Errors.CLIENT_NOT_FOUND,
         message: "Client not found.",
       });
     }
 
     res.json({
+      success: true,
       message: "Client deleted successfully.",
       client: result.rows[0],
     });
@@ -227,7 +241,9 @@ exports.deleteClient = async (req, res) => {
     console.error(err);
 
     res.status(500).json({
-      error: err.message,
+      success: false,
+      error: Errors.SERVER_ERROR,
+      message: err.message,
     });
   }
 };

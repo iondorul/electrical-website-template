@@ -3,6 +3,55 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentSearch = "";
   let currentStatus = "";
 
+  // Mapare cod → { key, text, toastType } pentru răspunsurile /quotes și
+  // /invoices/from-quote (backend trimite `error`/`code`, NICIODATĂ text
+  // hardcodat de afișat direct — vezi quoteController.js/invoiceController.js/
+  // errors.js). Înlocuiește complet vechea logică bazată pe căutare de text
+  // (`.includes("already been created")`, `.includes("ESTIMATE_NOT_FOUND")`
+  // etc.) — text-ul brut al backend-ului nu se mai inspectează niciodată.
+  function mapQuoteGenerationCode(code) {
+    switch (code) {
+      case "ESTIMATE_NOT_FOUND":
+        return { text: t("quotes.estimateNotFound", "Devizul selectat nu mai există sau a fost dezactivat."), toastType: "orange" };
+      case "ESTIMATE_NOT_APPROVED":
+        return { text: t("quotes.estimateMustBeCompleted", "Devizul trebuie să fie în starea Finalizat înainte de a putea genera oferta comercială."), toastType: "orange" };
+      case "QUOTE_ALREADY_EXISTS":
+        return { text: t("quotes.alreadyExists", "Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz."), toastType: "orange" };
+      case "SERVER_ERROR":
+        return { text: t("common.serverError", "A apărut o eroare de server. Încearcă din nou."), toastType: "danger" };
+      default:
+        return null;
+    }
+  }
+
+  function mapInvoiceGenerationCode(code) {
+    switch (code) {
+      case "QUOTE_NOT_FOUND":
+        return { text: t("quotes.quoteNotFoundForInvoice", "Oferta selectată nu mai există sau a fost dezactivată."), toastType: "orange" };
+      case "QUOTE_NOT_APPROVED":
+        return { text: t("quotes.quoteMustBeApproved", "Oferta trebuie să fie Aprobată înainte de a putea genera factura."), toastType: "orange" };
+      case "INVOICE_ALREADY_EXISTS":
+        return { text: t("quotes.invoiceAlreadyExists", "Există deja o factură generată pentru această ofertă."), toastType: "orange" };
+      case "SERVER_ERROR":
+        return { text: t("common.serverError", "A apărut o eroare de server. Încearcă din nou."), toastType: "danger" };
+      default:
+        return null;
+    }
+  }
+
+  function mapQuotesCode(code) {
+    switch (code) {
+      case "QUOTE_NOT_FOUND":
+        return t("quotes.notFound", "Oferta nu a fost găsită.");
+      case "INVALID_STATUS_TRANSITION":
+        return t("quotes.invalidStatusTransition", "Tranziția de status cerută nu este permisă de flux.");
+      case "SERVER_ERROR":
+        return t("common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+      default:
+        return null;
+    }
+  }
+
   const tableBody = document.getElementById("quotesTableBody");
   const searchInput = document.getElementById("searchInput");
   const statusFilter = document.getElementById("statusFilter");
@@ -281,52 +330,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         convertModalInstance.hide();
         await loadQuotes();
       } else {
-        let errorMessage = response.message || t("quotes.generateFailed", "Eroare la generarea ofertei.");
-
-        if (
-          errorMessage.includes("already been created") ||
-          errorMessage.includes("QUOTE_ALREADY_EXISTS")
-        ) {
-          errorMessage = t(
-            "quotes.alreadyExists",
-            "Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz.",
-          );
-          Toast.show(errorMessage, "orange");
-        } else {
-          Toast.show(errorMessage, "danger");
-        }
+        const mapped = mapQuoteGenerationCode(response.code);
+        Toast.show(
+          (mapped && mapped.text) || response.message || t("quotes.generateFailed", "Eroare la generarea ofertei."),
+          (mapped && mapped.toastType) || "danger",
+        );
       }
     } catch (err) {
       console.error("Eroare generare ofertă:", err);
-
-      let errorMessage = t("quotes.generateNetworkError", "Eroare de rețea la generarea ofertei.");
-      let toastType = "danger";
-      const rawError = err.message || "";
-
-      if (
-        rawError.includes("already been created") ||
-        rawError.includes("QUOTE_ALREADY_EXISTS")
-      ) {
-        errorMessage = t(
-          "quotes.alreadyExists",
-          "Oferta nu poate fi generată: există deja o ofertă comercială activă pentru acest deviz.",
-        );
-        toastType = "orange";
-      } else if (rawError.includes("ESTIMATE_NOT_FOUND")) {
-        errorMessage = t("quotes.estimateNotFound", "Devizul selectat nu mai există sau a fost dezactivat.");
-        toastType = "orange";
-      } else if (
-        rawError.includes("Finalizat") ||
-        rawError.includes("completed")
-      ) {
-        errorMessage = t(
-          "quotes.estimateMustBeCompleted",
-          "Devizul trebuie să fie în starea Finalizat înainte de a putea genera oferta comercială.",
-        );
-        toastType = "orange";
-      }
-
-      Toast.show(errorMessage, toastType);
+      const mapped = mapQuoteGenerationCode(err.code);
+      Toast.show(
+        (mapped && mapped.text) || t("quotes.generateNetworkError", "Eroare de rețea la generarea ofertei."),
+        (mapped && mapped.toastType) || "danger",
+      );
     }
   }
 
@@ -339,34 +355,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (response && response.success) {
         Toast.show(t("quotes.invoiceGenerated", "Factură generată cu succes din ofertă!"), "success");
       } else {
-        let msg = response.message || t("quotes.invoiceGenerateFailed", "Eroare la generarea facturii.");
-        let toastType = "danger";
-        if (
-          msg.includes("already been created") ||
-          msg.includes("INVOICE_ALREADY_EXISTS")
-        ) {
-          msg = t("quotes.invoiceAlreadyExists", "Există deja o factură generată pentru această ofertă.");
-          toastType = "orange";
-        }
-        Toast.show(msg, toastType);
+        const mapped = mapInvoiceGenerationCode(response.code);
+        Toast.show(
+          (mapped && mapped.text) || response.message || t("quotes.invoiceGenerateFailed", "Eroare la generarea facturii."),
+          (mapped && mapped.toastType) || "danger",
+        );
       }
     } catch (err) {
       console.error("Eroare generare factură:", err);
-      const rawError = err.message || "";
-
-      let msg = t("quotes.invoiceGenerateNetworkError", "Eroare de rețea la generarea facturii.");
-      let toastType = "danger";
-      if (
-        rawError.includes("already been created") ||
-        rawError.includes("INVOICE_ALREADY_EXISTS")
-      ) {
-        msg = t("quotes.invoiceAlreadyExists", "Există deja o factură generată pentru această ofertă.");
-        toastType = "orange";
-      } else if (rawError) {
-        msg = `${rawError}`;
-      }
-
-      Toast.show(msg, toastType);
+      const mapped = mapInvoiceGenerationCode(err.code);
+      Toast.show(
+        (mapped && mapped.text) || t("quotes.invoiceGenerateNetworkError", "Eroare de rețea la generarea facturii."),
+        (mapped && mapped.toastType) || "danger",
+      );
     }
   }
 
@@ -393,13 +394,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         setTimeout(() => location.reload(), 1000);
       } else {
         Toast.show(
-          response.message || t("quotes.deleteAllFailed", "Eroare la ștergerea ofertelor."),
+          mapQuotesCode(response.code) || t("quotes.deleteAllFailed", "Eroare la ștergerea ofertelor."),
           "danger",
         );
       }
     } catch (error) {
       console.error("Eroare:", error);
-      Toast.show(t("quotes.connectionError", "Eroare de conexiune la server."), "danger");
+      Toast.show(
+        mapQuotesCode(error.code) || t("quotes.connectionError", "Eroare de conexiune la server."),
+        "danger",
+      );
     }
   });
 
@@ -460,13 +464,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         await loadQuotes();
       } else {
         Toast.show(
-          response.message || t("quotes.statusUpdateFailed", "Eroare la actualizarea statusului."),
+          mapQuotesCode(response.code) || t("quotes.statusUpdateFailed", "Eroare la actualizarea statusului."),
           "danger",
         );
       }
     } catch (err) {
       console.error("Eroare status:", err);
-      Toast.show(t("quotes.statusUpdateNetworkError", "Eroare de rețea la schimbarea statusului."), "danger");
+      Toast.show(
+        mapQuotesCode(err.code) || t("quotes.statusUpdateNetworkError", "Eroare de rețea la schimbarea statusului."),
+        "danger",
+      );
     }
   }
 
@@ -575,12 +582,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         await loadQuotes();
       } else {
         Toast.show(
-          response.message || t("quotes.archiveFailed", "Eroare la arhivarea ofertei."),
+          mapQuotesCode(response.code) || t("quotes.archiveFailed", "Eroare la arhivarea ofertei."),
           "danger",
         );
       }
     } catch (err) {
-      Toast.show(t("quotes.archiveNetworkError", "Eroare de rețea la arhivarea ofertei."), "danger");
+      Toast.show(
+        mapQuotesCode(err.code) || t("quotes.archiveNetworkError", "Eroare de rețea la arhivarea ofertei."),
+        "danger",
+      );
     }
   }
 

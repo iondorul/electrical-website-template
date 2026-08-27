@@ -17,7 +17,8 @@
     "requiredField": "Acest câmp este obligatoriu.",
     "status": "Status",
     "actionCannotBeUndone": "Această acțiune nu poate fi anulată.",
-    "yesDelete": "Da, șterge"
+    "yesDelete": "Da, șterge",
+    "serverError": "A apărut o eroare de server. Încearcă din nou."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -42,7 +43,8 @@
     "language": "Limbă",
     "defaultUserName": "Utilizator",
     "defaultUserRole": "Administrator",
-    "avatarSaveFailed": "Nu s-a putut salva avatarul."
+    "avatarSaveFailed": "Nu s-a putut salva avatarul.",
+    "invalidAvatar": "Avatar invalid."
   },
   "dashboard": {
     "pageTitle": "Prezentare Generală",
@@ -103,7 +105,9 @@
       "passwordMismatchToast": "Parola nouă și confirmarea nu coincid.",
       "passwordChanged": "Parola a fost schimbată cu succes.",
       "passwordChangeFailed": "Nu s-a putut schimba parola.",
-      "twoFactorSoon": "Autentificarea în doi pași va fi disponibilă în curând."
+      "twoFactorSoon": "Autentificarea în doi pași va fi disponibilă în curând.",
+      "userNotFound": "Utilizatorul nu a fost găsit.",
+      "currentPasswordIncorrect": "Parola curentă este incorectă."
     },
     "company": {
       "title": "Date Firmă",
@@ -123,7 +127,8 @@
       "email": "Email",
       "loadError": "Eroare de rețea la încărcarea setărilor.",
       "saved": "Datele firmei au fost salvate cu succes.",
-      "saveFailed": "Nu s-au putut salva datele."
+      "saveFailed": "Nu s-au putut salva datele.",
+      "nameRequired": "Numele firmei este obligatoriu."
     },
     "privacy": {
       "title": "Confidențialitate",
@@ -206,7 +211,11 @@
       "one": "Afișare {{start}} - {{end}} din {{total}} client",
       "few": "Afișare {{start}} - {{end}} din {{total}} clienți",
       "other": "Afișare {{start}} - {{end}} din {{total}} de clienți"
-    }
+    },
+    "emailAlreadyExists": "Această adresă de email este deja utilizată de un alt client.",
+    "notFound": "Clientul nu a fost găsit.",
+    "saveFailed": "Nu s-a putut salva clientul.",
+    "deleteFailed": "Nu s-a putut șterge clientul."
   },
   "projects": {
     "pageTitle": "Gestionare Proiecte",
@@ -262,7 +271,11 @@
       "medium": "Medie",
       "high": "Ridicată",
       "urgent": "Urgentă"
-    }
+    },
+    "notFound": "Proiectul nu a fost găsit.",
+    "nameAndClientRequired": "Numele proiectului și clientul sunt obligatorii.",
+    "saveFailed": "Nu s-a putut salva proiectul.",
+    "deleteFailed": "Nu s-a putut arhiva proiectul."
   },
   "estimating": {
     "pageTitle": "Gestionare Estimări",
@@ -329,7 +342,15 @@
     "archiveNetworkError": "Eroare de rețea la arhivarea devizului.",
     "clientHashLabel": "Client #{{id}}",
     "noClientFound": "Niciun client găsit",
-    "projectHashLabel": "Proiect #{{id}}"
+    "projectHashLabel": "Proiect #{{id}}",
+    "invalidClient": "Clientul selectat este invalid.",
+    "invalidStatus": "Statusul selectat este invalid.",
+    "itemDescriptionRequired": "Descrierea liniei #{{index}} este obligatorie.",
+    "itemQuantityInvalid": "Cantitatea liniei #{{index}} trebuie să fie mai mare decât 0.",
+    "itemUnitCostInvalid": "Costul unitar al liniei #{{index}} nu poate fi negativ.",
+    "itemMarginInvalid": "Adaosul liniei #{{index}} nu poate fi negativ.",
+    "updateNotFound": "Devizul nu a fost găsit sau actualizarea a eșuat.",
+    "alreadyArchived": "Devizul nu a fost găsit sau este deja arhivat."
   },
   "quotes": {
     "pageTitle": "Gestionare Oferte",
@@ -414,7 +435,11 @@
     "detailsNetworkError": "Eroare de rețea la încărcarea ofertei.",
     "archived": "Ofertă arhivată cu succes!",
     "archiveFailed": "Eroare la arhivarea ofertei.",
-    "archiveNetworkError": "Eroare de rețea la arhivarea ofertei."
+    "archiveNetworkError": "Eroare de rețea la arhivarea ofertei.",
+    "notFound": "Oferta nu a fost găsită.",
+    "invalidStatusTransition": "Tranziția de status cerută nu este permisă de flux.",
+    "quoteNotFoundForInvoice": "Oferta selectată nu mai există sau a fost dezactivată.",
+    "quoteMustBeApproved": "Oferta trebuie să fie Aprobată înainte de a putea genera factura."
   },
   "invoices": {
     "pageTitle": "Gestionare Facturi",
@@ -485,7 +510,14 @@
     "detailsFetchFailed": "Nu s-au putut prelua detaliile facturii.",
     "updated": "Factura a fost actualizată cu succes.",
     "updateFailed": "Nu s-a putut actualiza factura.",
-    "saveNetworkError": "Eroare de rețea la salvarea facturii."
+    "saveNetworkError": "Eroare de rețea la salvarea facturii.",
+    "notFound": "Factura nu a fost găsită.",
+    "canceledCannotSend": "O factură anulată nu poate fi trimisă către client.",
+    "smtpNotConfigured": "Trimiterea de email nu este configurată.",
+    "canceledLocked": "O factură anulată nu mai poate fi modificată. Emite o factură nouă dacă e nevoie.",
+    "paidToDraftForbidden": "O factură plătită nu poate reveni la statusul Ciornă (Draft).",
+    "invalidEmailProvided": "Adresa de email furnizată nu este validă.",
+    "sentSuccessToEmail": "Factura a fost trimisă la {{email}}."
   },
   "materials": {
     "pageTitle": "Gestionare Materiale",
@@ -536,7 +568,9 @@
     "deleteConfirm": "Sigur dorești să ștergi acest material?",
     "deleted": "Material șters cu succes.",
     "deleteFailed": "Nu s-a putut șterge materialul.",
-    "deleteNetworkError": "Eroare de rețea la ștergerea materialului."
+    "deleteNetworkError": "Eroare de rețea la ștergerea materialului.",
+    "notFound": "Materialul nu a fost găsit.",
+    "codeAlreadyExists": "Există deja un material cu acest cod pentru contul tău."
   },
   "reports": {
     "period": "Perioadă",
@@ -602,7 +636,10 @@
     "downloadAction": "Descărcare",
     "reportDeleted": "Raportul a fost șters.",
     "deleteFailed": "Nu s-a putut șterge raportul.",
-    "deleteNetworkError": "Eroare de rețea la ștergere."
+    "deleteNetworkError": "Eroare de rețea la ștergere.",
+    "invalidType": "Tipul de raport selectat este invalid.",
+    "notFound": "Raportul nu a fost găsit.",
+    "deleteForbidden": "Doar utilizatorii cu rol de Administrator pot șterge rapoarte din arhivă."
   },
   "plans": {
     "pageTitle": "Planuri & Abonament",

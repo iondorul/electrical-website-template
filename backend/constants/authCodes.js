@@ -34,4 +34,18 @@ module.exports = {
   // ca literal ca acest fișier să rămână independent/autonom (fără import
   // încrucișat), la fel ca restul fișierelor din backend/constants/.
   SERVER_ERROR: "SERVER_ERROR",
+
+  // getMe / updateProfile / updateAvatar / changePassword (rutele de profil
+  // autentificate din authController.js, folosite de Settings — distincte de
+  // cele 4 rute publice de mai sus, dar păstrate în aceeași taxonomie pentru
+  // că sunt tot din authController.js).
+  USER_NOT_FOUND: "USER_NOT_FOUND",
+  PROFILE_NAME_REQUIRED: "PROFILE_NAME_REQUIRED",
+  PROFILE_UPDATED: "PROFILE_UPDATED",
+  INVALID_AVATAR: "INVALID_AVATAR",
+  AVATAR_UPDATED: "AVATAR_UPDATED",
+  PASSWORD_FIELDS_REQUIRED: "PASSWORD_FIELDS_REQUIRED",
+  NEW_PASSWORD_TOO_SHORT: "NEW_PASSWORD_TOO_SHORT",
+  CURRENT_PASSWORD_INCORRECT: "CURRENT_PASSWORD_INCORRECT",
+  PASSWORD_CHANGED: "PASSWORD_CHANGED",
 };

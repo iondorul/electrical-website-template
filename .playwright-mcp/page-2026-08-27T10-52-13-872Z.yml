@@ -1,0 +1,109 @@
+- generic [active] [ref=f119e1]:
+  - generic [ref=f119e2]:
+    - complementary [ref=f119e3]:
+      - generic [ref=f119e4]:
+        - generic [ref=f119e6]:
+          - generic [ref=f119e7]: 
+          - generic [ref=f119e8]:
+            - text: Electrical
+            - strong [ref=f119e9]: VPF
+        - button "" [ref=f119e10] [cursor=pointer]
+      - navigation [ref=f119e12]:
+        - list [ref=f119e13]:
+          - listitem [ref=f119e14]:
+            - link " Panel" [ref=f119e15] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f119e16]: 
+              - generic [ref=f119e17]: Panel
+          - listitem [ref=f119e18]:
+            - link " Müşteriler" [ref=f119e19] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f119e20]: 
+              - generic [ref=f119e21]: Müşteriler
+          - listitem [ref=f119e22]:
+            - link " Projeler" [ref=f119e23] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f119e24]: 
+              - generic [ref=f119e25]: Projeler
+          - listitem [ref=f119e26]:
+            - link " Keşifler" [ref=f119e27] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f119e28]: 
+              - generic [ref=f119e29]: Keşifler
+          - listitem [ref=f119e30]:
+            - link " Teklifler" [ref=f119e31] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f119e32]: 
+              - generic [ref=f119e33]: Teklifler
+          - listitem [ref=f119e34]:
+            - link " Faturalar" [ref=f119e35] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f119e36]: 
+              - generic [ref=f119e37]: Faturalar
+          - listitem [ref=f119e38]:
+            - link " Malzemeler" [ref=f119e39] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f119e40]: 
+              - generic [ref=f119e41]: Malzemeler
+          - listitem [ref=f119e42]:
+            - link " Raporlar" [ref=f119e43] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f119e44]: 
+              - generic [ref=f119e45]: Raporlar
+          - listitem [ref=f119e46]:
+            - link " Ayarlar" [ref=f119e47] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f119e48]: 
+              - generic [ref=f119e49]: Ayarlar
+      - button " Çıkış Yap" [ref=f119e51] [cursor=pointer]:
+        - generic [ref=f119e52]: 
+        - text: Çıkış Yap
+    - main [ref=f119e53]:
+      - generic [ref=f119e55]:
+        - heading "Proje Yönetimi" [level=4] [ref=f119e57]
+        - generic [ref=f119e58]:
+          - generic [ref=f119e59]:
+            - button "Türkçe " [ref=f119e60] [cursor=pointer]:
+              - generic [ref=f119e67]: Türkçe
+              - generic [ref=f119e68]: 
+            - text: 
+          - link "Ayarlar" [ref=f119e69] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f119e70]: 
+          - button "Çıkış Yap" [ref=f119e72] [cursor=pointer]:
+            - generic [ref=f119e73]: 
+          - generic [ref=f119e75]:
+            - generic [ref=f119e76]: "--"
+            - text: "--"
+          - button "Avatarı değiştir" [ref=f119e77] [cursor=pointer]:
+            - generic [ref=f119e78]: 
+      - generic [ref=f119e79]:
+        - generic [ref=f119e82]:
+          - generic [ref=f119e84]:
+            - generic [ref=f119e85]: 
+            - textbox "Koda, proje adına veya müşteriye göre ara..." [ref=f119e87]
+          - button " Proje Ekle" [ref=f119e89] [cursor=pointer]:
+            - generic [ref=f119e90]: 
+            - text: Proje Ekle
+        - generic [ref=f119e91]:
+          - generic [ref=f119e92]:
+            - table [ref=f119e94]:
+              - rowgroup [ref=f119e95]:
+                - row [ref=f119e96]:
+                  - columnheader "Kod / Proje" [ref=f119e97]
+                  - columnheader "Müşteri" [ref=f119e98]
+                  - columnheader "Durum" [ref=f119e99]
+                  - columnheader "Öncelik" [ref=f119e100]
+                  - columnheader "Tah. Değer" [ref=f119e101]
+                  - columnheader "İşlemler" [ref=f119e102]
+              - rowgroup
+            - generic [ref=f119e103]:
+              - status [ref=f119e104]:
+                - generic [ref=f119e105]: Yükleniyor...
+              - paragraph [ref=f119e106]: Proje listesi yükleniyor...
+            - text: 
+          - generic [ref=f119e107]:
+            - generic [ref=f119e108]: Afișare 0 - 0 din 0 proiecte
+            - navigation:
+              - list
+  - text: 

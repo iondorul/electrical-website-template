@@ -17,6 +17,20 @@
     "email",
   ];
 
+  // Mapare cod → cheie de traducere pentru răspunsurile /company-settings
+  // (backend trimite `error`/`code`, NICIODATĂ text hardcodat de afișat
+  // direct — vezi companySettingsController.js/errors.js).
+  function mapCompanySettingsCode(code) {
+    switch (code) {
+      case "MISSING_REQUIRED_FIELDS":
+        return t("settings.company.nameRequired", "Numele firmei este obligatoriu.");
+      case "SERVER_ERROR":
+        return t("common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+      default:
+        return null;
+    }
+  }
+
   function template() {
     return `
       <h5 class="settings-section-title">${t("settings.company.title", "Date Firmă")}</h5>
@@ -134,13 +148,16 @@
         Toast.show(t("settings.company.saved", "Datele firmei au fost salvate cu succes."), "success");
       } else {
         Toast.show(
-          (response && response.message) || t("settings.company.saveFailed", "Nu s-au putut salva datele."),
+          mapCompanySettingsCode(response && response.code) || t("settings.company.saveFailed", "Nu s-au putut salva datele."),
           "danger",
         );
       }
     } catch (err) {
       console.error("Eroare la salvarea setărilor firmei:", err);
-      Toast.show(err.message || t("common.networkError", "Eroare de rețea la salvare."), "danger");
+      Toast.show(
+        mapCompanySettingsCode(err.code) || t("common.networkError", "Eroare de rețea la salvare."),
+        "danger",
+      );
     } finally {
       btn.disabled = false;
       btn.innerHTML = originalHtml;

@@ -26,9 +26,16 @@ const API = {
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        throw new Error(
+        const apiError = new Error(
           data.message || `Eroare HTTP! Status: ${response.status}`,
         );
+        // Cod mașină (ex. "CLIENT_NOT_FOUND") — permite modulelor consumatoare
+        // să mapeze eroarea la propria cheie de traducere, în loc să afișeze
+        // direct `message` (text hardcodat server-side, mereu RO/EN). `data`
+        // duce eventuale valori de interpolare (ex. { itemIndex: 2 }).
+        apiError.code = data.code || data.error || null;
+        apiError.data = data.data || null;
+        throw apiError;
       }
 
       return data;

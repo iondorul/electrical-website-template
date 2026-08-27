@@ -1,0 +1,157 @@
+- generic [ref=f118e1]:
+  - generic [ref=f118e2]:
+    - complementary [ref=f118e3]:
+      - generic [ref=f118e4]:
+        - generic [ref=f118e5]:
+          - generic [ref=f118e6]:
+            - generic [ref=f118e7]: 
+            - generic [ref=f118e8]:
+              - text: Electrical
+              - strong [ref=f118e9]: VPF
+          - link " PLAN PRO" [ref=f118e165] [cursor=pointer]:
+            - /url: settings.html#billing
+            - generic [ref=f118e166]: 
+            - generic [ref=f118e167]: PLAN PRO
+        - button "" [ref=f118e13] [cursor=pointer]
+      - navigation [ref=f118e15]:
+        - list [ref=f118e16]:
+          - listitem [ref=f118e17]:
+            - link " Dashboard" [ref=f118e18] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f118e19]: 
+              - generic [ref=f118e20]: Dashboard
+          - listitem [ref=f118e21]:
+            - link " Clienți" [ref=f118e168] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f118e23]: 
+              - generic [ref=f118e24]: Clienți
+          - listitem [ref=f118e25]:
+            - link " Proiecte" [ref=f118e169] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f118e27]: 
+              - generic [ref=f118e28]: Proiecte
+          - listitem [ref=f118e29]:
+            - link " Estimări" [ref=f118e170] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f118e31]: 
+              - generic [ref=f118e32]: Estimări
+          - listitem [ref=f118e33]:
+            - link " Oferte" [ref=f118e171] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f118e35]: 
+              - generic [ref=f118e36]: Oferte
+          - listitem [ref=f118e37]:
+            - link " Facturi" [ref=f118e172] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f118e39]: 
+              - generic [ref=f118e40]: Facturi
+          - listitem [ref=f118e41]:
+            - link " Materiale" [ref=f118e173] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f118e43]: 
+              - generic [ref=f118e44]: Materiale
+          - listitem [ref=f118e45]:
+            - link " Rapoarte" [ref=f118e174] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f118e47]: 
+              - generic [ref=f118e48]: Rapoarte
+          - listitem [ref=f118e49]:
+            - link " Setări" [ref=f118e175] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f118e51]: 
+              - generic [ref=f118e52]: Setări
+      - button " Logout" [ref=f118e54] [cursor=pointer]:
+        - generic [ref=f118e55]: 
+        - text: Logout
+    - main [ref=f118e56]:
+      - generic [ref=f118e58]:
+        - heading "Gestionare Clienți" [level=4] [ref=f118e176]
+        - generic [ref=f118e61]:
+          - generic [ref=f118e62]:
+            - button "Română " [ref=f118e177] [cursor=pointer]:
+              - generic [ref=f118e183]: Română
+              - generic [ref=f118e184]: 
+            - text: 
+          - link "Setări" [ref=f118e185] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f118e74]: 
+          - button "Logout" [ref=f118e76] [cursor=pointer]:
+            - generic [ref=f118e77]: 
+          - generic [ref=f118e79]:
+            - generic [ref=f118e80]: cometa_2
+            - text: Administrator
+          - button "Schimbă avatarul" [ref=f118e186] [cursor=pointer]:
+            - img "Avatar electrician" [ref=f118e82]
+      - generic [ref=f118e91]:
+        - generic [ref=f118e94]:
+          - generic [ref=f118e96]:
+            - generic [ref=f118e97]: 
+            - textbox "Căutare după nume, companie, email sau telefon..." [ref=f118e187]
+          - button " Adaugă Client" [ref=f118e188] [cursor=pointer]:
+            - generic [ref=f118e102]: 
+            - text: Adaugă Client
+        - generic [ref=f118e103]:
+          - generic [ref=f118e104]:
+            - table [ref=f118e106]:
+              - rowgroup [ref=f118e107]:
+                - row [ref=f118e189]:
+                  - columnheader "Nume / Companie" [ref=f118e190]
+                  - columnheader "Contact (Email / Tel)" [ref=f118e191]
+                  - columnheader "Oraș / Adresă" [ref=f118e192]
+                  - columnheader "Status" [ref=f118e112]
+                  - columnheader "Acțiuni" [ref=f118e193]
+              - rowgroup [ref=f118e114]:
+                - row [ref=f118e194]:
+                  - cell "Liudmiel Marinar SC ELECTROM SA" [ref=f118e195]:
+                    - generic [ref=f118e196]: Liudmiel Marinar
+                    - text: SC ELECTROM SA
+                  - cell " electrom@yahoo.com  0735946077" [ref=f118e197]:
+                    - generic [ref=f118e198]:
+                      - generic [ref=f118e199]: 
+                      - text: electrom@yahoo.com
+                    - generic [ref=f118e200]:
+                      - generic [ref=f118e201]: 
+                      - text: "0735946077"
+                  - cell "Victoria" [ref=f118e202]
+                  - cell "Activ" [ref=f118e203]
+                  - cell [ref=f118e205]:
+                    - button "" [ref=f118e206] [cursor=pointer]
+                    - button "" [ref=f118e208] [cursor=pointer]
+            - text: 
+          - generic [ref=f118e131]:
+            - generic [ref=f118e132]: Afișare 1 - 1 din 1 client
+            - navigation:
+              - list
+  - dialog [active] [ref=f118e210]:
+    - generic [ref=f118e134]:
+      - generic [ref=f118e135]:
+        - heading "Adaugă Client Nou" [level=5] [ref=f118e211]
+        - button "Close" [ref=f118e137] [cursor=pointer]
+      - generic [ref=f118e138]:
+        - generic [ref=f118e139]:
+          - generic [ref=f118e140]:
+            - generic [ref=f118e141]: Nume complet / Persoană de contact *
+            - textbox "Nume complet / Persoană de contact *" [ref=f118e212]:
+              - /placeholder: ex. Popescu Ion
+          - generic [ref=f118e143]:
+            - generic [ref=f118e144]: Denumire Companie (opțional)
+            - textbox "Denumire Companie (opțional)" [ref=f118e213]:
+              - /placeholder: ex. S.C. Electro-Tech S.R.L.
+          - generic [ref=f118e146]:
+            - generic [ref=f118e147]:
+              - generic [ref=f118e148]: Email *
+              - textbox "Email *" [ref=f118e149]:
+                - /placeholder: nume@domeniu.ro
+            - generic [ref=f118e150]:
+              - generic [ref=f118e151]: Telefon *
+              - textbox "Telefon *" [ref=f118e214]:
+                - /placeholder: 07xxxxxxxx
+          - generic [ref=f118e153]:
+            - generic [ref=f118e154]: Oraș / Județ
+            - textbox "Oraș / Județ" [ref=f118e215]:
+              - /placeholder: ex. Sibiu, SB
+        - generic [ref=f118e156]:
+          - button "Anulează" [ref=f118e216] [cursor=pointer]
+          - button "Salvează Client" [ref=f118e217] [cursor=pointer]
+  - text: 
+  - generic: 

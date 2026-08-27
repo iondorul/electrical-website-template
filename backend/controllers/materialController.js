@@ -42,9 +42,11 @@ class MaterialController {
 
       const material = await MaterialService.getById(id, req.user.id);
       if (!material) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Material not found." });
+        return res.status(404).json({
+          success: false,
+          error: Errors.MATERIAL_NOT_FOUND,
+          message: "Material not found.",
+        });
       }
 
       return res.status(200).json({ success: true, data: material });
@@ -75,7 +77,8 @@ class MaterialController {
       if (error.constraint === "uq_user_item_code") {
         return res.status(409).json({
           success: false,
-          message: "Există deja un material cu acest cod pentru contul tău.",
+          error: Errors.MATERIAL_CODE_ALREADY_EXISTS,
+          message: "A material with this code already exists for your account.",
         });
       }
       return res.status(500).json({
@@ -99,9 +102,11 @@ class MaterialController {
 
       const updated = await MaterialService.update(id, req.user.id, req.body);
       if (!updated) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Material not found." });
+        return res.status(404).json({
+          success: false,
+          error: Errors.MATERIAL_NOT_FOUND,
+          message: "Material not found.",
+        });
       }
 
       return res.status(200).json({ success: true, data: updated });
@@ -119,13 +124,17 @@ class MaterialController {
       const id = parseInt(req.params.id, 10);
       const deleted = await MaterialService.delete(id, req.user.id);
       if (!deleted) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Material not found." });
+        return res.status(404).json({
+          success: false,
+          error: Errors.MATERIAL_NOT_FOUND,
+          message: "Material not found.",
+        });
       }
-      return res
-        .status(200)
-        .json({ success: true, message: "Material șters cu succes." });
+      return res.status(200).json({
+        success: true,
+        code: Errors.MATERIAL_DELETED,
+        message: "Material deleted successfully.",
+      });
     } catch (error) {
       return res.status(500).json({
         success: false,
@@ -140,7 +149,8 @@ class MaterialController {
       const deletedCount = await MaterialService.deleteAll(req.user.id);
       return res.status(200).json({
         success: true,
-        message: "Toate materialele au fost șterse cu succes.",
+        code: Errors.ALL_MATERIALS_DELETED,
+        message: "All materials deleted successfully.",
         data: { deletedCount },
       });
     } catch (error) {

@@ -37,6 +37,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnConfirmDelete = document.getElementById("btnConfirmDelete");
   const btnOpenAddModal = document.getElementById("btnOpenAddModal");
 
+  // Mapare cod → cheie de traducere pentru răspunsurile /projects (backend
+  // trimite `error`/`code`, NICIODATĂ text hardcodat de afișat direct — vezi
+  // projectController.js/errors.js).
+  function mapProjectsCode(code) {
+    switch (code) {
+      case "PROJECT_NOT_FOUND":
+        return t("projects.notFound", "Proiectul nu a fost găsit.");
+      case "PROJECT_NAME_AND_CLIENT_REQUIRED":
+        return t("projects.nameAndClientRequired", "Numele proiectului și clientul sunt obligatorii.");
+      case "SERVER_ERROR":
+        return t("common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+      default:
+        return null;
+    }
+  }
+
   // --- INITIAL FETCH ---
   loadClientsDropdown();
   fetchProjects();
@@ -59,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         inputClient.innerHTML += `<option value="${c.id}">${name} (${company})</option>`;
       });
     } catch (err) {
-      Toast.show(err.message || t("projects.loadClientsError", "Eroare la încărcarea clienților."), "danger");
+      Toast.show(mapProjectsCode(err.code) || t("projects.loadClientsError", "Eroare la încărcarea clienților."), "danger");
     }
   }
 
@@ -89,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderPagination(total);
     } catch (err) {
       Toast.show(
-        err.message || t("projects.loadError", "Eroare la încărcarea listei de proiecte."),
+        mapProjectsCode(err.code) || t("projects.loadError", "Eroare la încărcarea listei de proiecte."),
         "danger",
       );
     } finally {
@@ -206,7 +222,10 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         fetchProjects();
       } catch (err) {
-        Toast.show(err.message, "danger");
+        Toast.show(
+          mapProjectsCode(err.code) || t("projects.saveFailed", "Nu s-a putut salva proiectul."),
+          "danger",
+        );
       }
     });
   }
@@ -222,7 +241,10 @@ document.addEventListener("DOMContentLoaded", () => {
         Toast.show(t("projects.archived", "Proiectul a fost arhivat cu succes."), "warning");
         fetchProjects();
       } catch (err) {
-        Toast.show(err.message, "danger");
+        Toast.show(
+          mapProjectsCode(err.code) || t("projects.deleteFailed", "Nu s-a putut arhiva proiectul."),
+          "danger",
+        );
       }
     });
   }

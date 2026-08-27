@@ -4,6 +4,28 @@
  * 2FA este doar vizual (fără logică backend încă).
  */
 (function () {
+  // Mapare cod → cheie de traducere pentru răspunsurile /auth/profile și
+  // /auth/password (backend trimite `error`/`code`, NICIODATĂ text hardcodat
+  // de afișat direct — vezi authController.js/authCodes.js).
+  function mapAccountCode(code) {
+    switch (code) {
+      case "PROFILE_NAME_REQUIRED":
+        return t("settings.account.nameRequired", "Numele utilizatorului este obligatoriu.");
+      case "USER_NOT_FOUND":
+        return t("settings.account.userNotFound", "Utilizatorul nu a fost găsit.");
+      case "PASSWORD_FIELDS_REQUIRED":
+        return t("settings.account.passwordFieldsRequired", "Completează toate câmpurile pentru schimbarea parolei.");
+      case "NEW_PASSWORD_TOO_SHORT":
+        return t("settings.account.passwordTooShort", "Noua parolă trebuie să aibă cel puțin 6 caractere.");
+      case "CURRENT_PASSWORD_INCORRECT":
+        return t("settings.account.currentPasswordIncorrect", "Parola curentă este incorectă.");
+      case "SERVER_ERROR":
+        return t("common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+      default:
+        return null;
+    }
+  }
+
   function template() {
     return `
       <h5 class="settings-section-title">${t("settings.account.title", "Cont & Securitate")}</h5>
@@ -190,13 +212,16 @@
         Toast.show(t("settings.account.profileSaved", "Profilul a fost actualizat cu succes."), "success");
       } else {
         Toast.show(
-          (response && response.message) || t("settings.account.profileSaveFailed", "Nu s-a putut actualiza profilul."),
+          mapAccountCode(response && response.code) || t("settings.account.profileSaveFailed", "Nu s-a putut actualiza profilul."),
           "danger",
         );
       }
     } catch (err) {
       console.error("Eroare la salvarea profilului:", err);
-      Toast.show(err.message || t("common.networkError", "Eroare de rețea la salvare."), "danger");
+      Toast.show(
+        mapAccountCode(err.code) || t("common.networkError", "Eroare de rețea la salvare."),
+        "danger",
+      );
     } finally {
       btn.disabled = false;
       btn.innerHTML = originalHtml;
@@ -239,13 +264,16 @@
         container.querySelector("#btnChangePassword").disabled = true;
       } else {
         Toast.show(
-          (response && response.message) || t("settings.account.passwordChangeFailed", "Nu s-a putut schimba parola."),
+          mapAccountCode(response && response.code) || t("settings.account.passwordChangeFailed", "Nu s-a putut schimba parola."),
           "danger",
         );
       }
     } catch (err) {
       console.error("Eroare la schimbarea parolei:", err);
-      Toast.show(err.message || t("common.networkError", "Eroare de rețea la schimbarea parolei."), "danger");
+      Toast.show(
+        mapAccountCode(err.code) || t("common.networkError", "Eroare de rețea la schimbarea parolei."),
+        "danger",
+      );
     } finally {
       btn.disabled = false;
       btn.innerHTML = originalHtml;

@@ -17,7 +17,8 @@
     "requiredField": "Dette feltet er obligatorisk.",
     "status": "Status",
     "actionCannotBeUndone": "Denne handlingen kan ikke angres.",
-    "yesDelete": "Ja, slett"
+    "yesDelete": "Ja, slett",
+    "serverError": "Det oppstod en serverfeil. Prøv igjen."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -42,7 +43,8 @@
     "language": "Språk",
     "defaultUserName": "Bruker",
     "defaultUserRole": "Administrator",
-    "avatarSaveFailed": "Kunne ikke lagre avataren."
+    "avatarSaveFailed": "Kunne ikke lagre avataren.",
+    "invalidAvatar": "Ugyldig avatar."
   },
   "dashboard": {
     "pageTitle": "Oversikt",
@@ -103,7 +105,9 @@
       "passwordMismatchToast": "Det nye passordet og bekreftelsen stemmer ikke overens.",
       "passwordChanged": "Passordet ble endret.",
       "passwordChangeFailed": "Kunne ikke endre passordet.",
-      "twoFactorSoon": "Tofaktorautentisering blir snart tilgjengelig."
+      "twoFactorSoon": "Tofaktorautentisering blir snart tilgjengelig.",
+      "userNotFound": "Brukeren ble ikke funnet.",
+      "currentPasswordIncorrect": "Nåværende passord er feil."
     },
     "company": {
       "title": "Bedriftsopplysninger",
@@ -123,7 +127,8 @@
       "email": "E-post",
       "loadError": "Nettverksfeil ved lasting av innstillingene.",
       "saved": "Bedriftsopplysningene ble lagret.",
-      "saveFailed": "Kunne ikke lagre opplysningene."
+      "saveFailed": "Kunne ikke lagre opplysningene.",
+      "nameRequired": "Firmanavn er obligatorisk."
     },
     "privacy": {
       "title": "Personvern",
@@ -205,7 +210,11 @@
     "paginationInfo": {
       "one": "Viser {{start}} - {{end}} av {{total}} kunde",
       "other": "Viser {{start}} - {{end}} av {{total}} kunder"
-    }
+    },
+    "emailAlreadyExists": "Denne e-postadressen brukes allerede av en annen kunde.",
+    "notFound": "Kunden ble ikke funnet.",
+    "saveFailed": "Kunne ikke lagre kunden.",
+    "deleteFailed": "Kunne ikke slette kunden."
   },
   "projects": {
     "pageTitle": "Prosjektadministrasjon",
@@ -260,7 +269,11 @@
       "medium": "Middels",
       "high": "Høy",
       "urgent": "Akutt"
-    }
+    },
+    "notFound": "Prosjektet ble ikke funnet.",
+    "nameAndClientRequired": "Prosjektnavn og kunde er obligatorisk.",
+    "saveFailed": "Kunne ikke lagre prosjektet.",
+    "deleteFailed": "Kunne ikke arkivere prosjektet."
   },
   "estimating": {
     "pageTitle": "Overslagsadministrasjon",
@@ -327,7 +340,15 @@
     "archiveNetworkError": "Nettverksfeil ved arkivering av overslaget.",
     "clientHashLabel": "Kunde #{{id}}",
     "noClientFound": "Ingen kunde funnet",
-    "projectHashLabel": "Prosjekt #{{id}}"
+    "projectHashLabel": "Prosjekt #{{id}}",
+    "invalidClient": "Den valgte kunden er ugyldig.",
+    "invalidStatus": "Den valgte statusen er ugyldig.",
+    "itemDescriptionRequired": "Beskrivelse for linje #{{index}} er obligatorisk.",
+    "itemQuantityInvalid": "Mengden for linje #{{index}} må være større enn 0.",
+    "itemUnitCostInvalid": "Enhetskostnaden for linje #{{index}} kan ikke være negativ.",
+    "itemMarginInvalid": "Påslaget for linje #{{index}} kan ikke være negativt.",
+    "updateNotFound": "Overslaget ble ikke funnet, eller oppdateringen mislyktes.",
+    "alreadyArchived": "Overslaget ble ikke funnet eller er allerede arkivert."
   },
   "quotes": {
     "pageTitle": "Tilbudsadministrasjon",
@@ -412,7 +433,11 @@
     "detailsNetworkError": "Nettverksfeil ved lasting av tilbudet.",
     "archived": "Tilbudet ble arkivert!",
     "archiveFailed": "Feil ved arkivering av tilbudet.",
-    "archiveNetworkError": "Nettverksfeil ved arkivering av tilbudet."
+    "archiveNetworkError": "Nettverksfeil ved arkivering av tilbudet.",
+    "notFound": "Tilbudet ble ikke funnet.",
+    "invalidStatusTransition": "Den forespurte statusendringen er ikke tillatt av arbeidsflyten.",
+    "quoteNotFoundForInvoice": "Det valgte tilbudet finnes ikke lenger eller er deaktivert.",
+    "quoteMustBeApproved": "Tilbudet må være Godkjent før en faktura kan genereres."
   },
   "invoices": {
     "pageTitle": "Fakturaadministrasjon",
@@ -483,7 +508,14 @@
     "detailsFetchFailed": "Kunne ikke hente fakturadetaljene.",
     "updated": "Fakturaen ble oppdatert.",
     "updateFailed": "Kunne ikke oppdatere fakturaen.",
-    "saveNetworkError": "Nettverksfeil ved lagring av fakturaen."
+    "saveNetworkError": "Nettverksfeil ved lagring av fakturaen.",
+    "notFound": "Fakturaen ble ikke funnet.",
+    "canceledCannotSend": "En kansellert faktura kan ikke sendes til kunden.",
+    "smtpNotConfigured": "E-postsending er ikke konfigurert.",
+    "canceledLocked": "En kansellert faktura kan ikke lenger endres. Utsted en ny faktura om nødvendig.",
+    "paidToDraftForbidden": "En betalt faktura kan ikke gå tilbake til status Kladd.",
+    "invalidEmailProvided": "Den oppgitte e-postadressen er ikke gyldig.",
+    "sentSuccessToEmail": "Faktura sendt til {{email}}."
   },
   "materials": {
     "pageTitle": "Materialadministrasjon",
@@ -534,7 +566,9 @@
     "deleteConfirm": "Er du sikker på at du vil slette dette materialet?",
     "deleted": "Materialet ble slettet.",
     "deleteFailed": "Kunne ikke slette materialet.",
-    "deleteNetworkError": "Nettverksfeil ved sletting av materialet."
+    "deleteNetworkError": "Nettverksfeil ved sletting av materialet.",
+    "notFound": "Materialet ble ikke funnet.",
+    "codeAlreadyExists": "Det finnes allerede et materiale med denne koden for kontoen din."
   },
   "reports": {
     "period": "Periode",
@@ -600,7 +634,10 @@
     "downloadAction": "Last ned",
     "reportDeleted": "Rapporten er slettet.",
     "deleteFailed": "Kunne ikke slette rapporten.",
-    "deleteNetworkError": "Nettverksfeil ved sletting."
+    "deleteNetworkError": "Nettverksfeil ved sletting.",
+    "invalidType": "Den valgte rapporttypen er ugyldig.",
+    "notFound": "Rapporten ble ikke funnet.",
+    "deleteForbidden": "Kun brukere med rollen Administrator kan slette rapporter fra arkivet."
   },
   "plans": {
     "pageTitle": "Planer og abonnement",

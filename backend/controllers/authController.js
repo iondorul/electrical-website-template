@@ -115,13 +115,23 @@ exports.getMe = async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, message: "User not found." });
+      return res.status(404).json({
+        success: false,
+        code: AuthCodes.USER_NOT_FOUND,
+        error: AuthCodes.USER_NOT_FOUND,
+        message: "User not found.",
+      });
     }
 
     res.json({ success: true, data: result.rows[0] });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({
+      success: false,
+      code: AuthCodes.SERVER_ERROR,
+      error: AuthCodes.SERVER_ERROR,
+      message: err.message,
+    });
   }
 };
 
@@ -132,7 +142,9 @@ exports.updateProfile = async (req, res) => {
     if (!full_name || !full_name.trim()) {
       return res.status(400).json({
         success: false,
-        message: "Numele utilizatorului este obligatoriu.",
+        code: AuthCodes.PROFILE_NAME_REQUIRED,
+        error: AuthCodes.PROFILE_NAME_REQUIRED,
+        message: "Full name is required.",
       });
     }
 
@@ -142,10 +154,20 @@ exports.updateProfile = async (req, res) => {
       [full_name.trim(), phone ? phone.trim() : null, req.user.id],
     );
 
-    res.json({ success: true, data: result.rows[0] });
+    res.json({
+      success: true,
+      code: AuthCodes.PROFILE_UPDATED,
+      message: "Profile updated successfully.",
+      data: result.rows[0],
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({
+      success: false,
+      code: AuthCodes.SERVER_ERROR,
+      error: AuthCodes.SERVER_ERROR,
+      message: err.message,
+    });
   }
 };
 
@@ -163,7 +185,9 @@ exports.updateAvatar = async (req, res) => {
     if (!avatar_id || !VALID_AVATAR_IDS.includes(avatar_id)) {
       return res.status(400).json({
         success: false,
-        message: "Avatar invalid.",
+        code: AuthCodes.INVALID_AVATAR,
+        error: AuthCodes.INVALID_AVATAR,
+        message: "Invalid avatar.",
       });
     }
 
@@ -172,10 +196,20 @@ exports.updateAvatar = async (req, res) => {
       [avatar_id, req.user.id],
     );
 
-    res.json({ success: true, data: result.rows[0] });
+    res.json({
+      success: true,
+      code: AuthCodes.AVATAR_UPDATED,
+      message: "Avatar updated successfully.",
+      data: result.rows[0],
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({
+      success: false,
+      code: AuthCodes.SERVER_ERROR,
+      error: AuthCodes.SERVER_ERROR,
+      message: err.message,
+    });
   }
 };
 
@@ -186,14 +220,18 @@ exports.changePassword = async (req, res) => {
     if (!current_password || !new_password) {
       return res.status(400).json({
         success: false,
-        message: "Parola curentă și noua parolă sunt obligatorii.",
+        code: AuthCodes.PASSWORD_FIELDS_REQUIRED,
+        error: AuthCodes.PASSWORD_FIELDS_REQUIRED,
+        message: "Current password and new password are required.",
       });
     }
 
     if (new_password.length < 6) {
       return res.status(400).json({
         success: false,
-        message: "Noua parolă trebuie să aibă cel puțin 6 caractere.",
+        code: AuthCodes.NEW_PASSWORD_TOO_SHORT,
+        error: AuthCodes.NEW_PASSWORD_TOO_SHORT,
+        message: "New password must be at least 6 characters.",
       });
     }
 
@@ -203,7 +241,12 @@ exports.changePassword = async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, message: "User not found." });
+      return res.status(404).json({
+        success: false,
+        code: AuthCodes.USER_NOT_FOUND,
+        error: AuthCodes.USER_NOT_FOUND,
+        message: "User not found.",
+      });
     }
 
     const matches = await bcrypt.compare(
@@ -214,7 +257,9 @@ exports.changePassword = async (req, res) => {
     if (!matches) {
       return res.status(401).json({
         success: false,
-        message: "Parola curentă este incorectă.",
+        code: AuthCodes.CURRENT_PASSWORD_INCORRECT,
+        error: AuthCodes.CURRENT_PASSWORD_INCORRECT,
+        message: "Current password is incorrect.",
       });
     }
 
@@ -224,10 +269,19 @@ exports.changePassword = async (req, res) => {
       req.user.id,
     ]);
 
-    res.json({ success: true, message: "Parola a fost schimbată cu succes." });
+    res.json({
+      success: true,
+      code: AuthCodes.PASSWORD_CHANGED,
+      message: "Password changed successfully.",
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({
+      success: false,
+      code: AuthCodes.SERVER_ERROR,
+      error: AuthCodes.SERVER_ERROR,
+      message: err.message,
+    });
   }
 };
 

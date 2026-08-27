@@ -3,6 +3,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentSearch = "";
   let currentCategory = "";
 
+  // Mapare cod → cheie de traducere pentru răspunsurile /materials (backend
+  // trimite `error`/`code`, NICIODATĂ text hardcodat de afișat direct — vezi
+  // materialController.js/errors.js).
+  function mapMaterialsCode(code) {
+    switch (code) {
+      case "MATERIAL_NOT_FOUND":
+        return t("materials.notFound", "Materialul nu a fost găsit.");
+      case "MATERIAL_CODE_ALREADY_EXISTS":
+        return t("materials.codeAlreadyExists", "Există deja un material cu acest cod pentru contul tău.");
+      case "SERVER_ERROR":
+        return t("common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+      default:
+        return null;
+    }
+  }
+
   const tableBody = document.getElementById("materialsTableBody");
   const searchInput = document.getElementById("searchInput");
   const categoryFilter = document.getElementById("categoryFilter");
@@ -57,15 +73,15 @@ document.addEventListener("DOMContentLoaded", async () => {
           currentPage = 1;
           loadMaterials();
         } else {
-          const msg =
-            response && response.message
-              ? response.message
-              : t("materials.deleteAllFailed", "Nu s-au putut șterge materialele.");
+          const msg = mapMaterialsCode(response && response.code) || t("materials.deleteAllFailed", "Nu s-au putut șterge materialele.");
           Toast.show(msg, "danger");
         }
       } catch (err) {
         console.error("Eroare la ștergerea totală a materialelor:", err);
-        Toast.show(t("materials.deleteAllNetworkError", "Eroare de rețea la ștergerea materialelor."), "danger");
+        Toast.show(
+          mapMaterialsCode(err.code) || t("materials.deleteAllNetworkError", "Eroare de rețea la ștergerea materialelor."),
+          "danger",
+        );
       }
     });
   }
@@ -303,15 +319,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (materialModalInstance) materialModalInstance.hide();
         loadMaterials();
       } else {
-        const msg =
-          response && response.message
-            ? response.message
-            : t("materials.saveFailed", "Nu s-a putut salva materialul.");
+        const msg = mapMaterialsCode(response && response.code) || t("materials.saveFailed", "Nu s-a putut salva materialul.");
         Toast.show(msg, "danger");
       }
     } catch (err) {
       console.error("Eroare la salvarea materialului:", err);
-      Toast.show(t("materials.saveNetworkError", "Eroare de rețea la salvarea materialului."), "danger");
+      Toast.show(
+        mapMaterialsCode(err.code) || t("materials.saveNetworkError", "Eroare de rețea la salvarea materialului."),
+        "danger",
+      );
     }
   }
 
@@ -325,15 +341,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         Toast.show(t("materials.deleted", "Material șters cu succes."), "success");
         loadMaterials();
       } else {
-        const msg =
-          response && response.message
-            ? response.message
-            : t("materials.deleteFailed", "Nu s-a putut șterge materialul.");
+        const msg = mapMaterialsCode(response && response.code) || t("materials.deleteFailed", "Nu s-a putut șterge materialul.");
         Toast.show(msg, "danger");
       }
     } catch (err) {
       console.error("Eroare la ștergerea materialului:", err);
-      Toast.show(t("materials.deleteNetworkError", "Eroare de rețea la ștergerea materialului."), "danger");
+      Toast.show(
+        mapMaterialsCode(err.code) || t("materials.deleteNetworkError", "Eroare de rețea la ștergerea materialului."),
+        "danger",
+      );
     }
   }
 

@@ -188,6 +188,20 @@ function renderAvatarGallery(selectedId) {
   ).join("");
 }
 
+// Mapare cod → cheie de traducere pentru răspunsul /auth/avatar (backend
+// trimite `error`/`code`, NICIODATĂ text hardcodat de afișat direct — vezi
+// authController.js/authCodes.js).
+function mapAvatarCode(code) {
+  switch (code) {
+    case "INVALID_AVATAR":
+      return t("header.invalidAvatar", "Avatar invalid.");
+    case "SERVER_ERROR":
+      return t("common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+    default:
+      return null;
+  }
+}
+
 async function saveAvatarChoice(avatarId) {
   const errorEl = document.getElementById("avatarPickerError");
   if (errorEl) errorEl.classList.add("d-none");
@@ -195,7 +209,11 @@ async function saveAvatarChoice(avatarId) {
   try {
     const response = await API.put("/auth/avatar", { avatar_id: avatarId });
     if (!response || !response.success) {
-      throw new Error((response && response.message) || t("header.avatarSaveFailed", "Nu s-a putut salva avatarul."));
+      const err = new Error(
+        mapAvatarCode(response && response.code) || t("header.avatarSaveFailed", "Nu s-a putut salva avatarul."),
+      );
+      err.code = response && response.code;
+      throw err;
     }
 
     applyAvatarToHeader(avatarId);
@@ -214,7 +232,7 @@ async function saveAvatarChoice(avatarId) {
   } catch (err) {
     console.error("Eroare la salvarea avatarului:", err);
     if (errorEl) {
-      errorEl.textContent = err.message || t("common.networkError", "Eroare de rețea. Încearcă din nou.");
+      errorEl.textContent = mapAvatarCode(err.code) || t("common.networkError", "Eroare de rețea. Încearcă din nou.");
       errorEl.classList.remove("d-none");
     }
   }

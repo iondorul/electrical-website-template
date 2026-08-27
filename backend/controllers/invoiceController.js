@@ -168,15 +168,15 @@ class InvoiceController {
       if (error.message === "INVALID_STATUS_TRANSITION_CANCELED") {
         return res.status(400).json({
           success: false,
-          message:
-            "O factură anulată nu mai poate fi modificată. Emite o factură nouă dacă e nevoie.",
+          error: Errors.INVOICE_CANCELED_LOCKED,
+          message: "A canceled invoice can no longer be modified. Issue a new invoice if needed.",
         });
       }
       if (error.message === "INVALID_STATUS_TRANSITION_PAID_TO_DRAFT") {
         return res.status(400).json({
           success: false,
-          message:
-            "O factură plătită nu poate reveni la statusul Ciornă (Draft).",
+          error: Errors.INVOICE_PAID_TO_DRAFT_FORBIDDEN,
+          message: "A paid invoice cannot go back to Draft status.",
         });
       }
       return res.status(500).json({
@@ -297,7 +297,8 @@ class InvoiceController {
 
       return res.status(200).json({
         success: true,
-        message: `Factura a fost trimisă la ${recipientEmail}.`,
+        code: Errors.INVOICE_SENT,
+        message: `Invoice sent to ${recipientEmail}.`,
         data: updatedInvoice,
       });
     } catch (error) {
@@ -323,7 +324,8 @@ class InvoiceController {
 
       return res.status(200).json({
         success: true,
-        message: "Toate facturile au fost șterse cu succes.",
+        code: Errors.ALL_INVOICES_DELETED,
+        message: "All invoices deleted successfully.",
         data: { deletedCount },
       });
     } catch (error) {

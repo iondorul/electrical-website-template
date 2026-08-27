@@ -31,6 +31,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnConfirmDelete = document.getElementById("btnConfirmDelete");
   const btnOpenAddModal = document.getElementById("btnOpenAddModal");
 
+  // Mapare cod → cheie de traducere pentru răspunsurile /clients (backend
+  // trimite `error`/`code`, NICIODATĂ text hardcodat de afișat direct — vezi
+  // clientController.js/errors.js). `null` pentru un cod necunoscut/lipsă
+  // (ex. eroare de rețea reală, fără răspuns de la server).
+  function mapClientsCode(code) {
+    switch (code) {
+      case "CLIENT_EMAIL_ALREADY_EXISTS":
+        return t("clients.emailAlreadyExists", "Această adresă de email este deja utilizată de un alt client.");
+      case "CLIENT_NOT_FOUND":
+        return t("clients.notFound", "Clientul nu a fost găsit.");
+      case "SERVER_ERROR":
+        return t("common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+      default:
+        return null;
+    }
+  }
+
   // --- INITIAL FETCH ---
   fetchClients();
 
@@ -65,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderPagination(total);
     } catch (err) {
       Toast.show(
-        err.message || t("clients.loadError", "Eroare la încărcarea listei de clienți."),
+        mapClientsCode(err.code) || t("clients.loadError", "Eroare la încărcarea listei de clienți."),
         "danger",
       );
     } finally {
@@ -186,7 +203,10 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         fetchClients();
       } catch (err) {
-        Toast.show(err.message, "danger");
+        Toast.show(
+          mapClientsCode(err.code) || t("clients.saveFailed", "Nu s-a putut salva clientul."),
+          "danger",
+        );
       }
     });
   }
@@ -202,7 +222,10 @@ document.addEventListener("DOMContentLoaded", () => {
         Toast.show(t("clients.deleted", "Clientul a fost șters."), "warning");
         fetchClients();
       } catch (err) {
-        Toast.show(err.message, "danger");
+        Toast.show(
+          mapClientsCode(err.code) || t("clients.deleteFailed", "Nu s-a putut șterge clientul."),
+          "danger",
+        );
       }
     });
   }
