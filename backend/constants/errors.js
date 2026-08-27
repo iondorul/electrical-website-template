@@ -1,4 +1,12 @@
 module.exports = {
+  // Sesiune/token — SINGURELE coduri pe care frontend-ul (api.js) le
+  // tratează ca "sesiune expirată" și forțează logout automat. Orice alt
+  // 401/403 din restul acestui fișier (ex. REPORT_DELETE_FORBIDDEN) e o
+  // eroare de business cu status HTTP similar, NU o sesiune invalidă —
+  // trebuie să ajungă ca eroare normală la modulul apelant, nu să delogheze.
+  SESSION_EXPIRED: "SESSION_EXPIRED",
+  TOKEN_INVALID: "TOKEN_INVALID",
+
   ESTIMATE_NOT_FOUND: "ESTIMATE_NOT_FOUND",
   ESTIMATE_NOT_APPROVED: "ESTIMATE_NOT_APPROVED",
   QUOTE_ALREADY_EXISTS: "QUOTE_ALREADY_EXISTS",

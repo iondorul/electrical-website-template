@@ -1,3 +1,12 @@
+// Coduri care înseamnă cu adevărat "sesiune expirată / token invalid" — vezi
+// authMiddleware.js/errors.js. SINGURELE coduri pentru care api.js forțează
+// logout automat. Orice alt 401/403 (ex. CURRENT_PASSWORD_INCORRECT la
+// schimbarea parolei, REPORT_DELETE_FORBIDDEN pentru un user non-admin) e o
+// eroare de business cu un status HTTP similar, NU o sesiune invalidă — nu
+// trebuie să delogheze userul, ci să ajungă ca eroare normală (cu `code`
+// propriu) la modulul apelant, exact ca orice alt 400/404/500.
+const SESSION_INVALID_CODES = ["SESSION_EXPIRED", "TOKEN_INVALID"];
+
 const API = {
   async request(endpoint, options = {}) {
     const token = localStorage.getItem("token");
@@ -15,15 +24,16 @@ const API = {
 
     try {
       const response = await fetch(`${CONFIG.API_BASE_URL}${endpoint}`, config);
+      const data = await response.json().catch(() => ({}));
 
-      // Gestionare sesiuni expirate / neautorizate
-      if (response.status === 401 || response.status === 403) {
+      if (
+        (response.status === 401 || response.status === 403) &&
+        SESSION_INVALID_CODES.includes(data.code || data.error)
+      ) {
         localStorage.removeItem("token");
         window.location.href = "login.html";
         return;
       }
-
-      const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
         const apiError = new Error(
