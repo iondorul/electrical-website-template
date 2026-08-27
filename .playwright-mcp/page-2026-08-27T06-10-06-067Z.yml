@@ -1,0 +1,220 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - complementary [ref=f4e3]:
+      - generic [ref=f4e4]:
+        - generic [ref=f4e6]:
+          - generic [ref=f4e7]: 
+          - generic [ref=f4e8]:
+            - text: Electrical
+            - strong [ref=f4e9]: VPF
+        - button "" [ref=f4e10] [cursor=pointer]
+      - navigation [ref=f4e12]:
+        - list [ref=f4e13]:
+          - listitem [ref=f4e14]:
+            - link " Dashboard" [ref=f4e15] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f4e16]: 
+              - generic [ref=f4e17]: Dashboard
+          - listitem [ref=f4e18]:
+            - link " Klanten" [ref=f4e19] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f4e20]: 
+              - generic [ref=f4e21]: Klanten
+          - listitem [ref=f4e22]:
+            - link " Projecten" [ref=f4e23] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f4e24]: 
+              - generic [ref=f4e25]: Projecten
+          - listitem [ref=f4e26]:
+            - link " Begrotingen" [ref=f4e27] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f4e28]: 
+              - generic [ref=f4e29]: Begrotingen
+          - listitem [ref=f4e30]:
+            - link " Offertes" [ref=f4e31] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f4e32]: 
+              - generic [ref=f4e33]: Offertes
+          - listitem [ref=f4e34]:
+            - link " Facturen" [ref=f4e35] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f4e36]: 
+              - generic [ref=f4e37]: Facturen
+          - listitem [ref=f4e38]:
+            - link " Materialen" [ref=f4e39] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f4e40]: 
+              - generic [ref=f4e41]: Materialen
+          - listitem [ref=f4e42]:
+            - link " Rapporten" [ref=f4e43] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f4e44]: 
+              - generic [ref=f4e45]: Rapporten
+          - listitem [ref=f4e46]:
+            - link " Instellingen" [ref=f4e47] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f4e48]: 
+              - generic [ref=f4e49]: Instellingen
+      - button " Uitloggen" [ref=f4e51] [cursor=pointer]:
+        - generic [ref=f4e52]: 
+        - text: Uitloggen
+    - main [ref=f4e53]:
+      - generic [ref=f4e55]:
+        - heading "Plannen en abonnement" [level=4] [ref=f4e57]
+        - generic [ref=f4e58]:
+          - generic [ref=f4e59]:
+            - button "Nederlands " [ref=f4e60] [cursor=pointer]:
+              - generic [ref=f4e66]: Nederlands
+              - generic [ref=f4e67]: 
+            - text: 
+          - link "Instellingen" [ref=f4e68] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f4e69]: 
+          - button "Uitloggen" [ref=f4e71] [cursor=pointer]:
+            - generic [ref=f4e72]: 
+          - generic [ref=f4e74]:
+            - generic [ref=f4e75]: "--"
+            - text: "--"
+          - button "Avatar wijzigen" [ref=f4e76] [cursor=pointer]:
+            - generic [ref=f4e77]: 
+      - generic [ref=f4e78]:
+        - generic [ref=f4e79]:
+          - generic [ref=f4e80]:
+            - generic [ref=f4e81]: 
+            - text: ElectricalVPF ERP
+          - generic [ref=f4e82]:
+            - link "Terug naar Abonnement en facturering" [ref=f4e83] [cursor=pointer]:
+              - /url: settings.html#billing
+              - generic [ref=f4e84]: 
+            - heading "Plannen en abonnement" [level=2] [ref=f4e85]
+          - paragraph [ref=f4e86]: Kies het plan dat bij jouw bedrijf past. Je kunt op elk moment upgraden, zonder verplichtingen.
+        - generic [ref=f4e87]:
+          - generic [ref=f4e89]:
+            - generic [ref=f4e90]: Free
+            - generic [ref=f4e91]:
+              - generic [ref=f4e92]: €0
+              - generic [ref=f4e93]: /maand
+            - paragraph [ref=f4e94]: Om de ERP te testen met een laag activiteitsvolume.
+            - generic: Huidig plan
+            - list [ref=f4e95]:
+              - listitem [ref=f4e96]:
+                - generic [ref=f4e97]: 
+                - generic [ref=f4e99]: 1 bedrijf, 1 gebruiker
+              - listitem [ref=f4e100]:
+                - generic [ref=f4e101]: 
+                - generic [ref=f4e103]: 2 klanten
+              - listitem [ref=f4e104]:
+                - generic [ref=f4e105]: 
+                - generic [ref=f4e107]: 2 actieve projecten
+              - listitem [ref=f4e108]:
+                - generic [ref=f4e109]: 
+                - generic [ref=f4e111]: 5 begrotingen/maand
+              - listitem [ref=f4e112]:
+                - generic [ref=f4e113]: 
+                - generic [ref=f4e115]: 2 offertes/maand
+              - listitem [ref=f4e116]:
+                - generic [ref=f4e117]: 
+                - generic [ref=f4e119]: 1 rapport/maand
+              - listitem [ref=f4e120]:
+                - generic [ref=f4e121]: 
+                - generic [ref=f4e123]: Basis CRM
+              - listitem [ref=f4e124]:
+                - generic [ref=f4e125]: 
+                - generic [ref=f4e127]: Basisprojecten
+              - listitem [ref=f4e128]:
+                - generic [ref=f4e129]: 
+                - generic [ref=f4e131]: Beperkte materialen
+              - listitem [ref=f4e132]:
+                - generic [ref=f4e133]: 
+                - generic [ref=f4e135]: PDF met ElectricalVPF-watermerk
+              - listitem [ref=f4e136]:
+                - generic [ref=f4e137]: 
+                - generic [ref=f4e139]: Beperkte geschiedenis
+              - listitem [ref=f4e140]:
+                - generic [ref=f4e141]: 
+                - generic [ref=f4e143]: Facturering
+              - listitem [ref=f4e144]:
+                - generic [ref=f4e145]: 
+                - generic [ref=f4e147]: Geavanceerde analyse
+              - listitem [ref=f4e148]:
+                - generic [ref=f4e149]: 
+                - generic [ref=f4e151]: Gegevensexport
+              - listitem [ref=f4e152]:
+                - generic [ref=f4e153]: 
+                - generic [ref=f4e155]: AI-functies
+              - listitem [ref=f4e156]:
+                - generic [ref=f4e157]: 
+                - generic [ref=f4e159]: Automatiseringen
+          - generic [ref=f4e161]:
+            - generic [ref=f4e162]: Aanbevolen
+            - generic [ref=f4e163]: Pro
+            - generic [ref=f4e164]:
+              - generic [ref=f4e165]: Maandelijks
+              - switch "Wisselen tussen maandelijkse en jaarlijkse facturering" [ref=f4e166] [cursor=pointer]
+              - generic [ref=f4e168]: Jaarlijks
+            - generic [ref=f4e169]:
+              - generic [ref=f4e170]: €14.90
+              - generic [ref=f4e171]: /lună
+            - paragraph [ref=f4e172]: Voor bedrijven die volledige controle willen over hun activiteiten.
+            - link "Upgraden naar Pro" [ref=f4e173] [cursor=pointer]:
+              - /url: erp-upgrade.html?interval=month
+            - list [ref=f4e174]:
+              - listitem [ref=f4e175]:
+                - generic [ref=f4e176]: 
+                - generic [ref=f4e178]: Meerdere gebruikers
+              - listitem [ref=f4e179]:
+                - generic [ref=f4e180]: 
+                - generic [ref=f4e182]: Onbeperkt aantal klanten
+              - listitem [ref=f4e183]:
+                - generic [ref=f4e184]: 
+                - generic [ref=f4e186]: Onbeperkt aantal projecten
+              - listitem [ref=f4e187]:
+                - generic [ref=f4e188]: 
+                - generic [ref=f4e190]: Onbeperkt aantal begrotingen
+              - listitem [ref=f4e191]:
+                - generic [ref=f4e192]: 
+                - generic [ref=f4e194]: Onbeperkt aantal rapporten
+              - listitem [ref=f4e195]:
+                - generic [ref=f4e196]: 
+                - generic [ref=f4e198]: Volledige CRM
+              - listitem [ref=f4e199]:
+                - generic [ref=f4e200]: 
+                - generic [ref=f4e202]: Volledig projectbeheer
+              - listitem [ref=f4e203]:
+                - generic [ref=f4e204]: 
+                - generic [ref=f4e206]: Onbeperkt aantal materialen/producten
+              - listitem [ref=f4e207]:
+                - generic [ref=f4e208]: 
+                - generic [ref=f4e210]: Professionele PDF zonder watermerk
+              - listitem [ref=f4e211]:
+                - generic [ref=f4e212]: 
+                - generic [ref=f4e214]: Volledige facturering
+              - listitem [ref=f4e215]:
+                - generic [ref=f4e216]: 
+                - generic [ref=f4e218]: Financiële analyse (winst / kosten / omzet)
+              - listitem [ref=f4e219]:
+                - generic [ref=f4e220]: 
+                - generic [ref=f4e222]: Excel/CSV-export
+              - listitem [ref=f4e223]:
+                - generic [ref=f4e224]: 
+                - generic [ref=f4e226]: Volledige geschiedenis en auditlog
+              - listitem [ref=f4e227]:
+                - generic [ref=f4e228]: 
+                - generic [ref=f4e230]: Back-up/export van gegevens
+              - listitem [ref=f4e231]:
+                - generic [ref=f4e232]: 
+                - generic [ref=f4e234]: AI (ondersteunende functies)
+              - listitem [ref=f4e235]:
+                - generic [ref=f4e236]: 
+                - generic [ref=f4e238]: Automatiseringen
+              - listitem [ref=f4e239]:
+                - generic [ref=f4e240]: 
+                - generic [ref=f4e242]: Documentbeheer
+              - listitem [ref=f4e243]:
+                - generic [ref=f4e244]: 
+                - generic [ref=f4e246]: Prioritaire ondersteuning
+        - link " Terug naar Abonnement en facturering" [ref=f4e248] [cursor=pointer]:
+          - /url: settings.html#billing
+          - generic [ref=f4e249]: 
+          - text: Terug naar Abonnement en facturering
+  - text:     
