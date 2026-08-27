@@ -1,0 +1,220 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - complementary [ref=f2e3]:
+      - generic [ref=f2e4]:
+        - generic [ref=f2e6]:
+          - generic [ref=f2e7]: 
+          - generic [ref=f2e8]:
+            - text: Electrical
+            - strong [ref=f2e9]: VPF
+        - button "" [ref=f2e10] [cursor=pointer]
+      - navigation [ref=f2e12]:
+        - list [ref=f2e13]:
+          - listitem [ref=f2e14]:
+            - link " Dashboard" [ref=f2e15] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f2e16]: 
+              - generic [ref=f2e17]: Dashboard
+          - listitem [ref=f2e18]:
+            - link " Kunder" [ref=f2e19] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f2e20]: 
+              - generic [ref=f2e21]: Kunder
+          - listitem [ref=f2e22]:
+            - link " Prosjekter" [ref=f2e23] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f2e24]: 
+              - generic [ref=f2e25]: Prosjekter
+          - listitem [ref=f2e26]:
+            - link " Overslag" [ref=f2e27] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f2e28]: 
+              - generic [ref=f2e29]: Overslag
+          - listitem [ref=f2e30]:
+            - link " Tilbud" [ref=f2e31] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f2e32]: 
+              - generic [ref=f2e33]: Tilbud
+          - listitem [ref=f2e34]:
+            - link " Fakturaer" [ref=f2e35] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f2e36]: 
+              - generic [ref=f2e37]: Fakturaer
+          - listitem [ref=f2e38]:
+            - link " Materialer" [ref=f2e39] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f2e40]: 
+              - generic [ref=f2e41]: Materialer
+          - listitem [ref=f2e42]:
+            - link " Rapporter" [ref=f2e43] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f2e44]: 
+              - generic [ref=f2e45]: Rapporter
+          - listitem [ref=f2e46]:
+            - link " Innstillinger" [ref=f2e47] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f2e48]: 
+              - generic [ref=f2e49]: Innstillinger
+      - button " Logg ut" [ref=f2e51] [cursor=pointer]:
+        - generic [ref=f2e52]: 
+        - text: Logg ut
+    - main [ref=f2e53]:
+      - generic [ref=f2e55]:
+        - heading "Planer og abonnement" [level=4] [ref=f2e57]
+        - generic [ref=f2e58]:
+          - generic [ref=f2e59]:
+            - button "Norsk " [ref=f2e60] [cursor=pointer]:
+              - generic [ref=f2e68]: Norsk
+              - generic [ref=f2e69]: 
+            - text: 
+          - link "Innstillinger" [ref=f2e70] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f2e71]: 
+          - button "Logg ut" [ref=f2e73] [cursor=pointer]:
+            - generic [ref=f2e74]: 
+          - generic [ref=f2e76]:
+            - generic [ref=f2e77]: "--"
+            - text: "--"
+          - button "Endre avatar" [ref=f2e78] [cursor=pointer]:
+            - generic [ref=f2e79]: 
+      - generic [ref=f2e80]:
+        - generic [ref=f2e81]:
+          - generic [ref=f2e82]:
+            - generic [ref=f2e83]: 
+            - text: ElectricalVPF ERP
+          - generic [ref=f2e84]:
+            - link "Tilbake til Abonnement og fakturering" [ref=f2e85] [cursor=pointer]:
+              - /url: settings.html#billing
+              - generic [ref=f2e86]: 
+            - heading "Planer og abonnement" [level=2] [ref=f2e87]
+          - paragraph [ref=f2e88]: Velg planen som passer for bedriften din. Du kan oppgradere når som helst, uten forpliktelser.
+        - generic [ref=f2e89]:
+          - generic [ref=f2e91]:
+            - generic [ref=f2e92]: Free
+            - generic [ref=f2e93]:
+              - generic [ref=f2e94]: €0
+              - generic [ref=f2e95]: /måned
+            - paragraph [ref=f2e96]: For å teste ERP-en med lavt aktivitetsnivå.
+            - generic: Nåværende plan
+            - list [ref=f2e97]:
+              - listitem [ref=f2e98]:
+                - generic [ref=f2e99]: 
+                - generic [ref=f2e101]: 1 bedrift, 1 bruker
+              - listitem [ref=f2e102]:
+                - generic [ref=f2e103]: 
+                - generic [ref=f2e105]: 2 kunder
+              - listitem [ref=f2e106]:
+                - generic [ref=f2e107]: 
+                - generic [ref=f2e109]: 2 aktive prosjekter
+              - listitem [ref=f2e110]:
+                - generic [ref=f2e111]: 
+                - generic [ref=f2e113]: 5 overslag/måned
+              - listitem [ref=f2e114]:
+                - generic [ref=f2e115]: 
+                - generic [ref=f2e117]: 2 tilbud/måned
+              - listitem [ref=f2e118]:
+                - generic [ref=f2e119]: 
+                - generic [ref=f2e121]: 1 rapport/måned
+              - listitem [ref=f2e122]:
+                - generic [ref=f2e123]: 
+                - generic [ref=f2e125]: Grunnleggende CRM
+              - listitem [ref=f2e126]:
+                - generic [ref=f2e127]: 
+                - generic [ref=f2e129]: Grunnleggende prosjekter
+              - listitem [ref=f2e130]:
+                - generic [ref=f2e131]: 
+                - generic [ref=f2e133]: Begrenset med materialer
+              - listitem [ref=f2e134]:
+                - generic [ref=f2e135]: 
+                - generic [ref=f2e137]: PDF med ElectricalVPF-vannmerke
+              - listitem [ref=f2e138]:
+                - generic [ref=f2e139]: 
+                - generic [ref=f2e141]: Begrenset historikk
+              - listitem [ref=f2e142]:
+                - generic [ref=f2e143]: 
+                - generic [ref=f2e145]: Fakturering
+              - listitem [ref=f2e146]:
+                - generic [ref=f2e147]: 
+                - generic [ref=f2e149]: Avansert analyse
+              - listitem [ref=f2e150]:
+                - generic [ref=f2e151]: 
+                - generic [ref=f2e153]: Dataeksport
+              - listitem [ref=f2e154]:
+                - generic [ref=f2e155]: 
+                - generic [ref=f2e157]: AI-funksjoner
+              - listitem [ref=f2e158]:
+                - generic [ref=f2e159]: 
+                - generic [ref=f2e161]: Automatiseringer
+          - generic [ref=f2e163]:
+            - generic [ref=f2e164]: Anbefalt
+            - generic [ref=f2e165]: Pro
+            - generic [ref=f2e166]:
+              - generic [ref=f2e167]: Månedlig
+              - switch "Bytt mellom månedlig og årlig fakturering" [ref=f2e168] [cursor=pointer]
+              - generic [ref=f2e170]: Årlig
+            - generic [ref=f2e171]:
+              - generic [ref=f2e172]: €14.90
+              - generic [ref=f2e173]: /lună
+            - paragraph [ref=f2e174]: For bedrifter som ønsker full kontroll over sin virksomhet.
+            - link "Oppgrader til Pro" [ref=f2e175] [cursor=pointer]:
+              - /url: erp-upgrade.html?interval=month
+            - list [ref=f2e176]:
+              - listitem [ref=f2e177]:
+                - generic [ref=f2e178]: 
+                - generic [ref=f2e180]: Flere brukere
+              - listitem [ref=f2e181]:
+                - generic [ref=f2e182]: 
+                - generic [ref=f2e184]: Ubegrenset antall kunder
+              - listitem [ref=f2e185]:
+                - generic [ref=f2e186]: 
+                - generic [ref=f2e188]: Ubegrenset antall prosjekter
+              - listitem [ref=f2e189]:
+                - generic [ref=f2e190]: 
+                - generic [ref=f2e192]: Ubegrenset antall overslag
+              - listitem [ref=f2e193]:
+                - generic [ref=f2e194]: 
+                - generic [ref=f2e196]: Ubegrenset antall rapporter
+              - listitem [ref=f2e197]:
+                - generic [ref=f2e198]: 
+                - generic [ref=f2e200]: Fullstendig CRM
+              - listitem [ref=f2e201]:
+                - generic [ref=f2e202]: 
+                - generic [ref=f2e204]: Fullstendig prosjektstyring
+              - listitem [ref=f2e205]:
+                - generic [ref=f2e206]: 
+                - generic [ref=f2e208]: Ubegrenset antall materialer/produkter
+              - listitem [ref=f2e209]:
+                - generic [ref=f2e210]: 
+                - generic [ref=f2e212]: Profesjonell PDF uten vannmerke
+              - listitem [ref=f2e213]:
+                - generic [ref=f2e214]: 
+                - generic [ref=f2e216]: Fullstendig fakturering
+              - listitem [ref=f2e217]:
+                - generic [ref=f2e218]: 
+                - generic [ref=f2e220]: Økonomisk analyse (fortjeneste / kostnad / inntekt)
+              - listitem [ref=f2e221]:
+                - generic [ref=f2e222]: 
+                - generic [ref=f2e224]: Excel/CSV-eksport
+              - listitem [ref=f2e225]:
+                - generic [ref=f2e226]: 
+                - generic [ref=f2e228]: Fullstendig historikk og revisjonslogg
+              - listitem [ref=f2e229]:
+                - generic [ref=f2e230]: 
+                - generic [ref=f2e232]: Sikkerhetskopiering/eksport av data
+              - listitem [ref=f2e233]:
+                - generic [ref=f2e234]: 
+                - generic [ref=f2e236]: AI (assisterte funksjoner)
+              - listitem [ref=f2e237]:
+                - generic [ref=f2e238]: 
+                - generic [ref=f2e240]: Automatiseringer
+              - listitem [ref=f2e241]:
+                - generic [ref=f2e242]: 
+                - generic [ref=f2e244]: Dokumenthåndtering
+              - listitem [ref=f2e245]:
+                - generic [ref=f2e246]: 
+                - generic [ref=f2e248]: Prioritert støtte
+        - link " Tilbake til Abonnement og fakturering" [ref=f2e250] [cursor=pointer]:
+          - /url: settings.html#billing
+          - generic [ref=f2e251]: 
+          - text: Tilbake til Abonnement og fakturering
+  - text:     
