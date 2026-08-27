@@ -1,0 +1,220 @@
+- generic [active] [ref=f108e1]:
+  - generic [ref=f108e2]:
+    - complementary [ref=f108e3]:
+      - generic [ref=f108e4]:
+        - generic [ref=f108e6]:
+          - generic [ref=f108e7]: 
+          - generic [ref=f108e8]:
+            - text: Electrical
+            - strong [ref=f108e9]: VPF
+        - button "" [ref=f108e10] [cursor=pointer]
+      - navigation [ref=f108e12]:
+        - list [ref=f108e13]:
+          - listitem [ref=f108e14]:
+            - link " Dashboard" [ref=f108e15] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f108e16]: 
+              - generic [ref=f108e17]: Dashboard
+          - listitem [ref=f108e18]:
+            - link " Clienti" [ref=f108e19] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f108e20]: 
+              - generic [ref=f108e21]: Clienti
+          - listitem [ref=f108e22]:
+            - link " Progetti" [ref=f108e23] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f108e24]: 
+              - generic [ref=f108e25]: Progetti
+          - listitem [ref=f108e26]:
+            - link " Preventivi" [ref=f108e27] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f108e28]: 
+              - generic [ref=f108e29]: Preventivi
+          - listitem [ref=f108e30]:
+            - link " Offerte" [ref=f108e31] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f108e32]: 
+              - generic [ref=f108e33]: Offerte
+          - listitem [ref=f108e34]:
+            - link " Fatture" [ref=f108e35] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f108e36]: 
+              - generic [ref=f108e37]: Fatture
+          - listitem [ref=f108e38]:
+            - link " Materiali" [ref=f108e39] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f108e40]: 
+              - generic [ref=f108e41]: Materiali
+          - listitem [ref=f108e42]:
+            - link " Report" [ref=f108e43] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f108e44]: 
+              - generic [ref=f108e45]: Report
+          - listitem [ref=f108e46]:
+            - link " Impostazioni" [ref=f108e47] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f108e48]: 
+              - generic [ref=f108e49]: Impostazioni
+      - button " Esci" [ref=f108e51] [cursor=pointer]:
+        - generic [ref=f108e52]: 
+        - text: Esci
+    - main [ref=f108e53]:
+      - generic [ref=f108e55]:
+        - heading "Piani e abbonamento" [level=4] [ref=f108e57]
+        - generic [ref=f108e58]:
+          - generic [ref=f108e59]:
+            - button "Italiano " [ref=f108e60] [cursor=pointer]:
+              - generic [ref=f108e66]: Italiano
+              - generic [ref=f108e67]: 
+            - text: 
+          - link "Impostazioni" [ref=f108e68] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f108e69]: 
+          - button "Esci" [ref=f108e71] [cursor=pointer]:
+            - generic [ref=f108e72]: 
+          - generic [ref=f108e74]:
+            - generic [ref=f108e75]: "--"
+            - text: "--"
+          - button "Cambia avatar" [ref=f108e76] [cursor=pointer]:
+            - generic [ref=f108e77]: 
+      - generic [ref=f108e78]:
+        - generic [ref=f108e79]:
+          - generic [ref=f108e80]:
+            - generic [ref=f108e81]: 
+            - text: ElectricalVPF ERP
+          - generic [ref=f108e82]:
+            - link "Torna ad Abbonamento e fatturazione" [ref=f108e83] [cursor=pointer]:
+              - /url: settings.html#billing
+              - generic [ref=f108e84]: 
+            - heading "Piani e abbonamento" [level=2] [ref=f108e85]
+          - paragraph [ref=f108e86]: Scegli il piano più adatto alla tua azienda. Puoi effettuare l'upgrade in qualsiasi momento, senza vincoli.
+        - generic [ref=f108e87]:
+          - generic [ref=f108e89]:
+            - generic [ref=f108e90]: Free
+            - generic [ref=f108e91]:
+              - generic [ref=f108e92]: €0
+              - generic [ref=f108e93]: /mese
+            - paragraph [ref=f108e94]: Per testare l'ERP con un basso volume di attività.
+            - generic: Piano attuale
+            - list [ref=f108e95]:
+              - listitem [ref=f108e96]:
+                - generic [ref=f108e97]: 
+                - generic [ref=f108e99]: 1 azienda, 1 utente
+              - listitem [ref=f108e100]:
+                - generic [ref=f108e101]: 
+                - generic [ref=f108e103]: 2 clienti
+              - listitem [ref=f108e104]:
+                - generic [ref=f108e105]: 
+                - generic [ref=f108e107]: 2 progetti attivi
+              - listitem [ref=f108e108]:
+                - generic [ref=f108e109]: 
+                - generic [ref=f108e111]: 5 preventivi/mese
+              - listitem [ref=f108e112]:
+                - generic [ref=f108e113]: 
+                - generic [ref=f108e115]: 2 offerte/mese
+              - listitem [ref=f108e116]:
+                - generic [ref=f108e117]: 
+                - generic [ref=f108e119]: 1 report/mese
+              - listitem [ref=f108e120]:
+                - generic [ref=f108e121]: 
+                - generic [ref=f108e123]: CRM di base
+              - listitem [ref=f108e124]:
+                - generic [ref=f108e125]: 
+                - generic [ref=f108e127]: Progetti di base
+              - listitem [ref=f108e128]:
+                - generic [ref=f108e129]: 
+                - generic [ref=f108e131]: Materiali limitati
+              - listitem [ref=f108e132]:
+                - generic [ref=f108e133]: 
+                - generic [ref=f108e135]: PDF con filigrana ElectricalVPF
+              - listitem [ref=f108e136]:
+                - generic [ref=f108e137]: 
+                - generic [ref=f108e139]: Cronologia limitata
+              - listitem [ref=f108e140]:
+                - generic [ref=f108e141]: 
+                - generic [ref=f108e143]: Fatturazione
+              - listitem [ref=f108e144]:
+                - generic [ref=f108e145]: 
+                - generic [ref=f108e147]: Analisi avanzata
+              - listitem [ref=f108e148]:
+                - generic [ref=f108e149]: 
+                - generic [ref=f108e151]: Esportazione dati
+              - listitem [ref=f108e152]:
+                - generic [ref=f108e153]: 
+                - generic [ref=f108e155]: Funzionalità IA
+              - listitem [ref=f108e156]:
+                - generic [ref=f108e157]: 
+                - generic [ref=f108e159]: Automazioni
+          - generic [ref=f108e161]:
+            - generic [ref=f108e162]: Consigliato
+            - generic [ref=f108e163]: Pro
+            - generic [ref=f108e164]:
+              - generic [ref=f108e165]: Mensile
+              - switch "Passa dalla fatturazione mensile a quella annuale" [ref=f108e166] [cursor=pointer]
+              - generic [ref=f108e168]: Annuale
+            - generic [ref=f108e169]:
+              - generic [ref=f108e170]: €14.90
+              - generic [ref=f108e171]: /lună
+            - paragraph [ref=f108e172]: Per aziende che vogliono il controllo completo sulla propria attività.
+            - link "Passa a Pro" [ref=f108e173] [cursor=pointer]:
+              - /url: erp-upgrade.html?interval=month
+            - list [ref=f108e174]:
+              - listitem [ref=f108e175]:
+                - generic [ref=f108e176]: 
+                - generic [ref=f108e178]: Più utenti
+              - listitem [ref=f108e179]:
+                - generic [ref=f108e180]: 
+                - generic [ref=f108e182]: Clienti illimitati
+              - listitem [ref=f108e183]:
+                - generic [ref=f108e184]: 
+                - generic [ref=f108e186]: Progetti illimitati
+              - listitem [ref=f108e187]:
+                - generic [ref=f108e188]: 
+                - generic [ref=f108e190]: Preventivi illimitati
+              - listitem [ref=f108e191]:
+                - generic [ref=f108e192]: 
+                - generic [ref=f108e194]: Report illimitati
+              - listitem [ref=f108e195]:
+                - generic [ref=f108e196]: 
+                - generic [ref=f108e198]: CRM completo
+              - listitem [ref=f108e199]:
+                - generic [ref=f108e200]: 
+                - generic [ref=f108e202]: Gestione progetti completa
+              - listitem [ref=f108e203]:
+                - generic [ref=f108e204]: 
+                - generic [ref=f108e206]: Materiali/prodotti illimitati
+              - listitem [ref=f108e207]:
+                - generic [ref=f108e208]: 
+                - generic [ref=f108e210]: PDF professionale senza filigrana
+              - listitem [ref=f108e211]:
+                - generic [ref=f108e212]: 
+                - generic [ref=f108e214]: Fatturazione completa
+              - listitem [ref=f108e215]:
+                - generic [ref=f108e216]: 
+                - generic [ref=f108e218]: Analisi finanziaria (profitto / costo / ricavi)
+              - listitem [ref=f108e219]:
+                - generic [ref=f108e220]: 
+                - generic [ref=f108e222]: Esportazione Excel/CSV
+              - listitem [ref=f108e223]:
+                - generic [ref=f108e224]: 
+                - generic [ref=f108e226]: Cronologia completa e registro di controllo
+              - listitem [ref=f108e227]:
+                - generic [ref=f108e228]: 
+                - generic [ref=f108e230]: Backup/esportazione dati
+              - listitem [ref=f108e231]:
+                - generic [ref=f108e232]: 
+                - generic [ref=f108e234]: IA (funzionalità assistite)
+              - listitem [ref=f108e235]:
+                - generic [ref=f108e236]: 
+                - generic [ref=f108e238]: Automazioni
+              - listitem [ref=f108e239]:
+                - generic [ref=f108e240]: 
+                - generic [ref=f108e242]: Gestione documenti
+              - listitem [ref=f108e243]:
+                - generic [ref=f108e244]: 
+                - generic [ref=f108e246]: Supporto prioritario
+        - link " Torna ad Abbonamento e fatturazione" [ref=f108e248] [cursor=pointer]:
+          - /url: settings.html#billing
+          - generic [ref=f108e249]: 
+          - text: Torna ad Abbonamento e fatturazione
+  - text:     
