@@ -1,0 +1,283 @@
+- generic [ref=f83e1]:
+  - generic [ref=f83e2]:
+    - complementary [ref=f83e3]:
+      - generic [ref=f83e4]:
+        - generic [ref=f83e5]:
+          - generic [ref=f83e6]:
+            - generic [ref=f83e7]: 
+            - generic [ref=f83e8]:
+              - text: Electrical
+              - strong [ref=f83e9]: VPF
+          - link " PRO ПЛАН" [ref=f83e10] [cursor=pointer]:
+            - /url: settings.html#billing
+            - generic [ref=f83e11]: 
+            - generic [ref=f83e12]: PRO ПЛАН
+        - button "" [ref=f83e13] [cursor=pointer]
+      - navigation [ref=f83e15]:
+        - list [ref=f83e16]:
+          - listitem [ref=f83e17]:
+            - link " Панель" [ref=f83e18] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f83e19]: 
+              - generic [ref=f83e20]: Панель
+          - listitem [ref=f83e21]:
+            - link " Клиенты" [ref=f83e22] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f83e23]: 
+              - generic [ref=f83e24]: Клиенты
+          - listitem [ref=f83e25]:
+            - link " Проекты" [ref=f83e26] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f83e27]: 
+              - generic [ref=f83e28]: Проекты
+          - listitem [ref=f83e29]:
+            - link " Сметы" [ref=f83e30] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f83e31]: 
+              - generic [ref=f83e32]: Сметы
+          - listitem [ref=f83e33]:
+            - link " Предложения" [ref=f83e34] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f83e35]: 
+              - generic [ref=f83e36]: Предложения
+          - listitem [ref=f83e37]:
+            - link " Счета" [ref=f83e38] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f83e39]: 
+              - generic [ref=f83e40]: Счета
+          - listitem [ref=f83e41]:
+            - link " Материалы" [ref=f83e42] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f83e43]: 
+              - generic [ref=f83e44]: Материалы
+          - listitem [ref=f83e45]:
+            - link " Отчёты" [ref=f83e46] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f83e47]: 
+              - generic [ref=f83e48]: Отчёты
+          - listitem [ref=f83e49]:
+            - link " Настройки" [ref=f83e50] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f83e51]: 
+              - generic [ref=f83e52]: Настройки
+      - button " Выйти" [ref=f83e54] [cursor=pointer]:
+        - generic [ref=f83e55]: 
+        - text: Выйти
+    - main [ref=f83e56]:
+      - generic [ref=f83e58]:
+        - heading "Планы и подписка" [level=4] [ref=f83e60]
+        - generic [ref=f83e61]:
+          - generic [ref=f83e62]:
+            - button "Русский " [ref=f83e63] [cursor=pointer]:
+              - generic [ref=f83e69]: Русский
+              - generic [ref=f83e70]: 
+            - text: 
+          - link "Настройки" [ref=f83e71] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f83e72]: 
+          - button "Выйти" [ref=f83e74] [cursor=pointer]:
+            - generic [ref=f83e75]: 
+          - generic [ref=f83e77]:
+            - generic [ref=f83e78]: cometa_2
+            - text: Administrator
+          - button "Изменить аватар" [ref=f83e79] [cursor=pointer]:
+            - img "Avatar electrician" [ref=f83e80]
+      - generic [ref=f83e89]:
+        - generic [ref=f83e90]:
+          - generic [ref=f83e91]:
+            - generic [ref=f83e92]: 
+            - text: ElectricalVPF ERP
+          - generic [ref=f83e93]:
+            - link "Назад к подписке и оплате" [ref=f83e94] [cursor=pointer]:
+              - /url: settings.html#billing
+              - generic [ref=f83e95]: 
+            - heading "Планы и подписка" [level=2] [ref=f83e96]
+          - paragraph [ref=f83e97]: Выберите план, подходящий вашей компании. Вы можете изменить план в любое время, без обязательств.
+        - generic [ref=f83e98]:
+          - generic [ref=f83e100]:
+            - generic [ref=f83e101]: Free
+            - generic [ref=f83e102]:
+              - generic [ref=f83e103]: €0
+              - generic [ref=f83e104]: /месяц
+            - paragraph [ref=f83e105]: Чтобы протестировать ERP при небольшом объёме активности.
+            - button "Перейти на Free" [ref=f83e106] [cursor=pointer]
+            - list [ref=f83e107]:
+              - listitem [ref=f83e108]:
+                - generic [ref=f83e109]: 
+                - generic [ref=f83e111]: 1 компания, 1 пользователь
+              - listitem [ref=f83e112]:
+                - generic [ref=f83e113]: 
+                - generic [ref=f83e115]: 2 клиента
+              - listitem [ref=f83e116]:
+                - generic [ref=f83e117]: 
+                - generic [ref=f83e119]: 2 активных проекта
+              - listitem [ref=f83e120]:
+                - generic [ref=f83e121]: 
+                - generic [ref=f83e123]: 5 смет/месяц
+              - listitem [ref=f83e124]:
+                - generic [ref=f83e125]: 
+                - generic [ref=f83e127]: 2 предложения/месяц
+              - listitem [ref=f83e128]:
+                - generic [ref=f83e129]: 
+                - generic [ref=f83e131]: 1 отчёт/месяц
+              - listitem [ref=f83e132]:
+                - generic [ref=f83e133]: 
+                - generic [ref=f83e135]: Базовый CRM
+              - listitem [ref=f83e136]:
+                - generic [ref=f83e137]: 
+                - generic [ref=f83e139]: Базовые проекты
+              - listitem [ref=f83e140]:
+                - generic [ref=f83e141]: 
+                - generic [ref=f83e143]: Ограниченное количество материалов
+              - listitem [ref=f83e144]:
+                - generic [ref=f83e145]: 
+                - generic [ref=f83e147]: PDF с водяным знаком ElectricalVPF
+              - listitem [ref=f83e148]:
+                - generic [ref=f83e149]: 
+                - generic [ref=f83e151]: Ограниченная история
+              - listitem [ref=f83e152]:
+                - generic [ref=f83e153]: 
+                - generic [ref=f83e155]: Выставление счетов
+              - listitem [ref=f83e156]:
+                - generic [ref=f83e157]: 
+                - generic [ref=f83e159]: Расширенная аналитика
+              - listitem [ref=f83e160]:
+                - generic [ref=f83e161]: 
+                - generic [ref=f83e163]: Экспорт данных
+              - listitem [ref=f83e164]:
+                - generic [ref=f83e165]: 
+                - generic [ref=f83e167]: Функции ИИ
+              - listitem [ref=f83e168]:
+                - generic [ref=f83e169]: 
+                - generic [ref=f83e171]: Автоматизации
+          - generic [ref=f83e173]:
+            - generic [ref=f83e174]: Рекомендуется
+            - generic [ref=f83e175]: Pro
+            - generic [ref=f83e176]:
+              - generic [ref=f83e177]: Ежемесячно
+              - switch "Переключить между ежемесячной и ежегодной оплатой" [ref=f83e178] [cursor=pointer]
+              - generic [ref=f83e180]: Ежегодно
+            - generic [ref=f83e181]:
+              - generic [ref=f83e182]: €14.90
+              - generic [ref=f83e183]: /месяц
+            - paragraph [ref=f83e184]: Для компаний, которые хотят полный контроль над своей деятельностью.
+            - generic [ref=f83e185]:
+              - generic [ref=f83e186]: 
+              - text: Продлевается 24 июня 2039 г.
+            - button "Продлить сейчас" [ref=f83e187] [cursor=pointer]
+            - list [ref=f83e188]:
+              - listitem [ref=f83e189]:
+                - generic [ref=f83e190]: 
+                - generic [ref=f83e192]: Несколько пользователей
+              - listitem [ref=f83e193]:
+                - generic [ref=f83e194]: 
+                - generic [ref=f83e196]: Неограниченное количество клиентов
+              - listitem [ref=f83e197]:
+                - generic [ref=f83e198]: 
+                - generic [ref=f83e200]: Неограниченное количество проектов
+              - listitem [ref=f83e201]:
+                - generic [ref=f83e202]: 
+                - generic [ref=f83e204]: Неограниченное количество смет
+              - listitem [ref=f83e205]:
+                - generic [ref=f83e206]: 
+                - generic [ref=f83e208]: Неограниченное количество отчётов
+              - listitem [ref=f83e209]:
+                - generic [ref=f83e210]: 
+                - generic [ref=f83e212]: Полный CRM
+              - listitem [ref=f83e213]:
+                - generic [ref=f83e214]: 
+                - generic [ref=f83e216]: Полное управление проектами
+              - listitem [ref=f83e217]:
+                - generic [ref=f83e218]: 
+                - generic [ref=f83e220]: Неограниченное количество материалов/товаров
+              - listitem [ref=f83e221]:
+                - generic [ref=f83e222]: 
+                - generic [ref=f83e224]: Профессиональный PDF без водяного знака
+              - listitem [ref=f83e225]:
+                - generic [ref=f83e226]: 
+                - generic [ref=f83e228]: Полное выставление счетов
+              - listitem [ref=f83e229]:
+                - generic [ref=f83e230]: 
+                - generic [ref=f83e232]: Финансовая аналитика (прибыль / затраты / доход)
+              - listitem [ref=f83e233]:
+                - generic [ref=f83e234]: 
+                - generic [ref=f83e236]: Экспорт в Excel/CSV
+              - listitem [ref=f83e237]:
+                - generic [ref=f83e238]: 
+                - generic [ref=f83e240]: Полная история и журнал аудита
+              - listitem [ref=f83e241]:
+                - generic [ref=f83e242]: 
+                - generic [ref=f83e244]: Резервное копирование/экспорт данных
+              - listitem [ref=f83e245]:
+                - generic [ref=f83e246]: 
+                - generic [ref=f83e248]: ИИ (вспомогательные функции)
+              - listitem [ref=f83e249]:
+                - generic [ref=f83e250]: 
+                - generic [ref=f83e252]: Автоматизации
+              - listitem [ref=f83e253]:
+                - generic [ref=f83e254]: 
+                - generic [ref=f83e256]: Управление документами
+              - listitem [ref=f83e257]:
+                - generic [ref=f83e258]: 
+                - generic [ref=f83e260]: Приоритетная поддержка
+        - generic [ref=f83e261]:
+          - link " Назад к подписке и оплате" [ref=f83e262] [cursor=pointer]:
+            - /url: settings.html#billing
+            - generic [ref=f83e263]: 
+            - text: Назад к подписке и оплате
+          - generic [ref=f83e264]:
+            - text: Вы вошли как
+            - strong [ref=f83e265]: cometa_2
+            - text: —
+            - generic [ref=f83e266]:
+              - generic [ref=f83e267]: 
+              - text: "План: Pro"
+  - text:    
+  - dialog [active] [ref=f83e268]:
+    - generic [ref=f83e269]:
+      - generic [ref=f83e270]:
+        - heading " Продлить сейчас" [level=5] [ref=f83e271]:
+          - generic [ref=f83e272]: 
+          - text: Продлить сейчас
+        - button "Close" [ref=f83e273] [cursor=pointer]
+      - generic [ref=f83e274]:
+        - generic [ref=f83e275]:
+          - generic [ref=f83e276] [cursor=pointer]:
+            - radio "1 месяц €14.90" [checked]
+            - generic [ref=f83e277]:
+              - generic [ref=f83e278]: 1 месяц
+              - generic [ref=f83e279]: €14.90
+          - generic [ref=f83e280] [cursor=pointer]:
+            - radio "6 месяцев €80.46 -10%"
+            - generic [ref=f83e281]:
+              - generic [ref=f83e282]: 6 месяцев
+              - generic [ref=f83e283]:
+                - text: €80.46
+                - generic [ref=f83e284]: "-10%"
+          - generic [ref=f83e285] [cursor=pointer]:
+            - radio "1 год €143.04 -20%"
+            - generic [ref=f83e286]:
+              - generic [ref=f83e287]: 1 год
+              - generic [ref=f83e288]:
+                - text: €143.04
+                - generic [ref=f83e289]: "-20%"
+          - generic [ref=f83e290] [cursor=pointer]:
+            - radio "3 года €375.48 -30%"
+            - generic [ref=f83e291]:
+              - generic [ref=f83e292]: 3 года
+              - generic [ref=f83e293]:
+                - text: €375.48
+                - generic [ref=f83e294]: "-30%"
+          - generic [ref=f83e295] [cursor=pointer]:
+            - radio "5 лет Самый выгодный €536.40 -40%"
+            - generic [ref=f83e296]:
+              - generic [ref=f83e297]:
+                - text: 5 лет
+                - generic [ref=f83e298]: Самый выгодный
+              - generic [ref=f83e299]:
+                - text: €536.40
+                - generic [ref=f83e300]: "-40%"
+        - paragraph [ref=f83e301]: Доступ Pro активен до 24 июня 2039 г.. Добавляется 1 месяц — новый доступ будет действовать до 24 июля 2039 г.
+      - generic [ref=f83e302]:
+        - button "Отмена" [ref=f83e303] [cursor=pointer]
+        - button "Перейти к оплате" [ref=f83e304] [cursor=pointer]

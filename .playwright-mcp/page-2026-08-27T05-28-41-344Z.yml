@@ -1,0 +1,220 @@
+- generic [active] [ref=f94e1]:
+  - generic [ref=f94e2]:
+    - complementary [ref=f94e3]:
+      - generic [ref=f94e4]:
+        - generic [ref=f94e6]:
+          - generic [ref=f94e7]: 
+          - generic [ref=f94e8]:
+            - text: Electrical
+            - strong [ref=f94e9]: VPF
+        - button "" [ref=f94e10] [cursor=pointer]
+      - navigation [ref=f94e12]:
+        - list [ref=f94e13]:
+          - listitem [ref=f94e14]:
+            - link " Панель" [ref=f94e15] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f94e16]: 
+              - generic [ref=f94e17]: Панель
+          - listitem [ref=f94e18]:
+            - link " Клиенты" [ref=f94e19] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f94e20]: 
+              - generic [ref=f94e21]: Клиенты
+          - listitem [ref=f94e22]:
+            - link " Проекты" [ref=f94e23] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f94e24]: 
+              - generic [ref=f94e25]: Проекты
+          - listitem [ref=f94e26]:
+            - link " Сметы" [ref=f94e27] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f94e28]: 
+              - generic [ref=f94e29]: Сметы
+          - listitem [ref=f94e30]:
+            - link " Предложения" [ref=f94e31] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f94e32]: 
+              - generic [ref=f94e33]: Предложения
+          - listitem [ref=f94e34]:
+            - link " Счета" [ref=f94e35] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f94e36]: 
+              - generic [ref=f94e37]: Счета
+          - listitem [ref=f94e38]:
+            - link " Материалы" [ref=f94e39] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f94e40]: 
+              - generic [ref=f94e41]: Материалы
+          - listitem [ref=f94e42]:
+            - link " Отчёты" [ref=f94e43] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f94e44]: 
+              - generic [ref=f94e45]: Отчёты
+          - listitem [ref=f94e46]:
+            - link " Настройки" [ref=f94e47] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f94e48]: 
+              - generic [ref=f94e49]: Настройки
+      - button " Выйти" [ref=f94e51] [cursor=pointer]:
+        - generic [ref=f94e52]: 
+        - text: Выйти
+    - main [ref=f94e53]:
+      - generic [ref=f94e55]:
+        - heading "Планы и подписка" [level=4] [ref=f94e57]
+        - generic [ref=f94e58]:
+          - generic [ref=f94e59]:
+            - button "Русский " [ref=f94e60] [cursor=pointer]:
+              - generic [ref=f94e66]: Русский
+              - generic [ref=f94e67]: 
+            - text: 
+          - link "Настройки" [ref=f94e68] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f94e69]: 
+          - button "Выйти" [ref=f94e71] [cursor=pointer]:
+            - generic [ref=f94e72]: 
+          - generic [ref=f94e74]:
+            - generic [ref=f94e75]: "--"
+            - text: "--"
+          - button "Изменить аватар" [ref=f94e76] [cursor=pointer]:
+            - generic [ref=f94e77]: 
+      - generic [ref=f94e78]:
+        - generic [ref=f94e79]:
+          - generic [ref=f94e80]:
+            - generic [ref=f94e81]: 
+            - text: ElectricalVPF ERP
+          - generic [ref=f94e82]:
+            - link "Назад к подписке и оплате" [ref=f94e83] [cursor=pointer]:
+              - /url: settings.html#billing
+              - generic [ref=f94e84]: 
+            - heading "Планы и подписка" [level=2] [ref=f94e85]
+          - paragraph [ref=f94e86]: Выберите план, подходящий вашей компании. Вы можете изменить план в любое время, без обязательств.
+        - generic [ref=f94e87]:
+          - generic [ref=f94e89]:
+            - generic [ref=f94e90]: Free
+            - generic [ref=f94e91]:
+              - generic [ref=f94e92]: €0
+              - generic [ref=f94e93]: /месяц
+            - paragraph [ref=f94e94]: Чтобы протестировать ERP при небольшом объёме активности.
+            - generic: Текущий план
+            - list [ref=f94e95]:
+              - listitem [ref=f94e96]:
+                - generic [ref=f94e97]: 
+                - generic [ref=f94e99]: 1 компания, 1 пользователь
+              - listitem [ref=f94e100]:
+                - generic [ref=f94e101]: 
+                - generic [ref=f94e103]: 2 клиента
+              - listitem [ref=f94e104]:
+                - generic [ref=f94e105]: 
+                - generic [ref=f94e107]: 2 активных проекта
+              - listitem [ref=f94e108]:
+                - generic [ref=f94e109]: 
+                - generic [ref=f94e111]: 5 смет/месяц
+              - listitem [ref=f94e112]:
+                - generic [ref=f94e113]: 
+                - generic [ref=f94e115]: 2 предложения/месяц
+              - listitem [ref=f94e116]:
+                - generic [ref=f94e117]: 
+                - generic [ref=f94e119]: 1 отчёт/месяц
+              - listitem [ref=f94e120]:
+                - generic [ref=f94e121]: 
+                - generic [ref=f94e123]: Базовый CRM
+              - listitem [ref=f94e124]:
+                - generic [ref=f94e125]: 
+                - generic [ref=f94e127]: Базовые проекты
+              - listitem [ref=f94e128]:
+                - generic [ref=f94e129]: 
+                - generic [ref=f94e131]: Ограниченное количество материалов
+              - listitem [ref=f94e132]:
+                - generic [ref=f94e133]: 
+                - generic [ref=f94e135]: PDF с водяным знаком ElectricalVPF
+              - listitem [ref=f94e136]:
+                - generic [ref=f94e137]: 
+                - generic [ref=f94e139]: Ограниченная история
+              - listitem [ref=f94e140]:
+                - generic [ref=f94e141]: 
+                - generic [ref=f94e143]: Выставление счетов
+              - listitem [ref=f94e144]:
+                - generic [ref=f94e145]: 
+                - generic [ref=f94e147]: Расширенная аналитика
+              - listitem [ref=f94e148]:
+                - generic [ref=f94e149]: 
+                - generic [ref=f94e151]: Экспорт данных
+              - listitem [ref=f94e152]:
+                - generic [ref=f94e153]: 
+                - generic [ref=f94e155]: Функции ИИ
+              - listitem [ref=f94e156]:
+                - generic [ref=f94e157]: 
+                - generic [ref=f94e159]: Автоматизации
+          - generic [ref=f94e161]:
+            - generic [ref=f94e162]: Рекомендуется
+            - generic [ref=f94e163]: Pro
+            - generic [ref=f94e164]:
+              - generic [ref=f94e165]: Ежемесячно
+              - switch "Переключить между ежемесячной и ежегодной оплатой" [ref=f94e166] [cursor=pointer]
+              - generic [ref=f94e168]: Ежегодно
+            - generic [ref=f94e169]:
+              - generic [ref=f94e170]: €14.90
+              - generic [ref=f94e171]: /lună
+            - paragraph [ref=f94e172]: Для компаний, которые хотят полный контроль над своей деятельностью.
+            - link "Перейти на Pro" [ref=f94e173] [cursor=pointer]:
+              - /url: erp-upgrade.html?interval=month
+            - list [ref=f94e174]:
+              - listitem [ref=f94e175]:
+                - generic [ref=f94e176]: 
+                - generic [ref=f94e178]: Несколько пользователей
+              - listitem [ref=f94e179]:
+                - generic [ref=f94e180]: 
+                - generic [ref=f94e182]: Неограниченное количество клиентов
+              - listitem [ref=f94e183]:
+                - generic [ref=f94e184]: 
+                - generic [ref=f94e186]: Неограниченное количество проектов
+              - listitem [ref=f94e187]:
+                - generic [ref=f94e188]: 
+                - generic [ref=f94e190]: Неограниченное количество смет
+              - listitem [ref=f94e191]:
+                - generic [ref=f94e192]: 
+                - generic [ref=f94e194]: Неограниченное количество отчётов
+              - listitem [ref=f94e195]:
+                - generic [ref=f94e196]: 
+                - generic [ref=f94e198]: Полный CRM
+              - listitem [ref=f94e199]:
+                - generic [ref=f94e200]: 
+                - generic [ref=f94e202]: Полное управление проектами
+              - listitem [ref=f94e203]:
+                - generic [ref=f94e204]: 
+                - generic [ref=f94e206]: Неограниченное количество материалов/товаров
+              - listitem [ref=f94e207]:
+                - generic [ref=f94e208]: 
+                - generic [ref=f94e210]: Профессиональный PDF без водяного знака
+              - listitem [ref=f94e211]:
+                - generic [ref=f94e212]: 
+                - generic [ref=f94e214]: Полное выставление счетов
+              - listitem [ref=f94e215]:
+                - generic [ref=f94e216]: 
+                - generic [ref=f94e218]: Финансовая аналитика (прибыль / затраты / доход)
+              - listitem [ref=f94e219]:
+                - generic [ref=f94e220]: 
+                - generic [ref=f94e222]: Экспорт в Excel/CSV
+              - listitem [ref=f94e223]:
+                - generic [ref=f94e224]: 
+                - generic [ref=f94e226]: Полная история и журнал аудита
+              - listitem [ref=f94e227]:
+                - generic [ref=f94e228]: 
+                - generic [ref=f94e230]: Резервное копирование/экспорт данных
+              - listitem [ref=f94e231]:
+                - generic [ref=f94e232]: 
+                - generic [ref=f94e234]: ИИ (вспомогательные функции)
+              - listitem [ref=f94e235]:
+                - generic [ref=f94e236]: 
+                - generic [ref=f94e238]: Автоматизации
+              - listitem [ref=f94e239]:
+                - generic [ref=f94e240]: 
+                - generic [ref=f94e242]: Управление документами
+              - listitem [ref=f94e243]:
+                - generic [ref=f94e244]: 
+                - generic [ref=f94e246]: Приоритетная поддержка
+        - link " Назад к подписке и оплате" [ref=f94e248] [cursor=pointer]:
+          - /url: settings.html#billing
+          - generic [ref=f94e249]: 
+          - text: Назад к подписке и оплате
+  - text:     
