@@ -1,0 +1,220 @@
+- generic [active] [ref=f60e1]:
+  - generic [ref=f60e2]:
+    - complementary [ref=f60e3]:
+      - generic [ref=f60e4]:
+        - generic [ref=f60e6]:
+          - generic [ref=f60e7]: 
+          - generic [ref=f60e8]:
+            - text: Electrical
+            - strong [ref=f60e9]: VPF
+        - button "" [ref=f60e10] [cursor=pointer]
+      - navigation [ref=f60e12]:
+        - list [ref=f60e13]:
+          - listitem [ref=f60e14]:
+            - link " Panel" [ref=f60e15] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f60e16]: 
+              - generic [ref=f60e17]: Panel
+          - listitem [ref=f60e18]:
+            - link " Klienci" [ref=f60e19] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f60e20]: 
+              - generic [ref=f60e21]: Klienci
+          - listitem [ref=f60e22]:
+            - link " Projekty" [ref=f60e23] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f60e24]: 
+              - generic [ref=f60e25]: Projekty
+          - listitem [ref=f60e26]:
+            - link " Kosztorysy" [ref=f60e27] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f60e28]: 
+              - generic [ref=f60e29]: Kosztorysy
+          - listitem [ref=f60e30]:
+            - link " Oferty" [ref=f60e31] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f60e32]: 
+              - generic [ref=f60e33]: Oferty
+          - listitem [ref=f60e34]:
+            - link " Faktury" [ref=f60e35] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f60e36]: 
+              - generic [ref=f60e37]: Faktury
+          - listitem [ref=f60e38]:
+            - link " Materiały" [ref=f60e39] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f60e40]: 
+              - generic [ref=f60e41]: Materiały
+          - listitem [ref=f60e42]:
+            - link " Raporty" [ref=f60e43] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f60e44]: 
+              - generic [ref=f60e45]: Raporty
+          - listitem [ref=f60e46]:
+            - link " Ustawienia" [ref=f60e47] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f60e48]: 
+              - generic [ref=f60e49]: Ustawienia
+      - button " Wyloguj się" [ref=f60e51] [cursor=pointer]:
+        - generic [ref=f60e52]: 
+        - text: Wyloguj się
+    - main [ref=f60e53]:
+      - generic [ref=f60e55]:
+        - heading "Plany i subskrypcja" [level=4] [ref=f60e57]
+        - generic [ref=f60e58]:
+          - generic [ref=f60e59]:
+            - button "Polski " [ref=f60e60] [cursor=pointer]:
+              - generic [ref=f60e65]: Polski
+              - generic [ref=f60e66]: 
+            - text: 
+          - link "Ustawienia" [ref=f60e67] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f60e68]: 
+          - button "Wyloguj się" [ref=f60e70] [cursor=pointer]:
+            - generic [ref=f60e71]: 
+          - generic [ref=f60e73]:
+            - generic [ref=f60e74]: "--"
+            - text: "--"
+          - button "Zmień awatar" [ref=f60e75] [cursor=pointer]:
+            - generic [ref=f60e76]: 
+      - generic [ref=f60e77]:
+        - generic [ref=f60e78]:
+          - generic [ref=f60e79]:
+            - generic [ref=f60e80]: 
+            - text: ElectricalVPF ERP
+          - generic [ref=f60e81]:
+            - link "Wróć do subskrypcji i płatności" [ref=f60e82] [cursor=pointer]:
+              - /url: settings.html#billing
+              - generic [ref=f60e83]: 
+            - heading "Plany i subskrypcja" [level=2] [ref=f60e84]
+          - paragraph [ref=f60e85]: Wybierz plan odpowiedni dla Twojej firmy. Możesz zmienić plan w dowolnym momencie, bez zobowiązań.
+        - generic [ref=f60e86]:
+          - generic [ref=f60e88]:
+            - generic [ref=f60e89]: Free
+            - generic [ref=f60e90]:
+              - generic [ref=f60e91]: €0
+              - generic [ref=f60e92]: /miesiąc
+            - paragraph [ref=f60e93]: Aby przetestować ERP przy niewielkiej aktywności.
+            - generic: Obecny plan
+            - list [ref=f60e94]:
+              - listitem [ref=f60e95]:
+                - generic [ref=f60e96]: 
+                - generic [ref=f60e98]: 1 firma, 1 użytkownik
+              - listitem [ref=f60e99]:
+                - generic [ref=f60e100]: 
+                - generic [ref=f60e102]: 2 klientów
+              - listitem [ref=f60e103]:
+                - generic [ref=f60e104]: 
+                - generic [ref=f60e106]: 2 aktywne projekty
+              - listitem [ref=f60e107]:
+                - generic [ref=f60e108]: 
+                - generic [ref=f60e110]: 5 kosztorysów/miesiąc
+              - listitem [ref=f60e111]:
+                - generic [ref=f60e112]: 
+                - generic [ref=f60e114]: 2 oferty/miesiąc
+              - listitem [ref=f60e115]:
+                - generic [ref=f60e116]: 
+                - generic [ref=f60e118]: 1 raport/miesiąc
+              - listitem [ref=f60e119]:
+                - generic [ref=f60e120]: 
+                - generic [ref=f60e122]: Podstawowy CRM
+              - listitem [ref=f60e123]:
+                - generic [ref=f60e124]: 
+                - generic [ref=f60e126]: Podstawowe projekty
+              - listitem [ref=f60e127]:
+                - generic [ref=f60e128]: 
+                - generic [ref=f60e130]: Ograniczona liczba materiałów
+              - listitem [ref=f60e131]:
+                - generic [ref=f60e132]: 
+                - generic [ref=f60e134]: PDF ze znakiem wodnym ElectricalVPF
+              - listitem [ref=f60e135]:
+                - generic [ref=f60e136]: 
+                - generic [ref=f60e138]: Ograniczona historia
+              - listitem [ref=f60e139]:
+                - generic [ref=f60e140]: 
+                - generic [ref=f60e142]: Fakturowanie
+              - listitem [ref=f60e143]:
+                - generic [ref=f60e144]: 
+                - generic [ref=f60e146]: Zaawansowana analityka
+              - listitem [ref=f60e147]:
+                - generic [ref=f60e148]: 
+                - generic [ref=f60e150]: Eksport danych
+              - listitem [ref=f60e151]:
+                - generic [ref=f60e152]: 
+                - generic [ref=f60e154]: Funkcje AI
+              - listitem [ref=f60e155]:
+                - generic [ref=f60e156]: 
+                - generic [ref=f60e158]: Automatyzacje
+          - generic [ref=f60e160]:
+            - generic [ref=f60e161]: Polecany
+            - generic [ref=f60e162]: Pro
+            - generic [ref=f60e163]:
+              - generic [ref=f60e164]: Miesięcznie
+              - switch "Przełącz między rozliczeniem miesięcznym a rocznym" [ref=f60e165] [cursor=pointer]
+              - generic [ref=f60e167]: Rocznie
+            - generic [ref=f60e168]:
+              - generic [ref=f60e169]: €14.90
+              - generic [ref=f60e170]: /lună
+            - paragraph [ref=f60e171]: Dla firm, które chcą mieć pełną kontrolę nad swoją działalnością.
+            - link "Przejdź na Pro" [ref=f60e172] [cursor=pointer]:
+              - /url: erp-upgrade.html?interval=month
+            - list [ref=f60e173]:
+              - listitem [ref=f60e174]:
+                - generic [ref=f60e175]: 
+                - generic [ref=f60e177]: Wielu użytkowników
+              - listitem [ref=f60e178]:
+                - generic [ref=f60e179]: 
+                - generic [ref=f60e181]: Nieograniczona liczba klientów
+              - listitem [ref=f60e182]:
+                - generic [ref=f60e183]: 
+                - generic [ref=f60e185]: Nieograniczona liczba projektów
+              - listitem [ref=f60e186]:
+                - generic [ref=f60e187]: 
+                - generic [ref=f60e189]: Nieograniczona liczba kosztorysów
+              - listitem [ref=f60e190]:
+                - generic [ref=f60e191]: 
+                - generic [ref=f60e193]: Nieograniczona liczba raportów
+              - listitem [ref=f60e194]:
+                - generic [ref=f60e195]: 
+                - generic [ref=f60e197]: Pełny CRM
+              - listitem [ref=f60e198]:
+                - generic [ref=f60e199]: 
+                - generic [ref=f60e201]: Pełne zarządzanie projektami
+              - listitem [ref=f60e202]:
+                - generic [ref=f60e203]: 
+                - generic [ref=f60e205]: Nieograniczona liczba materiałów/produktów
+              - listitem [ref=f60e206]:
+                - generic [ref=f60e207]: 
+                - generic [ref=f60e209]: Profesjonalny PDF bez znaku wodnego
+              - listitem [ref=f60e210]:
+                - generic [ref=f60e211]: 
+                - generic [ref=f60e213]: Pełne fakturowanie
+              - listitem [ref=f60e214]:
+                - generic [ref=f60e215]: 
+                - generic [ref=f60e217]: Analityka finansowa (zysk / koszt / przychód)
+              - listitem [ref=f60e218]:
+                - generic [ref=f60e219]: 
+                - generic [ref=f60e221]: Eksport do Excel/CSV
+              - listitem [ref=f60e222]:
+                - generic [ref=f60e223]: 
+                - generic [ref=f60e225]: Pełna historia i dziennik audytu
+              - listitem [ref=f60e226]:
+                - generic [ref=f60e227]: 
+                - generic [ref=f60e229]: Kopia zapasowa/eksport danych
+              - listitem [ref=f60e230]:
+                - generic [ref=f60e231]: 
+                - generic [ref=f60e233]: AI (funkcje wspomagane)
+              - listitem [ref=f60e234]:
+                - generic [ref=f60e235]: 
+                - generic [ref=f60e237]: Automatyzacje
+              - listitem [ref=f60e238]:
+                - generic [ref=f60e239]: 
+                - generic [ref=f60e241]: Zarządzanie dokumentami
+              - listitem [ref=f60e242]:
+                - generic [ref=f60e243]: 
+                - generic [ref=f60e245]: Priorytetowe wsparcie
+        - link " Wróć do subskrypcji i płatności" [ref=f60e247] [cursor=pointer]:
+          - /url: settings.html#billing
+          - generic [ref=f60e248]: 
+          - text: Wróć do subskrypcji i płatności
+  - text:     

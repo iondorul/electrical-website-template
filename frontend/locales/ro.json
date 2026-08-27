@@ -202,7 +202,11 @@
     "invalidEmail": "Introduceți o adresă de email validă!",
     "invalidPhone": "Introduceți un număr de telefon valid!",
     "editClient": "Editează Client",
-    "paginationInfo": "Afișare {{start}} - {{end}} din {{total}} clienți"
+    "paginationInfo": {
+      "one": "Afișare {{start}} - {{end}} din {{total}} client",
+      "few": "Afișare {{start}} - {{end}} din {{total}} clienți",
+      "other": "Afișare {{start}} - {{end}} din {{total}} de clienți"
+    }
   },
   "projects": {
     "pageTitle": "Gestionare Proiecte",
@@ -240,7 +244,11 @@
     "nameTooShort": "Numele proiectului trebuie să conțină cel puțin 3 caractere!",
     "invalidClient": "Vă rugăm să selectați un client valid!",
     "editProject": "Editează Proiect",
-    "paginationInfo": "Afișare {{start}} - {{end}} din {{total}} proiecte",
+    "paginationInfo": {
+      "one": "Afișare {{start}} - {{end}} din {{total}} proiect",
+      "few": "Afișare {{start}} - {{end}} din {{total}} proiecte",
+      "other": "Afișare {{start}} - {{end}} din {{total}} de proiecte"
+    },
     "status": {
       "draft": "Draft",
       "planned": "Planificat",

@@ -132,6 +132,18 @@ function getNestedValue(obj, path) {
   return path.split(".").reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : undefined), obj);
 }
 
+// Extrasă din t() ca să fie reutilizată și de tPlural() mai jos — simplă
+// substituție {{var}} -> valoare, fără nicio logică de plural aici.
+function interpolateVars(template, vars) {
+  let value = template;
+  if (vars) {
+    Object.keys(vars).forEach((k) => {
+      value = value.replace(new RegExp(`{{${k}}}`, "g"), vars[k]);
+    });
+  }
+  return value;
+}
+
 // Lanț de fallback: limba curentă -> English -> fallbackText (textul original,
 // dat de apelant) -> cheia brută. UI-ul nu poate afișa niciodată gol/eroare
 // doar pentru că o cheie lipsește dintr-un dicționar.
@@ -140,12 +152,49 @@ function t(key, fallbackText, vars) {
   let value = getNestedValue(translations[current], key);
   if (value === undefined) value = getNestedValue(translations[FALLBACK_LOCALE_CODE], key);
   if (value === undefined) value = fallbackText !== undefined ? fallbackText : key;
-  if (vars) {
-    Object.keys(vars).forEach((k) => {
-      value = value.replace(new RegExp(`{{${k}}}`, "g"), vars[k]);
-    });
+  return interpolateVars(value, vars);
+}
+
+// Alege forma corectă dintr-un obiect de forme CLDR ({"one":..,"few":..,
+// "many":..,"other":..}) pentru categoria cerută — cade pe "other" din
+// ACELAȘI obiect dacă limba curentă pur și simplu nu are acea categorie
+// (ex. engleza n-are "few"/"many" deloc, doar "one"/"other").
+function pickPluralForm(forms, category) {
+  if (!forms || typeof forms !== "object") return undefined;
+  if (forms[category] !== undefined) return forms[category];
+  return forms.other;
+}
+
+// Echivalentul t() pentru chei cu forme de plural — valoarea din JSON e un
+// OBIECT de forme (categorii CLDR: one/few/many/other, eventual zero/two
+// pentru alte limbi), nu un string simplu. Categoria corectă e aleasă cu
+// Intl.PluralRules(locale).select(count) — API nativ, standardizat, acoperă
+// corect regulile complexe RO (one/few/other)/PL/UK (one/few/many/other)/RU,
+// nu doar distincția simplă singular/plural din engleză/română.
+// Lanț de fallback, în ordine (simetric cu t(), extins cu dimensiunea de
+// plural): categoria cerută din limba curentă -> "other" din ACELAȘI
+// dicționar (limbă care n-are acea categorie) -> categoria/"other" din
+// dicționarul English -> categoria/"other" din fallbackForms dat de apelant
+// -> cheia brută. UI-ul nu poate afișa niciodată gol/eroare doar pentru că
+// o categorie de plural lipsește dintr-un dicționar.
+function tPlural(key, count, fallbackForms, vars) {
+  const current = getCurrentLocaleCode();
+  const category = new Intl.PluralRules(current).select(count);
+
+  let value = pickPluralForm(getNestedValue(translations[current], key), category);
+
+  if (value === undefined) {
+    const fallbackCategory = new Intl.PluralRules(FALLBACK_LOCALE_CODE).select(count);
+    value = pickPluralForm(getNestedValue(translations[FALLBACK_LOCALE_CODE], key), fallbackCategory);
   }
-  return value;
+
+  if (value === undefined && fallbackForms) {
+    value = pickPluralForm(fallbackForms, category);
+  }
+
+  if (value === undefined) value = key;
+
+  return interpolateVars(value, vars);
 }
 
 // Aplică traducerile pe markup-ul static din pagina curentă — rulat la

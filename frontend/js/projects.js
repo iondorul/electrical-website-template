@@ -298,9 +298,16 @@ document.addEventListener("DOMContentLoaded", () => {
       currentPage * CONFIG.DEFAULT_PAGE_LIMIT,
       totalItems,
     );
-    paginationInfo.textContent = t(
+    // tPlural (nu t()) — vezi comentariul identic din clients.js#renderPagination
+    // ("projects.paginationInfo" e acum un obiect de forme CLDR one/few/other).
+    paginationInfo.textContent = tPlural(
       "projects.paginationInfo",
-      `Afișare ${startItem} - ${endItem} din ${totalItems} proiecte`,
+      totalItems,
+      {
+        one: `Afișare ${startItem} - ${endItem} din ${totalItems} proiect`,
+        few: `Afișare ${startItem} - ${endItem} din ${totalItems} proiecte`,
+        other: `Afișare ${startItem} - ${endItem} din ${totalItems} de proiecte`,
+      },
       { start: startItem, end: endItem, total: totalItems },
     );
 

@@ -202,7 +202,10 @@
     "invalidEmail": "Lütfen geçerli bir e-posta adresi girin!",
     "invalidPhone": "Lütfen geçerli bir telefon numarası girin!",
     "editClient": "Müşteriyi Düzenle",
-    "paginationInfo": "{{total}} müşteriden {{start}} - {{end}} arası gösteriliyor"
+    "paginationInfo": {
+      "one": "{{total}} müşteriden {{start}} - {{end}} arası gösteriliyor",
+      "other": "{{total}} müşteriden {{start}} - {{end}} arası gösteriliyor"
+    }
   },
   "projects": {
     "pageTitle": "Proje Yönetimi",
@@ -240,7 +243,10 @@
     "nameTooShort": "Proje adı en az 3 karakter içermelidir!",
     "invalidClient": "Lütfen geçerli bir müşteri seçin!",
     "editProject": "Projeyi Düzenle",
-    "paginationInfo": "{{total}} projeden {{start}} - {{end}} arası gösteriliyor",
+    "paginationInfo": {
+      "one": "{{total}} projeden {{start}} - {{end}} arası gösteriliyor",
+      "other": "{{total}} projeden {{start}} - {{end}} arası gösteriliyor"
+    },
     "status": {
       "draft": "Taslak",
       "planned": "Planlandı",

@@ -202,7 +202,10 @@
     "invalidEmail": "Please enter a valid email address!",
     "invalidPhone": "Please enter a valid phone number!",
     "editClient": "Edit Client",
-    "paginationInfo": "Showing {{start}} - {{end}} of {{total}} clients"
+    "paginationInfo": {
+      "one": "Showing {{start}} - {{end}} of {{total}} client",
+      "other": "Showing {{start}} - {{end}} of {{total}} clients"
+    }
   },
   "projects": {
     "pageTitle": "Projects Management",
@@ -240,7 +243,10 @@
     "nameTooShort": "The project name must contain at least 3 characters!",
     "invalidClient": "Please select a valid client!",
     "editProject": "Edit Project",
-    "paginationInfo": "Showing {{start}} - {{end}} of {{total}} projects",
+    "paginationInfo": {
+      "one": "Showing {{start}} - {{end}} of {{total}} project",
+      "other": "Showing {{start}} - {{end}} of {{total}} projects"
+    },
     "status": {
       "draft": "Draft",
       "planned": "Planned",

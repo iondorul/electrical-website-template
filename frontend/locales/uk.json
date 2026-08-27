@@ -202,7 +202,12 @@
     "invalidEmail": "Введіть дійсну електронну адресу!",
     "invalidPhone": "Введіть дійсний номер телефону!",
     "editClient": "Редагувати клієнта",
-    "paginationInfo": "Показано {{start}} – {{end}} з {{total}} клієнтів"
+    "paginationInfo": {
+      "one": "Показано {{start}} – {{end}} з {{total}} клієнта",
+      "few": "Показано {{start}} – {{end}} з {{total}} клієнтів",
+      "many": "Показано {{start}} – {{end}} з {{total}} клієнтів",
+      "other": "Показано {{start}} – {{end}} з {{total}} клієнтів"
+    }
   },
   "projects": {
     "pageTitle": "Керування проектами",
@@ -240,7 +245,12 @@
     "nameTooShort": "Назва проекту має містити щонайменше 3 символи!",
     "invalidClient": "Оберіть дійсного клієнта!",
     "editProject": "Редагувати проект",
-    "paginationInfo": "Показано {{start}} – {{end}} з {{total}} проектів",
+    "paginationInfo": {
+      "one": "Показано {{start}} – {{end}} з {{total}} проекту",
+      "few": "Показано {{start}} – {{end}} з {{total}} проектів",
+      "many": "Показано {{start}} – {{end}} з {{total}} проектів",
+      "other": "Показано {{start}} – {{end}} з {{total}} проектів"
+    },
     "status": {
       "draft": "Чернетка",
       "planned": "Заплановано",

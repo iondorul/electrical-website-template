@@ -1,0 +1,163 @@
+- generic [ref=f78e2]:
+  - complementary [ref=f78e3]:
+    - generic [ref=f78e4]:
+      - generic [ref=f78e6]:
+        - generic [ref=f78e7]: 
+        - generic [ref=f78e8]:
+          - text: Electrical
+          - strong [ref=f78e9]: VPF
+      - button "" [ref=f78e10] [cursor=pointer]
+    - navigation [ref=f78e12]:
+      - list [ref=f78e13]:
+        - listitem [ref=f78e14]:
+          - link " Panel" [ref=f78e15] [cursor=pointer]:
+            - /url: dashboard.html
+            - generic [ref=f78e16]: 
+            - generic [ref=f78e17]: Panel
+        - listitem [ref=f78e18]:
+          - link " Klienci" [ref=f78e19] [cursor=pointer]:
+            - /url: clients.html
+            - generic [ref=f78e20]: 
+            - generic [ref=f78e21]: Klienci
+        - listitem [ref=f78e22]:
+          - link " Projekty" [ref=f78e23] [cursor=pointer]:
+            - /url: projects.html
+            - generic [ref=f78e24]: 
+            - generic [ref=f78e25]: Projekty
+        - listitem [ref=f78e26]:
+          - link " Kosztorysy" [ref=f78e27] [cursor=pointer]:
+            - /url: estimating.html
+            - generic [ref=f78e28]: 
+            - generic [ref=f78e29]: Kosztorysy
+        - listitem [ref=f78e30]:
+          - link " Oferty" [ref=f78e31] [cursor=pointer]:
+            - /url: quotes.html
+            - generic [ref=f78e32]: 
+            - generic [ref=f78e33]: Oferty
+        - listitem [ref=f78e34]:
+          - link " Faktury" [ref=f78e35] [cursor=pointer]:
+            - /url: invoices.html
+            - generic [ref=f78e36]: 
+            - generic [ref=f78e37]: Faktury
+        - listitem [ref=f78e38]:
+          - link " Materiały" [ref=f78e39] [cursor=pointer]:
+            - /url: materials.html
+            - generic [ref=f78e40]: 
+            - generic [ref=f78e41]: Materiały
+        - listitem [ref=f78e42]:
+          - link " Raporty" [ref=f78e43] [cursor=pointer]:
+            - /url: reports.html
+            - generic [ref=f78e44]: 
+            - generic [ref=f78e45]: Raporty
+        - listitem [ref=f78e46]:
+          - link " Ustawienia" [ref=f78e47] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f78e48]: 
+            - generic [ref=f78e49]: Ustawienia
+    - button " Wyloguj się" [ref=f78e51] [cursor=pointer]:
+      - generic [ref=f78e52]: 
+      - text: Wyloguj się
+  - main [ref=f78e53]:
+    - generic [ref=f78e55]:
+      - heading "Przegląd" [level=4] [ref=f78e57]
+      - generic [ref=f78e58]:
+        - generic [ref=f78e59]:
+          - button "Polski " [ref=f78e60] [cursor=pointer]:
+            - generic [ref=f78e65]: Polski
+            - generic [ref=f78e66]: 
+          - text: 
+        - link "Ustawienia" [ref=f78e67] [cursor=pointer]:
+          - /url: settings.html
+          - generic [ref=f78e68]: 
+        - button "Wyloguj się" [ref=f78e70] [cursor=pointer]:
+          - generic [ref=f78e71]: 
+        - generic [ref=f78e73]:
+          - generic [ref=f78e74]: "--"
+          - text: "--"
+        - button "Zmień awatar" [ref=f78e75] [cursor=pointer]:
+          - generic [ref=f78e76]: 
+    - generic [ref=f78e77]:
+      - generic [ref=f78e79]:
+        - generic [ref=f78e80]:
+          - heading "👤 Welcome back!" [level=2] [ref=f78e81]
+          - paragraph [ref=f78e82]: Przegląd systemu ElectricalVPF ERP na dziś.
+        - generic [ref=f78e83]:
+          - generic [ref=f78e84]: 
+          - text: System aktywny
+      - generic [ref=f78e85]:
+        - generic [ref=f78e87]:
+          - generic [ref=f78e88]: 
+          - generic [ref=f78e90]:
+            - text: Klienci
+            - heading "125" [level=3] [ref=f78e91]
+        - generic [ref=f78e93]:
+          - generic [ref=f78e94]: 
+          - generic [ref=f78e96]:
+            - text: Projekty
+            - heading "24" [level=3] [ref=f78e97]
+        - generic [ref=f78e99]:
+          - generic [ref=f78e100]: 
+          - generic [ref=f78e102]:
+            - text: Otwarte oferty
+            - heading "12" [level=3] [ref=f78e103]
+        - generic [ref=f78e105]:
+          - generic [ref=f78e106]: 
+          - generic [ref=f78e108]:
+            - text: Faktury
+            - heading "38" [level=3] [ref=f78e109]
+        - generic [ref=f78e111]:
+          - generic [ref=f78e112]: 
+          - generic [ref=f78e114]:
+            - text: Przychód
+            - heading "€24,560" [level=3] [ref=f78e115]
+      - generic [ref=f78e116]:
+        - generic [ref=f78e118]:
+          - generic [ref=f78e119]:
+            - heading " Ostatnie projekty" [level=5] [ref=f78e120]:
+              - generic [ref=f78e121]: 
+              - text: Ostatnie projekty
+            - link "Zobacz wszystkie" [ref=f78e122] [cursor=pointer]:
+              - /url: projects.html
+          - table [ref=f78e125]:
+            - rowgroup [ref=f78e126]:
+              - row [ref=f78e127]:
+                - columnheader "Nazwa projektu" [ref=f78e128]
+                - columnheader "Klient" [ref=f78e129]
+                - columnheader "Status" [ref=f78e130]
+                - columnheader "Wartość" [ref=f78e131]
+            - rowgroup [ref=f78e132]:
+              - row [ref=f78e133]:
+                - cell "Instalație Rezidențială Vila Sibiu" [ref=f78e134]
+                - cell "Ion Popescu" [ref=f78e135]
+                - cell "W trakcie" [ref=f78e136]
+                - cell "€4,200" [ref=f78e138]
+              - row [ref=f78e139]:
+                - cell "Tablou Electric Industrial Transilvania" [ref=f78e140]
+                - cell "S.C. Electra S.R.L." [ref=f78e141]
+                - cell "Zakończony" [ref=f78e142]
+                - cell "€12,800" [ref=f78e144]
+              - row [ref=f78e145]:
+                - cell "Sistem Iluminat LED Depozit" [ref=f78e146]
+                - cell "Logistics Park" [ref=f78e147]
+                - cell "Planowanie" [ref=f78e148]
+                - cell "€3,500" [ref=f78e150]
+        - generic [ref=f78e152]:
+          - heading " Aktywność systemu" [level=5] [ref=f78e154]:
+            - generic [ref=f78e155]: 
+            - text: Aktywność systemu
+          - list [ref=f78e157]:
+            - listitem [ref=f78e158]:
+              - generic [ref=f78e159]:
+                - generic [ref=f78e160]: New Quote Generated
+                - generic [ref=f78e161]: 10 mins ago
+              - paragraph [ref=f78e162]: "Quote #Q-2026-089 was sent to client S.C. Electra S.R.L."
+            - listitem [ref=f78e163]:
+              - generic [ref=f78e164]:
+                - generic [ref=f78e165]: Invoice Paid
+                - generic [ref=f78e166]: 2 hours ago
+              - paragraph [ref=f78e167]: "Invoice #INV-1042 (€1,250) marked as paid."
+            - listitem [ref=f78e168]:
+              - generic [ref=f78e169]:
+                - generic [ref=f78e170]: New Client Added
+                - generic [ref=f78e171]: Yesterday
+              - paragraph [ref=f78e172]: Client "Mihai Ionescu" was registered in CRM.

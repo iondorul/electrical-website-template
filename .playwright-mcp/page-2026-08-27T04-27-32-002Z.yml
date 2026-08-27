@@ -1,0 +1,108 @@
+- generic [active] [ref=f50e1]:
+  - generic [ref=f50e2]:
+    - complementary [ref=f50e3]:
+      - generic [ref=f50e4]:
+        - generic [ref=f50e6]:
+          - generic [ref=f50e7]: 
+          - generic [ref=f50e8]:
+            - text: Electrical
+            - strong [ref=f50e9]: VPF
+        - button "" [ref=f50e10] [cursor=pointer]
+      - navigation [ref=f50e12]:
+        - list [ref=f50e13]:
+          - listitem [ref=f50e14]:
+            - link " Panel" [ref=f50e15] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f50e16]: 
+              - generic [ref=f50e17]: Panel
+          - listitem [ref=f50e18]:
+            - link " Klienci" [ref=f50e19] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f50e20]: 
+              - generic [ref=f50e21]: Klienci
+          - listitem [ref=f50e22]:
+            - link " Projekty" [ref=f50e23] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f50e24]: 
+              - generic [ref=f50e25]: Projekty
+          - listitem [ref=f50e26]:
+            - link " Kosztorysy" [ref=f50e27] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f50e28]: 
+              - generic [ref=f50e29]: Kosztorysy
+          - listitem [ref=f50e30]:
+            - link " Oferty" [ref=f50e31] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f50e32]: 
+              - generic [ref=f50e33]: Oferty
+          - listitem [ref=f50e34]:
+            - link " Faktury" [ref=f50e35] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f50e36]: 
+              - generic [ref=f50e37]: Faktury
+          - listitem [ref=f50e38]:
+            - link " Materiały" [ref=f50e39] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f50e40]: 
+              - generic [ref=f50e41]: Materiały
+          - listitem [ref=f50e42]:
+            - link " Raporty" [ref=f50e43] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f50e44]: 
+              - generic [ref=f50e45]: Raporty
+          - listitem [ref=f50e46]:
+            - link " Ustawienia" [ref=f50e47] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f50e48]: 
+              - generic [ref=f50e49]: Ustawienia
+      - button " Wyloguj się" [ref=f50e51] [cursor=pointer]:
+        - generic [ref=f50e52]: 
+        - text: Wyloguj się
+    - main [ref=f50e53]:
+      - generic [ref=f50e55]:
+        - heading "Zarządzanie klientami" [level=4] [ref=f50e57]
+        - generic [ref=f50e58]:
+          - generic [ref=f50e59]:
+            - button "Polski " [ref=f50e60] [cursor=pointer]:
+              - generic [ref=f50e65]: Polski
+              - generic [ref=f50e66]: 
+            - text: 
+          - link "Ustawienia" [ref=f50e67] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f50e68]: 
+          - button "Wyloguj się" [ref=f50e70] [cursor=pointer]:
+            - generic [ref=f50e71]: 
+          - generic [ref=f50e73]:
+            - generic [ref=f50e74]: "--"
+            - text: "--"
+          - button "Zmień awatar" [ref=f50e75] [cursor=pointer]:
+            - generic [ref=f50e76]: 
+      - generic [ref=f50e77]:
+        - generic [ref=f50e80]:
+          - generic [ref=f50e82]:
+            - generic [ref=f50e83]: 
+            - textbox "Szukaj po nazwie, firmie, e-mailu lub telefonie..." [ref=f50e85]
+          - button " Dodaj klienta" [ref=f50e87] [cursor=pointer]:
+            - generic [ref=f50e88]: 
+            - text: Dodaj klienta
+        - generic [ref=f50e89]:
+          - generic [ref=f50e90]:
+            - table [ref=f50e92]:
+              - rowgroup [ref=f50e93]:
+                - row [ref=f50e94]:
+                  - columnheader "Nazwa / Firma" [ref=f50e95]
+                  - columnheader "Kontakt (e-mail / telefon)" [ref=f50e96]
+                  - columnheader "Miasto / Adres" [ref=f50e97]
+                  - columnheader "Status" [ref=f50e98]
+                  - columnheader "Działania" [ref=f50e99]
+              - rowgroup
+            - generic [ref=f50e100]:
+              - status [ref=f50e101]:
+                - generic [ref=f50e102]: Ładowanie...
+              - paragraph [ref=f50e103]: Ładowanie listy klientów...
+            - text: 
+          - generic [ref=f50e104]:
+            - generic [ref=f50e105]: Afișare 0 - 0 din 0 clienți
+            - navigation:
+              - list
+  - text: 

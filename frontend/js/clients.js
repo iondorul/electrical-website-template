@@ -265,9 +265,20 @@ document.addEventListener("DOMContentLoaded", () => {
       currentPage * CONFIG.DEFAULT_PAGE_LIMIT,
       totalItems,
     );
-    paginationInfo.textContent = t(
+    // tPlural (nu t()) — "clients.paginationInfo" e acum un obiect de forme
+    // CLDR (one/few/other), nu un string simplu, ca să evite erori
+    // gramaticale la limbi cu reguli de plural complexe (ex. poloneză:
+    // "z 1 klientów" era greșit, corect e "z 1 klienta" — vezi tPlural()
+    // în i18n.js). fallbackForms de mai jos e folosit doar dacă ATÂT limba
+    // curentă CÂT ȘI engleza (fallback-ul standard) lipsesc din dicționar.
+    paginationInfo.textContent = tPlural(
       "clients.paginationInfo",
-      `Afișare ${startItem} - ${endItem} din ${totalItems} clienți`,
+      totalItems,
+      {
+        one: `Afișare ${startItem} - ${endItem} din ${totalItems} client`,
+        few: `Afișare ${startItem} - ${endItem} din ${totalItems} clienți`,
+        other: `Afișare ${startItem} - ${endItem} din ${totalItems} de clienți`,
+      },
       { start: startItem, end: endItem, total: totalItems },
     );
 

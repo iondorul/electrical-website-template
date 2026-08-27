@@ -1,0 +1,283 @@
+- generic [ref=f55e1]:
+  - generic [ref=f55e2]:
+    - complementary [ref=f55e3]:
+      - generic [ref=f55e4]:
+        - generic [ref=f55e5]:
+          - generic [ref=f55e6]:
+            - generic [ref=f55e7]: 
+            - generic [ref=f55e8]:
+              - text: Electrical
+              - strong [ref=f55e9]: VPF
+          - link " PLAN PRO" [ref=f55e10] [cursor=pointer]:
+            - /url: settings.html#billing
+            - generic [ref=f55e11]: 
+            - generic [ref=f55e12]: PLAN PRO
+        - button "" [ref=f55e13] [cursor=pointer]
+      - navigation [ref=f55e15]:
+        - list [ref=f55e16]:
+          - listitem [ref=f55e17]:
+            - link " Panel" [ref=f55e18] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f55e19]: 
+              - generic [ref=f55e20]: Panel
+          - listitem [ref=f55e21]:
+            - link " Klienci" [ref=f55e22] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f55e23]: 
+              - generic [ref=f55e24]: Klienci
+          - listitem [ref=f55e25]:
+            - link " Projekty" [ref=f55e26] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f55e27]: 
+              - generic [ref=f55e28]: Projekty
+          - listitem [ref=f55e29]:
+            - link " Kosztorysy" [ref=f55e30] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f55e31]: 
+              - generic [ref=f55e32]: Kosztorysy
+          - listitem [ref=f55e33]:
+            - link " Oferty" [ref=f55e34] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f55e35]: 
+              - generic [ref=f55e36]: Oferty
+          - listitem [ref=f55e37]:
+            - link " Faktury" [ref=f55e38] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f55e39]: 
+              - generic [ref=f55e40]: Faktury
+          - listitem [ref=f55e41]:
+            - link " Materiały" [ref=f55e42] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f55e43]: 
+              - generic [ref=f55e44]: Materiały
+          - listitem [ref=f55e45]:
+            - link " Raporty" [ref=f55e46] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f55e47]: 
+              - generic [ref=f55e48]: Raporty
+          - listitem [ref=f55e49]:
+            - link " Ustawienia" [ref=f55e50] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f55e51]: 
+              - generic [ref=f55e52]: Ustawienia
+      - button " Wyloguj się" [ref=f55e54] [cursor=pointer]:
+        - generic [ref=f55e55]: 
+        - text: Wyloguj się
+    - main [ref=f55e56]:
+      - generic [ref=f55e58]:
+        - heading "Plany i subskrypcja" [level=4] [ref=f55e60]
+        - generic [ref=f55e61]:
+          - generic [ref=f55e62]:
+            - button "Polski " [ref=f55e63] [cursor=pointer]:
+              - generic [ref=f55e68]: Polski
+              - generic [ref=f55e69]: 
+            - text: 
+          - link "Ustawienia" [ref=f55e70] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f55e71]: 
+          - button "Wyloguj się" [ref=f55e73] [cursor=pointer]:
+            - generic [ref=f55e74]: 
+          - generic [ref=f55e76]:
+            - generic [ref=f55e77]: cometa_2
+            - text: Administrator
+          - button "Zmień awatar" [ref=f55e78] [cursor=pointer]:
+            - img "Avatar electrician" [ref=f55e79]
+      - generic [ref=f55e88]:
+        - generic [ref=f55e89]:
+          - generic [ref=f55e90]:
+            - generic [ref=f55e91]: 
+            - text: ElectricalVPF ERP
+          - generic [ref=f55e92]:
+            - link "Wróć do subskrypcji i płatności" [ref=f55e93] [cursor=pointer]:
+              - /url: settings.html#billing
+              - generic [ref=f55e94]: 
+            - heading "Plany i subskrypcja" [level=2] [ref=f55e95]
+          - paragraph [ref=f55e96]: Wybierz plan odpowiedni dla Twojej firmy. Możesz zmienić plan w dowolnym momencie, bez zobowiązań.
+        - generic [ref=f55e97]:
+          - generic [ref=f55e99]:
+            - generic [ref=f55e100]: Free
+            - generic [ref=f55e101]:
+              - generic [ref=f55e102]: €0
+              - generic [ref=f55e103]: /miesiąc
+            - paragraph [ref=f55e104]: Aby przetestować ERP przy niewielkiej aktywności.
+            - button "Przejdź na Free" [ref=f55e105] [cursor=pointer]
+            - list [ref=f55e106]:
+              - listitem [ref=f55e107]:
+                - generic [ref=f55e108]: 
+                - generic [ref=f55e110]: 1 firma, 1 użytkownik
+              - listitem [ref=f55e111]:
+                - generic [ref=f55e112]: 
+                - generic [ref=f55e114]: 2 klientów
+              - listitem [ref=f55e115]:
+                - generic [ref=f55e116]: 
+                - generic [ref=f55e118]: 2 aktywne projekty
+              - listitem [ref=f55e119]:
+                - generic [ref=f55e120]: 
+                - generic [ref=f55e122]: 5 kosztorysów/miesiąc
+              - listitem [ref=f55e123]:
+                - generic [ref=f55e124]: 
+                - generic [ref=f55e126]: 2 oferty/miesiąc
+              - listitem [ref=f55e127]:
+                - generic [ref=f55e128]: 
+                - generic [ref=f55e130]: 1 raport/miesiąc
+              - listitem [ref=f55e131]:
+                - generic [ref=f55e132]: 
+                - generic [ref=f55e134]: Podstawowy CRM
+              - listitem [ref=f55e135]:
+                - generic [ref=f55e136]: 
+                - generic [ref=f55e138]: Podstawowe projekty
+              - listitem [ref=f55e139]:
+                - generic [ref=f55e140]: 
+                - generic [ref=f55e142]: Ograniczona liczba materiałów
+              - listitem [ref=f55e143]:
+                - generic [ref=f55e144]: 
+                - generic [ref=f55e146]: PDF ze znakiem wodnym ElectricalVPF
+              - listitem [ref=f55e147]:
+                - generic [ref=f55e148]: 
+                - generic [ref=f55e150]: Ograniczona historia
+              - listitem [ref=f55e151]:
+                - generic [ref=f55e152]: 
+                - generic [ref=f55e154]: Fakturowanie
+              - listitem [ref=f55e155]:
+                - generic [ref=f55e156]: 
+                - generic [ref=f55e158]: Zaawansowana analityka
+              - listitem [ref=f55e159]:
+                - generic [ref=f55e160]: 
+                - generic [ref=f55e162]: Eksport danych
+              - listitem [ref=f55e163]:
+                - generic [ref=f55e164]: 
+                - generic [ref=f55e166]: Funkcje AI
+              - listitem [ref=f55e167]:
+                - generic [ref=f55e168]: 
+                - generic [ref=f55e170]: Automatyzacje
+          - generic [ref=f55e172]:
+            - generic [ref=f55e173]: Polecany
+            - generic [ref=f55e174]: Pro
+            - generic [ref=f55e175]:
+              - generic [ref=f55e176]: Miesięcznie
+              - switch "Przełącz między rozliczeniem miesięcznym a rocznym" [ref=f55e177] [cursor=pointer]
+              - generic [ref=f55e179]: Rocznie
+            - generic [ref=f55e180]:
+              - generic [ref=f55e181]: €14.90
+              - generic [ref=f55e182]: /miesiąc
+            - paragraph [ref=f55e183]: Dla firm, które chcą mieć pełną kontrolę nad swoją działalnością.
+            - generic [ref=f55e184]:
+              - generic [ref=f55e185]: 
+              - text: Odnawia się 24 czerwca 2039
+            - button "Odnów teraz" [ref=f55e186] [cursor=pointer]
+            - list [ref=f55e187]:
+              - listitem [ref=f55e188]:
+                - generic [ref=f55e189]: 
+                - generic [ref=f55e191]: Wielu użytkowników
+              - listitem [ref=f55e192]:
+                - generic [ref=f55e193]: 
+                - generic [ref=f55e195]: Nieograniczona liczba klientów
+              - listitem [ref=f55e196]:
+                - generic [ref=f55e197]: 
+                - generic [ref=f55e199]: Nieograniczona liczba projektów
+              - listitem [ref=f55e200]:
+                - generic [ref=f55e201]: 
+                - generic [ref=f55e203]: Nieograniczona liczba kosztorysów
+              - listitem [ref=f55e204]:
+                - generic [ref=f55e205]: 
+                - generic [ref=f55e207]: Nieograniczona liczba raportów
+              - listitem [ref=f55e208]:
+                - generic [ref=f55e209]: 
+                - generic [ref=f55e211]: Pełny CRM
+              - listitem [ref=f55e212]:
+                - generic [ref=f55e213]: 
+                - generic [ref=f55e215]: Pełne zarządzanie projektami
+              - listitem [ref=f55e216]:
+                - generic [ref=f55e217]: 
+                - generic [ref=f55e219]: Nieograniczona liczba materiałów/produktów
+              - listitem [ref=f55e220]:
+                - generic [ref=f55e221]: 
+                - generic [ref=f55e223]: Profesjonalny PDF bez znaku wodnego
+              - listitem [ref=f55e224]:
+                - generic [ref=f55e225]: 
+                - generic [ref=f55e227]: Pełne fakturowanie
+              - listitem [ref=f55e228]:
+                - generic [ref=f55e229]: 
+                - generic [ref=f55e231]: Analityka finansowa (zysk / koszt / przychód)
+              - listitem [ref=f55e232]:
+                - generic [ref=f55e233]: 
+                - generic [ref=f55e235]: Eksport do Excel/CSV
+              - listitem [ref=f55e236]:
+                - generic [ref=f55e237]: 
+                - generic [ref=f55e239]: Pełna historia i dziennik audytu
+              - listitem [ref=f55e240]:
+                - generic [ref=f55e241]: 
+                - generic [ref=f55e243]: Kopia zapasowa/eksport danych
+              - listitem [ref=f55e244]:
+                - generic [ref=f55e245]: 
+                - generic [ref=f55e247]: AI (funkcje wspomagane)
+              - listitem [ref=f55e248]:
+                - generic [ref=f55e249]: 
+                - generic [ref=f55e251]: Automatyzacje
+              - listitem [ref=f55e252]:
+                - generic [ref=f55e253]: 
+                - generic [ref=f55e255]: Zarządzanie dokumentami
+              - listitem [ref=f55e256]:
+                - generic [ref=f55e257]: 
+                - generic [ref=f55e259]: Priorytetowe wsparcie
+        - generic [ref=f55e260]:
+          - link " Wróć do subskrypcji i płatności" [ref=f55e261] [cursor=pointer]:
+            - /url: settings.html#billing
+            - generic [ref=f55e262]: 
+            - text: Wróć do subskrypcji i płatności
+          - generic [ref=f55e263]:
+            - text: Zalogowano jako
+            - strong [ref=f55e264]: cometa_2
+            - text: —
+            - generic [ref=f55e265]:
+              - generic [ref=f55e266]: 
+              - text: "Plan: Pro"
+  - text:    
+  - dialog [active] [ref=f55e267]:
+    - generic [ref=f55e268]:
+      - generic [ref=f55e269]:
+        - heading " Odnów teraz" [level=5] [ref=f55e270]:
+          - generic [ref=f55e271]: 
+          - text: Odnów teraz
+        - button "Close" [ref=f55e272] [cursor=pointer]
+      - generic [ref=f55e273]:
+        - generic [ref=f55e274]:
+          - generic [ref=f55e275] [cursor=pointer]:
+            - radio "1 miesiąc €14.90" [checked]
+            - generic [ref=f55e276]:
+              - generic [ref=f55e277]: 1 miesiąc
+              - generic [ref=f55e278]: €14.90
+          - generic [ref=f55e279] [cursor=pointer]:
+            - radio "6 miesięcy €80.46 -10%"
+            - generic [ref=f55e280]:
+              - generic [ref=f55e281]: 6 miesięcy
+              - generic [ref=f55e282]:
+                - text: €80.46
+                - generic [ref=f55e283]: "-10%"
+          - generic [ref=f55e284] [cursor=pointer]:
+            - radio "1 rok €143.04 -20%"
+            - generic [ref=f55e285]:
+              - generic [ref=f55e286]: 1 rok
+              - generic [ref=f55e287]:
+                - text: €143.04
+                - generic [ref=f55e288]: "-20%"
+          - generic [ref=f55e289] [cursor=pointer]:
+            - radio "3 lata €375.48 -30%"
+            - generic [ref=f55e290]:
+              - generic [ref=f55e291]: 3 lata
+              - generic [ref=f55e292]:
+                - text: €375.48
+                - generic [ref=f55e293]: "-30%"
+          - generic [ref=f55e294] [cursor=pointer]:
+            - radio "5 lat Najkorzystniejsza opcja €536.40 -40%"
+            - generic [ref=f55e295]:
+              - generic [ref=f55e296]:
+                - text: 5 lat
+                - generic [ref=f55e297]: Najkorzystniejsza opcja
+              - generic [ref=f55e298]:
+                - text: €536.40
+                - generic [ref=f55e299]: "-40%"
+        - paragraph [ref=f55e300]: "Dostęp Pro aktywny do 24 czerwca 2039. Dodawane: 1 miesiąc — nowy dostęp będzie ważny do 24 lipca 2039."
+      - generic [ref=f55e301]:
+        - button "Anuluj" [ref=f55e302] [cursor=pointer]
+        - button "Przejdź do płatności" [ref=f55e303] [cursor=pointer]
