@@ -11,16 +11,11 @@ function flagSvg(paths) {
   return `<svg viewBox="0 0 20 14" xmlns="http://www.w3.org/2000/svg">${paths}</svg>`;
 }
 
-// Ordine geografică, de la cea mai apropiată la cea mai depărtată de România,
-// cu RO și EN mereu primele (cerută explicit) — NU ordine alfabetică.
+// Ordine: EN mereu primul (limba de bază/source of truth a sistemului i18n —
+// vezi DEFAULT_LOCALE_CODE/FALLBACK_LOCALE_CODE mai jos), apoi RO, apoi restul
+// în ordine geografică (de la cea mai apropiată la cea mai depărtată de
+// România) — NU ordine alfabetică.
 const LOCALES = [
-  {
-    code: "ro",
-    name: "Română",
-    flag: flagSvg(
-      '<rect width="20" height="14" fill="#CE1126"/><rect width="13.34" height="14" fill="#FCD116"/><rect width="6.67" height="14" fill="#002B7F"/>',
-    ),
-  },
   {
     code: "en",
     name: "English",
@@ -30,6 +25,13 @@ const LOCALES = [
         '<path d="M0 0L20 14M20 0L0 14" stroke="#CF142B" stroke-width="1.2"/>' +
         '<path d="M10 0V14M0 7H20" stroke="#FFFFFF" stroke-width="4.5"/>' +
         '<path d="M10 0V14M0 7H20" stroke="#CF142B" stroke-width="2.5"/>',
+    ),
+  },
+  {
+    code: "ro",
+    name: "Română",
+    flag: flagSvg(
+      '<rect width="20" height="14" fill="#CE1126"/><rect width="13.34" height="14" fill="#FCD116"/><rect width="6.67" height="14" fill="#002B7F"/>',
     ),
   },
   {

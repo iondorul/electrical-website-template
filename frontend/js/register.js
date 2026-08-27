@@ -1,4 +1,9 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  // Pagină publică, fără sidebar/topbar ERP (shell.js) — switcher-ul e deja
+  // în markup-ul static al paginii, deci inițializăm direct, fără să așteptăm
+  // evenimentul erp:shell-ready (care nu se emite niciodată aici).
+  await initLangSwitcher();
+
   const registerForm = document.getElementById("registerForm");
   const fullNameInput = document.getElementById("fullName");
   const companyNameInput = document.getElementById("companyName");
@@ -11,6 +16,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerAlert = document.getElementById("registerAlert");
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Mapare cod → cheie de traducere pentru răspunsurile /auth/register
+  // (backend trimite `code`, NICIODATĂ text hardcodat de afișat direct —
+  // vezi authController.js/AuthCodes). Codurile de validare de mai jos ajung
+  // pe ecran doar dacă validarea client-side de mai sus e ocolită (ex. apel
+  // API direct) — validate din nou și pe server, din motive de siguranță.
+  function mapRegisterErrorCode(code) {
+    switch (code) {
+      case "FULL_NAME_REQUIRED":
+        return t("auth.register.fullNameRequired", "Numele complet este obligatoriu!");
+      case "COMPANY_NAME_REQUIRED":
+        return t("auth.register.companyNameRequired", "Numele firmei/PFA este obligatoriu!");
+      case "INVALID_EMAIL":
+        return t("auth.common.emailInvalid", "Introduceți o adresă de email validă!");
+      case "PASSWORD_TOO_SHORT":
+        return t("auth.register.passwordInvalid", "Parola trebuie să aibă cel puțin 8 caractere!");
+      case "EMAIL_ALREADY_EXISTS":
+        return t("auth.register.emailAlreadyExists", "Există deja un cont cu acest email.");
+      case "SERVER_ERROR":
+        return t("auth.common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+      default:
+        return null;
+    }
+  }
 
   // 1. Arată / Ascunde Parola (Toggle Eye) pe ambele câmpuri de parolă
   setupPasswordToggle("toggleRegPassword", "regPassword");
@@ -43,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (matches) {
       clearInputError(confirmPasswordInput);
     } else {
-      showInputError(confirmPasswordInput, "Parolele nu coincid.");
+      showInputError(confirmPasswordInput, t("auth.common.passwordMismatch", "Parolele nu coincid."));
     }
     return matches;
   }
@@ -62,24 +91,27 @@ document.addEventListener("DOMContentLoaded", () => {
       let isValid = true;
 
       if (!fullName) {
-        showInputError(fullNameInput, "Numele complet este obligatoriu!");
+        showInputError(fullNameInput, t("auth.register.fullNameRequired", "Numele complet este obligatoriu!"));
         isValid = false;
       }
 
       if (!companyName) {
-        showInputError(companyNameInput, "Numele firmei/PFA este obligatoriu!");
+        showInputError(
+          companyNameInput,
+          t("auth.register.companyNameRequired", "Numele firmei/PFA este obligatoriu!"),
+        );
         isValid = false;
       }
 
       if (!email || !emailRegex.test(email)) {
-        showInputError(emailInput, "Introduceți o adresă de email validă!");
+        showInputError(emailInput, t("auth.common.emailInvalid", "Introduceți o adresă de email validă!"));
         isValid = false;
       }
 
       if (!password || password.length < 8) {
         showInputError(
           passwordInput,
-          "Parola trebuie să aibă cel puțin 8 caractere!",
+          t("auth.register.passwordInvalid", "Parola trebuie să aibă cel puțin 8 caractere!"),
         );
         isValid = false;
       }
@@ -109,11 +141,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.message || "Nu s-a putut crea contul.");
+          throw new Error(
+            mapRegisterErrorCode(data.code) ||
+              t("auth.register.failureMessage", "Nu s-a putut crea contul."),
+          );
         }
 
         showAlert(
-          "Cont creat cu succes! Redirecționare către autentificare...",
+          t(
+            "auth.register.successMessage",
+            "Cont creat cu succes! Redirecționare către autentificare...",
+          ),
           "success",
         );
 
@@ -123,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (error) {
         console.error("Eroare înregistrare:", error);
         showAlert(
-          error.message || "Nu s-a putut realiza conexiunea la server.",
+          error.message || t("auth.common.connectionError", "Nu s-a putut realiza conexiunea la server."),
           "danger",
         );
       } finally {

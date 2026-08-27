@@ -776,5 +776,76 @@
       "activeUntilText": "ваша подписка Pro активна до {{date}}",
       "desc": "Ваш платёж успешно обработан — запланированное понижение плана отменено, {{renewalText}}"
     }
+  },
+  "auth": {
+    "common": {
+      "emailLabel": "Адрес электронной почты",
+      "emailInvalid": "Введите действительный адрес электронной почты!",
+      "passwordMismatch": "Пароли не совпадают.",
+      "connectionError": "Не удалось подключиться к серверу.",
+      "connectionErrorRetry": "Не удалось подключиться к серверу. Попробуйте снова.",
+      "backToLogin": "Вернуться к входу",
+      "footerCopyright": "© 2026 ElectricalVPF ERP",
+      "footerPoweredBy": "Разработано ElectricalVPF",
+      "emailRequired": "Адрес электронной почты обязателен.",
+      "serverError": "Произошла ошибка сервера. Попробуйте снова."
+    },
+    "login": {
+      "tagline": "Смета электромонтажных работ • CRM • Проекты • Выставление счетов",
+      "freePlanBadge": "🆓 Доступен бесплатный план | Обновление в любое время",
+      "passwordLabel": "Пароль",
+      "passwordPlaceholder": "Введите пароль",
+      "passwordInvalid": "Пароль должен содержать не менее 6 символов!",
+      "rememberMe": "Запомнить меня",
+      "forgotPasswordLink": "Забыли пароль?",
+      "signIn": "Войти",
+      "noAccount": "Нет аккаунта?",
+      "registerLink": "Зарегистрироваться",
+      "resetSuccessMessage": "Пароль успешно сброшен! Теперь вы можете войти с новым паролем.",
+      "successMessage": "Вход выполнен успешно! Перенаправление...",
+      "invalidCredentials": "Неверный email или пароль!",
+      "missingToken": "Некорректный ответ сервера (отсутствует токен)."
+    },
+    "register": {
+      "subtitle": "Создать новую учётную запись",
+      "fullNameLabel": "Полное имя",
+      "fullNameRequired": "Полное имя обязательно!",
+      "companyNameLabel": "Название компании / ИП",
+      "companyNameRequired": "Название компании/ИП обязательно!",
+      "passwordLabel": "Пароль",
+      "passwordPlaceholder": "Минимум 8 символов",
+      "passwordInvalid": "Пароль должен содержать не менее 8 символов!",
+      "confirmPasswordLabel": "Подтвердите пароль",
+      "confirmPasswordPlaceholder": "Введите пароль ещё раз",
+      "submit": "Создать аккаунт",
+      "haveAccount": "Уже есть аккаунт?",
+      "loginLink": "Войти",
+      "successMessage": "Аккаунт успешно создан! Перенаправление на страницу входа...",
+      "failureMessage": "Не удалось создать аккаунт.",
+      "emailAlreadyExists": "Аккаунт с этим email уже существует."
+    },
+    "forgotPassword": {
+      "subtitle": "Восстановление пароля учётной записи",
+      "description": "Введите адрес электронной почты, связанный с вашей учётной записью. Если адрес существует в системе, вы получите ссылку для сброса пароля (действительна 1 час).",
+      "submit": "Отправить ссылку для сброса",
+      "genericSuccessMessage": "Если адрес существует в системе, вы получите письмо с инструкциями по сбросу."
+    },
+    "resetPassword": {
+      "subtitle": "Установите новый пароль",
+      "invalidTokenDefault": "Ссылка для сброса недействительна или срок её действия истёк.",
+      "invalidTokenMissing": "Ссылка для сброса недействительна или неполная. Запросите новую.",
+      "requestNewLink": "Запросить новую ссылку",
+      "newPasswordLabel": "Новый пароль",
+      "newPasswordPlaceholder": "Минимум 8 символов",
+      "newPasswordInvalid": "Пароль должен содержать не менее 8 символов!",
+      "confirmPasswordLabel": "Подтвердите новый пароль",
+      "confirmPasswordPlaceholder": "Введите пароль ещё раз",
+      "submit": "Сбросить пароль",
+      "successMessage": "Пароль успешно сброшен! Перенаправление на страницу входа...",
+      "failureMessage": "Не удалось сбросить пароль.",
+      "tokenAndPasswordRequired": "Токен и новый пароль обязательны.",
+      "tokenInvalid": "Ссылка для сброса недействительна.",
+      "tokenExpired": "Срок действия ссылки для сброса истёк."
+    }
   }
 }

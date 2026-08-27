@@ -772,5 +772,76 @@
       "activeUntilText": "your Pro subscription is active until {{date}}.",
       "desc": "Your payment was processed successfully — the scheduled downgrade has been canceled, {{renewalText}}"
     }
+  },
+  "auth": {
+    "common": {
+      "emailLabel": "Email Address",
+      "emailInvalid": "Please enter a valid email address!",
+      "passwordMismatch": "Passwords do not match.",
+      "connectionError": "Could not connect to the server.",
+      "connectionErrorRetry": "Could not connect to the server. Please try again.",
+      "backToLogin": "Back to sign in",
+      "footerCopyright": "© 2026 ElectricalVPF ERP",
+      "footerPoweredBy": "Powered by ElectricalVPF",
+      "emailRequired": "Email address is required.",
+      "serverError": "A server error occurred. Please try again."
+    },
+    "login": {
+      "tagline": "Electrical Estimating • CRM • Projects • Invoicing",
+      "freePlanBadge": "🆓 Free Plan Available | Upgrade anytime",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "passwordInvalid": "Password must be at least 6 characters!",
+      "rememberMe": "Remember me",
+      "forgotPasswordLink": "Forgot password?",
+      "signIn": "Sign In",
+      "noAccount": "Don't have an account?",
+      "registerLink": "Register",
+      "resetSuccessMessage": "Password reset successfully! You can now sign in with your new password.",
+      "successMessage": "Login successful! Redirecting...",
+      "invalidCredentials": "Incorrect email or password!",
+      "missingToken": "Invalid server response (missing token)."
+    },
+    "register": {
+      "subtitle": "Create a new account",
+      "fullNameLabel": "Full name",
+      "fullNameRequired": "Full name is required!",
+      "companyNameLabel": "Company / sole trader name",
+      "companyNameRequired": "Company/sole trader name is required!",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Minimum 8 characters",
+      "passwordInvalid": "Password must be at least 8 characters!",
+      "confirmPasswordLabel": "Confirm password",
+      "confirmPasswordPlaceholder": "Re-enter password",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Sign in",
+      "successMessage": "Account created successfully! Redirecting to sign in...",
+      "failureMessage": "Could not create the account.",
+      "emailAlreadyExists": "An account with this email already exists."
+    },
+    "forgotPassword": {
+      "subtitle": "Recover your account password",
+      "description": "Enter the email address associated with your account. If it exists in our system, you'll receive a password reset link (valid for 1 hour).",
+      "submit": "Send reset link",
+      "genericSuccessMessage": "If the address exists in our system, you'll receive an email with reset instructions."
+    },
+    "resetPassword": {
+      "subtitle": "Set a new password",
+      "invalidTokenDefault": "The reset link is invalid or has expired.",
+      "invalidTokenMissing": "The reset link is invalid or incomplete. Please request a new one.",
+      "requestNewLink": "Request a new link",
+      "newPasswordLabel": "New password",
+      "newPasswordPlaceholder": "Minimum 8 characters",
+      "newPasswordInvalid": "Password must be at least 8 characters!",
+      "confirmPasswordLabel": "Confirm new password",
+      "confirmPasswordPlaceholder": "Re-enter password",
+      "submit": "Reset password",
+      "successMessage": "Password reset successfully! Redirecting to sign in...",
+      "failureMessage": "Could not reset the password.",
+      "tokenAndPasswordRequired": "Token and new password are required.",
+      "tokenInvalid": "The reset link is invalid.",
+      "tokenExpired": "The reset link has expired."
+    }
   }
 }

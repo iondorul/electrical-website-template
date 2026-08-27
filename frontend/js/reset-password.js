@@ -1,4 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  // Pagină publică, fără sidebar/topbar ERP (shell.js) — switcher-ul e deja
+  // în markup-ul static al paginii, deci inițializăm direct, fără să așteptăm
+  // evenimentul erp:shell-ready (care nu se emite niciodată aici). Așteptat
+  // înainte de orice t() de mai jos (inclusiv cazul token lipsă, câteva
+  // linii mai jos) — altfel ar afișa scurt fallback-ul românesc.
+  await initLangSwitcher();
+
   const form = document.getElementById("resetPasswordForm");
   const newPasswordInput = document.getElementById("newPassword");
   const confirmPasswordInput = document.getElementById("confirmNewPassword");
@@ -11,10 +18,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const token = new URLSearchParams(window.location.search).get("token");
 
+  // Mapare cod → cheie de traducere pentru răspunsurile /auth/reset-password
+  // (backend trimite `code`, NICIODATĂ text hardcodat de afișat direct — vezi
+  // authController.js/AuthCodes). RESET_TOKEN_INVALID/RESET_TOKEN_EXPIRED sunt
+  // distincte (interogare în 2 pași pe backend) — înlocuiește complet vechea
+  // logică de căutare a cuvântului "expirat" în textul brut al răspunsului.
+  function mapResetPasswordErrorCode(code) {
+    switch (code) {
+      case "RESET_TOKEN_AND_PASSWORD_REQUIRED":
+        return t("auth.resetPassword.tokenAndPasswordRequired", "Token-ul și noua parolă sunt obligatorii.");
+      case "PASSWORD_TOO_SHORT":
+        return t("auth.resetPassword.newPasswordInvalid", "Parola trebuie să aibă cel puțin 8 caractere!");
+      case "RESET_TOKEN_INVALID":
+        return t("auth.resetPassword.tokenInvalid", "Linkul de resetare este invalid.");
+      case "RESET_TOKEN_EXPIRED":
+        return t("auth.resetPassword.tokenExpired", "Linkul de resetare a expirat.");
+      case "SERVER_ERROR":
+        return t("auth.common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+      default:
+        return null;
+    }
+  }
+
+  // Coduri care înseamnă "tokenul nu mai e valid" — pentru acestea arătăm
+  // starea dedicată #invalidTokenState (formular ascuns), nu doar o alertă
+  // inline, la fel ca fluxul existent pentru "fără token în URL" de mai jos.
+  const INVALID_TOKEN_CODES = ["RESET_TOKEN_INVALID", "RESET_TOKEN_EXPIRED"];
+
   // Fără token în URL nu are rost să arătăm formularul deloc.
   if (!token) {
     showInvalidTokenState(
-      "Linkul de resetare este invalid sau incomplet. Solicită unul nou.",
+      t(
+        "auth.resetPassword.invalidTokenMissing",
+        "Linkul de resetare este invalid sau incomplet. Solicită unul nou.",
+      ),
+      "MISSING",
     );
     return;
   }
@@ -41,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (matches) {
       clearInputError(confirmPasswordInput);
     } else {
-      showInputError(confirmPasswordInput, "Parolele nu coincid.");
+      showInputError(confirmPasswordInput, t("auth.common.passwordMismatch", "Parolele nu coincid."));
     }
     return matches;
   }
@@ -66,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!newPassword || newPassword.length < 8) {
       showInputError(
         newPasswordInput,
-        "Parola trebuie să aibă cel puțin 8 caractere!",
+        t("auth.resetPassword.newPasswordInvalid", "Parola trebuie să aibă cel puțin 8 caractere!"),
       );
       isValid = false;
     }
@@ -92,9 +130,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        const message = data.message || "Nu s-a putut reseta parola.";
-        if (message.toLowerCase().includes("expirat")) {
-          showInvalidTokenState(message);
+        // Bazat exclusiv pe `code` — NICIODATĂ pe căutare de text în mesajul
+        // brut al backend-ului (fostă verificare a cuvântului "expirat").
+        const message =
+          mapResetPasswordErrorCode(data.code) ||
+          t("auth.resetPassword.failureMessage", "Nu s-a putut reseta parola.");
+        if (INVALID_TOKEN_CODES.includes(data.code)) {
+          showInvalidTokenState(message, data.code);
         } else {
           showAlert(message, "danger");
         }
@@ -102,7 +144,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       showAlert(
-        "Parola a fost resetată cu succes! Redirecționare către autentificare...",
+        t(
+          "auth.resetPassword.successMessage",
+          "Parola a fost resetată cu succes! Redirecționare către autentificare...",
+        ),
         "success",
       );
       form.reset();
@@ -114,7 +159,10 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("Eroare la resetarea parolei:", error);
       showAlert(
-        "Nu s-a putut realiza conexiunea la server. Încearcă din nou.",
+        t(
+          "auth.common.connectionErrorRetry",
+          "Nu s-a putut realiza conexiunea la server. Încearcă din nou.",
+        ),
         "danger",
       );
     } finally {
@@ -185,11 +233,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function showInvalidTokenState(message) {
+  // Reține ultimul cod afișat ca să putem re-traduce mesajul dacă userul
+  // schimbă limba DUPĂ ce starea de token invalid e deja afișată — elementul
+  // #invalidTokenMessage are `data-i18n` static în markup (vezi
+  // reset-password.html), pe care translateStaticPage() l-ar suprascrie
+  // înapoi cu fallback-ul generic la fiecare schimbare de limbă dacă am lăsa
+  // atributul pe loc, ignorând complet mesajul specific (invalid/expirat/
+  // lipsă) setat dinamic aici.
+  let lastInvalidTokenCode = null;
+
+  function showInvalidTokenState(message, code) {
+    lastInvalidTokenCode = code || null;
     if (invalidTokenMessage && message) {
+      invalidTokenMessage.removeAttribute("data-i18n");
       invalidTokenMessage.textContent = message;
     }
     if (invalidTokenState) invalidTokenState.classList.remove("d-none");
     if (form) form.classList.add("d-none");
   }
+
+  document.addEventListener("erp:locale-changed", () => {
+    if (!lastInvalidTokenCode || !invalidTokenMessage) return;
+    const message =
+      lastInvalidTokenCode === "MISSING"
+        ? t(
+            "auth.resetPassword.invalidTokenMissing",
+            "Linkul de resetare este invalid sau incomplet. Solicită unul nou.",
+          )
+        : mapResetPasswordErrorCode(lastInvalidTokenCode) ||
+          t("auth.resetPassword.failureMessage", "Nu s-a putut reseta parola.");
+    invalidTokenMessage.textContent = message;
+  });
 });

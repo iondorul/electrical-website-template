@@ -772,5 +772,76 @@
       "activeUntilText": "je Pro-abonnement is actief tot {{date}}.",
       "desc": "Je betaling is succesvol verwerkt — de geplande downgrade is geannuleerd, {{renewalText}}"
     }
+  },
+  "auth": {
+    "common": {
+      "emailLabel": "E-mailadres",
+      "emailInvalid": "Voer een geldig e-mailadres in!",
+      "passwordMismatch": "Wachtwoorden komen niet overeen.",
+      "connectionError": "Kan geen verbinding maken met de server.",
+      "connectionErrorRetry": "Kan geen verbinding maken met de server. Probeer het opnieuw.",
+      "backToLogin": "Terug naar inloggen",
+      "footerCopyright": "© 2026 ElectricalVPF ERP",
+      "footerPoweredBy": "Mogelijk gemaakt door ElectricalVPF",
+      "emailRequired": "E-mailadres is verplicht.",
+      "serverError": "Er is een serverfout opgetreden. Probeer het opnieuw."
+    },
+    "login": {
+      "tagline": "Elektrische calculatie • CRM • Projecten • Facturering",
+      "freePlanBadge": "🆓 Gratis plan beschikbaar | Upgrade wanneer je wilt",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "Voer je wachtwoord in",
+      "passwordInvalid": "Het wachtwoord moet minimaal 6 tekens bevatten!",
+      "rememberMe": "Onthoud mij",
+      "forgotPasswordLink": "Wachtwoord vergeten?",
+      "signIn": "Inloggen",
+      "noAccount": "Heb je nog geen account?",
+      "registerLink": "Registreren",
+      "resetSuccessMessage": "Wachtwoord succesvol opnieuw ingesteld! Je kunt nu inloggen met je nieuwe wachtwoord.",
+      "successMessage": "Inloggen gelukt! Doorverwijzen...",
+      "invalidCredentials": "Onjuist e-mailadres of wachtwoord!",
+      "missingToken": "Ongeldig serverantwoord (token ontbreekt)."
+    },
+    "register": {
+      "subtitle": "Maak een nieuw account aan",
+      "fullNameLabel": "Volledige naam",
+      "fullNameRequired": "Volledige naam is verplicht!",
+      "companyNameLabel": "Bedrijfsnaam / Eenmanszaak",
+      "companyNameRequired": "Bedrijfsnaam/eenmanszaak is verplicht!",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "Minimaal 8 tekens",
+      "passwordInvalid": "Het wachtwoord moet minimaal 8 tekens bevatten!",
+      "confirmPasswordLabel": "Bevestig wachtwoord",
+      "confirmPasswordPlaceholder": "Voer het wachtwoord opnieuw in",
+      "submit": "Account aanmaken",
+      "haveAccount": "Heb je al een account?",
+      "loginLink": "Inloggen",
+      "successMessage": "Account succesvol aangemaakt! Doorverwijzen naar inloggen...",
+      "failureMessage": "Kan het account niet aanmaken.",
+      "emailAlreadyExists": "Er bestaat al een account met dit e-mailadres."
+    },
+    "forgotPassword": {
+      "subtitle": "Herstel je accountwachtwoord",
+      "description": "Voer het e-mailadres in dat is gekoppeld aan je account. Als het adres in ons systeem bestaat, ontvang je een link om je wachtwoord opnieuw in te stellen (1 uur geldig).",
+      "submit": "Verstuur resetlink",
+      "genericSuccessMessage": "Als het adres in ons systeem bestaat, ontvang je een e-mail met instructies om het wachtwoord te resetten."
+    },
+    "resetPassword": {
+      "subtitle": "Stel een nieuw wachtwoord in",
+      "invalidTokenDefault": "De resetlink is ongeldig of verlopen.",
+      "invalidTokenMissing": "De resetlink is ongeldig of onvolledig. Vraag een nieuwe aan.",
+      "requestNewLink": "Vraag een nieuwe link aan",
+      "newPasswordLabel": "Nieuw wachtwoord",
+      "newPasswordPlaceholder": "Minimaal 8 tekens",
+      "newPasswordInvalid": "Het wachtwoord moet minimaal 8 tekens bevatten!",
+      "confirmPasswordLabel": "Bevestig nieuw wachtwoord",
+      "confirmPasswordPlaceholder": "Voer het wachtwoord opnieuw in",
+      "submit": "Wachtwoord resetten",
+      "successMessage": "Wachtwoord succesvol gereset! Doorverwijzen naar inloggen...",
+      "failureMessage": "Kan het wachtwoord niet resetten.",
+      "tokenAndPasswordRequired": "Token en nieuw wachtwoord zijn verplicht.",
+      "tokenInvalid": "De resetlink is ongeldig.",
+      "tokenExpired": "De resetlink is verlopen."
+    }
   }
 }

@@ -772,5 +772,76 @@
       "activeUntilText": "Pro aboneliğiniz {{date}} tarihine kadar aktif",
       "desc": "Ödemeniz başarıyla işlendi — planlanan düşürme iptal edildi, {{renewalText}}"
     }
+  },
+  "auth": {
+    "common": {
+      "emailLabel": "E-posta Adresi",
+      "emailInvalid": "Lütfen geçerli bir e-posta adresi girin!",
+      "passwordMismatch": "Şifreler eşleşmiyor.",
+      "connectionError": "Sunucuya bağlanılamadı.",
+      "connectionErrorRetry": "Sunucuya bağlanılamadı. Lütfen tekrar deneyin.",
+      "backToLogin": "Girişe geri dön",
+      "footerCopyright": "© 2026 ElectricalVPF ERP",
+      "footerPoweredBy": "ElectricalVPF tarafından desteklenmektedir",
+      "emailRequired": "E-posta adresi zorunludur.",
+      "serverError": "Bir sunucu hatası oluştu. Lütfen tekrar deneyin."
+    },
+    "login": {
+      "tagline": "Elektrik Keşif • CRM • Projeler • Faturalama",
+      "freePlanBadge": "🆓 Ücretsiz Plan Mevcut | İstediğin zaman yükselt",
+      "passwordLabel": "Şifre",
+      "passwordPlaceholder": "Şifrenizi girin",
+      "passwordInvalid": "Şifre en az 6 karakter olmalıdır!",
+      "rememberMe": "Beni hatırla",
+      "forgotPasswordLink": "Şifreni mi unuttun?",
+      "signIn": "Giriş Yap",
+      "noAccount": "Hesabın yok mu?",
+      "registerLink": "Kayıt ol",
+      "resetSuccessMessage": "Şifre başarıyla sıfırlandı! Artık yeni şifrenle giriş yapabilirsin.",
+      "successMessage": "Giriş başarılı! Yönlendiriliyor...",
+      "invalidCredentials": "E-posta veya şifre hatalı!",
+      "missingToken": "Geçersiz sunucu yanıtı (token eksik)."
+    },
+    "register": {
+      "subtitle": "Yeni bir hesap oluştur",
+      "fullNameLabel": "Ad Soyad",
+      "fullNameRequired": "Ad Soyad zorunludur!",
+      "companyNameLabel": "Şirket adı / Şahıs işletmesi",
+      "companyNameRequired": "Şirket adı/Şahıs işletmesi zorunludur!",
+      "passwordLabel": "Şifre",
+      "passwordPlaceholder": "Minimum 8 karakter",
+      "passwordInvalid": "Şifre en az 8 karakter olmalıdır!",
+      "confirmPasswordLabel": "Şifreyi onayla",
+      "confirmPasswordPlaceholder": "Şifreyi tekrar girin",
+      "submit": "Hesap oluştur",
+      "haveAccount": "Zaten bir hesabın var mı?",
+      "loginLink": "Giriş yap",
+      "successMessage": "Hesap başarıyla oluşturuldu! Girişe yönlendiriliyor...",
+      "failureMessage": "Hesap oluşturulamadı.",
+      "emailAlreadyExists": "Bu e-posta ile zaten bir hesap var."
+    },
+    "forgotPassword": {
+      "subtitle": "Hesap şifresini kurtar",
+      "description": "Hesabınla ilişkili e-posta adresini gir. Adres sistemde kayıtlıysa, şifre sıfırlama bağlantısı alacaksın (1 saat geçerlidir).",
+      "submit": "Sıfırlama bağlantısı gönder",
+      "genericSuccessMessage": "Adres sistemde kayıtlıysa, sıfırlama talimatlarını içeren bir e-posta alacaksın."
+    },
+    "resetPassword": {
+      "subtitle": "Yeni bir şifre belirle",
+      "invalidTokenDefault": "Sıfırlama bağlantısı geçersiz veya süresi dolmuş.",
+      "invalidTokenMissing": "Sıfırlama bağlantısı geçersiz veya eksik. Lütfen yeni bir tane iste.",
+      "requestNewLink": "Yeni bağlantı iste",
+      "newPasswordLabel": "Yeni şifre",
+      "newPasswordPlaceholder": "Minimum 8 karakter",
+      "newPasswordInvalid": "Şifre en az 8 karakter olmalıdır!",
+      "confirmPasswordLabel": "Yeni şifreyi onayla",
+      "confirmPasswordPlaceholder": "Şifreyi tekrar girin",
+      "submit": "Şifreyi sıfırla",
+      "successMessage": "Şifre başarıyla sıfırlandı! Girişe yönlendiriliyor...",
+      "failureMessage": "Şifre sıfırlanamadı.",
+      "tokenAndPasswordRequired": "Token ve yeni şifre zorunludur.",
+      "tokenInvalid": "Sıfırlama bağlantısı geçersiz.",
+      "tokenExpired": "Sıfırlama bağlantısının süresi doldu."
+    }
   }
 }

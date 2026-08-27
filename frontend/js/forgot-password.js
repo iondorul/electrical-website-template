@@ -1,4 +1,9 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  // Pagină publică, fără sidebar/topbar ERP (shell.js) — switcher-ul e deja
+  // în markup-ul static al paginii, deci inițializăm direct, fără să așteptăm
+  // evenimentul erp:shell-ready (care nu se emite niciodată aici).
+  await initLangSwitcher();
+
   const form = document.getElementById("forgotPasswordForm");
   const emailInput = document.getElementById("fpEmail");
   const fpButton = document.getElementById("fpButton");
@@ -7,6 +12,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const fpAlert = document.getElementById("forgotPasswordAlert");
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Mapare cod → cheie de traducere pentru răspunsurile /auth/forgot-password
+  // (backend trimite `code`, NICIODATĂ text hardcodat de afișat direct — vezi
+  // authController.js/AuthCodes), atât pentru eroare cât și pentru succes.
+  function mapForgotPasswordCode(code) {
+    switch (code) {
+      case "EMAIL_REQUIRED":
+        return t("auth.common.emailRequired", "Adresa de email este obligatorie.");
+      case "SERVER_ERROR":
+        return t("auth.common.serverError", "A apărut o eroare de server. Încearcă din nou.");
+      case "PASSWORD_RESET_EMAIL_SENT":
+        return t(
+          "auth.forgotPassword.genericSuccessMessage",
+          "Dacă adresa există în sistem, vei primi un email cu instrucțiuni de resetare.",
+        );
+      default:
+        return null;
+    }
+  }
 
   if (emailInput) {
     emailInput.addEventListener("input", () => clearInputError(emailInput));
@@ -20,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const email = emailInput.value.trim();
 
       if (!email || !emailRegex.test(email)) {
-        showInputError(emailInput, "Introduceți o adresă de email validă!");
+        showInputError(emailInput, t("auth.common.emailInvalid", "Introduceți o adresă de email validă!"));
         return;
       }
 
@@ -39,17 +63,24 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await response.json().catch(() => ({}));
 
         // Mesajul generic e afișat indiferent de status, din motive de
-        // securitate (nu dezvăluim dacă emailul există sau nu în sistem).
+        // securitate (nu dezvăluim dacă emailul există sau nu în sistem) —
+        // bazat pe `code`, NICIODATĂ pe `data.message` (text hardcodat server-side).
         showAlert(
-          data.message ||
-            "Dacă adresa există în sistem, vei primi un email cu instrucțiuni de resetare.",
+          mapForgotPasswordCode(data.code) ||
+            t(
+              "auth.forgotPassword.genericSuccessMessage",
+              "Dacă adresa există în sistem, vei primi un email cu instrucțiuni de resetare.",
+            ),
           "success",
         );
         form.reset();
       } catch (error) {
         console.error("Eroare la solicitarea resetării:", error);
         showAlert(
-          "Nu s-a putut realiza conexiunea la server. Încearcă din nou.",
+          t(
+            "auth.common.connectionErrorRetry",
+            "Nu s-a putut realiza conexiunea la server. Încearcă din nou.",
+          ),
           "danger",
         );
       } finally {

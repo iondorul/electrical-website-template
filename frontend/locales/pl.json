@@ -776,5 +776,76 @@
       "activeUntilText": "Twoja subskrypcja Pro jest aktywna do {{date}}",
       "desc": "Twoja płatność została pomyślnie przetworzona — zaplanowane obniżenie planu zostało anulowane, {{renewalText}}"
     }
+  },
+  "auth": {
+    "common": {
+      "emailLabel": "Adres e-mail",
+      "emailInvalid": "Podaj prawidłowy adres e-mail!",
+      "passwordMismatch": "Hasła nie są zgodne.",
+      "connectionError": "Nie udało się połączyć z serwerem.",
+      "connectionErrorRetry": "Nie udało się połączyć z serwerem. Spróbuj ponownie.",
+      "backToLogin": "Powrót do logowania",
+      "footerCopyright": "© 2026 ElectricalVPF ERP",
+      "footerPoweredBy": "Obsługiwane przez ElectricalVPF",
+      "emailRequired": "Adres e-mail jest wymagany.",
+      "serverError": "Wystąpił błąd serwera. Spróbuj ponownie."
+    },
+    "login": {
+      "tagline": "Kosztorysowanie elektryczne • CRM • Projekty • Fakturowanie",
+      "freePlanBadge": "🆓 Dostępny plan bezpłatny | Ulepsz w każdej chwili",
+      "passwordLabel": "Hasło",
+      "passwordPlaceholder": "Wprowadź hasło",
+      "passwordInvalid": "Hasło musi mieć co najmniej 6 znaków!",
+      "rememberMe": "Zapamiętaj mnie",
+      "forgotPasswordLink": "Zapomniałeś hasła?",
+      "signIn": "Zaloguj się",
+      "noAccount": "Nie masz konta?",
+      "registerLink": "Zarejestruj się",
+      "resetSuccessMessage": "Hasło zostało pomyślnie zresetowane! Możesz teraz zalogować się nowym hasłem.",
+      "successMessage": "Zalogowano pomyślnie! Przekierowywanie...",
+      "invalidCredentials": "Nieprawidłowy e-mail lub hasło!",
+      "missingToken": "Nieprawidłowa odpowiedź serwera (brak tokenu)."
+    },
+    "register": {
+      "subtitle": "Utwórz nowe konto",
+      "fullNameLabel": "Imię i nazwisko",
+      "fullNameRequired": "Imię i nazwisko jest wymagane!",
+      "companyNameLabel": "Nazwa firmy / Działalność jednoosobowa",
+      "companyNameRequired": "Nazwa firmy/działalności jednoosobowej jest wymagana!",
+      "passwordLabel": "Hasło",
+      "passwordPlaceholder": "Minimum 8 znaków",
+      "passwordInvalid": "Hasło musi mieć co najmniej 8 znaków!",
+      "confirmPasswordLabel": "Potwierdź hasło",
+      "confirmPasswordPlaceholder": "Wprowadź hasło ponownie",
+      "submit": "Utwórz konto",
+      "haveAccount": "Masz już konto?",
+      "loginLink": "Zaloguj się",
+      "successMessage": "Konto zostało pomyślnie utworzone! Przekierowywanie do logowania...",
+      "failureMessage": "Nie udało się utworzyć konta.",
+      "emailAlreadyExists": "Konto z tym adresem e-mail już istnieje."
+    },
+    "forgotPassword": {
+      "subtitle": "Odzyskiwanie hasła do konta",
+      "description": "Wprowadź adres e-mail powiązany z Twoim kontem. Jeśli adres istnieje w systemie, otrzymasz link do zresetowania hasła (ważny 1 godzinę).",
+      "submit": "Wyślij link resetujący",
+      "genericSuccessMessage": "Jeśli adres istnieje w systemie, otrzymasz e-mail z instrukcjami resetowania."
+    },
+    "resetPassword": {
+      "subtitle": "Ustaw nowe hasło",
+      "invalidTokenDefault": "Link resetujący jest nieprawidłowy lub wygasł.",
+      "invalidTokenMissing": "Link resetujący jest nieprawidłowy lub niekompletny. Poproś o nowy.",
+      "requestNewLink": "Poproś o nowy link",
+      "newPasswordLabel": "Nowe hasło",
+      "newPasswordPlaceholder": "Minimum 8 znaków",
+      "newPasswordInvalid": "Hasło musi mieć co najmniej 8 znaków!",
+      "confirmPasswordLabel": "Potwierdź nowe hasło",
+      "confirmPasswordPlaceholder": "Wprowadź hasło ponownie",
+      "submit": "Zresetuj hasło",
+      "successMessage": "Hasło zostało pomyślnie zresetowane! Przekierowywanie do logowania...",
+      "failureMessage": "Nie udało się zresetować hasła.",
+      "tokenAndPasswordRequired": "Token i nowe hasło są wymagane.",
+      "tokenInvalid": "Link resetujący jest nieprawidłowy.",
+      "tokenExpired": "Link resetujący wygasł."
+    }
   }
 }

@@ -774,5 +774,76 @@
       "activeUntilText": "abonamentul tău Pro este activ până la {{date}}.",
       "desc": "Plata a fost procesată cu succes — downgrade-ul programat a fost anulat, {{renewalText}}"
     }
+  },
+  "auth": {
+    "common": {
+      "emailLabel": "Adresă de email",
+      "emailInvalid": "Introduceți o adresă de email validă!",
+      "passwordMismatch": "Parolele nu coincid.",
+      "connectionError": "Nu s-a putut realiza conexiunea la server.",
+      "connectionErrorRetry": "Nu s-a putut realiza conexiunea la server. Încearcă din nou.",
+      "backToLogin": "Înapoi la autentificare",
+      "footerCopyright": "© 2026 ElectricalVPF ERP",
+      "footerPoweredBy": "Realizat de ElectricalVPF",
+      "emailRequired": "Adresa de email este obligatorie.",
+      "serverError": "A apărut o eroare de server. Încearcă din nou."
+    },
+    "login": {
+      "tagline": "Estimări electrice • CRM • Proiecte • Facturare",
+      "freePlanBadge": "🆓 Plan Gratuit Disponibil | Upgrade oricând",
+      "passwordLabel": "Parolă",
+      "passwordPlaceholder": "Introdu parola",
+      "passwordInvalid": "Parola trebuie să aibă cel puțin 6 caractere!",
+      "rememberMe": "Ține-mă minte",
+      "forgotPasswordLink": "Ai uitat parola?",
+      "signIn": "Autentificare",
+      "noAccount": "Nu ai cont?",
+      "registerLink": "Înregistrează-te",
+      "resetSuccessMessage": "Parola a fost resetată cu succes! Te poți autentifica cu noua parolă.",
+      "successMessage": "Autentificare reușită! Redirecționare...",
+      "invalidCredentials": "Email sau parolă incorectă!",
+      "missingToken": "Răspuns invalid de la server (Lipsește Token-ul)."
+    },
+    "register": {
+      "subtitle": "Creează un cont nou",
+      "fullNameLabel": "Nume complet",
+      "fullNameRequired": "Numele complet este obligatoriu!",
+      "companyNameLabel": "Nume firmă / PFA",
+      "companyNameRequired": "Numele firmei/PFA este obligatoriu!",
+      "passwordLabel": "Parolă",
+      "passwordPlaceholder": "Minim 8 caractere",
+      "passwordInvalid": "Parola trebuie să aibă cel puțin 8 caractere!",
+      "confirmPasswordLabel": "Confirmă parola",
+      "confirmPasswordPlaceholder": "Reintrodu parola",
+      "submit": "Creează cont",
+      "haveAccount": "Ai deja un cont?",
+      "loginLink": "Autentifică-te",
+      "successMessage": "Cont creat cu succes! Redirecționare către autentificare...",
+      "failureMessage": "Nu s-a putut crea contul.",
+      "emailAlreadyExists": "Există deja un cont cu acest email."
+    },
+    "forgotPassword": {
+      "subtitle": "Recuperare parolă cont",
+      "description": "Introdu adresa de email asociată contului tău. Dacă adresa există în sistem, vei primi un link pentru resetarea parolei (valabil 1 oră).",
+      "submit": "Trimite link de resetare",
+      "genericSuccessMessage": "Dacă adresa există în sistem, vei primi un email cu instrucțiuni de resetare."
+    },
+    "resetPassword": {
+      "subtitle": "Setează o parolă nouă",
+      "invalidTokenDefault": "Linkul de resetare este invalid sau a expirat.",
+      "invalidTokenMissing": "Linkul de resetare este invalid sau incomplet. Solicită unul nou.",
+      "requestNewLink": "Solicită un link nou",
+      "newPasswordLabel": "Parolă nouă",
+      "newPasswordPlaceholder": "Minim 8 caractere",
+      "newPasswordInvalid": "Parola trebuie să aibă cel puțin 8 caractere!",
+      "confirmPasswordLabel": "Confirmă parola nouă",
+      "confirmPasswordPlaceholder": "Reintrodu parola",
+      "submit": "Resetează parola",
+      "successMessage": "Parola a fost resetată cu succes! Redirecționare către autentificare...",
+      "failureMessage": "Nu s-a putut reseta parola.",
+      "tokenAndPasswordRequired": "Token-ul și noua parolă sunt obligatorii.",
+      "tokenInvalid": "Linkul de resetare este invalid.",
+      "tokenExpired": "Linkul de resetare a expirat."
+    }
   }
 }

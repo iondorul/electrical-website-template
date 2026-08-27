@@ -3,10 +3,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { sendPasswordResetEmail } = require("../services/emailService");
+const { AuthCodes } = require("../constants");
 
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 oră
+// Mesaj generic de securitate (nu dezvăluim dacă emailul există sau nu în
+// sistem) — text în engleză doar pentru loguri/debugging server-side, câmpul
+// `message` nu mai e afișat direct de frontend (vezi `code`, AuthCodes.PASSWORD_RESET_EMAIL_SENT,
+// tradus prin auth.forgotPassword.genericSuccessMessage în toate cele 9 limbi).
 const GENERIC_RESET_MESSAGE =
-  "Dacă adresa există în sistem, vei primi un email cu instrucțiuni de resetare.";
+  "If the address exists in our system, you'll receive an email with reset instructions.";
 
 function hashResetToken(rawToken) {
   return crypto.createHash("sha256").update(rawToken).digest("hex");
@@ -21,25 +26,33 @@ exports.register = async (req, res) => {
     if (!full_name || !full_name.trim()) {
       return res.status(400).json({
         success: false,
-        message: "Numele complet este obligatoriu.",
+        code: AuthCodes.FULL_NAME_REQUIRED,
+        error: AuthCodes.FULL_NAME_REQUIRED,
+        message: "Full name is required.",
       });
     }
     if (!company_name || !company_name.trim()) {
       return res.status(400).json({
         success: false,
-        message: "Numele firmei/PFA este obligatoriu.",
+        code: AuthCodes.COMPANY_NAME_REQUIRED,
+        error: AuthCodes.COMPANY_NAME_REQUIRED,
+        message: "Company/sole trader name is required.",
       });
     }
     if (!email || !emailRegex.test(email)) {
       return res.status(400).json({
         success: false,
-        message: "Adresa de email nu este validă.",
+        code: AuthCodes.INVALID_EMAIL,
+        error: AuthCodes.INVALID_EMAIL,
+        message: "Invalid email address.",
       });
     }
     if (!password || password.length < 8) {
       return res.status(400).json({
         success: false,
-        message: "Parola trebuie să aibă cel puțin 8 caractere.",
+        code: AuthCodes.PASSWORD_TOO_SHORT,
+        error: AuthCodes.PASSWORD_TOO_SHORT,
+        message: "Password must be at least 8 characters.",
       });
     }
 
@@ -51,7 +64,9 @@ exports.register = async (req, res) => {
     if (existingUser.rows.length > 0) {
       return res.status(400).json({
         success: false,
-        message: "Există deja un cont cu acest email.",
+        code: AuthCodes.EMAIL_ALREADY_EXISTS,
+        error: AuthCodes.EMAIL_ALREADY_EXISTS,
+        message: "An account with this email already exists.",
       });
     }
 
@@ -76,7 +91,8 @@ exports.register = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Cont creat cu succes.",
+      code: AuthCodes.ACCOUNT_CREATED,
+      message: "Account created successfully.",
       data: newUser,
     });
   } catch (err) {
@@ -84,7 +100,9 @@ exports.register = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: err.message,
+      code: AuthCodes.SERVER_ERROR,
+      error: AuthCodes.SERVER_ERROR,
+      message: err.message,
     });
   }
 };
@@ -223,6 +241,9 @@ exports.login = async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(401).json({
+        success: false,
+        code: AuthCodes.INVALID_CREDENTIALS,
+        error: AuthCodes.INVALID_CREDENTIALS,
         message: "Invalid email or password.",
       });
     }
@@ -233,6 +254,9 @@ exports.login = async (req, res) => {
 
     if (!passwordMatches) {
       return res.status(401).json({
+        success: false,
+        code: AuthCodes.INVALID_CREDENTIALS,
+        error: AuthCodes.INVALID_CREDENTIALS,
         message: "Invalid email or password.",
       });
     }
@@ -249,6 +273,8 @@ exports.login = async (req, res) => {
     );
 
     res.json({
+      success: true,
+      code: AuthCodes.LOGIN_SUCCESS,
       message: "Login successful.",
       token,
     });
@@ -256,7 +282,10 @@ exports.login = async (req, res) => {
     console.error(err);
 
     res.status(500).json({
-      error: err.message,
+      success: false,
+      code: AuthCodes.SERVER_ERROR,
+      error: AuthCodes.SERVER_ERROR,
+      message: err.message,
     });
   }
 };
@@ -268,7 +297,9 @@ exports.forgotPassword = async (req, res) => {
     if (!email) {
       return res.status(400).json({
         success: false,
-        message: "Adresa de email este obligatorie.",
+        code: AuthCodes.EMAIL_REQUIRED,
+        error: AuthCodes.EMAIL_REQUIRED,
+        message: "Email address is required.",
       });
     }
 
@@ -306,10 +337,19 @@ exports.forgotPassword = async (req, res) => {
       }
     }
 
-    res.json({ success: true, message: GENERIC_RESET_MESSAGE });
+    res.json({
+      success: true,
+      code: AuthCodes.PASSWORD_RESET_EMAIL_SENT,
+      message: GENERIC_RESET_MESSAGE,
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({
+      success: false,
+      code: AuthCodes.SERVER_ERROR,
+      error: AuthCodes.SERVER_ERROR,
+      message: err.message,
+    });
   }
 };
 
@@ -320,33 +360,53 @@ exports.resetPassword = async (req, res) => {
     if (!token || !new_password) {
       return res.status(400).json({
         success: false,
-        message: "Token-ul și noua parolă sunt obligatorii.",
+        code: AuthCodes.RESET_TOKEN_AND_PASSWORD_REQUIRED,
+        error: AuthCodes.RESET_TOKEN_AND_PASSWORD_REQUIRED,
+        message: "Token and new password are required.",
       });
     }
 
     if (new_password.length < 8) {
       return res.status(400).json({
         success: false,
-        message: "Parola trebuie să aibă cel puțin 8 caractere.",
+        code: AuthCodes.PASSWORD_TOO_SHORT,
+        error: AuthCodes.PASSWORD_TOO_SHORT,
+        message: "Password must be at least 8 characters.",
       });
     }
 
     const tokenHash = hashResetToken(token);
 
+    // Interogare în 2 pași (hash întâi, expirare verificată separat) — ca să
+    // putem distinge INVALID (hash-ul nu există deloc) de EXPIRED (hash
+    // valid, dar expirat), cerință explicită pentru mesaje traduse distincte
+    // pe frontend. Comportamentul pentru un token valid rămâne identic cu
+    // interogarea combinată de dinainte.
     const result = await pool.query(
-      `SELECT id FROM users
-       WHERE reset_token_hash = $1 AND reset_token_expires_at > NOW()`,
+      `SELECT id, reset_token_expires_at FROM users WHERE reset_token_hash = $1`,
       [tokenHash],
     );
 
     if (result.rows.length === 0) {
       return res.status(400).json({
         success: false,
-        message: "Linkul de resetare este invalid sau a expirat.",
+        code: AuthCodes.RESET_TOKEN_INVALID,
+        error: AuthCodes.RESET_TOKEN_INVALID,
+        message: "The reset link is invalid.",
       });
     }
 
-    const userId = result.rows[0].id;
+    const { id: userId, reset_token_expires_at: expiresAt } = result.rows[0];
+
+    if (!expiresAt || new Date(expiresAt) <= new Date()) {
+      return res.status(400).json({
+        success: false,
+        code: AuthCodes.RESET_TOKEN_EXPIRED,
+        error: AuthCodes.RESET_TOKEN_EXPIRED,
+        message: "The reset link has expired.",
+      });
+    }
+
     const passwordHash = await bcrypt.hash(new_password, 10);
 
     await pool.query(
@@ -356,9 +416,18 @@ exports.resetPassword = async (req, res) => {
       [passwordHash, userId],
     );
 
-    res.json({ success: true, message: "Parola a fost resetată cu succes." });
+    res.json({
+      success: true,
+      code: AuthCodes.PASSWORD_RESET_SUCCESS,
+      message: "Password reset successfully.",
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({
+      success: false,
+      code: AuthCodes.SERVER_ERROR,
+      error: AuthCodes.SERVER_ERROR,
+      message: err.message,
+    });
   }
 };

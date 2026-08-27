@@ -772,5 +772,76 @@
       "activeUntilText": "Pro-abonnementet ditt er aktivt til {{date}}.",
       "desc": "Betalingen din er behandlet — den planlagte nedgraderingen er kansellert, {{renewalText}}"
     }
+  },
+  "auth": {
+    "common": {
+      "emailLabel": "E-postadresse",
+      "emailInvalid": "Skriv inn en gyldig e-postadresse!",
+      "passwordMismatch": "Passordene stemmer ikke overens.",
+      "connectionError": "Kunne ikke koble til serveren.",
+      "connectionErrorRetry": "Kunne ikke koble til serveren. Prøv igjen.",
+      "backToLogin": "Tilbake til innlogging",
+      "footerCopyright": "© 2026 ElectricalVPF ERP",
+      "footerPoweredBy": "Drevet av ElectricalVPF",
+      "emailRequired": "E-postadresse er obligatorisk.",
+      "serverError": "Det oppstod en serverfeil. Prøv igjen."
+    },
+    "login": {
+      "tagline": "Elektrisk kalkulasjon • CRM • Prosjekter • Fakturering",
+      "freePlanBadge": "🆓 Gratis plan tilgjengelig | Oppgrader når som helst",
+      "passwordLabel": "Passord",
+      "passwordPlaceholder": "Skriv inn passordet ditt",
+      "passwordInvalid": "Passordet må inneholde minst 6 tegn!",
+      "rememberMe": "Husk meg",
+      "forgotPasswordLink": "Glemt passord?",
+      "signIn": "Logg inn",
+      "noAccount": "Har du ikke en konto?",
+      "registerLink": "Registrer deg",
+      "resetSuccessMessage": "Passordet ble tilbakestilt! Du kan nå logge inn med det nye passordet.",
+      "successMessage": "Innlogging vellykket! Omdirigerer...",
+      "invalidCredentials": "Feil e-post eller passord!",
+      "missingToken": "Ugyldig serverrespons (mangler token)."
+    },
+    "register": {
+      "subtitle": "Opprett en ny konto",
+      "fullNameLabel": "Fullt navn",
+      "fullNameRequired": "Fullt navn er obligatorisk!",
+      "companyNameLabel": "Firmanavn / Enkeltpersonforetak",
+      "companyNameRequired": "Firmanavn/enkeltpersonforetak er obligatorisk!",
+      "passwordLabel": "Passord",
+      "passwordPlaceholder": "Minimum 8 tegn",
+      "passwordInvalid": "Passordet må inneholde minst 8 tegn!",
+      "confirmPasswordLabel": "Bekreft passord",
+      "confirmPasswordPlaceholder": "Skriv inn passordet på nytt",
+      "submit": "Opprett konto",
+      "haveAccount": "Har du allerede en konto?",
+      "loginLink": "Logg inn",
+      "successMessage": "Kontoen ble opprettet! Omdirigerer til innlogging...",
+      "failureMessage": "Kunne ikke opprette kontoen.",
+      "emailAlreadyExists": "Det finnes allerede en konto med denne e-posten."
+    },
+    "forgotPassword": {
+      "subtitle": "Gjenopprett kontopassordet",
+      "description": "Skriv inn e-postadressen knyttet til kontoen din. Hvis adressen finnes i systemet, får du en lenke for å tilbakestille passordet (gyldig i 1 time).",
+      "submit": "Send tilbakestillingslenke",
+      "genericSuccessMessage": "Hvis adressen finnes i systemet, får du en e-post med instruksjoner for tilbakestilling."
+    },
+    "resetPassword": {
+      "subtitle": "Angi et nytt passord",
+      "invalidTokenDefault": "Tilbakestillingslenken er ugyldig eller har utløpt.",
+      "invalidTokenMissing": "Tilbakestillingslenken er ugyldig eller ufullstendig. Be om en ny.",
+      "requestNewLink": "Be om en ny lenke",
+      "newPasswordLabel": "Nytt passord",
+      "newPasswordPlaceholder": "Minimum 8 tegn",
+      "newPasswordInvalid": "Passordet må inneholde minst 8 tegn!",
+      "confirmPasswordLabel": "Bekreft nytt passord",
+      "confirmPasswordPlaceholder": "Skriv inn passordet på nytt",
+      "submit": "Tilbakestill passord",
+      "successMessage": "Passordet ble tilbakestilt! Omdirigerer til innlogging...",
+      "failureMessage": "Kunne ikke tilbakestille passordet.",
+      "tokenAndPasswordRequired": "Token og nytt passord er obligatorisk.",
+      "tokenInvalid": "Tilbakestillingslenken er ugyldig.",
+      "tokenExpired": "Tilbakestillingslenken har utløpt."
+    }
   }
 }

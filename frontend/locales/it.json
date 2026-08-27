@@ -772,5 +772,76 @@
       "activeUntilText": "il tuo abbonamento Pro è attivo fino al {{date}}.",
       "desc": "Il tuo pagamento è stato elaborato con successo — il downgrade pianificato è stato annullato, {{renewalText}}"
     }
+  },
+  "auth": {
+    "common": {
+      "emailLabel": "Indirizzo email",
+      "emailInvalid": "Inserisci un indirizzo email valido!",
+      "passwordMismatch": "Le password non coincidono.",
+      "connectionError": "Impossibile connettersi al server.",
+      "connectionErrorRetry": "Impossibile connettersi al server. Riprova.",
+      "backToLogin": "Torna al login",
+      "footerCopyright": "© 2026 ElectricalVPF ERP",
+      "footerPoweredBy": "Offerto da ElectricalVPF",
+      "emailRequired": "L'indirizzo email è obbligatorio.",
+      "serverError": "Si è verificato un errore del server. Riprova."
+    },
+    "login": {
+      "tagline": "Preventivi elettrici • CRM • Progetti • Fatturazione",
+      "freePlanBadge": "🆓 Piano Gratuito Disponibile | Passa a Pro quando vuoi",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Inserisci la password",
+      "passwordInvalid": "La password deve contenere almeno 6 caratteri!",
+      "rememberMe": "Ricordami",
+      "forgotPasswordLink": "Password dimenticata?",
+      "signIn": "Accedi",
+      "noAccount": "Non hai un account?",
+      "registerLink": "Registrati",
+      "resetSuccessMessage": "Password reimpostata con successo! Ora puoi accedere con la nuova password.",
+      "successMessage": "Accesso riuscito! Reindirizzamento in corso...",
+      "invalidCredentials": "Email o password non corretti!",
+      "missingToken": "Risposta del server non valida (token mancante)."
+    },
+    "register": {
+      "subtitle": "Crea un nuovo account",
+      "fullNameLabel": "Nome completo",
+      "fullNameRequired": "Il nome completo è obbligatorio!",
+      "companyNameLabel": "Nome azienda / Ditta individuale",
+      "companyNameRequired": "Il nome dell'azienda/ditta individuale è obbligatorio!",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Minimo 8 caratteri",
+      "passwordInvalid": "La password deve contenere almeno 8 caratteri!",
+      "confirmPasswordLabel": "Conferma password",
+      "confirmPasswordPlaceholder": "Reinserisci la password",
+      "submit": "Crea account",
+      "haveAccount": "Hai già un account?",
+      "loginLink": "Accedi",
+      "successMessage": "Account creato con successo! Reindirizzamento al login...",
+      "failureMessage": "Impossibile creare l'account.",
+      "emailAlreadyExists": "Esiste già un account con questa email."
+    },
+    "forgotPassword": {
+      "subtitle": "Recupera la password del tuo account",
+      "description": "Inserisci l'indirizzo email associato al tuo account. Se l'indirizzo esiste nel sistema, riceverai un link per reimpostare la password (valido 1 ora).",
+      "submit": "Invia link di reimpostazione",
+      "genericSuccessMessage": "Se l'indirizzo esiste nel sistema, riceverai un'email con le istruzioni per la reimpostazione."
+    },
+    "resetPassword": {
+      "subtitle": "Imposta una nuova password",
+      "invalidTokenDefault": "Il link di reimpostazione non è valido o è scaduto.",
+      "invalidTokenMissing": "Il link di reimpostazione non è valido o è incompleto. Richiedine uno nuovo.",
+      "requestNewLink": "Richiedi un nuovo link",
+      "newPasswordLabel": "Nuova password",
+      "newPasswordPlaceholder": "Minimo 8 caratteri",
+      "newPasswordInvalid": "La password deve contenere almeno 8 caratteri!",
+      "confirmPasswordLabel": "Conferma nuova password",
+      "confirmPasswordPlaceholder": "Reinserisci la password",
+      "submit": "Reimposta password",
+      "successMessage": "Password reimpostata con successo! Reindirizzamento al login...",
+      "failureMessage": "Impossibile reimpostare la password.",
+      "tokenAndPasswordRequired": "Il token e la nuova password sono obbligatori.",
+      "tokenInvalid": "Il link di reimpostazione non è valido.",
+      "tokenExpired": "Il link di reimpostazione è scaduto."
+    }
   }
 }

@@ -226,6 +226,116 @@ body {
     }
 }
 
+/* --- Language Selector (pagini publice de autentificare) ---
+   Variantă autonomă a componentei din header-ul ERP (.lang-switcher* din
+   dashboard.css) — dashboard.css nu e încărcat aici (pagini fără sidebar/
+   topbar), deci stilurile sunt reluate direct, adaptate la fundalul închis
+   al paginii (glass/translucent), poziționată fix în colțul din dreapta sus.
+   Clasele interne (.lang-flag-icon, .lang-option etc.) rămân identice cu
+   cele generate de renderLangSwitcherButton()/renderLangSwitcherMenu() din
+   i18n.js — motorul JS e complet neschimbat, doar CSS-ul e nou. */
+.auth-lang-switcher {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 20;
+}
+
+.auth-lang-switcher .lang-switcher-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .08);
+    backdrop-filter: blur(10px);
+    color: #e2e8f0;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.auth-lang-switcher .lang-switcher-btn:hover {
+    background: rgba(255, 255, 255, .14);
+    border-color: rgba(255, 255, 255, .28);
+}
+
+.lang-flag-icon {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 20px;
+    height: 14px;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.08);
+}
+
+.lang-flag-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.auth-lang-switcher .lang-switcher-caret {
+    font-size: 0.7rem;
+    color: rgba(226, 232, 240, .7);
+    margin-left: 2px;
+}
+
+.auth-lang-switcher .lang-switcher-menu {
+    min-width: 200px;
+    padding: 6px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, .18);
+}
+
+.auth-lang-switcher .lang-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text);
+    text-align: left;
+}
+
+.auth-lang-switcher .lang-option:hover {
+    background: #f1f5f9;
+}
+
+.auth-lang-switcher .lang-option.active {
+    background: #e8edff;
+    color: #3b5bfd;
+    font-weight: 600;
+}
+
+.auth-lang-switcher .lang-option-check {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: #3b5bfd;
+}
+
+@media (max-width: 576px) {
+    .auth-lang-switcher {
+        top: 14px;
+        right: 14px;
+    }
+
+    .auth-lang-switcher .lang-switcher-label {
+        display: none;
+    }
+}
+
 /* --- Responsive --- */
 @media(max-width: 576px) {
     .login-card {
