@@ -108,7 +108,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       expired: t("quotes.status.expired", "Expirată (Expired)"),
       canceled: t("quotes.status.canceled", "Anulată (Canceled)"),
     };
-    return (labels[status] || status).toUpperCase();
+    // toLocaleUpperCase(locale) în loc de toUpperCase() — vezi comentariul
+    // identic din invoices.js#getStatusLabel (problema literei turcești: "i"
+    // trebuie să devină "İ", nu "I", doar cu casing locale-aware).
+    return (labels[status] || status).toLocaleUpperCase(getCurrentLocaleCode());
   }
 
   async function loadQuotes() {

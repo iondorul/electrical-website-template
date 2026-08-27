@@ -148,7 +148,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       overdue: t("invoices.status.overdue", "Restantă (Overdue)"),
       canceled: t("quotes.status.canceled", "Anulată (Canceled)"),
     };
-    return (labels[status] || status).toUpperCase();
+    // toLocaleUpperCase(locale) în loc de toUpperCase() — "clasica" problemă a
+    // literei turcești: toUpperCase() implicit (case folding Unicode default,
+    // nu locale-aware) transformă "i" în "I" simplu, nu în "İ" (I cu punct),
+    // corect doar pentru turcă via Intl locale-aware casing.
+    return (labels[status] || status).toLocaleUpperCase(getCurrentLocaleCode());
   }
 
   async function loadInvoices() {

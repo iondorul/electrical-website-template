@@ -1,0 +1,251 @@
+- generic [ref=f44e1]:
+  - generic [ref=f44e2]:
+    - complementary [ref=f44e3]:
+      - generic [ref=f44e4]:
+        - generic [ref=f44e5]:
+          - generic [ref=f44e6]:
+            - generic [ref=f44e7]: 
+            - generic [ref=f44e8]:
+              - text: Electrical
+              - strong [ref=f44e9]: VPF
+          - link " PRO PLAN" [ref=f44e10] [cursor=pointer]:
+            - /url: settings.html#billing
+            - generic [ref=f44e11]: 
+            - generic [ref=f44e12]: PRO PLAN
+        - button "" [ref=f44e13] [cursor=pointer]
+      - navigation [ref=f44e15]:
+        - list [ref=f44e16]:
+          - listitem [ref=f44e17]:
+            - link " Panel" [ref=f44e18] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f44e19]: 
+              - generic [ref=f44e20]: Panel
+          - listitem [ref=f44e21]:
+            - link " Müşteriler" [ref=f44e22] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f44e23]: 
+              - generic [ref=f44e24]: Müşteriler
+          - listitem [ref=f44e25]:
+            - link " Projeler" [ref=f44e26] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f44e27]: 
+              - generic [ref=f44e28]: Projeler
+          - listitem [ref=f44e29]:
+            - link " Keşifler" [ref=f44e30] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f44e31]: 
+              - generic [ref=f44e32]: Keşifler
+          - listitem [ref=f44e33]:
+            - link " Teklifler" [ref=f44e34] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f44e35]: 
+              - generic [ref=f44e36]: Teklifler
+          - listitem [ref=f44e37]:
+            - link " Faturalar" [ref=f44e38] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f44e39]: 
+              - generic [ref=f44e40]: Faturalar
+          - listitem [ref=f44e41]:
+            - link " Malzemeler" [ref=f44e42] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f44e43]: 
+              - generic [ref=f44e44]: Malzemeler
+          - listitem [ref=f44e45]:
+            - link " Raporlar" [ref=f44e46] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f44e47]: 
+              - generic [ref=f44e48]: Raporlar
+          - listitem [ref=f44e49]:
+            - link " Ayarlar" [ref=f44e50] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f44e51]: 
+              - generic [ref=f44e52]: Ayarlar
+      - button " Çıkış Yap" [ref=f44e54] [cursor=pointer]:
+        - generic [ref=f44e55]: 
+        - text: Çıkış Yap
+    - main [ref=f44e56]:
+      - generic [ref=f44e58]:
+        - heading "Ayarlar" [level=4] [ref=f44e60]
+        - generic [ref=f44e61]:
+          - generic [ref=f44e62]:
+            - button "Türkçe " [ref=f44e63] [cursor=pointer]:
+              - generic [ref=f44e70]: Türkçe
+              - generic [ref=f44e71]: 
+            - text: 
+          - link "Ayarlar" [ref=f44e72] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f44e73]: 
+          - button "Çıkış Yap" [ref=f44e75] [cursor=pointer]:
+            - generic [ref=f44e76]: 
+          - generic [ref=f44e78]:
+            - generic [ref=f44e79]: cometa_2
+            - text: Administrator
+          - button "Avatarı değiştir" [ref=f44e80] [cursor=pointer]:
+            - img "Avatar electrician" [ref=f44e81]
+  - dialog [active] [ref=f44e91]:
+    - generic [ref=f44e92]:
+      - generic [ref=f44e93]:
+        - heading " Ayarlar" [level=5] [ref=f44e94]:
+          - generic [ref=f44e95]: 
+          - text: Ayarlar
+        - button "Close" [ref=f44e96] [cursor=pointer]
+      - generic [ref=f44e97]:
+        - navigation [ref=f44e98]:
+          - generic [ref=f44e153] [cursor=pointer]:
+            - generic [ref=f44e154]: 
+            - generic [ref=f44e155]: Şirket Bilgileri
+          - generic [ref=f44e156] [cursor=pointer]:
+            - generic [ref=f44e157]: 
+            - generic [ref=f44e158]: Hesap ve Güvenlik
+          - generic [ref=f44e159] [cursor=pointer]:
+            - generic [ref=f44e160]: 
+            - generic [ref=f44e161]: Abonelik ve Ödeme
+          - generic [ref=f44e162] [cursor=pointer]:
+            - generic [ref=f44e163]: 
+            - generic [ref=f44e164]: Gizlilik
+        - generic [ref=f44e111]:
+          - heading "Abonelik ve Ödeme" [level=5] [ref=f44e165]
+          - paragraph [ref=f44e166]: Mevcut planınız ve abonelik faturalandırmanız hakkında bilgiler.
+          - generic [ref=f44e169]:
+            - link " Pro Plan" [ref=f44e170] [cursor=pointer]:
+              - /url: erp-plans.html
+              - generic [ref=f44e171]: 
+              - generic [ref=f44e172]: Pro Plan
+            - generic [ref=f44e173]: Abonelik 24 Haziran 2039 tarihinde yenilenir
+            - generic [ref=f44e174]: Abonelik her ay otomatik olarak yenilenir.
+            - link " Aboneliği Yönet" [ref=f44e175] [cursor=pointer]:
+              - /url: erp-plans.html
+              - generic [ref=f44e176]: 
+              - text: Aboneliği Yönet
+          - generic [ref=f44e177]:
+            - generic [ref=f44e178]: Abonelik Fatura Geçmişi
+            - generic [ref=f44e179]:
+              - generic [ref=f44e180]:
+                - generic [ref=f44e181]: 26 Ağustos 2026
+                - generic [ref=f44e182]: Reînnoire anticipată ElectricalVPF Pro — 1 lună
+              - generic [ref=f44e183]:
+                - generic [ref=f44e184]:
+                  - generic [ref=f44e185]: 14.90 EUR
+                  - generic [ref=f44e186]: Ödendi
+                - link "" [ref=f44e187] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WOHRrZkh3aERza21hMW1wTXhiQ2JyR1lRZjJJS3pFLDE3ODM0NDgwNA0200IBLIsfQm?s=ap
+            - generic [ref=f44e189]:
+              - generic [ref=f44e190]:
+                - generic [ref=f44e191]: 24 Ağustos 2026
+                - generic [ref=f44e192]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f44e193]:
+                - generic [ref=f44e194]:
+                  - generic [ref=f44e195]: 143.04 EUR
+                  - generic [ref=f44e196]: Ödendi
+                - link "" [ref=f44e197] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WOERnYmdTSmkwQ2lHR3oxQlAwY0ZVZUhDWjdrNElvLDE3ODM0NDgwNA0200k567MntB?s=ap
+            - generic [ref=f44e199]:
+              - generic [ref=f44e200]:
+                - generic [ref=f44e201]: 24 Ağustos 2026
+                - generic [ref=f44e202]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f44e203]:
+                - generic [ref=f44e204]:
+                  - generic [ref=f44e205]: 143.04 EUR
+                  - generic [ref=f44e206]: Ödendi
+                - link "" [ref=f44e207] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WOERmekN5WllsRUM0bWVhOTEyS3FxZ0hNZG9pbTRvLDE3ODM0NDgwNA0200yygDbjCU?s=ap
+            - generic [ref=f44e209]:
+              - generic [ref=f44e210]:
+                - generic [ref=f44e211]: 24 Ağustos 2026
+                - generic [ref=f44e212]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f44e213]:
+                - generic [ref=f44e214]:
+                  - generic [ref=f44e215]: 143.04 EUR
+                  - generic [ref=f44e216]: Ödendi
+                - link "" [ref=f44e217] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WOEQ4TUhzVkEwb0ltcDhMRldOb0h0cVJoR2F4eHROLDE3ODM0NDgwNA0200pfjgCw5Q?s=ap
+            - generic [ref=f44e219]:
+              - generic [ref=f44e220]:
+                - generic [ref=f44e221]: 24 Ağustos 2026
+                - generic [ref=f44e222]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f44e223]:
+                - generic [ref=f44e224]:
+                  - generic [ref=f44e225]: 143.04 EUR
+                  - generic [ref=f44e226]: Ödendi
+                - link "" [ref=f44e227] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WOEQ0MXd0Z3ZsVXRkQTNYdHNhcUpsRUlrNFNQWmIxLDE3ODM0NDgwNA02004DUw9rP2?s=ap
+            - generic [ref=f44e229]:
+              - generic [ref=f44e230]:
+                - generic [ref=f44e231]: 21 Ağustos 2026
+                - generic [ref=f44e232]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f44e233]:
+                - generic [ref=f44e234]:
+                  - generic [ref=f44e235]: 143.04 EUR
+                  - generic [ref=f44e236]: Ödendi
+                - link "" [ref=f44e237] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzdFUEhMVGsyYXFTT1cwblpKVTc4c1pnRm44YkxxLDE3ODM0NDgwNA0200N5aiePhT?s=ap
+            - generic [ref=f44e239]:
+              - generic [ref=f44e240]:
+                - generic [ref=f44e241]: 21 Ağustos 2026
+                - generic [ref=f44e242]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f44e243]:
+                - generic [ref=f44e244]:
+                  - generic [ref=f44e245]: 143.04 EUR
+                  - generic [ref=f44e246]: Ödendi
+                - link "" [ref=f44e247] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzdEdXo2ejc2RFl0UFZTTXNBM0h2OUk2TzloOGdTLDE3ODM0NDgwNA0200WX9uETeY?s=ap
+            - generic [ref=f44e249]:
+              - generic [ref=f44e250]:
+                - generic [ref=f44e251]: 21 Ağustos 2026
+                - generic [ref=f44e252]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f44e253]:
+                - generic [ref=f44e254]:
+                  - generic [ref=f44e255]: 143.04 EUR
+                  - generic [ref=f44e256]: Ödendi
+                - link "" [ref=f44e257] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzdDMTRJTVJ6RGhuMVBBaXBkZGdOc2gwV2xQTXp5LDE3ODM0NDgwNA0200Nnhapvb2?s=ap
+            - generic [ref=f44e259]:
+              - generic [ref=f44e260]:
+                - generic [ref=f44e261]: 21 Ağustos 2026
+                - generic [ref=f44e262]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f44e263]:
+                - generic [ref=f44e264]:
+                  - generic [ref=f44e265]: 143.04 EUR
+                  - generic [ref=f44e266]: Ödendi
+                - link "" [ref=f44e267] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzZNOUgwemZDbGJDSW5RcDVpdHJRUTZHNkRmajZNLDE3ODM0NDgwNA02001zyhEenS?s=ap
+            - generic [ref=f44e269]:
+              - generic [ref=f44e270]:
+                - generic [ref=f44e271]: 21 Ağustos 2026
+                - generic [ref=f44e272]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f44e273]:
+                - generic [ref=f44e274]:
+                  - generic [ref=f44e275]: 143.04 EUR
+                  - generic [ref=f44e276]: Ödendi
+                - link "" [ref=f44e277] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzZIZm5iVHRaenhBOFdVUjBBOTY4dVRuZ1dVdFFXLDE3ODM0NDgwNA0200EY7JKTeH?s=ap
+            - generic [ref=f44e279]:
+              - generic [ref=f44e280]:
+                - generic [ref=f44e281]: 21 Ağustos 2026
+                - generic [ref=f44e282]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f44e283]:
+                - generic [ref=f44e284]:
+                  - generic [ref=f44e285]: 143.04 EUR
+                  - generic [ref=f44e286]: Ödendi
+                - link "" [ref=f44e287] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzR5TXJodUk2U1c2ZlI2TFRCRFhQS3lpMkhzSGtBLDE3ODM0NDgwNA0200W4lgQois?s=ap
+            - generic [ref=f44e289]:
+              - generic [ref=f44e290]:
+                - generic [ref=f44e291]: 21 Ağustos 2026
+                - generic [ref=f44e292]: 1 × ElectricalVPF Pro (at €143.04 / year)
+              - generic [ref=f44e293]:
+                - generic [ref=f44e294]:
+                  - generic [ref=f44e295]: 143.04 EUR
+                  - generic [ref=f44e296]: Ödendi
+                - link "" [ref=f44e297] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNzRQU0NoYzVZdFZWU0tHS3c0cXNnQ1lBSVQ1UERkLDE3ODM0NDgwNA0200XgIPwl9o?s=ap
+            - generic [ref=f44e299]:
+              - generic [ref=f44e300]:
+                - generic [ref=f44e301]: 19 Ağustos 2026
+                - generic [ref=f44e302]: 1 × ElectricalVPF Pro (at €14.90 / month)
+              - generic [ref=f44e303]:
+                - generic [ref=f44e304]:
+                  - generic [ref=f44e305]: 14.90 EUR
+                  - generic [ref=f44e306]: Ödendi
+                - link "" [ref=f44e307] [cursor=pointer]:
+                  - /url: https://invoice.stripe.com/i/acct_1FwymdLzxL1rZreb/test_YWNjdF8xRnd5bWRMenhMMXJacmViLF9WNktRZ3lLSkJwWXRwUGd0OTY1NFJjTWxScGhPSTRZLDE3ODM0NDgwNA0200jLyWyQye?s=ap

@@ -1,0 +1,170 @@
+- generic [ref=f32e2]:
+  - complementary [ref=f32e3]:
+    - generic [ref=f32e4]:
+      - generic [ref=f32e5]:
+        - generic [ref=f32e6]:
+          - generic [ref=f32e7]: 
+          - generic [ref=f32e8]:
+            - text: Electrical
+            - strong [ref=f32e9]: VPF
+        - link " PRO PLAN" [ref=f32e273] [cursor=pointer]:
+          - /url: settings.html#billing
+          - generic [ref=f32e274]: 
+          - generic [ref=f32e275]: PRO PLAN
+      - button "" [ref=f32e10] [cursor=pointer]
+    - navigation [ref=f32e12]:
+      - list [ref=f32e13]:
+        - listitem [ref=f32e14]:
+          - link " Panel" [ref=f32e276] [cursor=pointer]:
+            - /url: dashboard.html
+            - generic [ref=f32e16]: 
+            - generic [ref=f32e17]: Panel
+        - listitem [ref=f32e18]:
+          - link " Müşteriler" [ref=f32e277] [cursor=pointer]:
+            - /url: clients.html
+            - generic [ref=f32e20]: 
+            - generic [ref=f32e21]: Müşteriler
+        - listitem [ref=f32e22]:
+          - link " Projeler" [ref=f32e278] [cursor=pointer]:
+            - /url: projects.html
+            - generic [ref=f32e24]: 
+            - generic [ref=f32e25]: Projeler
+        - listitem [ref=f32e26]:
+          - link " Keşifler" [ref=f32e279] [cursor=pointer]:
+            - /url: estimating.html
+            - generic [ref=f32e28]: 
+            - generic [ref=f32e29]: Keşifler
+        - listitem [ref=f32e30]:
+          - link " Teklifler" [ref=f32e280] [cursor=pointer]:
+            - /url: quotes.html
+            - generic [ref=f32e32]: 
+            - generic [ref=f32e33]: Teklifler
+        - listitem [ref=f32e34]:
+          - link " Faturalar" [ref=f32e281] [cursor=pointer]:
+            - /url: invoices.html
+            - generic [ref=f32e36]: 
+            - generic [ref=f32e37]: Faturalar
+        - listitem [ref=f32e38]:
+          - link " Malzemeler" [ref=f32e282] [cursor=pointer]:
+            - /url: materials.html
+            - generic [ref=f32e40]: 
+            - generic [ref=f32e41]: Malzemeler
+        - listitem [ref=f32e42]:
+          - link " Raporlar" [ref=f32e283] [cursor=pointer]:
+            - /url: reports.html
+            - generic [ref=f32e44]: 
+            - generic [ref=f32e45]: Raporlar
+        - listitem [ref=f32e46]:
+          - link " Ayarlar" [ref=f32e284] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f32e48]: 
+            - generic [ref=f32e49]: Ayarlar
+    - button " Çıkış Yap" [ref=f32e285] [cursor=pointer]:
+      - generic [ref=f32e52]: 
+      - text: Çıkış Yap
+  - main [ref=f32e53]:
+    - generic [ref=f32e55]:
+      - heading "Genel Bakış" [level=4] [ref=f32e286]
+      - generic [ref=f32e58]:
+        - generic [ref=f32e59]:
+          - button "Türkçe " [ref=f32e287] [cursor=pointer]:
+            - generic [ref=f32e294]: Türkçe
+            - generic [ref=f32e295]: 
+          - text: 
+        - link "Ayarlar" [ref=f32e296] [cursor=pointer]:
+          - /url: settings.html
+          - generic [ref=f32e68]: 
+        - button "Çıkış Yap" [ref=f32e297] [cursor=pointer]:
+          - generic [ref=f32e71]: 
+        - generic [ref=f32e73]:
+          - generic [ref=f32e74]: cometa_2
+          - text: Administrator
+        - button "Avatarı değiştir" [ref=f32e298] [cursor=pointer]:
+          - img "Avatar electrician" [ref=f32e176]
+    - generic [ref=f32e77]:
+      - generic [ref=f32e79]:
+        - generic [ref=f32e80]:
+          - heading [level=2] [ref=f32e299]:
+            - img "Avatar electrician" [ref=f32e301]
+            - text: Tekrar hoş geldiniz, cometa_2!
+          - paragraph [ref=f32e82]: ElectricalVPF ERP sistem genel bakışı — bugün.
+        - generic [ref=f32e83]:
+          - generic [ref=f32e84]: 
+          - text: Sistem Aktif
+      - generic [ref=f32e85]:
+        - generic [ref=f32e87]:
+          - generic [ref=f32e88]: 
+          - generic [ref=f32e90]:
+            - text: Müşteriler
+            - heading "125" [level=3] [ref=f32e91]
+        - generic [ref=f32e93]:
+          - generic [ref=f32e94]: 
+          - generic [ref=f32e96]:
+            - text: Projeler
+            - heading "24" [level=3] [ref=f32e97]
+        - generic [ref=f32e99]:
+          - generic [ref=f32e100]: 
+          - generic [ref=f32e102]:
+            - text: Açık Teklifler
+            - heading "12" [level=3] [ref=f32e103]
+        - generic [ref=f32e105]:
+          - generic [ref=f32e106]: 
+          - generic [ref=f32e108]:
+            - text: Faturalar
+            - heading "38" [level=3] [ref=f32e109]
+        - generic [ref=f32e111]:
+          - generic [ref=f32e112]: 
+          - generic [ref=f32e114]:
+            - text: Gelir
+            - heading "€24,560" [level=3] [ref=f32e115]
+      - generic [ref=f32e116]:
+        - generic [ref=f32e118]:
+          - generic [ref=f32e119]:
+            - heading " Son Projeler" [level=5] [ref=f32e310]:
+              - generic [ref=f32e121]: 
+              - text: Son Projeler
+            - link "Tümünü Gör" [ref=f32e311] [cursor=pointer]:
+              - /url: projects.html
+          - table [ref=f32e125]:
+            - rowgroup [ref=f32e126]:
+              - row [ref=f32e312]:
+                - columnheader "Proje Adı" [ref=f32e313]
+                - columnheader "Müşteri" [ref=f32e314]
+                - columnheader "Durum" [ref=f32e315]
+                - columnheader "Değer" [ref=f32e316]
+            - rowgroup [ref=f32e132]:
+              - row [ref=f32e317]:
+                - cell "Instalație Rezidențială Vila Sibiu" [ref=f32e134]
+                - cell "Ion Popescu" [ref=f32e135]
+                - cell "Devam Ediyor" [ref=f32e318]
+                - cell "€4,200" [ref=f32e138]
+              - row [ref=f32e319]:
+                - cell "Tablou Electric Industrial Transilvania" [ref=f32e140]
+                - cell "S.C. Electra S.R.L." [ref=f32e141]
+                - cell "Tamamlandı" [ref=f32e320]
+                - cell "€12,800" [ref=f32e144]
+              - row [ref=f32e321]:
+                - cell "Sistem Iluminat LED Depozit" [ref=f32e146]
+                - cell "Logistics Park" [ref=f32e147]
+                - cell "Planlama" [ref=f32e322]
+                - cell "€3,500" [ref=f32e150]
+        - generic [ref=f32e152]:
+          - heading " Sistem Etkinliği" [level=5] [ref=f32e323]:
+            - generic [ref=f32e155]: 
+            - text: Sistem Etkinliği
+          - list [ref=f32e157]:
+            - listitem [ref=f32e158]:
+              - generic [ref=f32e159]:
+                - generic [ref=f32e160]: New Quote Generated
+                - generic [ref=f32e161]: 10 mins ago
+              - paragraph [ref=f32e162]: "Quote #Q-2026-089 was sent to client S.C. Electra S.R.L."
+            - listitem [ref=f32e163]:
+              - generic [ref=f32e164]:
+                - generic [ref=f32e165]: Invoice Paid
+                - generic [ref=f32e166]: 2 hours ago
+              - paragraph [ref=f32e167]: "Invoice #INV-1042 (€1,250) marked as paid."
+            - listitem [ref=f32e168]:
+              - generic [ref=f32e169]:
+                - generic [ref=f32e170]: New Client Added
+                - generic [ref=f32e171]: Yesterday
+              - paragraph [ref=f32e172]: Client "Mihai Ionescu" was registered in CRM.
