@@ -170,6 +170,21 @@
       "renewsOn": "Abonnementet fornyes {{date}}",
       "renewalUnavailable": "Fornyelsesdato: for øyeblikket ikke tilgjengelig",
       "paymentFailedWarning": "Siste betaling mislyktes. Stripe vil automatisk prøve betalingen på nytt i løpet av de neste dagene — du trenger ikke gjøre noe nå."
+    },
+    "display": {
+      "desc": "Velg hvordan appen ser ut — følg operativsystemet automatisk, eller fest en bestemt modus.",
+      "system": {
+        "label": "System",
+        "desc": "Følger automatisk operativsystemets preferanse."
+      },
+      "light": {
+        "label": "Light",
+        "desc": "Alltid lys bakgrunn."
+      },
+      "dark": {
+        "label": "Dark",
+        "desc": "Alltid mørk bakgrunn."
+      }
     }
   },
   "clients": {

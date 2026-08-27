@@ -226,6 +226,78 @@
   padding: 1.1rem 1.25rem;
 }
 
+/* --- Tab Display: selector de temă (System/Light/Dark) --- */
+.theme-option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.theme-option-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 18px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.theme-option-card:hover {
+  border-color: #cbd5e1;
+}
+
+.theme-option-card.active {
+  border-color: #ff6b00;
+  background: rgba(255, 107, 0, 0.04);
+}
+
+.theme-option-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  background: rgba(100, 116, 139, 0.08);
+  color: #64748b;
+}
+
+.theme-option-card.active .theme-option-icon {
+  background: rgba(255, 107, 0, 0.12);
+  color: #ff6b00;
+}
+
+.theme-option-label {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #1e293b;
+}
+
+.theme-option-desc {
+  font-size: 0.8rem;
+  color: #868e96;
+  line-height: 1.4;
+}
+
+.theme-option-check {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 0.85rem;
+  color: #ff6b00;
+  display: none;
+}
+
+.theme-option-card.active .theme-option-check {
+  display: block;
+}
+
 @media (max-width: 640px) {
   .settings-body {
     flex-direction: column;

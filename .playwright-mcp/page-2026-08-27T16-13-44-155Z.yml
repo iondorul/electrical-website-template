@@ -1,0 +1,43 @@
+- generic [ref=f38e2]:
+  - generic [ref=f38e4]:
+    - button "English " [ref=f38e5] [cursor=pointer]:
+      - generic [ref=f38e13]: English
+      - generic [ref=f38e14]: 
+    - text: 
+  - generic [ref=f38e18]:
+    - generic [ref=f38e19]:
+      - generic [ref=f38e20]: 
+      - heading "ElectricalVPF ERP" [level=1] [ref=f38e22]
+      - paragraph [ref=f38e23]: Electrical Estimating • CRM • Projects • Invoicing
+    - generic [ref=f38e24]:
+      - generic [ref=f38e25]: 🆓 Free Plan Available | Upgrade anytime
+      - generic [ref=f38e27]:
+        - generic [ref=f38e28]: Email Address
+        - generic [ref=f38e29]:
+          - generic [ref=f38e30]: 
+          - textbox "Email Address" [ref=f38e32]:
+            - /placeholder: office@electricalvpf.com
+      - generic [ref=f38e33]:
+        - generic [ref=f38e34]: Password
+        - generic [ref=f38e35]:
+          - generic [ref=f38e36]: 
+          - textbox "Password" [ref=f38e38]:
+            - /placeholder: Enter your password
+          - button "" [ref=f38e39] [cursor=pointer]
+      - generic [ref=f38e41]:
+        - generic [ref=f38e42]:
+          - checkbox "Remember me" [ref=f38e43]
+          - generic [ref=f38e44]: Remember me
+        - link "Forgot password?" [ref=f38e45] [cursor=pointer]:
+          - /url: forgot-password.html
+      - button " Sign In" [ref=f38e47] [cursor=pointer]:
+        - generic [ref=f38e48]:
+          - generic [ref=f38e49]: 
+          - text: Sign In
+      - generic [ref=f38e50]:
+        - text: Don't have an account?
+        - link "Register" [ref=f38e51] [cursor=pointer]:
+          - /url: register.html
+    - generic [ref=f38e52]:
+      - paragraph [ref=f38e53]: © 2026 ElectricalVPF ERP
+      - text: Powered by ElectricalVPF

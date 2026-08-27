@@ -27,6 +27,34 @@
     --radius: 20px;
 }
 
+/* Temă Dark — vezi frontend/js/theme.js (setează [data-theme] pe <html>) și
+   frontend/css/dark-theme.css pentru restul ERP-ului; aici, direct pe
+   variabilele deja existente (paginile de autentificare foloseau deja CSS
+   custom properties peste tot), ca să cascadeze automat prin tot fișierul,
+   fără nicio altă regulă nouă. --bg1/--bg2 rămân NESCHIMBATE — fundalul
+   paginii e deja navy închis (#0f172a → #1e293b) în ambele teme, identic cu
+   electricalvpf.eu; doar cardul alb de deasupra devine închis. Paletă
+   identică cu electricalvpf.eu/style.css (tema Dark a site-ului public),
+   cerință explicită de coerență vizuală între cele două produse. */
+[data-theme="dark"] {
+    --primary: #eab308;
+    --primary-dark: #ca8a04;
+
+    --card: #1e293b;
+
+    --text: #f8fafc;
+    --muted: #94a3b8;
+
+    --border: #334155;
+
+    --trial-bg: rgba(234, 179, 8, .1);
+    --trial-border: rgba(234, 179, 8, .25);
+    --trial-text: #eab308;
+    --trial-icon: #eab308;
+
+    --shadow: 0 20px 50px rgba(0, 0, 0, .6);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -334,6 +362,62 @@ body {
     .auth-lang-switcher .lang-switcher-label {
         display: none;
     }
+}
+
+/* --- Temă Dark: reguli care nu foloseau deja o variabilă CSS (restul
+   fișierului cascadează automat prin blocul [data-theme="dark"] de la
+   începutul fișierului) --- */
+[data-theme="dark"] .login-card {
+    background: rgba(30, 41, 59, .92);
+}
+
+[data-theme="dark"] .logo-circle {
+    background: var(--primary);
+    box-shadow: 0 0 35px rgba(234, 179, 8, .35);
+}
+
+[data-theme="dark"] .brand-title {
+    color: var(--text);
+}
+
+[data-theme="dark"] .brand-subtitle,
+[data-theme="dark"] .login-footer {
+    color: var(--muted);
+}
+
+[data-theme="dark"] .input-group-text {
+    background: #0f172a;
+}
+
+[data-theme="dark"] .form-control:focus {
+    box-shadow: 0 0 0 .2rem rgba(234, 179, 8, .15);
+}
+
+[data-theme="dark"] .btn-login {
+    color: #0f172a !important;
+}
+
+[data-theme="dark"] .btn-login:hover {
+    color: #0f172a !important;
+    box-shadow: 0 8px 20px rgba(234, 179, 8, .35);
+}
+
+[data-theme="dark"] .auth-lang-switcher .lang-switcher-menu {
+    background-color: var(--card);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .45);
+}
+
+[data-theme="dark"] .auth-lang-switcher .lang-option:hover {
+    background: rgba(255, 255, 255, .06);
+}
+
+[data-theme="dark"] .auth-lang-switcher .lang-option.active {
+    background: rgba(234, 179, 8, .14);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .auth-lang-switcher .lang-option-check {
+    color: var(--primary);
 }
 
 /* --- Responsive --- */

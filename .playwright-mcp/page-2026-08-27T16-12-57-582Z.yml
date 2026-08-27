@@ -1,0 +1,220 @@
+- generic [active] [ref=f36e1]:
+  - generic [ref=f36e2]:
+    - complementary [ref=f36e3]:
+      - generic [ref=f36e4]:
+        - generic [ref=f36e6]:
+          - generic [ref=f36e7]: 
+          - generic [ref=f36e8]:
+            - text: Electrical
+            - strong [ref=f36e9]: VPF
+        - button "" [ref=f36e10] [cursor=pointer]
+      - navigation [ref=f36e12]:
+        - list [ref=f36e13]:
+          - listitem [ref=f36e14]:
+            - link " Dashboard" [ref=f36e15] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f36e16]: 
+              - generic [ref=f36e17]: Dashboard
+          - listitem [ref=f36e18]:
+            - link " Clients" [ref=f36e19] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f36e20]: 
+              - generic [ref=f36e21]: Clients
+          - listitem [ref=f36e22]:
+            - link " Projects" [ref=f36e23] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f36e24]: 
+              - generic [ref=f36e25]: Projects
+          - listitem [ref=f36e26]:
+            - link " Estimating" [ref=f36e27] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f36e28]: 
+              - generic [ref=f36e29]: Estimating
+          - listitem [ref=f36e30]:
+            - link " Quotes" [ref=f36e31] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f36e32]: 
+              - generic [ref=f36e33]: Quotes
+          - listitem [ref=f36e34]:
+            - link " Invoices" [ref=f36e35] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f36e36]: 
+              - generic [ref=f36e37]: Invoices
+          - listitem [ref=f36e38]:
+            - link " Materials" [ref=f36e39] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f36e40]: 
+              - generic [ref=f36e41]: Materials
+          - listitem [ref=f36e42]:
+            - link " Reports" [ref=f36e43] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f36e44]: 
+              - generic [ref=f36e45]: Reports
+          - listitem [ref=f36e46]:
+            - link " Settings" [ref=f36e47] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f36e48]: 
+              - generic [ref=f36e49]: Settings
+      - button " Logout" [ref=f36e51] [cursor=pointer]:
+        - generic [ref=f36e52]: 
+        - text: Logout
+    - main [ref=f36e53]:
+      - generic [ref=f36e55]:
+        - heading "Plans & Subscription" [level=4] [ref=f36e57]
+        - generic [ref=f36e58]:
+          - generic [ref=f36e59]:
+            - button "English " [ref=f36e60] [cursor=pointer]:
+              - generic [ref=f36e68]: English
+              - generic [ref=f36e69]: 
+            - text: 
+          - link "Settings" [ref=f36e70] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f36e71]: 
+          - button "Logout" [ref=f36e73] [cursor=pointer]:
+            - generic [ref=f36e74]: 
+          - generic [ref=f36e76]:
+            - generic [ref=f36e77]: "--"
+            - text: "--"
+          - button "Change avatar" [ref=f36e78] [cursor=pointer]:
+            - generic [ref=f36e79]: 
+      - generic [ref=f36e80]:
+        - generic [ref=f36e81]:
+          - generic [ref=f36e82]:
+            - generic [ref=f36e83]: 
+            - text: ElectricalVPF ERP
+          - generic [ref=f36e84]:
+            - link "Back to Subscription & Billing" [ref=f36e85] [cursor=pointer]:
+              - /url: settings.html#billing
+              - generic [ref=f36e86]: 
+            - heading "Plans & Subscription" [level=2] [ref=f36e87]
+          - paragraph [ref=f36e88]: Choose the right plan for your company. You can upgrade anytime, no commitment.
+        - generic [ref=f36e89]:
+          - generic [ref=f36e91]:
+            - generic [ref=f36e92]: Free
+            - generic [ref=f36e93]:
+              - generic [ref=f36e94]: €0
+              - generic [ref=f36e95]: /month
+            - paragraph [ref=f36e96]: To test the ERP with low activity volume.
+            - generic: Current plan
+            - list [ref=f36e97]:
+              - listitem [ref=f36e98]:
+                - generic [ref=f36e99]: 
+                - generic [ref=f36e101]: 1 company, 1 user
+              - listitem [ref=f36e102]:
+                - generic [ref=f36e103]: 
+                - generic [ref=f36e105]: 2 clients
+              - listitem [ref=f36e106]:
+                - generic [ref=f36e107]: 
+                - generic [ref=f36e109]: 2 active projects
+              - listitem [ref=f36e110]:
+                - generic [ref=f36e111]: 
+                - generic [ref=f36e113]: 5 estimates/month
+              - listitem [ref=f36e114]:
+                - generic [ref=f36e115]: 
+                - generic [ref=f36e117]: 2 quotes/month
+              - listitem [ref=f36e118]:
+                - generic [ref=f36e119]: 
+                - generic [ref=f36e121]: 1 report/month
+              - listitem [ref=f36e122]:
+                - generic [ref=f36e123]: 
+                - generic [ref=f36e125]: Basic CRM
+              - listitem [ref=f36e126]:
+                - generic [ref=f36e127]: 
+                - generic [ref=f36e129]: Basic projects
+              - listitem [ref=f36e130]:
+                - generic [ref=f36e131]: 
+                - generic [ref=f36e133]: Limited materials
+              - listitem [ref=f36e134]:
+                - generic [ref=f36e135]: 
+                - generic [ref=f36e137]: PDF with ElectricalVPF watermark
+              - listitem [ref=f36e138]:
+                - generic [ref=f36e139]: 
+                - generic [ref=f36e141]: Limited history
+              - listitem [ref=f36e142]:
+                - generic [ref=f36e143]: 
+                - generic [ref=f36e145]: Invoicing
+              - listitem [ref=f36e146]:
+                - generic [ref=f36e147]: 
+                - generic [ref=f36e149]: Advanced analytics
+              - listitem [ref=f36e150]:
+                - generic [ref=f36e151]: 
+                - generic [ref=f36e153]: Data export
+              - listitem [ref=f36e154]:
+                - generic [ref=f36e155]: 
+                - generic [ref=f36e157]: AI features
+              - listitem [ref=f36e158]:
+                - generic [ref=f36e159]: 
+                - generic [ref=f36e161]: Automations
+          - generic [ref=f36e163]:
+            - generic [ref=f36e164]: Recommended
+            - generic [ref=f36e165]: Pro
+            - generic [ref=f36e166]:
+              - generic [ref=f36e167]: Monthly
+              - switch "Switch between monthly and yearly billing" [ref=f36e168] [cursor=pointer]
+              - generic [ref=f36e170]: Yearly
+            - generic [ref=f36e171]:
+              - generic [ref=f36e172]: €14.90
+              - generic [ref=f36e173]: /lună
+            - paragraph [ref=f36e174]: For companies that want full control over their activity.
+            - link "Upgrade to Pro" [ref=f36e175] [cursor=pointer]:
+              - /url: erp-upgrade.html?interval=month
+            - list [ref=f36e176]:
+              - listitem [ref=f36e177]:
+                - generic [ref=f36e178]: 
+                - generic [ref=f36e180]: Multiple users
+              - listitem [ref=f36e181]:
+                - generic [ref=f36e182]: 
+                - generic [ref=f36e184]: Unlimited clients
+              - listitem [ref=f36e185]:
+                - generic [ref=f36e186]: 
+                - generic [ref=f36e188]: Unlimited projects
+              - listitem [ref=f36e189]:
+                - generic [ref=f36e190]: 
+                - generic [ref=f36e192]: Unlimited estimates
+              - listitem [ref=f36e193]:
+                - generic [ref=f36e194]: 
+                - generic [ref=f36e196]: Unlimited reports
+              - listitem [ref=f36e197]:
+                - generic [ref=f36e198]: 
+                - generic [ref=f36e200]: Full CRM
+              - listitem [ref=f36e201]:
+                - generic [ref=f36e202]: 
+                - generic [ref=f36e204]: Full project management
+              - listitem [ref=f36e205]:
+                - generic [ref=f36e206]: 
+                - generic [ref=f36e208]: Unlimited materials/products
+              - listitem [ref=f36e209]:
+                - generic [ref=f36e210]: 
+                - generic [ref=f36e212]: Professional PDF, no watermark
+              - listitem [ref=f36e213]:
+                - generic [ref=f36e214]: 
+                - generic [ref=f36e216]: Full invoicing
+              - listitem [ref=f36e217]:
+                - generic [ref=f36e218]: 
+                - generic [ref=f36e220]: Financial analytics (profit / cost / revenue)
+              - listitem [ref=f36e221]:
+                - generic [ref=f36e222]: 
+                - generic [ref=f36e224]: Excel/CSV export
+              - listitem [ref=f36e225]:
+                - generic [ref=f36e226]: 
+                - generic [ref=f36e228]: Full history and audit trail
+              - listitem [ref=f36e229]:
+                - generic [ref=f36e230]: 
+                - generic [ref=f36e232]: Data backup/export
+              - listitem [ref=f36e233]:
+                - generic [ref=f36e234]: 
+                - generic [ref=f36e236]: AI (assisted features)
+              - listitem [ref=f36e237]:
+                - generic [ref=f36e238]: 
+                - generic [ref=f36e240]: Automations
+              - listitem [ref=f36e241]:
+                - generic [ref=f36e242]: 
+                - generic [ref=f36e244]: Document management
+              - listitem [ref=f36e245]:
+                - generic [ref=f36e246]: 
+                - generic [ref=f36e248]: Priority support
+        - link " Back to Subscription & Billing" [ref=f36e250] [cursor=pointer]:
+          - /url: settings.html#billing
+          - generic [ref=f36e251]: 
+          - text: Back to Subscription & Billing
+  - text:     

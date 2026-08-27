@@ -170,6 +170,21 @@
       "renewsOn": "Subskrypcja odnawia się {{date}}",
       "renewalUnavailable": "Data odnowienia: obecnie niedostępna",
       "paymentFailedWarning": "Ostatnia płatność nie powiodła się. Stripe automatycznie ponowi próbę płatności w ciągu najbliższych kilku dni — nie musisz teraz nic robić."
+    },
+    "display": {
+      "desc": "Wybierz wygląd aplikacji — automatycznie podążaj za systemem operacyjnym lub ustaw konkretny tryb.",
+      "system": {
+        "label": "System",
+        "desc": "Automatycznie podąża za preferencją systemu operacyjnego."
+      },
+      "light": {
+        "label": "Light",
+        "desc": "Zawsze jasne tło."
+      },
+      "dark": {
+        "label": "Dark",
+        "desc": "Zawsze ciemne tło."
+      }
     }
   },
   "clients": {

@@ -170,6 +170,21 @@
       "renewsOn": "Abonelik {{date}} tarihinde yenilenir",
       "renewalUnavailable": "Yenileme tarihi: şu anda mevcut değil",
       "paymentFailedWarning": "Son ödeme başarısız oldu. Stripe önümüzdeki birkaç gün içinde ödemeyi otomatik olarak yeniden deneyecektir — şu an için yapmanız gereken bir şey yok."
+    },
+    "display": {
+      "desc": "Uygulamanın görünümünü seç — işletim sistemini otomatik izle veya belirli bir modu sabitle.",
+      "system": {
+        "label": "System",
+        "desc": "İşletim sisteminin tercihini otomatik olarak izler."
+      },
+      "light": {
+        "label": "Light",
+        "desc": "Her zaman açık arka plan."
+      },
+      "dark": {
+        "label": "Dark",
+        "desc": "Her zaman koyu arka plan."
+      }
     }
   },
   "clients": {

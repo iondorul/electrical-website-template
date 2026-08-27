@@ -170,6 +170,21 @@
       "renewsOn": "Het abonnement wordt verlengd op {{date}}",
       "renewalUnavailable": "Verlengingsdatum: momenteel niet beschikbaar",
       "paymentFailedWarning": "De laatste betaling is mislukt. Stripe probeert de betaling de komende dagen automatisch opnieuw — je hoeft nu niets te doen."
+    },
+    "display": {
+      "desc": "Kies hoe de app eruitziet — volg automatisch je besturingssysteem of stel een specifieke modus in.",
+      "system": {
+        "label": "System",
+        "desc": "Volgt automatisch de voorkeur van je besturingssysteem."
+      },
+      "light": {
+        "label": "Light",
+        "desc": "Altijd een lichte achtergrond."
+      },
+      "dark": {
+        "label": "Dark",
+        "desc": "Altijd een donkere achtergrond."
+      }
     }
   },
   "clients": {

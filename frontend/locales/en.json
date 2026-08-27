@@ -170,6 +170,21 @@
       "renewsOn": "The subscription renews on {{date}}",
       "renewalUnavailable": "Renewal date: currently unavailable",
       "paymentFailedWarning": "The last payment failed. Stripe will automatically retry the payment over the next few days — you don't need to do anything now."
+    },
+    "display": {
+      "desc": "Choose how the app looks — follow your operating system automatically, or pin a specific mode.",
+      "system": {
+        "label": "System",
+        "desc": "Automatically follows your operating system's preference."
+      },
+      "light": {
+        "label": "Light",
+        "desc": "Always use the light background."
+      },
+      "dark": {
+        "label": "Dark",
+        "desc": "Always use the dark background."
+      }
     }
   },
   "clients": {

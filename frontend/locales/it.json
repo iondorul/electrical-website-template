@@ -170,6 +170,21 @@
       "renewsOn": "L'abbonamento si rinnova il {{date}}",
       "renewalUnavailable": "Data di rinnovo: al momento non disponibile",
       "paymentFailedWarning": "L'ultimo pagamento non è riuscito. Stripe riproverà automaticamente il pagamento nei prossimi giorni — al momento non devi fare nulla."
+    },
+    "display": {
+      "desc": "Scegli l'aspetto dell'applicazione — segui automaticamente il sistema operativo oppure fissa una modalità specifica.",
+      "system": {
+        "label": "System",
+        "desc": "Segue automaticamente la preferenza del sistema operativo."
+      },
+      "light": {
+        "label": "Light",
+        "desc": "Sempre sfondo chiaro."
+      },
+      "dark": {
+        "label": "Dark",
+        "desc": "Sempre sfondo scuro."
+      }
     }
   },
   "clients": {

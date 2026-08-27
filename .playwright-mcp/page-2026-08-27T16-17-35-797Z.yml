@@ -1,0 +1,165 @@
+- generic [active] [ref=f45e1]:
+  - banner [ref=f45e2]:
+    - generic [ref=f45e3]:
+      - generic [ref=f45e4]: ElectricalVPF
+      - navigation [ref=f45e5]:
+        - link "Product" [ref=f45e6] [cursor=pointer]:
+          - /url: "#product"
+        - link "Features" [ref=f45e7] [cursor=pointer]:
+          - /url: "#features"
+        - link "Workflow" [ref=f45e8] [cursor=pointer]:
+          - /url: "#workflow"
+        - link "Pricing" [ref=f45e9] [cursor=pointer]:
+          - /url: "#pricing"
+        - button "English English ▼" [ref=f45e12] [cursor=pointer]:
+          - img "English" [ref=f45e13]
+          - generic [ref=f45e14]: English
+          - generic [ref=f45e15]: ▼
+        - button "Comută modul de afișare" [ref=f45e16] [cursor=pointer]:
+          - generic [ref=f45e17]: ☀️
+        - link "Login" [ref=f45e18] [cursor=pointer]:
+          - /url: https://electricalvpf.app
+        - link "Start Free" [ref=f45e19] [cursor=pointer]:
+          - /url: https://electricalvpf.app
+  - generic [ref=f45e21]:
+    - generic [ref=f45e22]:
+      - generic [ref=f45e23]: ERP & CRM for Electricians
+      - heading "ElectricalVPF ERP & CRM" [level=1] [ref=f45e24]
+      - paragraph [ref=f45e25]: The complete software platform dedicated to electrical installation firms and professionals. Manage projects, estimates, clients, and invoicing from a single optimized workspace.
+      - generic [ref=f45e26]:
+        - link "Start Free" [ref=f45e27] [cursor=pointer]:
+          - /url: https://electricalvpf.app
+        - link "Explore the Platform" [ref=f45e28] [cursor=pointer]:
+          - /url: "#product"
+    - generic [ref=f45e30]:
+      - generic [ref=f45e31]: electricalvpf.app/dashboard
+      - generic [ref=f45e36]:
+        - generic [ref=f45e37]:
+          - generic [ref=f45e38]:
+            - generic [ref=f45e39]: Venituri
+            - strong [ref=f45e40]: €24,560
+          - generic [ref=f45e41]:
+            - generic [ref=f45e42]: Proiecte
+            - strong [ref=f45e43]: "24"
+          - generic [ref=f45e44]:
+            - generic [ref=f45e45]: Clienți
+            - strong [ref=f45e46]: "125"
+        - generic [ref=f45e47]:
+          - generic [ref=f45e48]:
+            - generic [ref=f45e49]: Proiect
+            - generic [ref=f45e50]: Client
+            - generic [ref=f45e51]: Status
+            - generic [ref=f45e52]: Valoare
+          - generic [ref=f45e53]:
+            - generic [ref=f45e54]: Instalație Rezidențială
+            - generic [ref=f45e55]: Ion Popescu
+            - generic [ref=f45e56]: În Lucru
+            - generic [ref=f45e57]: €4,200
+          - generic [ref=f45e58]:
+            - generic [ref=f45e59]: Tablou Industrial
+            - generic [ref=f45e60]: S.C. Electra
+            - generic [ref=f45e61]: Finalizat
+            - generic [ref=f45e62]: €12,800
+  - generic [ref=f45e64]:
+    - generic [ref=f45e65]:
+      - generic [ref=f45e66]: ⚡
+      - text: Professional
+    - generic [ref=f45e67]:
+      - generic [ref=f45e68]: 🔒
+      - text: Secure
+    - generic [ref=f45e69]:
+      - generic [ref=f45e70]: ☁️
+      - text: Cloud-based
+    - generic [ref=f45e71]:
+      - generic [ref=f45e72]: 🌐
+      - text: Accessible anywhere
+    - generic [ref=f45e73]:
+      - generic [ref=f45e74]: 💡
+      - text: Built for electrical businesses
+  - generic [ref=f45e76]:
+    - generic [ref=f45e77]:
+      - heading "Built specifically for electrical professionals." [level=2] [ref=f45e78]
+      - paragraph [ref=f45e79]: Optimizat pentru specificul industriei electrice, oferind control absolut asupra afacerii tale.
+    - generic [ref=f45e80]:
+      - generic [ref=f45e81]:
+        - generic [ref=f45e82]: ⚡
+        - heading "Manage Projects" [level=3] [ref=f45e83]
+        - paragraph [ref=f45e84]: Coordonează eficient șantiere multiple și etapele de execuție tehnică.
+      - generic [ref=f45e85]:
+        - generic [ref=f45e86]: 📦
+        - heading "Control Costs & Materials" [level=3] [ref=f45e87]
+        - paragraph [ref=f45e88]: Monitorizează stocurile, consumul de materiale și cheltuielile aferente fiecărui proiect.
+      - generic [ref=f45e89]:
+        - generic [ref=f45e90]: 📝
+        - heading "Create Professional Quotes" [level=3] [ref=f45e91]
+        - paragraph [ref=f45e92]: Generează oferte clare și devize detaliate care inspiră încredere clienților tăi.
+  - generic [ref=f45e94]:
+    - generic [ref=f45e95]:
+      - heading "Seamless Business Workflow" [level=2] [ref=f45e96]
+      - paragraph [ref=f45e97]: Un flux comercial clar și structurat, conceput pentru eficiență maximă de la primul contact până la încasare.
+    - generic [ref=f45e98]:
+      - generic [ref=f45e99]:
+        - generic [ref=f45e100]: "01"
+        - strong [ref=f45e101]: Client
+      - generic [ref=f45e102]: →
+      - generic [ref=f45e103]:
+        - generic [ref=f45e104]: "02"
+        - strong [ref=f45e105]: Project
+      - generic [ref=f45e106]: →
+      - generic [ref=f45e107]:
+        - generic [ref=f45e108]: "03"
+        - strong [ref=f45e109]: Estimate
+      - generic [ref=f45e110]: →
+      - generic [ref=f45e111]:
+        - generic [ref=f45e112]: "04"
+        - strong [ref=f45e113]: Quote
+      - generic [ref=f45e114]: →
+      - generic [ref=f45e115]:
+        - generic [ref=f45e116]: "05"
+        - strong [ref=f45e117]: Approval
+      - generic [ref=f45e118]: →
+      - generic [ref=f45e119]:
+        - generic [ref=f45e120]: "06"
+        - strong [ref=f45e121]: Invoice
+      - generic [ref=f45e122]: →
+      - generic [ref=f45e123]:
+        - generic [ref=f45e124]: "07"
+        - strong [ref=f45e125]: Payment
+      - generic [ref=f45e126]: →
+      - generic [ref=f45e127]:
+        - generic [ref=f45e128]: "08"
+        - strong [ref=f45e129]: Financial Overview
+  - generic [ref=f45e131]:
+    - generic [ref=f45e132]:
+      - heading "Transparent Pricing Plans" [level=2] [ref=f45e133]
+      - paragraph [ref=f45e134]: Alege planul potrivit pentru dimensiunea afacerii tale. Fără costuri ascunse.
+    - generic [ref=f45e135]:
+      - generic [ref=f45e136]:
+        - heading "Free" [level=3] [ref=f45e137]
+        - paragraph [ref=f45e138]: Pentru testarea ERP-ului sau activități cu volum redus.
+        - list [ref=f45e139]:
+          - listitem [ref=f45e140]: 1 companie, 1 utilizator
+          - listitem [ref=f45e141]: 2 clienți
+          - listitem [ref=f45e142]: 2 proiecte active
+          - listitem [ref=f45e143]: 5 estimări / lună
+        - link "Start Free" [ref=f45e144] [cursor=pointer]:
+          - /url: https://electricalvpf.app
+      - generic [ref=f45e145]:
+        - generic [ref=f45e146]: Recomandat
+        - heading "Pro" [level=3] [ref=f45e147]
+        - paragraph [ref=f45e148]: Pentru firme care vor control complet și nelimitat asupra activității.
+        - list [ref=f45e149]:
+          - listitem [ref=f45e150]: Utilizatori multipli
+          - listitem [ref=f45e151]: Clienți nelimitați
+          - listitem [ref=f45e152]: Proiecte nelimitate
+          - listitem [ref=f45e153]: Estimări și facturi nelimitate
+        - link "Start Free" [ref=f45e154] [cursor=pointer]:
+          - /url: https://electricalvpf.app
+  - contentinfo [ref=f45e155]:
+    - generic [ref=f45e156]:
+      - paragraph [ref=f45e157]: © 2026 ElectricalVPF. All rights reserved.
+      - paragraph [ref=f45e158]:
+        - text: Presentation website hosted on
+        - strong [ref=f45e159]: electricalvpf.eu
+        - text: "| App running on"
+        - strong [ref=f45e160]: electricalvpf.app

@@ -170,6 +170,21 @@
       "renewsOn": "Abonamentul se reînnoiește pe {{date}}",
       "renewalUnavailable": "Data reînnoirii: indisponibilă momentan",
       "paymentFailedWarning": "Ultima plată a eșuat. Stripe va reîncerca automat plata în zilele următoare — nu trebuie să faci nimic acum."
+    },
+    "display": {
+      "desc": "Alege cum arată aplicația — urmărește automat sistemul de operare sau fixează un mod anume.",
+      "system": {
+        "label": "System",
+        "desc": "Urmărește automat preferința sistemului de operare."
+      },
+      "light": {
+        "label": "Light",
+        "desc": "Fundal deschis, mereu."
+      },
+      "dark": {
+        "label": "Dark",
+        "desc": "Fundal întunecat, mereu."
+      }
     }
   },
   "clients": {
