@@ -1,0 +1,91 @@
+- generic [active] [ref=f14e1]:
+  - generic [ref=f14e2]:
+    - complementary [ref=f14e3]:
+      - generic [ref=f14e4]:
+        - generic [ref=f14e6]:
+          - generic [ref=f14e7]: 
+          - generic [ref=f14e8]:
+            - text: Electrical
+            - strong [ref=f14e9]: VPF
+        - button "" [ref=f14e10] [cursor=pointer]
+      - navigation [ref=f14e12]:
+        - list [ref=f14e13]:
+          - listitem [ref=f14e14]:
+            - link " Дашборд" [ref=f14e15] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f14e16]: 
+              - generic [ref=f14e17]: Дашборд
+          - listitem [ref=f14e18]:
+            - link " Клієнти" [ref=f14e19] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f14e20]: 
+              - generic [ref=f14e21]: Клієнти
+          - listitem [ref=f14e22]:
+            - link " Проекти" [ref=f14e23] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f14e24]: 
+              - generic [ref=f14e25]: Проекти
+          - listitem [ref=f14e26]:
+            - link " Кошториси" [ref=f14e27] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f14e28]: 
+              - generic [ref=f14e29]: Кошториси
+          - listitem [ref=f14e30]:
+            - link " Пропозиції" [ref=f14e31] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f14e32]: 
+              - generic [ref=f14e33]: Пропозиції
+          - listitem [ref=f14e34]:
+            - link " Рахунки" [ref=f14e35] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f14e36]: 
+              - generic [ref=f14e37]: Рахунки
+          - listitem [ref=f14e38]:
+            - link " Матеріали" [ref=f14e39] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f14e40]: 
+              - generic [ref=f14e41]: Матеріали
+          - listitem [ref=f14e42]:
+            - link " Звіти" [ref=f14e43] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f14e44]: 
+              - generic [ref=f14e45]: Звіти
+          - listitem [ref=f14e46]:
+            - link " Налаштування" [ref=f14e47] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f14e48]: 
+              - generic [ref=f14e49]: Налаштування
+      - button " Вийти" [ref=f14e51] [cursor=pointer]:
+        - generic [ref=f14e52]: 
+        - text: Вийти
+    - main [ref=f14e53]:
+      - generic [ref=f14e55]:
+        - heading "Перехід на Pro" [level=4] [ref=f14e57]
+        - generic [ref=f14e58]:
+          - generic [ref=f14e59]:
+            - button "Українська " [ref=f14e60] [cursor=pointer]:
+              - generic [ref=f14e65]: Українська
+              - generic [ref=f14e66]: 
+            - text: 
+          - link "Налаштування" [ref=f14e67] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f14e68]: 
+          - button "Вийти" [ref=f14e70] [cursor=pointer]:
+            - generic [ref=f14e71]: 
+          - generic [ref=f14e73]:
+            - generic [ref=f14e74]: "--"
+            - text: "--"
+          - button "Змінити аватар" [ref=f14e75] [cursor=pointer]:
+            - generic [ref=f14e76]: 
+      - generic [ref=f14e80]:
+        - generic [ref=f14e81]: 
+        - heading "Перехід на план Pro" [level=1] [ref=f14e83]
+        - paragraph [ref=f14e84]: Перейдіть на Pro безпечно, через Stripe — банківська картка, автоматичний рахунок і миттєвий доступ до всіх функцій ERP.
+        - button " Продовжити до оплати" [ref=f14e85] [cursor=pointer]:
+          - generic [ref=f14e86]: 
+          - text: Продовжити до оплати
+        - link " Назад до планів" [ref=f14e88] [cursor=pointer]:
+          - /url: erp-plans.html
+          - generic [ref=f14e89]: 
+          - text: Назад до планів
+  - text: 

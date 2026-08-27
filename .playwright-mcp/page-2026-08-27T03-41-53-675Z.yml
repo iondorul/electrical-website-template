@@ -1,0 +1,283 @@
+- generic [ref=f6e1]:
+  - generic [ref=f6e2]:
+    - complementary [ref=f6e3]:
+      - generic [ref=f6e4]:
+        - generic [ref=f6e5]:
+          - generic [ref=f6e6]:
+            - generic [ref=f6e7]: 
+            - generic [ref=f6e8]:
+              - text: Electrical
+              - strong [ref=f6e9]: VPF
+          - link " PRO ПЛАН" [ref=f6e10] [cursor=pointer]:
+            - /url: settings.html#billing
+            - generic [ref=f6e11]: 
+            - generic [ref=f6e12]: PRO ПЛАН
+        - button "" [ref=f6e13] [cursor=pointer]
+      - navigation [ref=f6e15]:
+        - list [ref=f6e16]:
+          - listitem [ref=f6e17]:
+            - link " Дашборд" [ref=f6e18] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f6e19]: 
+              - generic [ref=f6e20]: Дашборд
+          - listitem [ref=f6e21]:
+            - link " Клієнти" [ref=f6e22] [cursor=pointer]:
+              - /url: clients.html
+              - generic [ref=f6e23]: 
+              - generic [ref=f6e24]: Клієнти
+          - listitem [ref=f6e25]:
+            - link " Проекти" [ref=f6e26] [cursor=pointer]:
+              - /url: projects.html
+              - generic [ref=f6e27]: 
+              - generic [ref=f6e28]: Проекти
+          - listitem [ref=f6e29]:
+            - link " Кошториси" [ref=f6e30] [cursor=pointer]:
+              - /url: estimating.html
+              - generic [ref=f6e31]: 
+              - generic [ref=f6e32]: Кошториси
+          - listitem [ref=f6e33]:
+            - link " Пропозиції" [ref=f6e34] [cursor=pointer]:
+              - /url: quotes.html
+              - generic [ref=f6e35]: 
+              - generic [ref=f6e36]: Пропозиції
+          - listitem [ref=f6e37]:
+            - link " Рахунки" [ref=f6e38] [cursor=pointer]:
+              - /url: invoices.html
+              - generic [ref=f6e39]: 
+              - generic [ref=f6e40]: Рахунки
+          - listitem [ref=f6e41]:
+            - link " Матеріали" [ref=f6e42] [cursor=pointer]:
+              - /url: materials.html
+              - generic [ref=f6e43]: 
+              - generic [ref=f6e44]: Матеріали
+          - listitem [ref=f6e45]:
+            - link " Звіти" [ref=f6e46] [cursor=pointer]:
+              - /url: reports.html
+              - generic [ref=f6e47]: 
+              - generic [ref=f6e48]: Звіти
+          - listitem [ref=f6e49]:
+            - link " Налаштування" [ref=f6e50] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f6e51]: 
+              - generic [ref=f6e52]: Налаштування
+      - button " Вийти" [ref=f6e54] [cursor=pointer]:
+        - generic [ref=f6e55]: 
+        - text: Вийти
+    - main [ref=f6e56]:
+      - generic [ref=f6e58]:
+        - heading "Плани та підписка" [level=4] [ref=f6e60]
+        - generic [ref=f6e61]:
+          - generic [ref=f6e62]:
+            - button "Українська " [ref=f6e63] [cursor=pointer]:
+              - generic [ref=f6e68]: Українська
+              - generic [ref=f6e69]: 
+            - text: 
+          - link "Налаштування" [ref=f6e70] [cursor=pointer]:
+            - /url: settings.html
+            - generic [ref=f6e71]: 
+          - button "Вийти" [ref=f6e73] [cursor=pointer]:
+            - generic [ref=f6e74]: 
+          - generic [ref=f6e76]:
+            - generic [ref=f6e77]: cometa_2
+            - text: Administrator
+          - button "Змінити аватар" [ref=f6e78] [cursor=pointer]:
+            - img "Avatar electrician" [ref=f6e79]
+      - generic [ref=f6e88]:
+        - generic [ref=f6e89]:
+          - generic [ref=f6e90]:
+            - generic [ref=f6e91]: 
+            - text: ElectricalVPF ERP
+          - generic [ref=f6e92]:
+            - link "Назад до підписки та оплати" [ref=f6e93] [cursor=pointer]:
+              - /url: settings.html#billing
+              - generic [ref=f6e94]: 
+            - heading "Плани та підписка" [level=2] [ref=f6e95]
+          - paragraph [ref=f6e96]: Оберіть план, що підходить вашій компанії. Ви можете підвищити план будь-коли, без зобов'язань.
+        - generic [ref=f6e97]:
+          - generic [ref=f6e99]:
+            - generic [ref=f6e100]: Free
+            - generic [ref=f6e101]:
+              - generic [ref=f6e102]: €0
+              - generic [ref=f6e103]: /місяць
+            - paragraph [ref=f6e104]: Щоб протестувати ERP з невеликим обсягом активності.
+            - button "Перейти на Free" [ref=f6e105] [cursor=pointer]
+            - list [ref=f6e106]:
+              - listitem [ref=f6e107]:
+                - generic [ref=f6e108]: 
+                - generic [ref=f6e110]: 1 компанія, 1 користувач
+              - listitem [ref=f6e111]:
+                - generic [ref=f6e112]: 
+                - generic [ref=f6e114]: 2 клієнти
+              - listitem [ref=f6e115]:
+                - generic [ref=f6e116]: 
+                - generic [ref=f6e118]: 2 активні проекти
+              - listitem [ref=f6e119]:
+                - generic [ref=f6e120]: 
+                - generic [ref=f6e122]: 5 кошторисів/місяць
+              - listitem [ref=f6e123]:
+                - generic [ref=f6e124]: 
+                - generic [ref=f6e126]: 2 пропозиції/місяць
+              - listitem [ref=f6e127]:
+                - generic [ref=f6e128]: 
+                - generic [ref=f6e130]: 1 звіт/місяць
+              - listitem [ref=f6e131]:
+                - generic [ref=f6e132]: 
+                - generic [ref=f6e134]: Базовий CRM
+              - listitem [ref=f6e135]:
+                - generic [ref=f6e136]: 
+                - generic [ref=f6e138]: Базові проекти
+              - listitem [ref=f6e139]:
+                - generic [ref=f6e140]: 
+                - generic [ref=f6e142]: Обмежені матеріали
+              - listitem [ref=f6e143]:
+                - generic [ref=f6e144]: 
+                - generic [ref=f6e146]: PDF з водяним знаком ElectricalVPF
+              - listitem [ref=f6e147]:
+                - generic [ref=f6e148]: 
+                - generic [ref=f6e150]: Обмежена історія
+              - listitem [ref=f6e151]:
+                - generic [ref=f6e152]: 
+                - generic [ref=f6e154]: Виставлення рахунків
+              - listitem [ref=f6e155]:
+                - generic [ref=f6e156]: 
+                - generic [ref=f6e158]: Розширена аналітика
+              - listitem [ref=f6e159]:
+                - generic [ref=f6e160]: 
+                - generic [ref=f6e162]: Експорт даних
+              - listitem [ref=f6e163]:
+                - generic [ref=f6e164]: 
+                - generic [ref=f6e166]: Функції ШІ
+              - listitem [ref=f6e167]:
+                - generic [ref=f6e168]: 
+                - generic [ref=f6e170]: Автоматизації
+          - generic [ref=f6e172]:
+            - generic [ref=f6e173]: Рекомендовано
+            - generic [ref=f6e174]: Pro
+            - generic [ref=f6e175]:
+              - generic [ref=f6e176]: Щомісяця
+              - switch "Перемкнути між щомісячною та щорічною оплатою" [ref=f6e177] [cursor=pointer]
+              - generic [ref=f6e179]: Щороку
+            - generic [ref=f6e180]:
+              - generic [ref=f6e181]: €14.90
+              - generic [ref=f6e182]: /місяць
+            - paragraph [ref=f6e183]: Для компаній, які хочуть повний контроль над своєю діяльністю.
+            - generic [ref=f6e184]:
+              - generic [ref=f6e185]: 
+              - text: Поновлення 24 червня 2039 р.
+            - button "Поновити зараз" [ref=f6e186] [cursor=pointer]
+            - list [ref=f6e187]:
+              - listitem [ref=f6e188]:
+                - generic [ref=f6e189]: 
+                - generic [ref=f6e191]: Кілька користувачів
+              - listitem [ref=f6e192]:
+                - generic [ref=f6e193]: 
+                - generic [ref=f6e195]: Необмежена кількість клієнтів
+              - listitem [ref=f6e196]:
+                - generic [ref=f6e197]: 
+                - generic [ref=f6e199]: Необмежена кількість проектів
+              - listitem [ref=f6e200]:
+                - generic [ref=f6e201]: 
+                - generic [ref=f6e203]: Необмежена кількість кошторисів
+              - listitem [ref=f6e204]:
+                - generic [ref=f6e205]: 
+                - generic [ref=f6e207]: Необмежена кількість звітів
+              - listitem [ref=f6e208]:
+                - generic [ref=f6e209]: 
+                - generic [ref=f6e211]: Повноцінний CRM
+              - listitem [ref=f6e212]:
+                - generic [ref=f6e213]: 
+                - generic [ref=f6e215]: Повноцінне керування проектами
+              - listitem [ref=f6e216]:
+                - generic [ref=f6e217]: 
+                - generic [ref=f6e219]: Необмежена кількість матеріалів/товарів
+              - listitem [ref=f6e220]:
+                - generic [ref=f6e221]: 
+                - generic [ref=f6e223]: Професійний PDF без водяного знака
+              - listitem [ref=f6e224]:
+                - generic [ref=f6e225]: 
+                - generic [ref=f6e227]: Повноцінне виставлення рахунків
+              - listitem [ref=f6e228]:
+                - generic [ref=f6e229]: 
+                - generic [ref=f6e231]: Фінансова аналітика (прибуток / витрати / дохід)
+              - listitem [ref=f6e232]:
+                - generic [ref=f6e233]: 
+                - generic [ref=f6e235]: Експорт у Excel/CSV
+              - listitem [ref=f6e236]:
+                - generic [ref=f6e237]: 
+                - generic [ref=f6e239]: Повна історія та журнал аудиту
+              - listitem [ref=f6e240]:
+                - generic [ref=f6e241]: 
+                - generic [ref=f6e243]: Резервне копіювання/експорт даних
+              - listitem [ref=f6e244]:
+                - generic [ref=f6e245]: 
+                - generic [ref=f6e247]: ШІ (допоміжні функції)
+              - listitem [ref=f6e248]:
+                - generic [ref=f6e249]: 
+                - generic [ref=f6e251]: Автоматизації
+              - listitem [ref=f6e252]:
+                - generic [ref=f6e253]: 
+                - generic [ref=f6e255]: Керування документами
+              - listitem [ref=f6e256]:
+                - generic [ref=f6e257]: 
+                - generic [ref=f6e259]: Пріоритетна підтримка
+        - generic [ref=f6e260]:
+          - link " Назад до підписки та оплати" [ref=f6e261] [cursor=pointer]:
+            - /url: settings.html#billing
+            - generic [ref=f6e262]: 
+            - text: Назад до підписки та оплати
+          - generic [ref=f6e263]:
+            - text: Ви увійшли як
+            - strong [ref=f6e264]: cometa_2
+            - text: —
+            - generic [ref=f6e265]:
+              - generic [ref=f6e266]: 
+              - text: "План: Pro"
+  - text:    
+  - dialog [active] [ref=f6e267]:
+    - generic [ref=f6e268]:
+      - generic [ref=f6e269]:
+        - heading " Поновити зараз" [level=5] [ref=f6e270]:
+          - generic [ref=f6e271]: 
+          - text: Поновити зараз
+        - button "Close" [ref=f6e272] [cursor=pointer]
+      - generic [ref=f6e273]:
+        - generic [ref=f6e274]:
+          - generic [ref=f6e275] [cursor=pointer]:
+            - radio "1 місяць €14.90" [checked]
+            - generic [ref=f6e276]:
+              - generic [ref=f6e277]: 1 місяць
+              - generic [ref=f6e278]: €14.90
+          - generic [ref=f6e279] [cursor=pointer]:
+            - radio "6 місяців €80.46 -10%"
+            - generic [ref=f6e280]:
+              - generic [ref=f6e281]: 6 місяців
+              - generic [ref=f6e282]:
+                - text: €80.46
+                - generic [ref=f6e283]: "-10%"
+          - generic [ref=f6e284] [cursor=pointer]:
+            - radio "1 рік €143.04 -20%"
+            - generic [ref=f6e285]:
+              - generic [ref=f6e286]: 1 рік
+              - generic [ref=f6e287]:
+                - text: €143.04
+                - generic [ref=f6e288]: "-20%"
+          - generic [ref=f6e289] [cursor=pointer]:
+            - radio "3 роки €375.48 -30%"
+            - generic [ref=f6e290]:
+              - generic [ref=f6e291]: 3 роки
+              - generic [ref=f6e292]:
+                - text: €375.48
+                - generic [ref=f6e293]: "-30%"
+          - generic [ref=f6e294] [cursor=pointer]:
+            - radio "5 років Найвигідніше €536.40 -40%"
+            - generic [ref=f6e295]:
+              - generic [ref=f6e296]:
+                - text: 5 років
+                - generic [ref=f6e297]: Найвигідніше
+              - generic [ref=f6e298]:
+                - text: €536.40
+                - generic [ref=f6e299]: "-40%"
+        - paragraph [ref=f6e300]: Доступ Pro активний до 24 червня 2039 р.. Додається 1 місяць — новий доступ триватиме до 24 липня 2039 р..
+      - generic [ref=f6e301]:
+        - button "Скасувати" [ref=f6e302] [cursor=pointer]
+        - button "Продовжити до оплати" [ref=f6e303] [cursor=pointer]
