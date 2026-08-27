@@ -60,3 +60,21 @@ if (window.matchMedia) {
     if (getStoredThemePref() === "system") applyTheme("system");
   });
 }
+
+// Buton rapid din header (topbar.html, sau markup static pe paginile de auth)
+// — comută direct între Light/Dark (2 stări, nu 3 ca în Setări > Display).
+// Dacă userul era pe "system", click-ul fixează explicit rezultatul curent
+// opus, ieșind din "system" (cerință explicită). Sincronizarea vizuală a
+// iconiței e 100% CSS, pe baza [data-theme] setat mai sus de applyTheme() —
+// niciun cod suplimentar de sincronizare nu e necesar aici.
+function initThemeToggle() {
+  const btn = document.getElementById("themeToggleBtn");
+  if (!btn || btn.dataset.wired) return;
+  btn.dataset.wired = "true";
+  btn.addEventListener("click", () => {
+    const current = resolveTheme(getStoredThemePref());
+    setTheme(current === "dark" ? "light" : "dark");
+  });
+}
+document.addEventListener("DOMContentLoaded", initThemeToggle);
+document.addEventListener("erp:shell-ready", initThemeToggle);

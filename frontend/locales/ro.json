@@ -41,6 +41,7 @@
     "changeAvatar": "Schimbă avatarul",
     "chooseAvatar": "Alege avatarul",
     "language": "Limbă",
+    "toggleTheme": "Comută tema",
     "defaultUserName": "Utilizator",
     "defaultUserRole": "Administrator",
     "avatarSaveFailed": "Nu s-a putut salva avatarul.",

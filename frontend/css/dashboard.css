@@ -311,6 +311,27 @@ body {
     }
 }
 
+/* Comutare rapidă temă (header) — shortcut cu 2 stări, lângă selectorul de
+   limbă (vezi topbar.html/theme.js). Reutilizează .header-logout-btn ca bază
+   (pill, border, hover), la fel ca selectorul de limbă/butonul de Settings.
+   Ambele iconițe (soare/lună) există mereu în DOM — CSS-ul arată/ascunde
+   pe baza [data-theme] de pe <html>, ACELAȘI atribut pe care tab-ul Display
+   din Setări îl setează prin theme.js, deci sincronizarea e automată/
+   instantă, fără JS suplimentar de sincronizare. Convenție identică cu
+   .theme-toggle-btn din electricalvpf.eu: soare vizibil în Dark (apasă =
+   treci la Light), lună vizibilă în Light (apasă = treci la Dark). */
+.theme-toggle-icon {
+    display: none;
+}
+
+[data-theme="light"] .theme-toggle-btn .icon-moon {
+    display: inline-block;
+}
+
+[data-theme="dark"] .theme-toggle-btn .icon-sun {
+    display: inline-block;
+}
+
 .header-settings-btn:hover {
     background-color: #fff7ed;
     color: #ff6b00;

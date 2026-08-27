@@ -41,6 +41,7 @@
     "changeAvatar": "Zmień awatar",
     "chooseAvatar": "Wybierz swój awatar",
     "language": "Język",
+    "toggleTheme": "Przełącz motyw",
     "defaultUserName": "Użytkownik",
     "defaultUserRole": "Administrator",
     "avatarSaveFailed": "Nie udało się zapisać awatara.",

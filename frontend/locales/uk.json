@@ -41,6 +41,7 @@
     "changeAvatar": "Змінити аватар",
     "chooseAvatar": "Оберіть свій аватар",
     "language": "Мова",
+    "toggleTheme": "Перемкнути тему",
     "defaultUserName": "Користувач",
     "defaultUserRole": "Адміністратор",
     "avatarSaveFailed": "Не вдалося зберегти аватар.",

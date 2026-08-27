@@ -262,11 +262,66 @@ body {
    Clasele interne (.lang-flag-icon, .lang-option etc.) rămân identice cu
    cele generate de renderLangSwitcherButton()/renderLangSwitcherMenu() din
    i18n.js — motorul JS e complet neschimbat, doar CSS-ul e nou. */
-.auth-lang-switcher {
+/* Wrapper comun pentru selectorul de limbă + butonul de temă (colțul din
+   dreapta sus) — .auth-lang-switcher rămâne fix poziționat pentru compat,
+   dar devine copil flex aici (position: relative), ca cele două controale
+   să stea unul lângă altul fără să se suprapună. */
+.auth-header-controls {
     position: fixed;
     top: 24px;
     right: 24px;
     z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-lang-switcher {
+    position: relative;
+    top: auto;
+    right: auto;
+    z-index: auto;
+}
+
+/* Comutare rapidă Light/Dark (pagini de autentificare) — fundalul paginii
+   (--bg1/--bg2) e mereu navy închis în ambele teme (vezi comentariul de la
+   [data-theme="dark"] de mai sus), deci butonul refolosește direct stilul
+   glass/translucent al .lang-switcher-btn, fără override separat pentru
+   Dark. Iconițele sunt randate 100% prin CSS, la fel ca în dashboard.css —
+   ambele (.icon-sun/.icon-moon) există mereu în DOM, [data-theme] de pe
+   <html> decide care se vede. */
+.auth-theme-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .08);
+    backdrop-filter: blur(10px);
+    color: #e2e8f0;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.auth-theme-toggle-btn:hover {
+    background: rgba(255, 255, 255, .14);
+    border-color: rgba(255, 255, 255, .28);
+}
+
+.auth-theme-toggle-btn .theme-toggle-icon {
+    display: none;
+}
+
+[data-theme="light"] .auth-theme-toggle-btn .icon-moon {
+    display: inline-block;
+}
+
+[data-theme="dark"] .auth-theme-toggle-btn .icon-sun {
+    display: inline-block;
 }
 
 .auth-lang-switcher .lang-switcher-btn {
@@ -354,9 +409,10 @@ body {
 }
 
 @media (max-width: 576px) {
-    .auth-lang-switcher {
+    .auth-header-controls {
         top: 14px;
         right: 14px;
+        gap: 8px;
     }
 
     .auth-lang-switcher .lang-switcher-label {

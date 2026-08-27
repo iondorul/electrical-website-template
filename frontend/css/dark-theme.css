@@ -295,6 +295,21 @@
   color: var(--erp-dark-text);
 }
 
+/* Cardul-rezumat al planului din tab-ul Billing (billingTab.js, templateFree
+   și templatePro) — folosește fundal deschis fix, inline (style="background:
+   #f8f9fb"), direct în JS; inline style-ul câștigă peste orice regulă .card
+   normală (inclusiv suportul nativ Bootstrap data-bs-theme="dark"), deci
+   rămânea alb chiar și în Dark. Override cu !important, scoped strict la
+   #settingsContent[data-loaded="billing"] (atribut setat automat de
+   settings.js la fiecare randare de tab) — nu afectează niciun alt tab.
+   Textul din interior (.fw-semibold, .text-muted) nu are nevoie de override
+   separat: moștenește deja culoarea corectă pentru Dark de la `body`/
+   Bootstrap — problema reală era doar fundalul alb rămas în urmă. */
+[data-theme="dark"] #settingsContent[data-loaded="billing"] .card.border-0 {
+  background: var(--erp-dark-bg-card) !important;
+  border-color: var(--erp-dark-border) !important;
+}
+
 /* --- Tab Display (displayTab.js) --- */
 [data-theme="dark"] .theme-option-card {
   background: var(--erp-dark-bg-card);

@@ -41,6 +41,7 @@
     "changeAvatar": "Endre avatar",
     "chooseAvatar": "Velg din avatar",
     "language": "Språk",
+    "toggleTheme": "Bytt tema",
     "defaultUserName": "Bruker",
     "defaultUserRole": "Administrator",
     "avatarSaveFailed": "Kunne ikke lagre avataren.",

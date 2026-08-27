@@ -41,6 +41,7 @@
     "changeAvatar": "Avatarı değiştir",
     "chooseAvatar": "Avatarınızı seçin",
     "language": "Dil",
+    "toggleTheme": "Temayı değiştir",
     "defaultUserName": "Kullanıcı",
     "defaultUserRole": "Yönetici",
     "avatarSaveFailed": "Avatar kaydedilemedi.",

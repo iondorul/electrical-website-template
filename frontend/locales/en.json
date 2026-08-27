@@ -41,6 +41,7 @@
     "changeAvatar": "Change avatar",
     "chooseAvatar": "Choose your avatar",
     "language": "Language",
+    "toggleTheme": "Toggle theme",
     "defaultUserName": "User",
     "defaultUserRole": "Administrator",
     "avatarSaveFailed": "Could not save the avatar.",

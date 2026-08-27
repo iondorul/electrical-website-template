@@ -5,6 +5,18 @@
     </div>
 
     <div class="header-user d-flex align-items-center">
+        <!-- Comutare rapidă Light/Dark — shortcut cu 2 stări (nu deschide
+             meniul cu 3 opțiuni ca tab-ul Display din Setări). Iconițele sunt
+             randate 100% prin CSS (vezi .theme-toggle-icon în dashboard.css/
+             dark-theme.css), afișate/ascunse pe baza atributului [data-theme]
+             de pe <html>, același atribut pe care Display tab îl setează, deci
+             sincronizarea e automată/instantă, fără cod JS suplimentar de
+             sincronizare (vezi initThemeToggle() în theme.js pentru click). -->
+        <button type="button" class="header-logout-btn theme-toggle-btn me-2" id="themeToggleBtn"
+            data-i18n-title="header.toggleTheme" data-i18n-aria-label="header.toggleTheme" title="Comută tema" aria-label="Comută tema">
+            <i class="fas fa-sun theme-toggle-icon icon-sun"></i>
+            <i class="fas fa-moon theme-toggle-icon icon-moon"></i>
+        </button>
         <div class="dropdown lang-switcher me-2">
             <button type="button" class="header-logout-btn lang-switcher-btn" id="langSwitcherBtn"
                 data-bs-toggle="dropdown" aria-expanded="false" data-i18n-title="header.language" title="Limbă / Language"></button>
