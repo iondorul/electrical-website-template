@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ElectricalVPF ERP | Upgrade la Pro</title>
 
+    <link rel="icon" type="image/svg+xml" href="../img/favicon-light.png">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,7 +74,8 @@
                             <button type="button" id="btnStartCheckout" class="erp-plan-cta erp-plan-cta-solid"
                                 style="cursor: pointer;">
                                 <i class="fas fa-credit-card me-2" id="btnStartCheckoutIcon"></i>
-                                <span id="btnStartCheckoutText" data-i18n="upgrade.continueToPayment">Continuă la plată</span>
+                                <span id="btnStartCheckoutText" data-i18n="upgrade.continueToPayment">Continuă la
+                                    plată</span>
                             </button>
 
                             <div class="alert alert-danger d-none mt-3 mb-0" id="checkoutError" role="alert"></div>
@@ -84,7 +87,8 @@
 
                             <div class="mt-4">
                                 <a href="erp-plans.html" class="erp-plan-cta erp-plan-cta-outline">
-                                    <i class="fas fa-arrow-left me-2"></i><span data-i18n="upgrade.backToPlans">Înapoi la planuri</span>
+                                    <i class="fas fa-arrow-left me-2"></i><span data-i18n="upgrade.backToPlans">Înapoi
+                                        la planuri</span>
                                 </a>
                             </div>
 
@@ -110,7 +114,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold">
-                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i><span data-i18n="plans.renewNowModal.title">Reînnoiește acum</span>
+                        <i class="fas fa-circle-info me-2" style="color: #ff6b00;"></i><span
+                            data-i18n="plans.renewNowModal.title">Reînnoiește acum</span>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -119,14 +124,16 @@
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="1m" checked>
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.1m">1 lună</span>
+                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.1m">1
+                                    lună</span>
                                 <span class="erp-renew-period-price">€14.90</span>
                             </span>
                         </label>
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="6m">
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.6m">6 luni</span>
+                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.6m">6
+                                    luni</span>
                                 <span class="erp-renew-period-price">€80.46<span
                                         class="erp-renew-period-discount">-10%</span></span>
                             </span>
@@ -134,7 +141,8 @@
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="1y">
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.1y">1 an</span>
+                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.1y">1
+                                    an</span>
                                 <span class="erp-renew-period-price">€143.04<span
                                         class="erp-renew-period-discount">-20%</span></span>
                             </span>
@@ -142,7 +150,8 @@
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="3y">
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.3y">3 ani</span>
+                                <span class="erp-renew-period-label" data-i18n="plans.renewNowModal.periods.3y">3
+                                    ani</span>
                                 <span class="erp-renew-period-price">€375.48<span
                                         class="erp-renew-period-discount">-30%</span></span>
                             </span>
@@ -150,8 +159,9 @@
                         <label class="erp-renew-period-row">
                             <input type="radio" class="erp-renew-period-input" name="renewPeriod" value="5y">
                             <span class="erp-renew-period-card">
-                                <span class="erp-renew-period-label"><span data-i18n="plans.renewNowModal.periods.5y">5 ani</span><span
-                                        class="erp-renew-period-best-tag" data-i18n="plans.renewNowModal.bestTag">Cel mai avantajos</span></span>
+                                <span class="erp-renew-period-label"><span data-i18n="plans.renewNowModal.periods.5y">5
+                                        ani</span><span class="erp-renew-period-best-tag"
+                                        data-i18n="plans.renewNowModal.bestTag">Cel mai avantajos</span></span>
                                 <span class="erp-renew-period-price">€536.40<span
                                         class="erp-renew-period-discount">-40%</span></span>
                             </span>
@@ -161,8 +171,8 @@
                     <div class="alert alert-danger d-none small mt-3 mb-0" id="renewNowModalError" role="alert"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="erp-plan-cta erp-plan-cta-outline"
-                        data-bs-dismiss="modal" data-i18n="plans.renewNowModal.cancel">Anulează</button>
+                    <button type="button" class="erp-plan-cta erp-plan-cta-outline" data-bs-dismiss="modal"
+                        data-i18n="plans.renewNowModal.cancel">Anulează</button>
                     <button type="button" class="erp-plan-cta erp-plan-cta-solid" id="btnConfirmRenewNow"
                         data-i18n="plans.renewNowModal.confirm">
                         Continuă la plată

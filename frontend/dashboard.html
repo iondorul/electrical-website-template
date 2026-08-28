@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ElectricalVPF ERP | Dashboard</title>
 
+    <link rel="icon" type="image/svg+xml" href="../img/favicon-light.png">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,10 +46,12 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h2 class="fw-bold mb-1" id="welcomeTitle">👤 Welcome back!</h2>
-                            <p class="text-muted mb-0" data-i18n="dashboard.subtitle">ElectricalVPF ERP System Overview for today.</p>
+                            <p class="text-muted mb-0" data-i18n="dashboard.subtitle">ElectricalVPF ERP System Overview
+                                for today.</p>
                         </div>
                         <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold">
-                            <i class="fas fa-circle me-1 small"></i> <span data-i18n="dashboard.systemActive">System Active</span>
+                            <i class="fas fa-circle me-1 small"></i> <span data-i18n="dashboard.systemActive">System
+                                Active</span>
                         </span>
                     </div>
                 </div>
@@ -124,21 +128,29 @@
                     <div class="col-12 col-lg-7">
                         <div class="card content-card h-100">
                             <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0"><i class="fas fa-list-check me-2 text-primary dashboard-icon-trigger" id="recentProjectsIconTrigger"
-                                        role="button" tabindex="0" data-i18n-title="dashboard.sortFilter.label" data-i18n-aria-label="dashboard.sortFilter.label"
-                                        title="Sort &amp; filter" aria-label="Sort &amp; filter"></i><span data-i18n="dashboard.recentProjects">Recent
-                                    Projects</span></h5>
+                                <h5 class="card-title mb-0"><i
+                                        class="fas fa-list-check me-2 text-primary dashboard-icon-trigger"
+                                        id="recentProjectsIconTrigger" role="button" tabindex="0"
+                                        data-i18n-title="dashboard.sortFilter.label"
+                                        data-i18n-aria-label="dashboard.sortFilter.label" title="Sort &amp; filter"
+                                        aria-label="Sort &amp; filter"></i><span
+                                        data-i18n="dashboard.recentProjects">Recent
+                                        Projects</span></h5>
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="dropdown">
                                         <button type="button" class="dashboard-toolbar-btn" id="recentProjectsToolsBtn"
                                             data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside"
-                                            data-i18n-title="dashboard.sortFilter.label" data-i18n-aria-label="dashboard.sortFilter.label"
-                                            title="Sort &amp; filter" aria-label="Sort &amp; filter">
+                                            data-i18n-title="dashboard.sortFilter.label"
+                                            data-i18n-aria-label="dashboard.sortFilter.label" title="Sort &amp; filter"
+                                            aria-label="Sort &amp; filter">
                                             <i class="fas fa-arrow-down-wide-short"></i>
                                         </button>
-                                        <div class="dropdown-menu dropdown-menu-end dashboard-tools-menu" id="recentProjectsToolsMenu" aria-labelledby="recentProjectsToolsBtn">
-                                            <h6 class="dropdown-header" data-i18n="dashboard.sortFilter.sortBy">Sort by</h6>
-                                            <button type="button" class="dropdown-item sort-option active" data-sort="recent">
+                                        <div class="dropdown-menu dropdown-menu-end dashboard-tools-menu"
+                                            id="recentProjectsToolsMenu" aria-labelledby="recentProjectsToolsBtn">
+                                            <h6 class="dropdown-header" data-i18n="dashboard.sortFilter.sortBy">Sort by
+                                            </h6>
+                                            <button type="button" class="dropdown-item sort-option active"
+                                                data-sort="recent">
                                                 <span data-i18n="dashboard.sortFilter.recent">Most recent</span>
                                                 <i class="fas fa-check sort-option-check"></i>
                                             </button>
@@ -155,42 +167,54 @@
                                                 <i class="fas fa-check sort-option-check"></i>
                                             </button>
                                             <div class="dropdown-divider"></div>
-                                            <h6 class="dropdown-header" data-i18n="dashboard.sortFilter.filterByStatus">Filter by status</h6>
-                                            <button type="button" class="dropdown-item filter-option active" data-status="all">
+                                            <h6 class="dropdown-header" data-i18n="dashboard.sortFilter.filterByStatus">
+                                                Filter by status</h6>
+                                            <button type="button" class="dropdown-item filter-option active"
+                                                data-status="all">
                                                 <span data-i18n="dashboard.sortFilter.allStatuses">All statuses</span>
                                                 <i class="fas fa-check filter-option-check"></i>
                                             </button>
-                                            <button type="button" class="dropdown-item filter-option" data-status="draft">
+                                            <button type="button" class="dropdown-item filter-option"
+                                                data-status="draft">
                                                 <span data-i18n="dashboard.status.draft">Draft</span>
                                                 <i class="fas fa-check filter-option-check"></i>
                                             </button>
-                                            <button type="button" class="dropdown-item filter-option" data-status="planned">
+                                            <button type="button" class="dropdown-item filter-option"
+                                                data-status="planned">
                                                 <span data-i18n="dashboard.status.planned">Planned</span>
                                                 <i class="fas fa-check filter-option-check"></i>
                                             </button>
-                                            <button type="button" class="dropdown-item filter-option" data-status="in_progress">
+                                            <button type="button" class="dropdown-item filter-option"
+                                                data-status="in_progress">
                                                 <span data-i18n="dashboard.status.inProgress">In Progress</span>
                                                 <i class="fas fa-check filter-option-check"></i>
                                             </button>
-                                            <button type="button" class="dropdown-item filter-option" data-status="on_hold">
+                                            <button type="button" class="dropdown-item filter-option"
+                                                data-status="on_hold">
                                                 <span data-i18n="dashboard.status.onHold">On Hold</span>
                                                 <i class="fas fa-check filter-option-check"></i>
                                             </button>
-                                            <button type="button" class="dropdown-item filter-option" data-status="completed">
+                                            <button type="button" class="dropdown-item filter-option"
+                                                data-status="completed">
                                                 <span data-i18n="dashboard.status.completed">Completed</span>
                                                 <i class="fas fa-check filter-option-check"></i>
                                             </button>
-                                            <button type="button" class="dropdown-item filter-option" data-status="cancelled">
+                                            <button type="button" class="dropdown-item filter-option"
+                                                data-status="cancelled">
                                                 <span data-i18n="dashboard.status.cancelled">Cancelled</span>
                                                 <i class="fas fa-check filter-option-check"></i>
                                             </button>
                                             <div class="dropdown-divider"></div>
-                                            <button type="button" class="dropdown-item justify-content-start text-danger" id="recentProjectsResetBtn">
-                                                <i class="fas fa-rotate-left me-2"></i><span data-i18n="dashboard.sortFilter.reset">Reset filters</span>
+                                            <button type="button"
+                                                class="dropdown-item justify-content-start text-danger"
+                                                id="recentProjectsResetBtn">
+                                                <i class="fas fa-rotate-left me-2"></i><span
+                                                    data-i18n="dashboard.sortFilter.reset">Reset filters</span>
                                             </button>
                                         </div>
                                     </div>
-                                    <a href="projects.html" class="btn btn-sm btn-outline-primary" data-i18n="dashboard.viewAll">View All</a>
+                                    <a href="projects.html" class="btn btn-sm btn-outline-primary"
+                                        data-i18n="dashboard.viewAll">View All</a>
                                 </div>
                             </div>
                             <div class="card-body p-0">
@@ -206,7 +230,8 @@
                                         </thead>
                                         <tbody id="recentProjectsBody">
                                             <tr>
-                                                <td colspan="4" class="text-center text-muted py-4"><span class="spinner-border spinner-border-sm"></span></td>
+                                                <td colspan="4" class="text-center text-muted py-4"><span
+                                                        class="spinner-border spinner-border-sm"></span></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -220,18 +245,23 @@
                         <div class="card content-card h-100">
                             <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0"><i
-                                        class="fas fa-clock-rotate-left me-2 text-primary dashboard-icon-trigger" id="activityIconTrigger"
-                                        role="button" tabindex="0" data-i18n-title="dashboard.activity.refresh" data-i18n-aria-label="dashboard.activity.refresh"
-                                        title="Refresh activity" aria-label="Refresh activity"></i><span data-i18n="dashboard.systemActivity">System Activity</span></h5>
+                                        class="fas fa-clock-rotate-left me-2 text-primary dashboard-icon-trigger"
+                                        id="activityIconTrigger" role="button" tabindex="0"
+                                        data-i18n-title="dashboard.activity.refresh"
+                                        data-i18n-aria-label="dashboard.activity.refresh" title="Refresh activity"
+                                        aria-label="Refresh activity"></i><span
+                                        data-i18n="dashboard.systemActivity">System Activity</span></h5>
                                 <button type="button" class="dashboard-toolbar-btn" id="activityRefreshBtn"
-                                    data-i18n-title="dashboard.activity.refresh" data-i18n-aria-label="dashboard.activity.refresh"
-                                    title="Refresh activity" aria-label="Refresh activity">
+                                    data-i18n-title="dashboard.activity.refresh"
+                                    data-i18n-aria-label="dashboard.activity.refresh" title="Refresh activity"
+                                    aria-label="Refresh activity">
                                     <i class="fas fa-arrows-rotate" id="activityRefreshIcon"></i>
                                 </button>
                             </div>
                             <div class="card-body">
                                 <ul class="activity-timeline list-unstyled mb-0" id="activityTimelineList">
-                                    <li class="text-center text-muted py-4"><span class="spinner-border spinner-border-sm"></span></li>
+                                    <li class="text-center text-muted py-4"><span
+                                            class="spinner-border spinner-border-sm"></span></li>
                                 </ul>
                             </div>
                         </div>

@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ElectricalVPF ERP | Projects</title>
 
+    <link rel="icon" type="image/svg+xml" href="../img/favicon-light.png">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,7 +61,8 @@
                             <div class="col-12 col-md-auto text-end">
                                 <button class="btn btn-primary fw-semibold px-4" id="btnOpenAddModal"
                                     data-bs-toggle="modal" data-bs-target="#projectModal">
-                                    <i class="fas fa-plus-circle me-2"></i> <span data-i18n="projects.addProject">Adaugă Proiect</span>
+                                    <i class="fas fa-plus-circle me-2"></i> <span data-i18n="projects.addProject">Adaugă
+                                        Proiect</span>
                                 </button>
                             </div>
                         </div>
@@ -92,14 +95,17 @@
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden" data-i18n="common.loading">Se încarcă...</span>
                             </div>
-                            <p class="text-muted mt-2 mb-0" data-i18n="projects.loadingList">Se încarcă lista de proiecte...</p>
+                            <p class="text-muted mt-2 mb-0" data-i18n="projects.loadingList">Se încarcă lista de
+                                proiecte...</p>
                         </div>
 
                         <!-- EMPTY STATE -->
                         <div id="tableEmptyState" class="text-center py-5 d-none">
                             <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
-                            <h5 class="fw-semibold text-secondary" data-i18n="projects.emptyTitle">Nu s-a găsit niciun proiect</h5>
-                            <p class="text-muted mb-0" data-i18n="projects.emptyDesc">Încearcă alt termen de căutare sau adaugă un proiect nou.</p>
+                            <h5 class="fw-semibold text-secondary" data-i18n="projects.emptyTitle">Nu s-a găsit niciun
+                                proiect</h5>
+                            <p class="text-muted mb-0" data-i18n="projects.emptyDesc">Încearcă alt termen de căutare sau
+                                adaugă un proiect nou.</p>
                         </div>
                     </div>
 
@@ -126,7 +132,8 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="projectModalLabel" data-i18n="projects.addNew">Adaugă Proiect Nou</h5>
+                    <h5 class="modal-title fw-bold" id="projectModalLabel" data-i18n="projects.addNew">Adaugă Proiect
+                        Nou</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="projectForm" onsubmit="event.preventDefault(); saveProject();">
@@ -134,29 +141,35 @@
                         <input type="hidden" id="projectId">
                         <div class="row g-3">
                             <div class="col-md-8">
-                                <label for="projectName" class="form-label fw-semibold" data-i18n="projects.projectName">Nume Proiect *</label>
+                                <label for="projectName" class="form-label fw-semibold"
+                                    data-i18n="projects.projectName">Nume Proiect *</label>
                                 <input type="text" class="form-control" id="projectName" required
-                                    data-i18n-placeholder="projects.projectNamePlaceholder" placeholder="ex: Instalație Electrică Vilă">
+                                    data-i18n-placeholder="projects.projectNamePlaceholder"
+                                    placeholder="ex: Instalație Electrică Vilă">
                             </div>
                             <div class="col-md-4">
-                                <label for="projectClient" class="form-label fw-semibold" data-i18n="projects.clientRequired">Client *</label>
+                                <label for="projectClient" class="form-label fw-semibold"
+                                    data-i18n="projects.clientRequired">Client *</label>
                                 <select id="projectClient" class="form-select" required>
                                     <option value="" data-i18n="common.loading">Se încarcă...</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="projectStatus" class="form-label fw-semibold" data-i18n="common.status">Status</label>
+                                <label for="projectStatus" class="form-label fw-semibold"
+                                    data-i18n="common.status">Status</label>
                                 <select id="projectStatus" class="form-select">
                                     <option value="draft" data-i18n="projects.status.draft">Draft</option>
                                     <option value="planned" data-i18n="projects.status.planned">Planificat</option>
-                                    <option value="in_progress" data-i18n="projects.status.in_progress">În Lucru</option>
+                                    <option value="in_progress" data-i18n="projects.status.in_progress">În Lucru
+                                    </option>
                                     <option value="on_hold" data-i18n="projects.status.on_hold">În Așteptare</option>
                                     <option value="completed" data-i18n="projects.status.completed">Finalizat</option>
                                     <option value="cancelled" data-i18n="projects.status.cancelled">Anulat</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="projectPriority" class="form-label fw-semibold" data-i18n="projects.table.priority">Prioritate</label>
+                                <label for="projectPriority" class="form-label fw-semibold"
+                                    data-i18n="projects.table.priority">Prioritate</label>
                                 <select id="projectPriority" class="form-select">
                                     <option value="low" data-i18n="projects.priority.low">Scăzută</option>
                                     <option value="medium" selected data-i18n="projects.priority.medium">Medie</option>
@@ -165,7 +178,8 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="projectEstimatedValue" class="form-label fw-semibold" data-i18n="projects.estimatedValueLabel">Valoare
+                                <label for="projectEstimatedValue" class="form-label fw-semibold"
+                                    data-i18n="projects.estimatedValueLabel">Valoare
                                     Estimată</label>
                                 <div class="input-group">
                                     <input type="number" step="0.01" class="form-control" id="projectEstimatedValue"
@@ -174,22 +188,27 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <label for="projectDescription" class="form-label fw-semibold" data-i18n="projects.description">Descriere Proiect</label>
+                                <label for="projectDescription" class="form-label fw-semibold"
+                                    data-i18n="projects.description">Descriere Proiect</label>
                                 <textarea class="form-control" id="projectDescription" rows="3"
-                                    data-i18n-placeholder="projects.descriptionPlaceholder" placeholder="Detalii tehnice despre lucrare..."></textarea>
+                                    data-i18n-placeholder="projects.descriptionPlaceholder"
+                                    placeholder="Detalii tehnice despre lucrare..."></textarea>
                             </div>
                             <!-- Adaugă după div-ul cu Description -->
                             <div class="row g-3 mt-1">
                                 <div class="col-md-4">
-                                    <label for="projectStartDate" class="form-label fw-semibold" data-i18n="projects.startDate">Data Început</label>
+                                    <label for="projectStartDate" class="form-label fw-semibold"
+                                        data-i18n="projects.startDate">Data Început</label>
                                     <input type="date" class="form-control" id="projectStartDate">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="projectEndDate" class="form-label fw-semibold" data-i18n="projects.dueDate">Termen Estimat</label>
+                                    <label for="projectEndDate" class="form-label fw-semibold"
+                                        data-i18n="projects.dueDate">Termen Estimat</label>
                                     <input type="date" class="form-control" id="projectEndDate">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="projectCompletionDate" class="form-label fw-semibold" data-i18n="projects.completionDate">Data
+                                    <label for="projectCompletionDate" class="form-label fw-semibold"
+                                        data-i18n="projects.completionDate">Data
                                         Predare</label>
                                     <input type="date" class="form-control" id="projectCompletionDate">
                                 </div>
@@ -197,8 +216,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
-                        <button type="submit" class="btn btn-primary fw-semibold" id="btnSaveProject" data-i18n="projects.saveProject">Salvează
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                            data-i18n="common.cancel">Anulează</button>
+                        <button type="submit" class="btn btn-primary fw-semibold" id="btnSaveProject"
+                            data-i18n="projects.saveProject">Salvează
                             Proiect</button>
                     </div>
                 </form>
@@ -213,11 +234,14 @@
                 <div class="modal-body">
                     <i class="fas fa-exclamation-triangle text-danger fa-3x mb-3"></i>
                     <h5 class="fw-bold mb-2" data-i18n="projects.archiveConfirmTitle">Arhivezi acest proiect?</h5>
-                    <p class="text-muted small mb-0" data-i18n="projects.archiveConfirmDesc">Proiectul va fi marcat ca inactiv.</p>
+                    <p class="text-muted small mb-0" data-i18n="projects.archiveConfirmDesc">Proiectul va fi marcat ca
+                        inactiv.</p>
                 </div>
                 <div class="d-flex justify-content-center gap-2 mt-2">
-                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
-                    <button type="button" class="btn btn-danger btn-sm px-3" id="btnConfirmDelete" data-i18n="projects.yesArchive">Da,
+                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal"
+                        data-i18n="common.cancel">Anulează</button>
+                    <button type="button" class="btn btn-danger btn-sm px-3" id="btnConfirmDelete"
+                        data-i18n="projects.yesArchive">Da,
                         arhivează</button>
                 </div>
             </div>

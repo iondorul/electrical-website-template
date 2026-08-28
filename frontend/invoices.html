@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ElectricalVPF ERP | Invoices</title>
 
+    <link rel="icon" type="image/svg+xml" href="../img/favicon-light.png">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,17 +54,24 @@
                                                 <i class="fas fa-search"></i>
                                             </span>
                                             <input type="text" id="searchInput" class="form-control border-start-0 ps-0"
-                                                data-i18n-placeholder="invoices.searchPlaceholder" placeholder="Căutare după număr factură, client sau proiect...">
+                                                data-i18n-placeholder="invoices.searchPlaceholder"
+                                                placeholder="Căutare după număr factură, client sau proiect...">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-5">
                                         <select id="statusFilter" class="form-select">
-                                            <option value="draft" data-i18n="estimating.status.draft">Ciornă (Draft)</option>
-                                            <option value="issued" data-i18n="invoices.status.issued">Emisă (Issued)</option>
-                                            <option value="partially_paid" data-i18n="invoices.status.partially_paid">Plătită Parțial</option>
-                                            <option value="paid" data-i18n="invoices.status.paid">Plătită (Paid)</option>
-                                            <option value="overdue" data-i18n="invoices.status.overdue">Restantă (Overdue)</option>
-                                            <option value="canceled" data-i18n="quotes.status.canceled">Anulată (Canceled)</option>
+                                            <option value="draft" data-i18n="estimating.status.draft">Ciornă (Draft)
+                                            </option>
+                                            <option value="issued" data-i18n="invoices.status.issued">Emisă (Issued)
+                                            </option>
+                                            <option value="partially_paid" data-i18n="invoices.status.partially_paid">
+                                                Plătită Parțial</option>
+                                            <option value="paid" data-i18n="invoices.status.paid">Plătită (Paid)
+                                            </option>
+                                            <option value="overdue" data-i18n="invoices.status.overdue">Restantă
+                                                (Overdue)</option>
+                                            <option value="canceled" data-i18n="quotes.status.canceled">Anulată
+                                                (Canceled)</option>
                                         </select>
                                     </div>
                                 </div>
@@ -71,7 +80,8 @@
                             <div class="col-12 col-md-auto text-md-end">
                                 <button type="button" id="btnDeleteAllInvoices"
                                     class="btn btn-danger d-inline-flex align-items-center gap-2">
-                                    <i class="fas fa-trash-alt"></i> <span data-i18n="quotes.deleteAll">Șterge Tot</span>
+                                    <i class="fas fa-trash-alt"></i> <span data-i18n="quotes.deleteAll">Șterge
+                                        Tot</span>
                                 </button>
                             </div>
 
@@ -98,7 +108,8 @@
                                 </thead>
                                 <tbody id="invoicesTableBody">
                                     <tr>
-                                        <td colspan="8" class="text-center py-4 text-muted" data-i18n="invoices.loadingList">Se încarcă facturile...</td>
+                                        <td colspan="8" class="text-center py-4 text-muted"
+                                            data-i18n="invoices.loadingList">Se încarcă facturile...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -120,14 +131,16 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="viewModalTitle" data-i18n="invoices.invoiceDetails">Detalii Factură</h5>
+                    <h5 class="modal-title fw-bold" id="viewModalTitle" data-i18n="invoices.invoiceDetails">Detalii
+                        Factură</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="viewModalBody">
                     <!-- Populated dynamically by JS -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.close">Închide</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                        data-i18n="common.close">Închide</button>
                 </div>
             </div>
         </div>
@@ -138,7 +151,8 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="editModalTitle" data-i18n="invoices.editInvoice">Editare Factură</h5>
+                    <h5 class="modal-title fw-bold" id="editModalTitle" data-i18n="invoices.editInvoice">Editare Factură
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -149,7 +163,8 @@
                             <select id="editStatus" class="form-select">
                                 <option value="draft" data-i18n="estimating.status.draft">Ciornă (Draft)</option>
                                 <option value="issued" data-i18n="invoices.status.issued">Emisă (Issued)</option>
-                                <option value="partially_paid" data-i18n="invoices.status.partially_paid">Plătită Parțial</option>
+                                <option value="partially_paid" data-i18n="invoices.status.partially_paid">Plătită
+                                    Parțial</option>
                                 <option value="paid" data-i18n="invoices.status.paid">Plătită (Paid)</option>
                                 <option value="overdue" data-i18n="invoices.status.overdue">Restantă (Overdue)</option>
                                 <option value="canceled" data-i18n="quotes.status.canceled">Anulată (Canceled)</option>
@@ -174,7 +189,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                        data-i18n="common.cancel">Anulează</button>
                     <button type="button" class="btn btn-primary" id="btnSaveEditInvoice">
                         <i class="fas fa-save me-1"></i> <span data-i18n="common.save">Salvează</span>
                     </button>
@@ -207,14 +223,17 @@
                     </div>
                     <div class="mb-1">
                         <label class="form-label" data-i18n="invoices.recipientEmail">Email Destinatar</label>
-                        <input type="email" id="sendEmailRecipient" class="form-control" data-i18n-placeholder="invoices.recipientEmailPlaceholder" placeholder="nume@exemplu.com">
-                        <div class="invalid-feedback" id="sendEmailRecipientError" data-i18n="invoices.invalidEmailFeedback">
+                        <input type="email" id="sendEmailRecipient" class="form-control"
+                            data-i18n-placeholder="invoices.recipientEmailPlaceholder" placeholder="nume@exemplu.com">
+                        <div class="invalid-feedback" id="sendEmailRecipientError"
+                            data-i18n="invoices.invalidEmailFeedback">
                             Introduceți o adresă de email validă.
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                        data-i18n="common.cancel">Anulează</button>
                     <button type="button" class="btn btn-success" id="btnConfirmSendInvoiceEmail">
                         <i class="fas fa-paper-plane me-1"></i> <span data-i18n="invoices.send">Trimite</span>
                     </button>
@@ -239,7 +258,8 @@
                             <strong id="paymentTotalGross">-</strong>
                         </div>
                         <div class="text-end">
-                            <small class="text-muted d-block" data-i18n="invoices.remainingBalance">Rest de plată</small>
+                            <small class="text-muted d-block" data-i18n="invoices.remainingBalance">Rest de
+                                plată</small>
                             <strong id="paymentRemaining" class="text-danger">-</strong>
                         </div>
                     </div>
@@ -247,7 +267,8 @@
                         <div class="col-md-6">
                             <label class="form-label" data-i18n="invoices.amountRequired">Sumă *</label>
                             <input type="number" id="paymentAmount" class="form-control" step="0.01" min="0.01">
-                            <div class="invalid-feedback" id="paymentAmountError" data-i18n="invoices.invalidAmountFeedback">
+                            <div class="invalid-feedback" id="paymentAmountError"
+                                data-i18n="invoices.invalidAmountFeedback">
                                 Introduceți o sumă validă, mai mare decât 0.
                             </div>
                         </div>
@@ -258,7 +279,8 @@
                         <div class="col-md-6">
                             <label class="form-label" data-i18n="invoices.method">Metodă</label>
                             <select id="paymentMethod" class="form-select">
-                                <option value="bank_transfer" data-i18n="invoices.paymentMethod.bankTransfer">Transfer Bancar</option>
+                                <option value="bank_transfer" data-i18n="invoices.paymentMethod.bankTransfer">Transfer
+                                    Bancar</option>
                                 <option value="cash" data-i18n="invoices.paymentMethod.cash">Numerar</option>
                                 <option value="card" data-i18n="invoices.paymentMethod.card">Card</option>
                                 <option value="other" data-i18n="invoices.paymentMethod.other">Altă metodă</option>
@@ -266,7 +288,8 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" data-i18n="invoices.referenceNumber">Nr. Referință</label>
-                            <input type="text" id="paymentReference" class="form-control" data-i18n-placeholder="invoices.optional" placeholder="opțional">
+                            <input type="text" id="paymentReference" class="form-control"
+                                data-i18n-placeholder="invoices.optional" placeholder="opțional">
                         </div>
                         <div class="col-12">
                             <label class="form-label" data-i18n="estimating.notes">Note</label>
@@ -275,9 +298,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                        data-i18n="common.cancel">Anulează</button>
                     <button type="button" class="btn btn-success" id="btnConfirmRecordPayment">
-                        <i class="fas fa-money-bill-wave me-1"></i> <span data-i18n="invoices.registerAction">Înregistrează</span>
+                        <i class="fas fa-money-bill-wave me-1"></i> <span
+                            data-i18n="invoices.registerAction">Înregistrează</span>
                     </button>
                 </div>
             </div>

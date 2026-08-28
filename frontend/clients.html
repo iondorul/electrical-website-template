@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ElectricalVPF ERP | Clients</title>
 
+    <link rel="icon" type="image/svg+xml" href="../img/favicon-light.png">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,7 +61,8 @@
                             <div class="col-12 col-md-auto text-end">
                                 <button class="btn btn-primary fw-semibold px-4" id="btnOpenAddModal"
                                     data-bs-toggle="modal" data-bs-target="#clientModal">
-                                    <i class="fas fa-plus-circle me-2"></i> <span data-i18n="clients.addClient">Adaugă Client</span>
+                                    <i class="fas fa-plus-circle me-2"></i> <span data-i18n="clients.addClient">Adaugă
+                                        Client</span>
                                 </button>
                             </div>
                         </div>
@@ -91,14 +94,17 @@
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden" data-i18n="common.loading">Se încarcă...</span>
                             </div>
-                            <p class="text-muted mt-2 mb-0" data-i18n="clients.loadingList">Se încarcă lista de clienți...</p>
+                            <p class="text-muted mt-2 mb-0" data-i18n="clients.loadingList">Se încarcă lista de
+                                clienți...</p>
                         </div>
 
                         <!-- EMPTY STATE -->
                         <div id="tableEmptyState" class="text-center py-5 d-none">
                             <i class="fas fa-users-slash fa-3x text-muted mb-3"></i>
-                            <h5 class="fw-semibold text-secondary" data-i18n="clients.emptyTitle">Nu s-a găsit niciun client</h5>
-                            <p class="text-muted mb-0" data-i18n="clients.emptyDesc">Încearcă alt termen de căutare sau adaugă un client nou.</p>
+                            <h5 class="fw-semibold text-secondary" data-i18n="clients.emptyTitle">Nu s-a găsit niciun
+                                client</h5>
+                            <p class="text-muted mb-0" data-i18n="clients.emptyDesc">Încearcă alt termen de căutare sau
+                                adaugă un client nou.</p>
                         </div>
                     </div>
 
@@ -125,44 +131,54 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="clientModalLabel" data-i18n="clients.addNew">Adaugă Client Nou</h5>
+                    <h5 class="modal-title fw-bold" id="clientModalLabel" data-i18n="clients.addNew">Adaugă Client Nou
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="clientForm">
                     <div class="modal-body">
                         <input type="hidden" id="clientId">
                         <div class="mb-3">
-                            <label for="clientName" class="form-label fw-semibold" data-i18n="clients.fullName">Nume complet / Persoană de contact
+                            <label for="clientName" class="form-label fw-semibold" data-i18n="clients.fullName">Nume
+                                complet / Persoană de contact
                                 *</label>
                             <input type="text" class="form-control" id="clientName" required
                                 data-i18n-placeholder="clients.fullNamePlaceholder" placeholder="ex. Popescu Ion">
                         </div>
                         <div class="mb-3">
-                            <label for="clientCompany" class="form-label fw-semibold" data-i18n="clients.companyName">Denumire Companie
+                            <label for="clientCompany" class="form-label fw-semibold"
+                                data-i18n="clients.companyName">Denumire Companie
                                 (opțional)</label>
                             <input type="text" class="form-control" id="clientCompany"
-                                data-i18n-placeholder="clients.companyNamePlaceholder" placeholder="ex. S.C. Electro-Tech S.R.L.">
+                                data-i18n-placeholder="clients.companyNamePlaceholder"
+                                placeholder="ex. S.C. Electro-Tech S.R.L.">
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-6">
-                                <label for="clientEmail" class="form-label fw-semibold" data-i18n="clients.emailRequired">Email *</label>
+                                <label for="clientEmail" class="form-label fw-semibold"
+                                    data-i18n="clients.emailRequired">Email *</label>
                                 <input type="email" class="form-control" id="clientEmail" required
                                     data-i18n-placeholder="clients.emailPlaceholder" placeholder="nume@domeniu.ro">
                             </div>
                             <div class="col-6">
-                                <label for="clientPhone" class="form-label fw-semibold" data-i18n="clients.phoneRequired">Telefon *</label>
+                                <label for="clientPhone" class="form-label fw-semibold"
+                                    data-i18n="clients.phoneRequired">Telefon *</label>
                                 <input type="text" class="form-control" id="clientPhone" required
                                     data-i18n-placeholder="clients.phonePlaceholder" placeholder="07xxxxxxxx">
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="clientCity" class="form-label fw-semibold" data-i18n="clients.cityCounty">Oraș / Județ</label>
-                            <input type="text" class="form-control" id="clientCity" data-i18n-placeholder="clients.cityCountyPlaceholder" placeholder="ex. Sibiu, SB">
+                            <label for="clientCity" class="form-label fw-semibold" data-i18n="clients.cityCounty">Oraș /
+                                Județ</label>
+                            <input type="text" class="form-control" id="clientCity"
+                                data-i18n-placeholder="clients.cityCountyPlaceholder" placeholder="ex. Sibiu, SB">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
-                        <button type="submit" class="btn btn-primary fw-semibold" id="btnSaveClient" data-i18n="clients.saveClient">Salvează
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                            data-i18n="common.cancel">Anulează</button>
+                        <button type="submit" class="btn btn-primary fw-semibold" id="btnSaveClient"
+                            data-i18n="clients.saveClient">Salvează
                             Client</button>
                     </div>
                 </form>
@@ -177,11 +193,14 @@
                 <div class="modal-body">
                     <i class="fas fa-exclamation-triangle text-danger fa-3x mb-3"></i>
                     <h5 class="fw-bold mb-2" data-i18n="clients.deleteConfirmTitle">Ștergi acest client?</h5>
-                    <p class="text-muted small mb-0" data-i18n="common.actionCannotBeUndone">Această acțiune nu poate fi anulată.</p>
+                    <p class="text-muted small mb-0" data-i18n="common.actionCannotBeUndone">Această acțiune nu poate fi
+                        anulată.</p>
                 </div>
                 <div class="d-flex justify-content-center gap-2 mt-2">
-                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal" data-i18n="common.cancel">Anulează</button>
-                    <button type="button" class="btn btn-danger btn-sm px-3" id="btnConfirmDelete" data-i18n="common.yesDelete">Da, șterge</button>
+                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal"
+                        data-i18n="common.cancel">Anulează</button>
+                    <button type="button" class="btn btn-danger btn-sm px-3" id="btnConfirmDelete"
+                        data-i18n="common.yesDelete">Da, șterge</button>
                 </div>
             </div>
         </div>

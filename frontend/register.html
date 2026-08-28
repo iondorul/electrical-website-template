@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ElectricalVPF ERP | Creează Cont</title>
 
+    <link rel="icon" type="image/svg+xml" href="../img/favicon-light.png">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,15 +31,16 @@
 
         <!-- Comutare temă + selector de limbă (pagină publică, fără sidebar/topbar ERP) -->
         <div class="auth-header-controls">
-            <button type="button" class="auth-theme-toggle-btn" id="themeToggleBtn"
-                data-i18n-title="header.toggleTheme" data-i18n-aria-label="header.toggleTheme" title="Comută tema" aria-label="Comută tema">
+            <button type="button" class="auth-theme-toggle-btn" id="themeToggleBtn" data-i18n-title="header.toggleTheme"
+                data-i18n-aria-label="header.toggleTheme" title="Comută tema" aria-label="Comută tema">
                 <i class="fas fa-sun theme-toggle-icon icon-sun"></i>
                 <i class="fas fa-moon theme-toggle-icon icon-moon"></i>
             </button>
             <div class="dropdown auth-lang-switcher">
-                <button type="button" class="lang-switcher-btn" id="langSwitcherBtn"
-                    data-bs-toggle="dropdown" aria-expanded="false" data-i18n-title="header.language" title="Limbă / Language"></button>
-                <ul class="dropdown-menu lang-switcher-menu" id="langSwitcherMenu" aria-labelledby="langSwitcherBtn"></ul>
+                <button type="button" class="lang-switcher-btn" id="langSwitcherBtn" data-bs-toggle="dropdown"
+                    aria-expanded="false" data-i18n-title="header.language" title="Limbă / Language"></button>
+                <ul class="dropdown-menu lang-switcher-menu" id="langSwitcherMenu" aria-labelledby="langSwitcherBtn">
+                </ul>
             </div>
         </div>
 
@@ -64,12 +67,14 @@
 
                             <!-- Nume complet -->
                             <div class="mb-4">
-                                <label for="fullName" class="form-label" data-i18n="auth.register.fullNameLabel">Full name</label>
+                                <label for="fullName" class="form-label" data-i18n="auth.register.fullNameLabel">Full
+                                    name</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                    <input type="text" class="form-control" id="fullName"
-                                        placeholder="Ion Popescu" autocomplete="name">
-                                    <div class="invalid-feedback" id="fullNameFeedback" data-i18n="auth.register.fullNameRequired">
+                                    <input type="text" class="form-control" id="fullName" placeholder="Ion Popescu"
+                                        autocomplete="name">
+                                    <div class="invalid-feedback" id="fullNameFeedback"
+                                        data-i18n="auth.register.fullNameRequired">
                                         Full name is required!
                                     </div>
                                 </div>
@@ -77,12 +82,14 @@
 
                             <!-- Nume firmă / PFA -->
                             <div class="mb-4">
-                                <label for="companyName" class="form-label" data-i18n="auth.register.companyNameLabel">Company / sole trader name</label>
+                                <label for="companyName" class="form-label"
+                                    data-i18n="auth.register.companyNameLabel">Company / sole trader name</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fas fa-building"></i></span>
                                     <input type="text" class="form-control" id="companyName"
                                         placeholder="S.C. ElectricalVPF S.R.L." autocomplete="organization">
-                                    <div class="invalid-feedback" id="companyNameFeedback" data-i18n="auth.register.companyNameRequired">
+                                    <div class="invalid-feedback" id="companyNameFeedback"
+                                        data-i18n="auth.register.companyNameRequired">
                                         Company/sole trader name is required!
                                     </div>
                                 </div>
@@ -90,12 +97,14 @@
 
                             <!-- Email Input -->
                             <div class="mb-4">
-                                <label for="regEmail" class="form-label" data-i18n="auth.common.emailLabel">Email Address</label>
+                                <label for="regEmail" class="form-label" data-i18n="auth.common.emailLabel">Email
+                                    Address</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     <input type="email" class="form-control" id="regEmail"
                                         placeholder="office@electricalvpf.com" autocomplete="email">
-                                    <div class="invalid-feedback" id="regEmailFeedback" data-i18n="auth.common.emailInvalid">
+                                    <div class="invalid-feedback" id="regEmailFeedback"
+                                        data-i18n="auth.common.emailInvalid">
                                         Please enter a valid email address!
                                     </div>
                                 </div>
@@ -103,16 +112,20 @@
 
                             <!-- Password Input -->
                             <div class="mb-4">
-                                <label for="regPassword" class="form-label" data-i18n="auth.register.passwordLabel">Password</label>
+                                <label for="regPassword" class="form-label"
+                                    data-i18n="auth.register.passwordLabel">Password</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                     <input type="password" class="form-control" id="regPassword"
-                                        placeholder="Minim 8 caractere" data-i18n-placeholder="auth.register.passwordPlaceholder" autocomplete="new-password">
+                                        placeholder="Minim 8 caractere"
+                                        data-i18n-placeholder="auth.register.passwordPlaceholder"
+                                        autocomplete="new-password">
                                     <button class="btn btn-outline-secondary toggle-btn" type="button"
                                         id="toggleRegPassword">
                                         <i class="fas fa-eye"></i>
                                     </button>
-                                    <div class="invalid-feedback" id="regPasswordFeedback" data-i18n="auth.register.passwordInvalid">
+                                    <div class="invalid-feedback" id="regPasswordFeedback"
+                                        data-i18n="auth.register.passwordInvalid">
                                         Password must be at least 8 characters!
                                     </div>
                                 </div>
@@ -120,16 +133,20 @@
 
                             <!-- Confirm Password Input -->
                             <div class="mb-4">
-                                <label for="regConfirmPassword" class="form-label" data-i18n="auth.register.confirmPasswordLabel">Confirm password</label>
+                                <label for="regConfirmPassword" class="form-label"
+                                    data-i18n="auth.register.confirmPasswordLabel">Confirm password</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                     <input type="password" class="form-control" id="regConfirmPassword"
-                                        placeholder="Reintrodu parola" data-i18n-placeholder="auth.register.confirmPasswordPlaceholder" autocomplete="new-password">
+                                        placeholder="Reintrodu parola"
+                                        data-i18n-placeholder="auth.register.confirmPasswordPlaceholder"
+                                        autocomplete="new-password">
                                     <button class="btn btn-outline-secondary toggle-btn" type="button"
                                         id="toggleRegConfirmPassword">
                                         <i class="fas fa-eye"></i>
                                     </button>
-                                    <div class="invalid-feedback" id="regConfirmPasswordFeedback" data-i18n="auth.common.passwordMismatch">
+                                    <div class="invalid-feedback" id="regConfirmPasswordFeedback"
+                                        data-i18n="auth.common.passwordMismatch">
                                         Passwords do not match.
                                     </div>
                                 </div>
@@ -139,7 +156,8 @@
                             <div class="d-grid mb-3">
                                 <button type="submit" id="registerButton" class="btn btn-login">
                                     <span id="registerButtonText">
-                                        <i class="fas fa-user-plus me-2"></i><span data-i18n="auth.register.submit">Create account</span>
+                                        <i class="fas fa-user-plus me-2"></i><span
+                                            data-i18n="auth.register.submit">Create account</span>
                                     </span>
                                     <span id="registerSpinner" class="spinner-border spinner-border-sm d-none"
                                         role="status"></span>
@@ -147,8 +165,10 @@
                             </div>
 
                             <div class="text-center">
-                                <span class="text-muted small" data-i18n="auth.register.haveAccount">Already have an account?</span>
-                                <a href="login.html" class="forgot-password ms-1" data-i18n="auth.register.loginLink">Sign in</a>
+                                <span class="text-muted small" data-i18n="auth.register.haveAccount">Already have an
+                                    account?</span>
+                                <a href="login.html" class="forgot-password ms-1"
+                                    data-i18n="auth.register.loginLink">Sign in</a>
                             </div>
 
                         </form>
