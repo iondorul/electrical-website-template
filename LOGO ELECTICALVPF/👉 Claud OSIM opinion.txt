@@ -1,0 +1,20 @@
+Bun sfat de la ChatGPT, și corect direcționat — verificarea preliminară pe TMview/eSearch (gratuită, informativă) e diferită de cercetarea documentară oficială OSIM (plătită, dar cu valoare juridică reală). Hai să verific rapid dacă informațiile despre proces și costuri sunt actuale, ca să știi exact la ce te aștepți.Confirmat, informația de la ChatGPT e corectă. Iată sinteza practică:
+
+**Verificare preliminară (gratuită, poți face acum, singur):**
+- Registrul național OSIM: `api.osim.ro:8443/tm-registry`
+- EUIPO/TMview: `tmdn.org/tmview`
+- WIPO: `wipo.int/madrid/monitor`
+
+**Cercetare documentară OSIM (opțională, dar recomandată înainte de investiție serioasă):**
+- Are doar caracter informativ — nu e parte din procedura oficială de examinare, dar te ajută să eviți surprize.
+
+**Costuri reale de înregistrare marcă (2026, dacă mergi mai departe):**
+- Marcă verbală (doar numele „VPFA", text simplu): ~1.674 lei (taxe + onorariu + cercetare + 1 clasă Nisa)
+- Marcă figurativă alb-negru (cu logo, dar fără culori specifice): ~1.820 lei
+- Marcă color completă (exact logo-ul tău, cu roșu-galben-albastru): ~2.550 lei
+
+**Recomandarea practică:** Nu ai nevoie de asta acum, în faza de deploy. E un pas separat, de făcut după ce ai câțiva clienți și ești sigur că brandul „VPFA"/„ElectricalVPF" rămâne stabil. Costurile (1.800-2.550 lei) merită investite doar când brandul chiar generează venit, nu înainte.
+
+**Pentru acum:** folosești logo-ul liber (ai dreptul comercial prin termenii OpenAI), faci verificarea gratuită pe TMview/OSIM doar ca să te asiguri că nu există deja o marcă foarte similară înregistrată (evită conflicte), și amâni înregistrarea oficială pentru mai târziu.
+
+Revenim la Claude Code — a venit raportul cu screenshot-urile de favicon?
