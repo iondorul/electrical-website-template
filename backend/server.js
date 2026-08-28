@@ -22,7 +22,14 @@ const app = express();
 // (implicit development dacă NODE_ENV nu e deloc setat). În producție,
 // singura origine permisă rămâne cea derivată din FRONTEND_URL, mai jos.
 const isProduction = process.env.NODE_ENV === "production";
-const LOCAL_DEV_ORIGINS = isProduction ? [] : ["http://localhost:5500", "http://127.0.0.1:5500"];
+const LOCAL_DEV_ORIGINS = isProduction
+  ? []
+  : [
+      "http://localhost:5500",
+      "http://127.0.0.1:5500",
+      "http://localhost:5501",
+      "http://127.0.0.1:5501",
+    ];
 
 // FRONTEND_URL poate include un path (ex. "http://127.0.0.1:5500/frontend",
 // vezi .env local) — new URL(...).origin extrage doar schema+host+port,
@@ -32,7 +39,10 @@ if (process.env.FRONTEND_URL) {
   try {
     configuredFrontendOrigin = new URL(process.env.FRONTEND_URL).origin;
   } catch (err) {
-    console.error("FRONTEND_URL invalid, ignorat la configurarea CORS:", process.env.FRONTEND_URL);
+    console.error(
+      "FRONTEND_URL invalid, ignorat la configurarea CORS:",
+      process.env.FRONTEND_URL,
+    );
   }
 }
 
