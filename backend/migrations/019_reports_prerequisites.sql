@@ -3,7 +3,10 @@
 -- 2. Index pe payments.invoice_id pentru agregarile din Reports/Financial.
 --
 -- Notă: materials și payments nu au CREATE TABLE propriu-zis decât în
--- 013_recover_missing_tables.sql. Pe o instanță nouă, 004 rulează înaintea
--- lui 013, deci ALTER TABLE/CREATE INDEX de aici ar eșua ("relation does not
--- exist"); coloana min_stock și indexul idx_payments_invoice_id au fost mutate
--- direct în definițiile din 013.
+-- 013_recover_missing_tables.sql. Acest fișier era numerotat inițial "004"
+-- (rula înaintea lui 013 — ALTER TABLE/CREATE INDEX de aici ar fi eșuat cu
+-- "relation does not exist"), redenumit "019" pe 28 august 2026 la
+-- rezolvarea duplicatelor de numerotare 004/005. Coloana min_stock și
+-- indexul idx_payments_invoice_id au fost mutate direct în definițiile din
+-- 013 încă de atunci — acest fișier a rămas fără nicio instrucțiune SQL
+-- executabilă, e păstrat doar ca notă istorică.
