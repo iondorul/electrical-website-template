@@ -142,8 +142,81 @@
   color: var(--erp-dark-text);
 }
 
+[data-theme="dark"] .kpi-value.kpi-value-error {
+  color: var(--erp-dark-text-muted);
+}
+
+[data-theme="dark"] .kpi-card:hover,
+[data-theme="dark"] .kpi-card:focus-visible {
+  background: rgba(255, 255, 255, 0.035);
+  border-color: var(--erp-dark-text-muted);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="dark"] .kpi-card:focus-visible {
+  outline-color: var(--erp-dark-text-muted);
+}
+
+[data-theme="dark"] .kpi-skeleton {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.14) 37%, rgba(255, 255, 255, 0.06) 63%);
+  background-size: 400% 100%;
+}
+
 [data-theme="dark"] .bg-purple-subtle {
   background-color: rgba(147, 51, 234, 0.18);
+}
+
+/* --- Dashboard: toolbar (sort/filter, refresh), rânduri clickabile,
+   empty/error states (Recent Projects + System Activity) --- */
+[data-theme="dark"] .dashboard-toolbar-btn {
+  background: var(--erp-dark-bg-card);
+  border-color: var(--erp-dark-border);
+  color: var(--erp-dark-text-muted);
+}
+
+[data-theme="dark"] .dashboard-toolbar-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--erp-dark-text-muted);
+  color: var(--erp-dark-text);
+}
+
+[data-theme="dark"] .dashboard-icon-trigger:hover,
+[data-theme="dark"] .dashboard-icon-trigger:focus-visible {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .dashboard-icon-trigger:focus-visible {
+  outline-color: var(--erp-dark-text-muted);
+}
+
+[data-theme="dark"] .dashboard-tools-menu .dropdown-header {
+  color: var(--erp-dark-text-muted);
+}
+
+[data-theme="dark"] .sort-option-check,
+[data-theme="dark"] .filter-option-check {
+  color: var(--erp-dark-accent);
+}
+
+[data-theme="dark"] tr.dashboard-clickable-row:hover {
+  background-color: rgba(255, 255, 255, 0.045);
+}
+
+[data-theme="dark"] li.dashboard-clickable-row:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] li.dashboard-clickable-row:focus-visible,
+[data-theme="dark"] tr.dashboard-clickable-row:focus-visible {
+  outline-color: var(--erp-dark-text-muted);
+}
+
+[data-theme="dark"] .dashboard-empty-state {
+  color: var(--erp-dark-text-muted);
+}
+
+[data-theme="dark"] .dashboard-error-state {
+  color: #f87171;
 }
 
 /* Accent-ul ERP (#ff6b00) devine auriu (#eab308) în Dark, ca să se

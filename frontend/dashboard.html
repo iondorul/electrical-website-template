@@ -52,66 +52,69 @@
                     </div>
                 </div>
 
-                <!-- KPI METRICS GRID -->
-                <div class="row g-3 mb-4">
+                <!-- KPI METRICS GRID — carduri clickabile, navighează către modulul corespunzător.
+                     Anchor-uri reale (<a href>), nu div+onclick, ca tab+Enter să funcționeze nativ,
+                     fără cod JS suplimentar de accesibilitate. Valorile sunt încărcate din API-urile
+                     reale existente (vezi dashboard.js) — skeleton-ul din markup e înlocuit la load. -->
+                <div class="row g-3 mb-4" id="kpiRow">
                     <div class="col-12 col-sm-6 col-xl-2-4">
-                        <div class="kpi-card">
+                        <a href="clients.html" class="kpi-card" data-kpi="clients">
                             <div class="kpi-icon bg-primary-subtle text-primary">
                                 <i class="fas fa-users"></i>
                             </div>
                             <div class="kpi-data">
                                 <span class="kpi-title" data-i18n="dashboard.kpi.clients">Clients</span>
-                                <h3 class="kpi-value">125</h3>
+                                <h3 class="kpi-value" id="kpiClientsValue"><span class="kpi-skeleton"></span></h3>
                             </div>
-                        </div>
+                        </a>
                     </div>
 
                     <div class="col-12 col-sm-6 col-xl-2-4">
-                        <div class="kpi-card">
+                        <a href="projects.html" class="kpi-card" data-kpi="projects">
                             <div class="kpi-icon bg-info-subtle text-info">
                                 <i class="fas fa-folder-open"></i>
                             </div>
                             <div class="kpi-data">
                                 <span class="kpi-title" data-i18n="dashboard.kpi.projects">Projects</span>
-                                <h3 class="kpi-value">24</h3>
+                                <h3 class="kpi-value" id="kpiProjectsValue"><span class="kpi-skeleton"></span></h3>
                             </div>
-                        </div>
+                        </a>
                     </div>
 
                     <div class="col-12 col-sm-6 col-xl-2-4">
-                        <div class="kpi-card">
+                        <a href="quotes.html" class="kpi-card" data-kpi="quotes">
                             <div class="kpi-icon bg-warning-subtle text-warning">
                                 <i class="fas fa-file-signature"></i>
                             </div>
                             <div class="kpi-data">
                                 <span class="kpi-title" data-i18n="dashboard.kpi.openQuotes">Open Quotes</span>
-                                <h3 class="kpi-value">12</h3>
+                                <h3 class="kpi-value" id="kpiQuotesValue"><span class="kpi-skeleton"></span></h3>
                             </div>
-                        </div>
+                        </a>
                     </div>
 
                     <div class="col-12 col-sm-6 col-xl-2-4">
-                        <div class="kpi-card">
+                        <a href="invoices.html" class="kpi-card" data-kpi="invoices">
                             <div class="kpi-icon bg-purple-subtle text-purple">
                                 <i class="fas fa-file-invoice"></i>
                             </div>
                             <div class="kpi-data">
                                 <span class="kpi-title" data-i18n="dashboard.kpi.invoices">Invoices</span>
-                                <h3 class="kpi-value">38</h3>
+                                <h3 class="kpi-value" id="kpiInvoicesValue"><span class="kpi-skeleton"></span></h3>
                             </div>
-                        </div>
+                        </a>
                     </div>
 
                     <div class="col-12 col-sm-6 col-xl-2-4">
-                        <div class="kpi-card">
+                        <a href="reports.html" class="kpi-card" data-kpi="revenue">
                             <div class="kpi-icon bg-success-subtle text-success">
                                 <i class="fas fa-euro-sign"></i>
                             </div>
                             <div class="kpi-data">
                                 <span class="kpi-title" data-i18n="dashboard.kpi.revenue">Revenue</span>
-                                <h3 class="kpi-value">€24,560</h3>
+                                <h3 class="kpi-value" id="kpiRevenueValue"><span class="kpi-skeleton"></span></h3>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
 
@@ -121,9 +124,74 @@
                     <div class="col-12 col-lg-7">
                         <div class="card content-card h-100">
                             <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0"><i class="fas fa-list-check me-2 text-primary"></i><span data-i18n="dashboard.recentProjects">Recent
+                                <h5 class="card-title mb-0"><i class="fas fa-list-check me-2 text-primary dashboard-icon-trigger" id="recentProjectsIconTrigger"
+                                        role="button" tabindex="0" data-i18n-title="dashboard.sortFilter.label" data-i18n-aria-label="dashboard.sortFilter.label"
+                                        title="Sort &amp; filter" aria-label="Sort &amp; filter"></i><span data-i18n="dashboard.recentProjects">Recent
                                     Projects</span></h5>
-                                <a href="projects.html" class="btn btn-sm btn-outline-primary" data-i18n="dashboard.viewAll">View All</a>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="dropdown">
+                                        <button type="button" class="dashboard-toolbar-btn" id="recentProjectsToolsBtn"
+                                            data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside"
+                                            data-i18n-title="dashboard.sortFilter.label" data-i18n-aria-label="dashboard.sortFilter.label"
+                                            title="Sort &amp; filter" aria-label="Sort &amp; filter">
+                                            <i class="fas fa-arrow-down-wide-short"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end dashboard-tools-menu" id="recentProjectsToolsMenu" aria-labelledby="recentProjectsToolsBtn">
+                                            <h6 class="dropdown-header" data-i18n="dashboard.sortFilter.sortBy">Sort by</h6>
+                                            <button type="button" class="dropdown-item sort-option active" data-sort="recent">
+                                                <span data-i18n="dashboard.sortFilter.recent">Most recent</span>
+                                                <i class="fas fa-check sort-option-check"></i>
+                                            </button>
+                                            <button type="button" class="dropdown-item sort-option" data-sort="value">
+                                                <span data-i18n="dashboard.sortFilter.value">Project value</span>
+                                                <i class="fas fa-check sort-option-check"></i>
+                                            </button>
+                                            <button type="button" class="dropdown-item sort-option" data-sort="name">
+                                                <span data-i18n="dashboard.sortFilter.name">Name</span>
+                                                <i class="fas fa-check sort-option-check"></i>
+                                            </button>
+                                            <button type="button" class="dropdown-item sort-option" data-sort="status">
+                                                <span data-i18n="dashboard.sortFilter.status">Status</span>
+                                                <i class="fas fa-check sort-option-check"></i>
+                                            </button>
+                                            <div class="dropdown-divider"></div>
+                                            <h6 class="dropdown-header" data-i18n="dashboard.sortFilter.filterByStatus">Filter by status</h6>
+                                            <button type="button" class="dropdown-item filter-option active" data-status="all">
+                                                <span data-i18n="dashboard.sortFilter.allStatuses">All statuses</span>
+                                                <i class="fas fa-check filter-option-check"></i>
+                                            </button>
+                                            <button type="button" class="dropdown-item filter-option" data-status="draft">
+                                                <span data-i18n="dashboard.status.draft">Draft</span>
+                                                <i class="fas fa-check filter-option-check"></i>
+                                            </button>
+                                            <button type="button" class="dropdown-item filter-option" data-status="planned">
+                                                <span data-i18n="dashboard.status.planned">Planned</span>
+                                                <i class="fas fa-check filter-option-check"></i>
+                                            </button>
+                                            <button type="button" class="dropdown-item filter-option" data-status="in_progress">
+                                                <span data-i18n="dashboard.status.inProgress">In Progress</span>
+                                                <i class="fas fa-check filter-option-check"></i>
+                                            </button>
+                                            <button type="button" class="dropdown-item filter-option" data-status="on_hold">
+                                                <span data-i18n="dashboard.status.onHold">On Hold</span>
+                                                <i class="fas fa-check filter-option-check"></i>
+                                            </button>
+                                            <button type="button" class="dropdown-item filter-option" data-status="completed">
+                                                <span data-i18n="dashboard.status.completed">Completed</span>
+                                                <i class="fas fa-check filter-option-check"></i>
+                                            </button>
+                                            <button type="button" class="dropdown-item filter-option" data-status="cancelled">
+                                                <span data-i18n="dashboard.status.cancelled">Cancelled</span>
+                                                <i class="fas fa-check filter-option-check"></i>
+                                            </button>
+                                            <div class="dropdown-divider"></div>
+                                            <button type="button" class="dropdown-item justify-content-start text-danger" id="recentProjectsResetBtn">
+                                                <i class="fas fa-rotate-left me-2"></i><span data-i18n="dashboard.sortFilter.reset">Reset filters</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <a href="projects.html" class="btn btn-sm btn-outline-primary" data-i18n="dashboard.viewAll">View All</a>
+                                </div>
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
@@ -136,24 +204,9 @@
                                                 <th data-i18n="dashboard.table.value">Value</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="recentProjectsBody">
                                             <tr>
-                                                <td class="fw-semibold">Instalație Rezidențială Vila Sibiu</td>
-                                                <td>Ion Popescu</td>
-                                                <td><span class="badge bg-warning text-dark" data-i18n="dashboard.badge.inProgress">In Progress</span></td>
-                                                <td class="fw-bold">€4,200</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold">Tablou Electric Industrial Transilvania</td>
-                                                <td>S.C. Electra S.R.L.</td>
-                                                <td><span class="badge bg-success" data-i18n="dashboard.badge.completed">Completed</span></td>
-                                                <td class="fw-bold">€12,800</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold">Sistem Iluminat LED Depozit</td>
-                                                <td>Logistics Park</td>
-                                                <td><span class="badge bg-info text-dark" data-i18n="dashboard.badge.planning">Planning</span></td>
-                                                <td class="fw-bold">€3,500</td>
+                                                <td colspan="4" class="text-center text-muted py-4"><span class="spinner-border spinner-border-sm"></span></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -165,35 +218,20 @@
                     <!-- Recent Activity Stream -->
                     <div class="col-12 col-lg-5">
                         <div class="card content-card h-100">
-                            <div class="card-header bg-transparent">
+                            <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0"><i
-                                        class="fas fa-clock-rotate-left me-2 text-primary"></i><span data-i18n="dashboard.systemActivity">System Activity</span></h5>
+                                        class="fas fa-clock-rotate-left me-2 text-primary dashboard-icon-trigger" id="activityIconTrigger"
+                                        role="button" tabindex="0" data-i18n-title="dashboard.activity.refresh" data-i18n-aria-label="dashboard.activity.refresh"
+                                        title="Refresh activity" aria-label="Refresh activity"></i><span data-i18n="dashboard.systemActivity">System Activity</span></h5>
+                                <button type="button" class="dashboard-toolbar-btn" id="activityRefreshBtn"
+                                    data-i18n-title="dashboard.activity.refresh" data-i18n-aria-label="dashboard.activity.refresh"
+                                    title="Refresh activity" aria-label="Refresh activity">
+                                    <i class="fas fa-arrows-rotate" id="activityRefreshIcon"></i>
+                                </button>
                             </div>
                             <div class="card-body">
-                                <ul class="activity-timeline list-unstyled mb-0">
-                                    <li class="activity-item pb-3 mb-3 border-bottom">
-                                        <div class="d-flex justify-content-between">
-                                            <span class="fw-semibold">New Quote Generated</span>
-                                            <small class="text-muted">10 mins ago</small>
-                                        </div>
-                                        <p class="text-muted small mb-0">Quote #Q-2026-089 was sent to client S.C.
-                                            Electra S.R.L.</p>
-                                    </li>
-                                    <li class="activity-item pb-3 mb-3 border-bottom">
-                                        <div class="d-flex justify-content-between">
-                                            <span class="fw-semibold">Invoice Paid</span>
-                                            <small class="text-muted">2 hours ago</small>
-                                        </div>
-                                        <p class="text-muted small mb-0">Invoice #INV-1042 (€1,250) marked as paid.</p>
-                                    </li>
-                                    <li class="activity-item">
-                                        <div class="d-flex justify-content-between">
-                                            <span class="fw-semibold">New Client Added</span>
-                                            <small class="text-muted">Yesterday</small>
-                                        </div>
-                                        <p class="text-muted small mb-0">Client "Mihai Ionescu" was registered in CRM.
-                                        </p>
-                                    </li>
+                                <ul class="activity-timeline list-unstyled mb-0" id="activityTimelineList">
+                                    <li class="text-center text-muted py-4"><span class="spinner-border spinner-border-sm"></span></li>
                                 </ul>
                             </div>
                         </div>
@@ -206,11 +244,53 @@
 
     </div>
 
+    <!-- MODAL: Detalii Proiect (READ-ONLY, dublu-click pe un rând din Recent Projects) -->
+    <div class="modal fade" id="dashboardProjectModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="dashboardProjectModalTitle">-</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="dashboardProjectModalBody"></div>
+                <div class="modal-footer" id="dashboardProjectModalFooter"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Detalii Activitate (READ-ONLY, dublu-click pe un item din System Activity) -->
+    <div class="modal fade" id="dashboardActivityModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="dashboardActivityModalTitle">-</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="dashboardActivityModalBody"></div>
+                <div class="modal-footer" id="dashboardActivityModalFooter"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="erpToast" class="toast align-items-center text-white bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMessage">Opțiune salvată cu succes!</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Global ERP Utilities & Config -->
     <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/toast.js"></script>
     <script src="js/api.js"></script>
 
     <!-- Shell JS (Global Auth & Layout Loader) -->

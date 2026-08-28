@@ -18,7 +18,8 @@
     "status": "Status",
     "actionCannotBeUndone": "This action cannot be undone.",
     "yesDelete": "Yes, delete",
-    "serverError": "A server error occurred. Please try again."
+    "serverError": "A server error occurred. Please try again.",
+    "retry": "Retry"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -57,7 +58,8 @@
       "projects": "Projects",
       "openQuotes": "Open Quotes",
       "invoices": "Invoices",
-      "revenue": "Revenue"
+      "revenue": "Revenue",
+      "loadError": "Could not load this value"
     },
     "recentProjects": "Recent Projects",
     "viewAll": "View All",
@@ -72,7 +74,111 @@
       "completed": "Completed",
       "planning": "Planning"
     },
-    "systemActivity": "System Activity"
+    "systemActivity": "System Activity",
+    "sortFilter": {
+      "label": "Sort & filter",
+      "sortBy": "Sort by",
+      "recent": "Most recent",
+      "value": "Project value",
+      "name": "Name",
+      "status": "Status",
+      "filterByStatus": "Filter by status",
+      "allStatuses": "All statuses",
+      "reset": "Reset filters"
+    },
+    "status": {
+      "draft": "Draft",
+      "planned": "Planned",
+      "inProgress": "In Progress",
+      "onHold": "On Hold",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "error": {
+      "projectsLoadFailed": "Could not load projects.",
+      "activityLoadFailed": "Could not load recent activity."
+    },
+    "empty": {
+      "noProjects": "No recent projects found.",
+      "noActivity": "No recent activity found."
+    },
+    "activity": {
+      "refresh": "Refresh activity",
+      "refreshed": "Activity updated.",
+      "refreshFailed": "Could not refresh activity. Check your connection and try again.",
+      "newClient": {
+        "title": "New Client Added",
+        "desc": "Client \"{{name}}\" was added to the CRM."
+      },
+      "newProject": {
+        "title": "New Project Created",
+        "desc": "Project \"{{name}}\" was created for {{client}}."
+      },
+      "quoteDraft": {
+        "title": "Quote Created"
+      },
+      "quoteSent": {
+        "title": "Quote Sent"
+      },
+      "quoteApproved": {
+        "title": "Quote Approved"
+      },
+      "quoteRejected": {
+        "title": "Quote Rejected"
+      },
+      "quoteExpired": {
+        "title": "Quote Expired"
+      },
+      "quoteCanceled": {
+        "title": "Quote Canceled"
+      },
+      "quote": {
+        "desc": "Quote {{number}} for {{client}}."
+      },
+      "invoicePaid": {
+        "title": "Invoice Paid",
+        "desc": "Invoice {{number}} ({{amount}}) marked as paid."
+      },
+      "invoiceSent": {
+        "title": "Invoice Sent",
+        "desc": "Invoice {{number}} ({{amount}}) sent to {{client}}."
+      },
+      "invoiceCreated": {
+        "title": "Invoice Created",
+        "desc": "Invoice {{number}} ({{amount}}) was created for {{client}}."
+      }
+    },
+    "modal": {
+      "projectNumber": "Project #",
+      "contactPerson": "Contact",
+      "priority": "Priority",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "completionDate": "Completed On",
+      "address": "Address",
+      "description": "Description",
+      "notes": "Notes",
+      "viewClient": "View Client",
+      "viewProject": "View Project",
+      "viewQuote": "View Quote",
+      "viewInvoice": "View Invoice",
+      "downloadPdf": "Download PDF",
+      "pdfGenerateFailed": "Could not generate the PDF.",
+      "pdfError": "Error generating the PDF.",
+      "activityType": "Type",
+      "timestamp": "Timestamp",
+      "entityId": "Reference"
+    },
+    "time": {
+      "justNow": "Just now",
+      "minutesAgo": "{{n}} min ago",
+      "hoursAgo": "{{n}}h ago",
+      "yesterday": "Yesterday",
+      "daysAgo": "{{n}} days ago"
+    },
+    "hint": {
+      "doubleClickToView": "Double-click to view details"
+    }
   },
   "settings": {
     "pageTitle": "Settings",

@@ -477,6 +477,52 @@ body {
     padding: 20px;
     display: flex;
     align-items: center;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+/* KPI-urile devin navigare funcțională (Dashboard → modulul corespunzător) —
+   elevare subtilă la hover/focus, fără layout shift (transform, nu margin/
+   padding). :focus-visible acoperă navigarea din tastatură (Tab + Enter). */
+.kpi-card:hover,
+.kpi-card:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+    border-color: #cbd5e1;
+    background: #fbfcfe;
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+}
+
+.kpi-card:focus-visible {
+    outline: 2px solid #94a3b8;
+    outline-offset: 2px;
+}
+
+/* Placeholder de încărcare pentru valoarea KPI (înlocuit de dashboard.js cu
+   valoarea reală sau cu starea de eroare, imediat ce API-ul răspunde). */
+.kpi-skeleton {
+    display: inline-block;
+    width: 46px;
+    height: 1.1rem;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 37%, #e2e8f0 63%);
+    background-size: 400% 100%;
+    animation: dashboard-skeleton-pulse 1.4s ease infinite;
+}
+
+@keyframes dashboard-skeleton-pulse {
+    0% { background-position: 100% 50%; }
+    100% { background-position: 0 50%; }
+}
+
+.kpi-value.kpi-value-error {
+    color: #94a3b8;
+    font-weight: 600;
+    cursor: help;
 }
 
 .kpi-icon {
@@ -516,6 +562,221 @@ body {
 
 .bg-purple-subtle { background-color: #f3e8ff; }
 .text-purple { color: #9333ea; }
+
+/* ===========================================================
+   DASHBOARD — Recent Projects (sort/filter) & System Activity (refresh)
+=========================================================== */
+.dashboard-toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+    background: #ffffff;
+    color: #64748b;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.dashboard-toolbar-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+.dashboard-toolbar-btn:disabled {
+    cursor: default;
+    opacity: 0.7;
+}
+
+/* Animație de rotire aplicată DOAR cât timp System Activity chiar face
+   refresh (clasă adăugată/eliminată de dashboard.js) — nu o rotire continuă
+   decorativă. */
+.dashboard-toolbar-btn.is-loading i {
+    animation: dashboard-spin 0.8s linear infinite;
+}
+
+@keyframes dashboard-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Iconițele decorative originale din titlul fiecărui panou (Recent Projects/
+   System Activity) — sincronizate să declanșeze EXACT aceeași acțiune ca
+   butonul funcțional din dreapta (vezi initRecentProjectsToolbar()/
+   initActivityToolbar() din dashboard.js, care le atașează un listener
+   suplimentar ce doar apelează .click() pe butonul real, fără logică
+   duplicată). Stilul de hover/focus le semnalează explicit ca fiind
+   clickabile, la fel ca .dashboard-toolbar-btn din dreapta. */
+.dashboard-icon-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dashboard-icon-trigger:hover,
+.dashboard-icon-trigger:focus-visible {
+    background-color: rgba(15, 23, 42, 0.06);
+    outline: none;
+}
+
+.dashboard-icon-trigger:focus-visible {
+    outline: 2px solid #94a3b8;
+    outline-offset: 1px;
+}
+
+.dashboard-tools-menu {
+    min-width: 230px;
+    padding: 6px;
+}
+
+.dashboard-tools-menu .dropdown-header {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #94a3b8;
+    padding: 6px 10px 4px;
+}
+
+.dashboard-tools-menu .dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-radius: 6px;
+    font-size: 0.86rem;
+    padding: 6px 10px;
+}
+
+.sort-option-check,
+.filter-option-check {
+    display: none;
+    font-size: 0.75rem;
+    color: var(--sidebar-active);
+}
+
+.sort-option.active .sort-option-check,
+.filter-option.active .filter-option-check {
+    display: inline-block;
+}
+
+/* Rânduri/itemi cu dublu-click (Recent Projects, System Activity) — semnal
+   vizual discret de "e clickabil", fără să schimbe layout-ul. */
+tr.dashboard-clickable-row,
+li.dashboard-clickable-row {
+    cursor: pointer;
+    transition: background-color 0.12s ease;
+}
+
+tr.dashboard-clickable-row:hover {
+    background-color: rgba(15, 23, 42, 0.03);
+}
+
+li.dashboard-clickable-row:hover {
+    background-color: rgba(15, 23, 42, 0.035);
+    border-radius: 8px;
+}
+
+li.dashboard-clickable-row:focus-visible,
+tr.dashboard-clickable-row:focus-visible {
+    outline: 2px solid #94a3b8;
+    outline-offset: -2px;
+}
+
+.activity-timeline li:last-child {
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Tooltip informativ "Double-click to view details" (Recent Projects +
+   System Activity) — pur CSS (content: attr()), fără librărie externă, deci
+   fără nicio reinițializare necesară după sortare/filtrare/refresh (rândurile
+   sunt re-randate integral la fiecare din acele acțiuni). Ancorat pe
+   .dashboard-row-tooltip-anchor — primul <td> la rândurile din tabel (nu
+   direct pe <tr>, unde pseudo-elementele generate se randează inconsistent
+   cross-browser din cauza layout-ului de tabel), respectiv direct pe <li> la
+   itemii din listă (flux normal, fără restricția asta).
+   Delay de apariție (~400ms, evită flicker la trecere rapidă) vs. dispariție
+   instantă — tehnică standard: transition-delay diferă între starea de bază
+   (tranziția folosită la mouseleave) și :hover (tranziția folosită la
+   mouseenter). Bulă mereu în aceeași paletă navy FOARTE închisă (#0f172a —
+   mai închisă decât --erp-dark-bg-card #1e293b folosit de carduri în Dark,
+   altfel bula s-ar confunda vizual cu fundalul cardului în tema închisă,
+   devenind practic invizibilă ca "bulă" — găsit și corectat la verificarea
+   vizuală în Dark), cu un border discret pentru definire suplimentară a
+   conturului pe orice fundal — nu are nevoie de override separat în
+   dark-theme.css, funcționează identic în ambele teme. */
+.dashboard-row-tooltip-anchor {
+    position: relative;
+}
+
+.dashboard-row-tooltip-anchor[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 6px;
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #f8fafc;
+    font-size: 0.72rem;
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+    padding: 5px 10px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 30;
+    transition: opacity 0.1s ease;
+}
+
+.dashboard-row-tooltip-anchor[data-tooltip]:hover::after {
+    opacity: 1;
+    transition-delay: 0.4s;
+}
+
+/* Stări Empty / Error — reutilizate în Recent Projects și System Activity,
+   ambele randate de dashboard.js în locul tabelului/listei când nu există
+   date sau când API-ul a eșuat (niciodată un tabel gol/spart, cerință
+   explicită). */
+.dashboard-empty-state {
+    text-align: center;
+    color: #94a3b8;
+    padding: 2.25rem 1rem;
+}
+
+.dashboard-empty-state i {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.dashboard-error-state {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #dc2626;
+}
+
+.dashboard-error-state i {
+    font-size: 1.4rem;
+    margin-bottom: 0.4rem;
+    display: block;
+}
+
+.dashboard-error-state button {
+    margin-top: 0.6rem;
+}
 
 /* Responsive Adjustments */
 @media (max-width: 1200px) {

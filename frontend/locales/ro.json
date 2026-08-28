@@ -18,7 +18,8 @@
     "status": "Status",
     "actionCannotBeUndone": "Această acțiune nu poate fi anulată.",
     "yesDelete": "Da, șterge",
-    "serverError": "A apărut o eroare de server. Încearcă din nou."
+    "serverError": "A apărut o eroare de server. Încearcă din nou.",
+    "retry": "Reîncearcă"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -57,7 +58,8 @@
       "projects": "Proiecte",
       "openQuotes": "Oferte Deschise",
       "invoices": "Facturi",
-      "revenue": "Venituri"
+      "revenue": "Venituri",
+      "loadError": "Nu s-a putut încărca această valoare"
     },
     "recentProjects": "Proiecte Recente",
     "viewAll": "Vezi Tot",
@@ -72,7 +74,111 @@
       "completed": "Finalizat",
       "planning": "Planificare"
     },
-    "systemActivity": "Activitate Sistem"
+    "systemActivity": "Activitate Sistem",
+    "sortFilter": {
+      "label": "Sortare și filtrare",
+      "sortBy": "Sortează după",
+      "recent": "Cele mai recente",
+      "value": "Valoare proiect",
+      "name": "Nume",
+      "status": "Status",
+      "filterByStatus": "Filtrează după status",
+      "allStatuses": "Toate statusurile",
+      "reset": "Resetează filtrele"
+    },
+    "status": {
+      "draft": "Ciornă",
+      "planned": "Planificat",
+      "inProgress": "În Lucru",
+      "onHold": "În Așteptare",
+      "completed": "Finalizat",
+      "cancelled": "Anulat"
+    },
+    "error": {
+      "projectsLoadFailed": "Nu s-au putut încărca proiectele.",
+      "activityLoadFailed": "Nu s-a putut încărca activitatea recentă."
+    },
+    "empty": {
+      "noProjects": "Nu există proiecte recente.",
+      "noActivity": "Nu există activitate recentă."
+    },
+    "activity": {
+      "refresh": "Reîmprospătează activitatea",
+      "refreshed": "Activitatea a fost actualizată.",
+      "refreshFailed": "Nu s-a putut reîmprospăta activitatea. Verifică conexiunea și încearcă din nou.",
+      "newClient": {
+        "title": "Client Nou Adăugat",
+        "desc": "Clientul \"{{name}}\" a fost adăugat în CRM."
+      },
+      "newProject": {
+        "title": "Proiect Nou Creat",
+        "desc": "Proiectul \"{{name}}\" a fost creat pentru {{client}}."
+      },
+      "quoteDraft": {
+        "title": "Ofertă Creată"
+      },
+      "quoteSent": {
+        "title": "Ofertă Trimisă"
+      },
+      "quoteApproved": {
+        "title": "Ofertă Aprobată"
+      },
+      "quoteRejected": {
+        "title": "Ofertă Respinsă"
+      },
+      "quoteExpired": {
+        "title": "Ofertă Expirată"
+      },
+      "quoteCanceled": {
+        "title": "Ofertă Anulată"
+      },
+      "quote": {
+        "desc": "Oferta {{number}} pentru {{client}}."
+      },
+      "invoicePaid": {
+        "title": "Factură Plătită",
+        "desc": "Factura {{number}} ({{amount}}) a fost marcată ca plătită."
+      },
+      "invoiceSent": {
+        "title": "Factură Trimisă",
+        "desc": "Factura {{number}} ({{amount}}) a fost trimisă către {{client}}."
+      },
+      "invoiceCreated": {
+        "title": "Factură Creată",
+        "desc": "Factura {{number}} ({{amount}}) a fost creată pentru {{client}}."
+      }
+    },
+    "modal": {
+      "projectNumber": "Nr. Proiect",
+      "contactPerson": "Contact",
+      "priority": "Prioritate",
+      "startDate": "Dată Început",
+      "endDate": "Dată Sfârșit",
+      "completionDate": "Finalizat La",
+      "address": "Adresă",
+      "description": "Descriere",
+      "notes": "Notițe",
+      "viewClient": "Vezi Client",
+      "viewProject": "Vezi Proiect",
+      "viewQuote": "Vezi Ofertă",
+      "viewInvoice": "Vezi Factură",
+      "downloadPdf": "Descarcă PDF",
+      "pdfGenerateFailed": "Nu s-a putut genera PDF-ul.",
+      "pdfError": "Eroare la generarea PDF-ului.",
+      "activityType": "Tip",
+      "timestamp": "Data și ora",
+      "entityId": "Referință"
+    },
+    "time": {
+      "justNow": "Chiar acum",
+      "minutesAgo": "acum {{n}} min",
+      "hoursAgo": "acum {{n}}h",
+      "yesterday": "Ieri",
+      "daysAgo": "acum {{n}} zile"
+    },
+    "hint": {
+      "doubleClickToView": "Dublu-click pentru detalii"
+    }
   },
   "settings": {
     "pageTitle": "Setări",
