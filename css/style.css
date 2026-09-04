@@ -1,7 +1,7 @@
 
 
 
-/*** ERP Login Button — flat, modern, no 3D/press effect ***/
+/*** ERP Login Button â€” flat, modern, no 3D/press effect ***/
 .btn-erp-login {
     display: inline-flex;
     align-items: center;
@@ -14,7 +14,6 @@
     padding: .6rem 1.3rem;
     transition: background-color .25s ease, box-shadow .25s ease;
 }
-
 .btn-erp-login i {
     font-size: .95em;
 }
@@ -333,7 +332,7 @@
 @media (min-width: 992px) {
     .header-top .navbar{
         height: 80px;           /* 125 - 45 topbar */
-        padding: 0 !important;  /* scoate împingerea */
+        padding: 0 !important;  /* scoate Ã®mpingerea */
         display: flex;
         align-items: center;    /* centru vertical */
         }
@@ -897,7 +896,7 @@
 }
 /*** FAQs End ***/
 
-/*** Păreri Start ***/
+/*** PÄƒreri Start ***/
 .testimonial-carousel .owl-stage-outer {
     margin-right: -1px;
 }
@@ -997,7 +996,7 @@
     background: var(--bs-primary);
     transition: 0.5s;
 }
-/*** Păreri End ***/
+/*** PÄƒreri End ***/
 
 /*** Footer Start ***/
 .footer {
@@ -1070,7 +1069,7 @@
 .whatsapp-float{
   position: fixed;
   bottom: 20px;
-  left: 20px; /* sau right:20px dacă îl vrei pe dreapta */
+  left: 20px; /* sau right:20px dacÄƒ Ã®l vrei pe dreapta */
   width: 60px;
   height: 60px;
   background: #25D366;
@@ -1200,7 +1199,7 @@
 /* MOBILE ONLY brand fix */
 @media (max-width: 991.98px){
 
-    /* Buton limbă + hamburger exact aceeași înălțime */
+    /* Buton limbÄƒ + hamburger exact aceeaÈ™i Ã®nÄƒlÈ›ime */
     .dropdown.d-lg-none .btn,
     .navbar-toggler{
         font-size: 12px !important;
@@ -1282,11 +1281,11 @@
   box-shadow:0 12px 30px rgba(255,122,0,0.6);
 }
 
-/* PROJECTS MENU — SINGLE CLEAN BLOCK (no duplicates) */
+/* PROJECTS MENU â€” SINGLE CLEAN BLOCK (no duplicates) */
 .projects .nav{
-  max-width:400px;   /* schimbă dacă vrei */
+  max-width:400px;   /* schimbÄƒ dacÄƒ vrei */
   margin:auto;
-  gap:10px;          /* spațiu între butoane */
+  gap:10px;          /* spaÈ›iu Ã®ntre butoane */
   display:flex;
   flex-direction:column;
 }
@@ -1294,7 +1293,7 @@
 .projects .nav-item{
   padding:0 !important;
   border-radius:12px;
-  overflow:hidden;   /* taie colțuri albe */
+  overflow:hidden;   /* taie colÈ›uri albe */
   box-shadow:0 0 30px rgba(0,0,0,.09);
 }
 
@@ -1304,7 +1303,7 @@
   display:flex;
   align-items:center;
   gap:8px;
-  padding:14px 18px 14px 6px !important; /* text mai la stânga */
+  padding:14px 18px 14px 6px !important; /* text mai la stÃ¢nga */
   font-size:18px;
   font-weight:400;   /* fara bold */
   border-radius:12px;
@@ -1344,7 +1343,30 @@
   color:var(--bs-primary);
 }
 
-/* === MENIU TOP – CENTRU JOS, IDENTIC CU WHATSAPP === */
+/* === MENIU TOP â€“ CENTRU JOS, IDENTIC CU WHATSAPP === */
 .menu-float-center{
  left: calc(50% - 30px);
+}
+
+.language-flag{
+    display:inline-block;
+    width:22px;
+    height:15px;
+    margin-right:8px;
+    vertical-align:-2px;
+    border:1px solid rgba(0,0,0,.16);
+    box-shadow:0 1px 2px rgba(0,0,0,.12);
+}
+
+.flag-ro{
+    background:linear-gradient(90deg,#002b7f 0 33.33%,#fcd116 33.33% 66.66%,#ce1126 66.66%);
+}
+
+.flag-en{
+    background:
+        linear-gradient(90deg,transparent 42%,#cf142b 42% 58%,transparent 58%),
+        linear-gradient(0deg,transparent 38%,#cf142b 38% 62%,transparent 62%),
+        linear-gradient(45deg,transparent 44%,#fff 44% 56%,transparent 56%),
+        linear-gradient(-45deg,transparent 44%,#fff 44% 56%,transparent 56%),
+        #012169;
 }
