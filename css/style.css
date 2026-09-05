@@ -1009,6 +1009,11 @@
     transition: 0.5s;
 }
 
+.footer .footer-item .footer-static {
+    line-height: 35px;
+    color: var(--bs-white);
+}
+
 .footer .footer-item p {
     line-height: 35px;
 }
@@ -1035,6 +1040,26 @@
 .copyright {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     background: var(--bs-dark);
+}
+
+@media (min-width: 768px) {
+    .copyright .row {
+        position: relative;
+    }
+
+    .copyright .copyright-brand {
+        width: 100%;
+    }
+
+    .copyright .copyright-powered {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
 }
 /*** copyright end ***/
 
