@@ -1,3 +1,24 @@
+const pageTitles = {
+  ro: {
+    "index.html": "ElectricalVpf - Dăm viață casei tale",
+    "": "ElectricalVpf - Dăm viață casei tale",
+    "about.html": "ElectricalVpf - Dăm viață casei tale",
+    "contact.html": "ElectricalVpf - Dăm viață casei tale",
+    "service.html": "ElectricalVpf - Dăm viață casei tale",
+    "pricing.html": "ElectricalVPF - Prețuri",
+    "404.html": "ElectricalVPF - Pagina nu a fost găsită",
+  },
+  en: {
+    "index.html": "ElectricalVpf - We bring your home to life",
+    "": "ElectricalVpf - We bring your home to life",
+    "about.html": "ElectricalVpf - We bring your home to life",
+    "contact.html": "ElectricalVpf - We bring your home to life",
+    "service.html": "ElectricalVpf - We bring your home to life",
+    "pricing.html": "ElectricalVPF - Prices",
+    "404.html": "ElectricalVPF - Page not found",
+  },
+};
+
 const t = {
   ro: {
     sticky_cta_title: "Deviz rapid",
@@ -557,6 +578,11 @@ function setLang(lang) {
   Object.keys(d).forEach((k) => {
     if (k !== "langLabel") setText(k, d[k]);
   });
+
+  // schimbă și titlul tab-ului (browser tab / <title>) în funcție de pagina curentă
+  const page = location.pathname.split("/").pop() || "index.html";
+  const title = (pageTitles[lang] || pageTitles.ro)[page];
+  if (title) document.title = title;
 
   // 🔴 IMPORTANT: re-render pricing table + currency labels
   if (typeof renderRows === "function") {
