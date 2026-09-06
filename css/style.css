@@ -5,6 +5,7 @@
 .btn-erp-login {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: .5rem;
     background-color: #F68A0A;
     color: #fff;
@@ -14,6 +15,23 @@
     padding: .6rem 1.3rem;
     transition: background-color .25s ease, box-shadow .25s ease;
 }
+
+.navbar .btn-erp-login.d-lg-none {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}
+
+.navbar .mobile-whatsapp {
+    background-color: #198754;
+    gap: 6px;
+}
+
+.navbar .mobile-whatsapp:hover,
+.navbar .mobile-whatsapp:focus {
+    background-color: #157347;
+}
+
 .btn-erp-login i {
     font-size: .95em;
 }
