@@ -29,6 +29,54 @@
     background-color: #c76e08;
 }
 
+.erp-top-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    color: #878d97;
+    font-size: .82rem;
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+.erp-top-link:hover,
+.erp-top-link:focus {
+    color: #F68A0A;
+}
+
+.erp-top-link i {
+    font-size: .78rem;
+    color: #F68A0A;
+}
+
+.topbar .erp-top-link {
+    margin-left: 1.5rem !important;
+}
+
+.topbar .dropdown > a {
+    color: #878d97 !important;
+}
+
+.header-top .topbar .dropdown-toggle::after {
+    color: #878d97 !important;
+}
+
+.header-top .topbar .dropdown-toggle:hover::after,
+.header-top .topbar .dropdown-toggle:focus::after {
+    color: #F68A0A !important;
+}
+
+.topbar a.text-muted.small:hover,
+.topbar a.text-muted.small:focus,
+.topbar .dropdown > a:hover,
+.topbar .dropdown > a:focus,
+.topbar .dropdown > a:hover *,
+.topbar .dropdown > a:focus *,
+.topbar .erp-top-link:hover,
+.topbar .erp-top-link:focus {
+    color: #F68A0A !important;
+}
+
 /*** Spinner Start ***/
 #spinner {
     opacity: 0;
