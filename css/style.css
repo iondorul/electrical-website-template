@@ -1,8 +1,8 @@
 
 
 
-/*** ERP Login Button â€” flat, modern, no 3D/press effect ***/
-.btn-erp-login {
+/*** Action Button ***/
+.btn-action {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -16,7 +16,7 @@
     transition: background-color .25s ease, box-shadow .25s ease;
 }
 
-.navbar .btn-erp-login.d-lg-none {
+.navbar .btn-action.d-lg-none {
     width: 100%;
     justify-content: center;
     text-align: center;
@@ -32,43 +32,19 @@
     background-color: #157347;
 }
 
-.btn-erp-login i {
+.btn-action i {
     font-size: .95em;
 }
 
-.btn-erp-login:hover,
-.btn-erp-login:focus {
+.btn-action:hover,
+.btn-action:focus {
     background-color: #dd7d09;
     color: #fff;
     box-shadow: 0 4px 14px rgba(246, 138, 10, .35);
 }
 
-.btn-erp-login:active {
+.btn-action:active {
     background-color: #c76e08;
-}
-
-.erp-top-link {
-    display: inline-flex;
-    align-items: center;
-    gap: .35rem;
-    color: #878d97;
-    font-size: .82rem;
-    text-decoration: none;
-    transition: color .2s ease;
-}
-
-.erp-top-link:hover,
-.erp-top-link:focus {
-    color: #F68A0A;
-}
-
-.erp-top-link i {
-    font-size: .78rem;
-    color: #F68A0A;
-}
-
-.topbar .erp-top-link {
-    margin-left: 1.5rem !important;
 }
 
 .topbar .dropdown > a {
@@ -90,10 +66,6 @@
 .topbar .dropdown > a:focus,
 .topbar .dropdown > a:hover *,
 .topbar .dropdown > a:focus *,
-.topbar .erp-top-link:hover,
-.topbar .erp-top-link:focus {
-    color: #F68A0A !important;
-}
 
 /*** Spinner Start ***/
 #spinner {
