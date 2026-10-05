@@ -21,6 +21,11 @@ const pageTitles = {
 
 const t = {
   ro: {
+    software_title: "Experiența din teren, transformată într-un flux de lucru digital.",
+    software_lead: "Software de teren, construit de electricieni pentru electricieni.",
+    software_description: "ElectricalVPF transformă experiența practică din lucrări electrice într-un flux simplu pentru gestionarea clienților, lucrărilor, materialelor, ofertelor, contractelor, facturilor și rapoartelor.",
+    software_cta: "Descoperă ElectricalVPF",
+
     sticky_cta_title: "Deviz rapid",
     sticky_cta_sub: "Trimite 2 poze + locație",
 
@@ -292,6 +297,11 @@ const t = {
   },
 
   en: {
+    software_title: "Field experience, transformed into a digital workflow.",
+    software_lead: "Field software, built by electricians for electricians.",
+    software_description: "ElectricalVPF turns practical electrical work experience into a simple workflow for managing clients, jobs, materials, quotes, contracts, invoices and reports.",
+    software_cta: "Discover ElectricalVPF",
+
     sticky_cta_title: "Fast quote",
     sticky_cta_sub: "Send 2 photos + location",
 

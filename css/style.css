@@ -1433,3 +1433,95 @@
         linear-gradient(-45deg,transparent 44%,#fff 44% 56%,transparent 56%),
         #012169;
 }
+/* ElectricalVPF software: a secondary CTA in the existing orange / charcoal palette. */
+.header-top .w-100 { min-width: 0; }
+.header-top .navbar-nav { align-items: center; gap: 4px; }
+.header-top .navbar .navbar-nav > .nav-item { margin-right: 0; padding: 10px 12px !important; }
+.app-nav-cta, .software-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 48px;
+    padding: 11px 16px;
+    border: 1px solid #b96100;
+    border-radius: 7px;
+    background: #fff8ef;
+    color: #713b00;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: center;
+    transition: background-color .2s, color .2s;
+}
+.app-nav-cta { margin-left: 12px; white-space: nowrap; }
+.app-nav-cta:hover, .software-cta:hover { background: #ffecd4; color: #512a00; }
+.app-nav-cta:focus-visible, .software-cta:focus-visible, .app-footer-link:focus-visible {
+    outline: 3px solid #b96100;
+    outline-offset: 4px;
+}
+.software-section { padding: 0 0 64px; }
+.software-card {
+    display: grid;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, .52fr);
+    gap: 48px;
+    align-items: center;
+    padding: 0;
+    border: 1px solid #e7ded3;
+    border-left: 4px solid var(--bs-primary);
+    border-radius: 16px;
+    background: linear-gradient(120deg, #fffaf3, #fff);
+}
+.software-copy { padding: 40px 0 40px 40px; }
+.software-eyebrow { display: flex; align-items: center; gap: 9px; color: #874500; font-size: 15px; font-weight: 600; margin-bottom: 20px; }
+.software-eyebrow svg { width: 19px; height: 23px; fill: #ffc107; }
+.software-eyebrow > span { color: #874500; }
+.software-copy h2 { max-width: 680px; color: #0f1420; font-size: clamp(28px, 2.8vw, 38px); font-weight: 600; letter-spacing: -.025em; line-height: 1.2; margin-bottom: 22px; }
+.software-lead { color: #292929; font-weight: 500; margin-bottom: 12px; }
+.software-description { color: #565656; font-size: 15px; line-height: 1.8; margin-bottom: 0; max-width: 650px; }
+.software-action { align-self: stretch; display: flex; min-width: 0; padding: 30px 24px; flex-direction: column; justify-content: center; align-items: center; gap: 16px; }
+.software-cosmos { width: 100%; max-width: 360px; }
+.software-cosmos svg { display: block; width: 100%; height: auto; }
+.software-orbit-dot { offset-rotate: 0deg; animation: software-orbit 32s linear infinite; }
+.software-orbit-dot-one { offset-path: path("M345 105 A165 57 0 1 1 15 105 A165 57 0 1 1 345 105"); offset-distance: 18%; animation-delay: -6s; }
+.software-orbit-dot-two { offset-path: path("M328 105 A148 49 0 1 1 32 105 A148 49 0 1 1 328 105"); offset-distance: 62%; animation-duration: 42s; animation-direction: reverse; animation-delay: -16s; }
+@keyframes software-orbit { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+@media (prefers-reduced-motion: reduce) {
+    .software-orbit-dot { animation: none; }
+}
+.software-card .software-cta { border-color: #ffc107; background: #ffc107; color: #101827; padding: 14px 20px; border-radius: 6px; }
+.software-card .software-cta:hover { background: #ffd34e; border-color: #ffd34e; color: #101827; }
+.software-card .software-cta:focus-visible { outline-color: #713b00; }
+.software-domain { font-size: 11px; color: #646464; letter-spacing: .12em; }
+.footer .footer-item .app-footer-link { color: #ffb65c; margin-top: 10px; min-height: 44px; }
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .header-top .navbar-brand h1 { font-size: 28px; }
+    .header-top .navbar-brand { margin-right: 16px; }
+    .header-top .navbar-collapse { padding: 8px 0; }
+    .header-top .navbar .navbar-nav > .nav-item { padding: 10px 7px !important; font-size: 14px; }
+    .app-nav-cta { margin-left: 4px; padding: 10px; font-size: 13px; }
+}
+@media (max-width: 991.98px) {
+    .header-top .navbar .navbar-collapse { margin-top: 0; max-height: calc(100dvh - 80px); overflow-y: auto; }
+    .header-top .navbar-nav { align-items: stretch; margin-top: 0; padding-bottom: 0; background: #fff; }
+    .header-top .navbar .navbar-nav > .nav-item { min-height: 44px; justify-content: center; }
+    .header-top .navbar .navbar-toggler { min-width: 44px; min-height: 44px; }
+    .app-nav-cta { width: 100%; margin: 8px 0; white-space: normal; }
+    .software-card { gap: 28px; }
+    .software-copy { padding: 28px 0 28px 28px; }
+    .software-action { padding: 28px 18px; }
+    .software-action { align-items: stretch; }
+    .software-domain { align-self: center; }
+}
+@media (max-width: 767.98px) {
+    .software-section { padding-bottom: 40px; }
+    .software-card { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .software-copy { padding: 30px 24px; }
+    .software-eyebrow { margin-bottom: 22px; }
+    .software-cosmos { max-width: 220px; align-self: center; }
+    .software-cta { width: 100%; padding: 13px 10px; }
+    .software-description { font-size: 15px; line-height: 1.7; }
+}
